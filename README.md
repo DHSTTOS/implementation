@@ -2,9 +2,9 @@
 
 Who's responsible for what?:
 
-K:login, maybe data processing?
+K: login, maybe data processing?
 
-L:Front-end, diagrams
+L: Front-end, diagrams
 
 P: Backend-front communication
 
@@ -14,13 +14,7 @@ ALL: diagram implementaion, take a look at react + d3
 
 First set of deadlines:
 
-K:
-
-L:
-
-P:
-
-M:
+Meet up on: 
 
 
 First steps:
