@@ -1,7 +1,7 @@
 {
-  "name": "frontend-demo",
+  "name": "frontend-dhsttos",
   "version": "0.0.1",
-  "description": "Frontend demo for DHSTTOS.",
+  "description": "Frontend for DHSTTOS.",
   "main": "index.js",
   "dependencies": {
     "@emotion/core": "10.0.2",
