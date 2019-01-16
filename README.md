@@ -16,4 +16,4 @@ M:
 
 First steps:
 
-Set up the structure, according to responsability. that means create all classes. 
+Set up the structure, according to responsability. that means create all classes.  Feel free to reuse any existing demos (just don't tell anyone ;))
