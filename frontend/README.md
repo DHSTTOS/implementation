@@ -1,9 +1,8 @@
-# Frontend Prototype of DHSTTOS
-
-Design files are on the `design` branch.
+# Frontend of DHSTTOS
 
 ## How to Fire This Up
 
+0. `cd` into this sub directory
 1. Install dependencies with `npm i` (please don't use `yarn`)
 2. Run `npm start`
 3. Go to the URL printed in the console
