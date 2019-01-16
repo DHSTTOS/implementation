@@ -1,0 +1,94 @@
+@startuml
+title Overview of GUI Elements
+
+class App << (C,red) container >> {
+}
+
+class ControlPanel << (C,red) container >> {
+}
+
+class GlobalFiltersContainer << (C,red) container >> {
+}
+
+class GlobalFilter << (C,pink) component observer >> {
+}
+
+class UserController << (C,pink) component observer >> {
+}
+
+class DiagramConfigsModal << (C,red) container observer >> {
+}
+
+class GenericConfigs << (C,pink) component observer >> {
+}
+
+class DiagramSpecificConfigs << (C,red) container >> {
+}
+
+class TimeLinePlotConfigs  << (C,pink) component observer >> {
+}
+
+class ScatterPlotConfigs  << (C,pink) component observer >> {
+}
+
+class NetworkPlotConfigs  << (C,pink) component observer >> {
+}
+
+class DiagramsContainer << (C,red) container >> {
+}
+
+class DiagramContainer << (C,red) container >> {
+}
+
+class PlotContainer << (C,red) container >> {
+}
+
+class TimeLinePlot  << (C,pink) component observer >> {
+}
+
+class ScatterPlot  << (C,pink) component observer >> {
+}
+
+class NetworkPlot  << (C,pink) component observer >> {
+}
+
+class DiagramControl << (C,pink) component >> {
+}
+
+class FooterContainer << (C,red) container >> {
+}
+
+class BrushBar << (C,pink) component observer >> {
+}
+
+class NewDiagramButton << (C,pink) component >> {
+}
+
+' Now the relationship part
+
+App *-- DiagramConfigsModal
+App *-- ControlPanel
+App *-- DiagramsContainer
+App *-- FooterContainer
+
+ControlPanel *-- GlobalFiltersContainer
+GlobalFiltersContainer "1" *-- "many" GlobalFilter
+ControlPanel *-- UserController
+
+DiagramConfigsModal *-- GenericConfigs
+DiagramConfigsModal *-- DiagramSpecificConfigs
+DiagramSpecificConfigs <|-- TimeLinePlotConfigs
+DiagramSpecificConfigs <|-- ScatterPlotConfigs
+DiagramSpecificConfigs <|-- NetworkPlotConfigs
+
+DiagramsContainer "1" *-- "many" DiagramContainer
+DiagramContainer *-- PlotContainer
+PlotContainer <|-- TimeLinePlot
+PlotContainer <|-- ScatterPlot
+PlotContainer <|-- NetworkPlot
+DiagramContainer *-- DiagramControl
+
+FooterContainer *-- BrushBar
+FooterContainer *-- NewDiagramButton
+
+@enduml

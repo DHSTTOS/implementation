@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "moduleResolution": "node",
+    "target": "es6",
+    "baseUrl": ".",
+    "paths": {
+      // "@*": ["*"],
+      "@stores/*": ["src/stores/*"],
+      "@stores": ["src/stores"],
+      "@assets/*": ["src/assets/*"],
+      "@assets": ["src/assets"],
+      "@libs/*": ["src/libs/*"],
+      "@libs": ["src/libs"],
+      "@components/*": ["src/components/*"],
+      "@components": ["src/components"],
+      "@src": ["src/index"],
+      "@mockdata/*": ["mockdata/*"],
+      "@mockdata": ["mockdata"]
+    },
+    "experimentalDecorators": true
+  },
+  "exclude": ["node_modules", "**/node_modules/*"]
+}

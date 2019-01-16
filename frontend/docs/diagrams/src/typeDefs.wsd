@@ -1,0 +1,79 @@
+@startuml
+title Type Definitions
+
+interface DiagramConfigObject << (T,brown) type >> {
+  id: number
+  sourcesAvailable: enum
+  diagramType: enum
+  axisChoices: enum
+  useColor: bool
+  colorBy: enum
+  enableLegends: bool
+  enableTooltip: bool
+  enableAnimation: bool
+  diagramType: enum
+
+  diagramSpecificConfig: DiagramSpecificConfigObject
+}
+
+DiagramConfigObject *-- DiagramSpecificConfigObject
+
+interface DiagramSpecificConfigObject << (T,brown) type >> {
+}
+
+interface TimeLinePlotConfigObject << (T,brown) type >> {
+  lineWidth: number
+  lineOpacity: number
+  enablePoints: bool
+  enableShapedPoints: bool
+  pointSize: number
+  pointOpacity: number
+  enableArea: bool
+  areaOpacity: number
+}
+
+interface ScatterPlotConfigObject << (T,brown) type >> {
+  enableShapedPoints: bool
+  pointSize: number
+  pointOpacity: number
+}
+
+interface NetworkConfigObject << (T,brown) type >> {
+  lineWidth: number
+  lineOpacity: number
+  enableShapedPoints: bool
+  pointSize: number
+  pointOpacity: number
+}
+
+DiagramSpecificConfigObject <|-- TimeLinePlotConfigObject
+DiagramSpecificConfigObject <|-- ScatterPlotConfigObject
+DiagramSpecificConfigObject <|-- NetworkConfigObject
+
+interface DataPoint << (T,brown) type >> {
+  L2Protocol: string
+  SourceMACAddress: string
+  L4Protocol: string
+  SourceIPAddress: string
+  PacketSummary: string
+  PacketID: number
+  DestinationIPAddress: string
+  Timestamp: number
+  DestinationPort: string
+  SourcePort: number
+  L3Protocol: string
+  DestinationMACAddress: string
+}
+
+interface UserDetails << (T,brown) type >> {
+  userName: string
+  basicAuthToken: string
+}
+
+interface GlobalFilterObject << (T,brown) type >> {
+  category: string
+  name: string
+  value: bool
+}
+
+@enduml
