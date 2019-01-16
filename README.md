@@ -20,3 +20,6 @@ Meet up on: Sat 19 or Sun 20
 First steps:
 
 Set up the structure, according to responsability. that means create all classes.  Feel free to reuse any existing demos (just don't tell anyone ;))
+
+#Da rules
+For working on specific features please create a new branch, with: initial_FeatureName
