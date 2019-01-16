@@ -1,0 +1,36 @@
+@startuml
+title State Stores and Action Definitions
+
+class DataStore << (S,Yellow) state store >> {
+  ==observables==
+  # data: List<DataPoint>
+  # availableRange: Tuple<number, number>
+  # currentRanges: List<Tuple<number, number>>
+  ==computed==
+  # neededRanges: List<Tuple<number, number>>
+  ==actions==
+  # updateCurrentRangeTo(start, end)
+  - pullData()
+}
+
+class UIStore << (S,Yellow) state store >> {
+  ==observables==
+  # userDetails: UserDetails
+
+  # diagramConfigs: List<DiagramConfigObject>
+  # diagramConfigModal: DiagramConfigObject
+  # isDiagramConfigModalActive: bool
+  # sourcesAvailable: enum
+
+  # globalFilters: List<GlobalFilterObject>
+  ==actions==
+  # logout()
+  # newDiagram()
+
+  # resetDiagramConfigs()
+  # updateDiagramConfigs(origDiagConf, newValsForOverride)
+  # resetGlobalFilters()
+  # updateGlobalFilters(category, name, value)
+}
+
+@enduml
