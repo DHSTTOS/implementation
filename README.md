@@ -1,15 +1,16 @@
 # implementation
-we implement 
 
 Who's responsible for what?:
 
-K:
+K:login, maybe data processing?
 
-L:
+L:Front-end, diagrams
 
-P:
+P: Backend-front communication
 
-M:
+M: MongoDB, Backend Structure,
+
+ALL: diagram implementaion, take a look at react + d3
 
 First set of deadlines:
 
