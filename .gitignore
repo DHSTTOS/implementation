@@ -12,3 +12,5 @@ buildNumber.properties
 !/.mvn/wrapper/maven-wrapper.jar
 
 Back-end/\.vscode/
+
+Back-end/\.settings/
