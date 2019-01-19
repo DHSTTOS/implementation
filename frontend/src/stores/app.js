@@ -74,6 +74,9 @@ class AppStore {
     this.globalFilters[category][name] = value;
   };
 
+  @observable
+  data = [];
+
   // more actions, everything
 }
 
