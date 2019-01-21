@@ -16,6 +16,8 @@ class AppStore {
 
   @observable
   username = "";
+  @observable
+  authToken = "";
 
   @observable
   sourceSelected = DEFAULT_SOURCE_NAME;
@@ -73,8 +75,6 @@ class AppStore {
   updateGlobalFilters = (category, name) => value => {
     this.globalFilters[category][name] = value;
   };
-
-  // more actions, everything
 }
 
 const appStore = new AppStore();
