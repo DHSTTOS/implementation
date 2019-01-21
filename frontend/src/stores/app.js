@@ -73,11 +73,6 @@ class AppStore {
   updateGlobalFilters = (category, name) => value => {
     this.globalFilters[category][name] = value;
   };
-
-  @observable
-  data = [];
-
-  // more actions, everything
 }
 
 const appStore = new AppStore();
