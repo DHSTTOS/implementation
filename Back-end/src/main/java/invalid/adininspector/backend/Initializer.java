@@ -5,28 +5,21 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Properties;
 
-public class Initializer
-{
-    //TODO: implement some argument parsing, probably here
-    //diff between windows and linux is only the program that does execvp
-
+public class Initializer {
+    // TODO: implement some argument parsing, probably here
+    // diff between windows and linux is only the program that does execvp
 
     private static String installPath = "";
 
-    
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
 
-        
-        //TODO: use  first arg ,the install path
+        // TODO: use first arg ,the install path
 
-        //load the properties file
+        // load the properties file
         String rootPath = Thread.currentThread().getContextClassLoader().getResource("").getPath();
-        URL testPath =  Initializer.class.getClassLoader().getResource("");//ClassLoader.getSystemClassLoader().getResource(name)
+        URL testPath = Initializer.class.getClassLoader().getResource("");// ClassLoader.getSystemClassLoader().getResource(name)
         System.out.println(rootPath);
         System.out.println(testPath);
-
-       
 
         String appConfigPath = rootPath + "config.properties";
 
@@ -40,58 +33,50 @@ public class Initializer
             e.printStackTrace();
         }
 
+        String[] cStartZookeeper = { "xterm", "-hold", "-e", "sudo " + installPath + "bin/zookeeper-server-start.sh "
+                + installPath + "config/zookeeper.properties" };
 
-        String[] cStartZookeeper = {"xterm" ,"-hold", "-e", 
-        "sudo " + installPath + "bin/zookeeper-server-start.sh " +
-        installPath + "config/zookeeper.properties"};
+        String[] cStartKafka = { "xterm", "-hold", "-e",
+                "sudo " + installPath + "bin/kafka-server-start.sh " + installPath + "config/server.properties" };
 
-        String[] cStartKafka = {"xterm","-hold", "-e", "sudo "+
-                installPath + "bin/kafka-server-start.sh " + 
-                installPath + "config/server.properties"};
+        String[] cStartMongo = { "xterm", "-hold", "-e", "service mongod start" };
 
-        String[] cStartMongo = {"xterm","-hold", "-e",
-                "service mongod start"};
+        String[] cStopZookeeper = { "xterm", "-e", installPath + "bin/zookeeper-server-stop.sh" };
+        String[] cStopKafka = { "xterm", "-e", installPath + "bin/kafka-server-stop.sh" };
 
-        String[] cStopZookeeper = {"xterm", "-e",
-                installPath + "bin/zookeeper-server-stop.sh"};
-        String[] cStopKafka = {"xterm", "-e",
-                installPath + "bin/kafka-server-stop.sh"};
+        String[] cStopMongo = { "xterm", "-hold", "-e", "service mongod start" };
 
-        String[] cStopMongo = {"xterm","-hold", "-e",
-                "service mongod start"};
+        MongoConsumer m = new MongoConsumer(appProps.getProperty("mongo_admin_user"), "mongo_admin_pass",
+                "mongo_database_name");
 
-
-             
+        if (true)
+            return;
 
         try {
-        	//TODO: route tcpdump 
+            // TODO: route tcpdump for real-time
             // Process t = new ProcessBuilder("/bin/bash", "-c", "tcpdump").start();
 
             Process zookeper = new ProcessBuilder(cStartZookeeper).start();
 
-           
             Process kafka = new ProcessBuilder(cStartKafka).start();
 
             new ProcessBuilder(cStartMongo).start();
 
-
-           // new MongoConsumer(udid, pass, database);
-            
-
-            //TODO: a proper way to close the application
+            // TODO: a proper way to close the application
             System.in.read();
 
-            //this does not run in the editor cause app it's a kill -9 wihch sucks major ass
+            // this does not run in the editor cause app it's a kill -9 which sucks major
+            // ass
             Runtime.getRuntime().addShutdownHook(new Thread(() -> {
                 System.out.println("hook me up!");
                 try {
-                    //stop Kafka and wait for it to stop
+                    // stop Kafka and wait for it to stop
                     new ProcessBuilder(cStopKafka).start();
                     kafka.waitFor();
 
                     new ProcessBuilder(cStopMongo).start();
 
-                    //stop zookeper
+                    // stop zookeper
                     new ProcessBuilder(cStopZookeeper).start();
                     zookeper.waitFor();
 
@@ -100,12 +85,13 @@ public class Initializer
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                
+
             }));
 
             System.out.println("Application Terminating ...");
         } catch (Exception ex) {
-            //TODO: I dunno, smthn?
+
+            // TODO: I dunno, smthn?
             System.out.println(ex.toString());
         }
 

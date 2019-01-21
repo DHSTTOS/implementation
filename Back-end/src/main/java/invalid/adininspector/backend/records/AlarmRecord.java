@@ -1,6 +1,6 @@
 package invalid.adininspector.backend.records;
 
-public class AlarmRecord {
+public class AlarmRecord extends Record{
 
     private String AlarmId;
     private String AlarmType;
