@@ -3,6 +3,9 @@ import { DEFAULT_SOURCE_NAME } from "@libs";
 
 class DataStore {
   @observable
+  available_collections = [];
+
+  @observable
   data = [];
 }
 
