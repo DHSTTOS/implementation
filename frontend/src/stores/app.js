@@ -16,6 +16,8 @@ class AppStore {
 
   @observable
   username = "";
+  @observable
+  authToken = "";
 
   @observable
   sourceSelected = DEFAULT_SOURCE_NAME;
