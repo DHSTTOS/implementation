@@ -2,14 +2,17 @@ import appStore from "@stores/app";
 import dataStore from "@stores/data";
 
 const socket = new WebSocket("wss://echo.websocket.org/");
+let msgIdCounter = 0;
 
 // as long as we keep these socket.something listener assignments within the same scope
 // as the socket construction, we won't miss the 'open' event etc.
 socket.onopen = _ => {
   // authenticate again when opening socket
   const tokenMsg = {
-    username: appStore.username,
+    cmd: "LOGIN_TOKEN",
+    user: appStore.username,
     token: appStore.authToken,
+    id: msgIdCounter++;
   };
   socket.send(JSON.stringify(tokenMsg));
 };
