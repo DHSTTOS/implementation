@@ -36,7 +36,7 @@ public class MongoClientMediator {
         try {
             db.getCollection(collection).insertOne(record.getAsDocument());
         } catch (MongoWriteException ex) {
-            // TODO: how to handle this
+            // TODO: how to handle this, skip?, overwrite? or compare and decide which one to keep?
             System.out.println("an entry with this offset already exists %n at offset: " + record.get_id());
         }
     }

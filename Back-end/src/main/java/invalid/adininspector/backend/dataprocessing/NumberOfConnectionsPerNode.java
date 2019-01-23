@@ -1,4 +1,12 @@
 package invalid.adininspector.backend.dataprocessing;
 
-public class NumberOfConnectionsPerNode {
+import invalid.adininspector.backend.records.Record;
+
+public class NumberOfConnectionsPerNode implements IAggregator{
+
+    //TODO: implement me.
+	@Override
+	public Record processData(Record[] records) {
+		return null;
+	}
 }
