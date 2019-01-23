@@ -22,6 +22,8 @@ const formatData = ({ groupName, x, y, rawData = [] }) => {
       .filter(o => o.id === e[groupName])
       .map(o => o.data.push({ x: e[x], y: e[y] }));
   });
+
+  return dataArr;
 };
 
 export {
