@@ -42,6 +42,10 @@ public class MongoClientMediator {
 
     }
 
+    public MongoClientMediator(String udid, String password) {
+        this(udid,password,"");
+    }
+
     public void addRecordToCollection(Record record, String collection) {
         try {
             db.getCollection(collection).insertOne(record.getAsDocument());

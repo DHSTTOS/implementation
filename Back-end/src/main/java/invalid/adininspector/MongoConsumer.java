@@ -37,6 +37,9 @@ public class MongoConsumer {
 
     public MongoConsumer(String udid, String pass, String dbName) {
 
+        //default val;
+        dbName = "test";
+
         //TODO: this should not stay like this in prod
         mongoMediator = new MongoClientMediator(udid, pass, dbName);
 
@@ -57,7 +60,7 @@ public class MongoConsumer {
         // we do NOT subsrice to a topic, but initialize the first parition to the start
         // and read from here, assuring we'll read everything
         // this will be done once, all missing entries from kafka are added to the
-        // appropriate collection.
+        // appropriate collection
 
         Collection<TopicPartition> partitions = getAllTopics();
 
