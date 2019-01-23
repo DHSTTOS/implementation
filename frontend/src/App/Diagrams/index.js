@@ -3,8 +3,11 @@ import { observer } from "mobx-react";
 import styled from "@emotion/styled";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
+import { ResponsiveScatterPlot } from "@nivo/scatterplot";
 
 import { appStore } from "@stores";
+import { jsonstreams } from "../../../mockdata";
+import { formatData } from "@libs";
 
 const Container = styled.div`
   display: flex;
@@ -60,10 +63,79 @@ class DiagramsContainer extends Component {
 
 class Diagram extends Component {
   render() {
+    const data = formatData({
+      groupName: "L2Protocol",
+      x: "SourceMACAddress",
+      y: "DestinationMACAddress",
+      rawData: jsonstreams,
+    });
+    console.log(data);
+
     return (
       <div>
-        This diagram has configs:
-        <pre>{JSON.stringify(this.props.config, null, 2)}</pre>
+        <ResponsiveScatterPlot
+          data={data}
+          margin={{
+            top: 60,
+            right: 140,
+            bottom: 70,
+            left: 90,
+          }}
+          xScale={{
+            type: "point",
+            min: 0,
+            max: "auto",
+          }}
+          yScale={{
+            type: "point",
+            min: 0,
+            max: "auto",
+          }}
+          axisTop={null}
+          axisRight={null}
+          axisBottom={{
+            orient: "bottom",
+            tickSize: 5,
+            tickPadding: 5,
+            tickRotation: 0,
+            legend: "weight",
+            legendPosition: "middle",
+            legendOffset: 46,
+          }}
+          axisLeft={{
+            orient: "left",
+            tickSize: 5,
+            tickPadding: 5,
+            tickRotation: 0,
+            legend: "size",
+            legendPosition: "middle",
+            legendOffset: -60,
+          }}
+          animate={true}
+          motionStiffness={90}
+          motionDamping={15}
+          legends={[
+            {
+              anchor: "bottom-right",
+              direction: "column",
+              translateX: 130,
+              itemWidth: 100,
+              itemHeight: 12,
+              itemsSpacing: 5,
+              itemTextColor: "#999",
+              symbolSize: 12,
+              symbolShape: "circle",
+              effects: [
+                {
+                  on: "hover",
+                  style: {
+                    itemTextColor: "#000",
+                  },
+                },
+              ],
+            },
+          ]}
+        />
       </div>
     );
   }
