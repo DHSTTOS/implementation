@@ -27,6 +27,15 @@ const StyledPaper = styled(Paper)`
   margin: 0.5rem;
 `;
 
+const PlotContainer = styled.div`
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  align-self: stretch;
+  margin: 0.5rem;
+`;
+
 const Row = styled.div`
   display: flex;
   flex-direction: row;
@@ -72,24 +81,20 @@ class Diagram extends Component {
     console.log(data);
 
     return (
-      <div>
+      <PlotContainer>
         <ResponsiveScatterPlot
           data={data}
           margin={{
             top: 60,
             right: 140,
             bottom: 70,
-            left: 90,
+            left: 140,
           }}
           xScale={{
             type: "point",
-            min: 0,
-            max: "auto",
           }}
           yScale={{
             type: "point",
-            min: 0,
-            max: "auto",
           }}
           axisTop={null}
           axisRight={null}
@@ -98,7 +103,7 @@ class Diagram extends Component {
             tickSize: 5,
             tickPadding: 5,
             tickRotation: 0,
-            legend: "weight",
+            legend: "SourceMACAddress",
             legendPosition: "middle",
             legendOffset: 46,
           }}
@@ -107,13 +112,10 @@ class Diagram extends Component {
             tickSize: 5,
             tickPadding: 5,
             tickRotation: 0,
-            legend: "size",
+            legend: "DestinationMACAddress",
             legendPosition: "middle",
-            legendOffset: -60,
+            legendOffset: -120,
           }}
-          animate={true}
-          motionStiffness={90}
-          motionDamping={15}
           legends={[
             {
               anchor: "bottom-right",
@@ -136,7 +138,7 @@ class Diagram extends Component {
             },
           ]}
         />
-      </div>
+      </PlotContainer>
     );
   }
 }
