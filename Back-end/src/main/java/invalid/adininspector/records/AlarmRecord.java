@@ -1,4 +1,4 @@
-package invalid.adininspector.backend.records;
+package invalid.adininspector.records;
 
 public class AlarmRecord extends Record{
 

@@ -1,4 +1,4 @@
-package invalid.adininspector.backend.records;
+package invalid.adininspector.records;
 
 import java.util.Map;
 
