@@ -63,25 +63,27 @@ public interface IUserSession {
 	
 	
 	/**
-	 * Returns an array containing all records of this collection for which the
+	 * Returns an array containing all records of the collection for which the
 	 * value of the specified key is in the range [start, end). The records will
 	 * be in the same order as they are in the collection.
 	 * 
+	 * @param collection the collection to query
 	 * @param key the record key by which the records are filtered
 	 * @param start the start of the range of key values
 	 * @param end the exclusive end of the range of key values
 	 * @return an array of records matching the filter range
 	 */
-	public String[] getRecordsInRange(String key, String start,String end);
+	public String[] getRecordsInRange(String collection, String key, String start,String end);
 	
 	/**
 	 * Returns the number of records in the specified collection for which the value
 	 * of the specified key is within the range [start, end).
 	 * 
+	 * @param collection the collection to query
 	 * @param key the record key by which the records are filtered
 	 * @param start the start of the range of key values
 	 * @param end the exclusive end of the range of key values
 	 * @return the number of records matching the filter range
 	 */
-	public long getRecordsInRangeSize(String key, String start, String end);
+	public long getRecordsInRangeSize(String collection, String key, String start, String end);
 }

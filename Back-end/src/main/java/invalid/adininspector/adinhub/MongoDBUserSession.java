@@ -50,13 +50,13 @@ public class MongoDBUserSession implements IUserSession {
 		return 0;
 	}
 
-	public String[] getRecordsInRange(String key, String start, String end) {
-		//return mongoClientMediator.getRecordsInRange(key, start, end);
+	public String[] getRecordsInRange(String collection, String key, String start, String end) {
+		//return mongoClientMediator.getRecordsInRange(collection, key, start, end);
 		return null;
 	}
 
-	public long getRecordsInRangeSize(String key, String start, String end) {
-		//return mongoClientMediator.getRecordsInRangeSize(key, start, end);
+	public long getRecordsInRangeSize(String collection, String key, String start, String end) {
+		//return mongoClientMediator.getRecordsInRangeSize(collection, key, start, end);
 		return 0;
 	}
 }

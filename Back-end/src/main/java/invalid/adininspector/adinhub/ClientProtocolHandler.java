@@ -80,7 +80,7 @@ public class ClientProtocolHandler {
 				String key = (String)msgParsed.get("key");
 				String start = (String)msgParsed.get("start");
 				String end = (String)msgParsed.get("end");
-				String[] data = hub.getRecordsInRange(session, key, start, end);
+				String[] data = hub.getRecordsInRange(session, collectionName, key, start, end);
 				Map<String, Object> m = new HashMap<String, Object>();
 				m.put("cmd", "DATA");
 				m.put("par", data);
@@ -94,7 +94,7 @@ public class ClientProtocolHandler {
 				String key = (String)msgParsed.get("key");
 				String start = (String)msgParsed.get("start");
 				String end = (String)msgParsed.get("end");
-				long size = hub.getRecordsInRangeSize(session, key, start, end);
+				long size = hub.getRecordsInRangeSize(session, collectionName, key, start, end);
 				Map<String, Object> m = new HashMap<String, Object>();
 				m.put("cmd", "COLL_SIZE");
 				m.put("par", size);

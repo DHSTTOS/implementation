@@ -217,13 +217,13 @@ public class Hub {
 	 * @param end the exclusive end of the range of key values
 	 * @return an array of records matching the filter range
 	 */
-	public String[] getRecordsInRange(Session session, String key, String start,String end) {
+	public String[] getRecordsInRange(Session session, String collection, String key, String start,String end) {
 		IUserSession userSession = sessions.get(session);
 		if (userSession == null) {
 			System.err.println("got reqeust for non-loggedin session" + session);
 			return null; // XXX return empty array?
 		}
-		return userSession.getRecordsInRange(key, start, end);
+		return userSession.getRecordsInRange(collection, key, start, end);
 	}
 	
 	/**
@@ -235,12 +235,12 @@ public class Hub {
 	 * @param end the exclusive end of the range of key values
 	 * @return the number of records matching the filter range
 	 */
-	public long getRecordsInRangeSize(Session session, String key, String start, String end) {
+	public long getRecordsInRangeSize(Session session, String collection, String key, String start, String end) {
 		IUserSession userSession = sessions.get(session);
 		if (userSession == null) {
 			System.err.println("got reqeust for non-loggedin session" + session);
 			return 0; // XXX return empty array?
 		}
-		return userSession.getRecordsInRangeSize(key, start, end);
+		return userSession.getRecordsInRangeSize(collection, key, start, end);
 	}
 }
