@@ -1,4 +1,4 @@
-package invalid.adininspector.backend;
+package invalid.adininspector;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,7 +15,7 @@ import com.mongodb.client.MongoIterable;
 
 import org.bson.Document;
 
-import invalid.adininspector.backend.records.Record;
+import invalid.adininspector.records.Record;
 
 public class MongoClientMediator {
 

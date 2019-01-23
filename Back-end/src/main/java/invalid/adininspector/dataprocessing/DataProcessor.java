@@ -1,10 +1,10 @@
-package invalid.adininspector.backend.dataprocessing;
+package invalid.adininspector.dataprocessing;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import invalid.adininspector.backend.MongoClientMediator;
-import invalid.adininspector.backend.records.Record;
+import invalid.adininspector.MongoClientMediator;
+import invalid.adininspector.records.Record;
 
 public class DataProcessor {
 

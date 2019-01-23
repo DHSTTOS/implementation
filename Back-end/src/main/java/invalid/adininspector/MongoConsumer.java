@@ -1,4 +1,4 @@
-package invalid.adininspector.backend;
+package invalid.adininspector;
 
 //for GSON
 import java.lang.reflect.Type;
@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.stream.Collectors;
 
-import invalid.adininspector.backend.records.*;
+import invalid.adininspector.records.*;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 

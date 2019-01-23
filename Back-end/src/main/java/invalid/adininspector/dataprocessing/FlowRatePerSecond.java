@@ -1,6 +1,6 @@
-package invalid.adininspector.backend.dataprocessing;
+package invalid.adininspector.dataprocessing;
 
-import invalid.adininspector.backend.records.Record;
+import invalid.adininspector.records.Record;
 
 public class FlowRatePerSecond implements IAggregator {
 
