@@ -2,6 +2,8 @@ package invalid.adininspector.adinhub;
 
 import javax.websocket.Session;
 
+import com.google.gson.Gson;
+
 /**
  * This class handles client requests by parsing them, executing
  * the requested action and producing responses.
@@ -18,6 +20,9 @@ public class ClientProtocolHandler {
 		 * @param session the current session
 		 * @param message the client request to handle
 		 */
-		void handleRequest(Hub hub, Session session, String message) {
+		String handleRequest(Hub hub, Session session, String message) {
+			Gson gson = new Gson();
+			gson.fromJson(message, Integer.class);
+			return "";
 	}
 }

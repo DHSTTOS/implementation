@@ -4,6 +4,8 @@ import javax.websocket.OnOpen;
 import javax.websocket.server.ServerEndpoint;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.websocket.*;
 
@@ -13,15 +15,35 @@ import javax.websocket.*;
  */
 @ServerEndpoint("/adinhubsoc")
 public class Hub {
+	
+	
+	/**
+	 * The database to use
+	 */
+	IUserSession database;
+	
 	/**
 	 * The strategy object we call for the actual parsing of the client requests.
 	 */
 	private ClientProtocolHandler requestHandler;
 
 	/**
-	 * The database we use during a user session.
+	 * Map login tokens to the websocket session in which they were requested
+	 * and provided by the server. 
 	 */
-	private IUserSession database;
+	private Map<String, Session> loginTokens;
+
+	/**
+	 * Map a websocket connection to a IUserSession (i.e. a database connection).
+	 */
+	private Map<Session, IUserSession> sessions;
+	
+	public Hub() {
+		database = new MockMongoDBUserSession();
+		requestHandler = new ClientProtocolHandler();
+		loginTokens = new HashMap<String, Session>();
+		sessions = new HashMap<Session, IUserSession>();
+	}
 	
     /**
      * Event handler for the start of websocket connection.
@@ -31,6 +53,7 @@ public class Hub {
     @OnOpen
     public void handleOpen(Session session) {
 	System.out.println("open, session: " + session);
+	session.setMaxIdleTimeout(-1);
     }
 
     /**
@@ -53,8 +76,9 @@ public class Hub {
      */
     @OnMessage
     public String handleMessage(String message, Session session) {
-    	System.out.println("message from client: " + message);
-    	String echoMsg = "Echo from the server : " + message; 
+    	//System.out.println("message from client: " + message);
+    	String echoMsg = requestHandler.handleRequest(this, session, message);
+    	//System.out.println("answer to client    : " + echoMsg);
     	return echoMsg;                       
     }
 
@@ -69,6 +93,25 @@ public class Hub {
 	System.out.println("error, session: " + session);
 	t.printStackTrace();
     }
+
+    
+    /**
+     * This method is provided for the two-session-login scheme.
+     * It takes a username and password to log into the database.
+     * If successful, register the IUserSession and return a token to identify
+     * it. Otherwise return an empty string.
+     * 
+     * @param session the login websocket session
+     * @param username the username to login with
+     * @param password the password to login with
+     * 
+     * @return a token to identify the IUserSession
+     */
+    String loginForToken(Session session, String username, String password) {
+    	IUserSession dbSession = null;
+    	String token = "";
+    	return token;
+    }
     
 	/**
 	 * Instantiate a new UserSession and log in into the database 
@@ -77,7 +120,7 @@ public class Hub {
 	 * @param udid - the user id to login with
 	 * @param password the password
 	 */
-	public void UserSession(int udid, String password) {}
+	public void createUserSession(int udid, String password) {}
 	
 	/**
 	 * Returns an array with the names of the collections available to the current user.
@@ -88,6 +131,54 @@ public class Hub {
 		return null;
 	}
 	
+	
+	/**
+	 * Returns an array containing all records of this collection in the order
+	 * they have in the collection.
+	 * 
+	 * @param coll the collection to query
+	 * @return an array of the records of the specified collection
+	 */
+	public String[] getCollection(Session session, String collection){
+		IUserSession userSession = sessions.get(session);
+		if (userSession == null) {
+			System.err.println("got reqeust for non-loggedin session" + session);
+			return null; // XXX return empty array?
+		}
+		return userSession.getCollection(collection);
+	}
+
+	/**
+	 * Returns a JSON string representation of the first record of the specified collection. 
+	 * 
+	 * @param coll the collection to query
+	 * @return the first record of the collection as a JSON string
+	 */
+	public String getStartRecord(Session session, String collection){
+		IUserSession userSession = sessions.get(session);
+		if (userSession == null) {
+			System.err.println("got reqeust for non-loggedin session" + session);
+			return ""; // XXX return null?
+		}
+		return userSession.getStartRecord(collection);
+	}
+
+	/**
+	 * Returns a JSON string representation of the first record of the specified collection. 
+	 * 
+	 * @param coll the collection to query
+	 * @return the last record of the collection as a JSON string
+	 */
+	public String getEndRecord(Session session, String collection){
+		IUserSession userSession = sessions.get(session);
+		if (userSession == null) {
+			System.err.println("got reqeust for non-loggedin session" + session);
+			return ""; // XXX return null?
+		}
+		return userSession.getEndRecord(collection);
+	}
+
+
 	/**
 	 * Returns the number of records in the specified collection.
 	 * 
@@ -95,8 +186,13 @@ public class Hub {
 	 * 
 	 * @return the number of records
 	 */
-	public long getCollectionSize(String collection) {
-		return 0;
+	public long getCollectionSize(Session session, String collection) {
+		IUserSession userSession = sessions.get(session);
+		if (userSession == null) {
+			System.err.println("got reqeust for non-loggedin session" + session);
+			return 0;
+		}
+		return userSession.getCollectionSize(collection);
 	}
 	
 	
@@ -107,21 +203,10 @@ public class Hub {
 	 * @param id identifier of the record to return 
 	 * @return the record with the specified identifier in this collection
 	 */
-	public String getEntryOf(String collection, String id) {
+	public String getEntryOf(Session session, String collection, String id) {
 		return null;
 	}
-	
-	/**
-	 * Returns an array containing all records of this collection in the order
-	 * they have in the collection.
-	 * 
-	 * @param coll the collection to query
-	 * @return an array of the records of the specified collection
-	 */
-	public String[] getCollection(String coll){
-		return null;
-	}
-	
+
 	/**
 	 * Returns an array containing all records of this collection for which the
 	 * value of the specified key is in the range [start, end). The records will
@@ -132,8 +217,13 @@ public class Hub {
 	 * @param end the exclusive end of the range of key values
 	 * @return an array of records matching the filter range
 	 */
-	public String[] getCollectionInRange(String key, String start,String end) {
-		return null;
+	public String[] getRecordsInRange(Session session, String key, String start,String end) {
+		IUserSession userSession = sessions.get(session);
+		if (userSession == null) {
+			System.err.println("got reqeust for non-loggedin session" + session);
+			return null; // XXX return empty array?
+		}
+		return userSession.getRecordsInRange(key, start, end);
 	}
 	
 	/**
@@ -145,8 +235,12 @@ public class Hub {
 	 * @param end the exclusive end of the range of key values
 	 * @return the number of records matching the filter range
 	 */
-	public long getCollectionInRangeSize(String key, String start, String end) {
-		return 0;
+	public long getRecordsnInRangeSize(Session session, String key, String start, String end) {
+		IUserSession userSession = sessions.get(session);
+		if (userSession == null) {
+			System.err.println("got reqeust for non-loggedin session" + session);
+			return 0; // XXX return empty array?
+		}
+		return userSession.getRecordsInRangeSize(key, start, end);
 	}
 }
-
