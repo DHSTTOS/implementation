@@ -235,7 +235,7 @@ public class Hub {
 	 * @param end the exclusive end of the range of key values
 	 * @return the number of records matching the filter range
 	 */
-	public long getRecordsnInRangeSize(Session session, String key, String start, String end) {
+	public long getRecordsInRangeSize(Session session, String key, String start, String end) {
 		IUserSession userSession = sessions.get(session);
 		if (userSession == null) {
 			System.err.println("got reqeust for non-loggedin session" + session);

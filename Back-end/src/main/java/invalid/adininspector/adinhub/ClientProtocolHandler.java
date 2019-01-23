@@ -72,10 +72,35 @@ public class ClientProtocolHandler {
 				m.put("par", size);
 				return m;
 			}
-		}
-		
+		},
 
-		;
+		GET_RECORDS_RANGE("GET_RECORDS_RANGE") {
+			public Map<String, Object> execute(Hub hub, Session session, Map<String,Object> msgParsed) {
+				String collectionName = (String)msgParsed.get("par");
+				String key = (String)msgParsed.get("key");
+				String start = (String)msgParsed.get("start");
+				String end = (String)msgParsed.get("end");
+				String[] data = hub.getRecordsInRange(session, key, start, end);
+				Map<String, Object> m = new HashMap<String, Object>();
+				m.put("cmd", "DATA");
+				m.put("par", data);
+				return m;
+			}
+		},
+
+		GET_RECORDS_RANGE_SIZE("GET_RECORDS_RANGE_SIZE") {
+			public Map<String, Object> execute(Hub hub, Session session, Map<String,Object> msgParsed) {
+				String collectionName = (String)msgParsed.get("par");
+				String key = (String)msgParsed.get("key");
+				String start = (String)msgParsed.get("start");
+				String end = (String)msgParsed.get("end");
+				long size = hub.getRecordsInRangeSize(session, key, start, end);
+				Map<String, Object> m = new HashMap<String, Object>();
+				m.put("cmd", "COLL_SIZE");
+				m.put("par", size);
+				return m;
+			}
+		};
 		
 		public final String command;
 		
