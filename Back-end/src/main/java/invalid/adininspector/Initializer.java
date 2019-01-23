@@ -1,4 +1,4 @@
-package invalid.adininspector.backend;
+package invalid.adininspector;
 
 import java.io.FileInputStream;
 import java.io.IOException;
