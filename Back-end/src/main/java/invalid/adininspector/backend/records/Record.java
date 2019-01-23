@@ -17,6 +17,9 @@ public abstract class Record {
     {
         Document doc = new Document();
 
+        //append the id first
+        doc.append("_id",_id);
+
         for (Field var:this.getClass().getDeclaredFields()) {
             try {
                 Method m = this.getClass().getDeclaredMethod("get"+var.getName());
@@ -33,7 +36,6 @@ public abstract class Record {
                 e.printStackTrace();
             }
         }
-
         return doc;
     }
 

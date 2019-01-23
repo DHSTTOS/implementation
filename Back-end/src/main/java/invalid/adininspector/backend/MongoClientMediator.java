@@ -1,7 +1,7 @@
 package invalid.adininspector.backend;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -10,12 +10,10 @@ import com.mongodb.MongoClient;
 import com.mongodb.MongoCredential;
 import com.mongodb.MongoWriteException;
 import com.mongodb.ServerAddress;
-import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.MongoIterable;
 
 import org.bson.Document;
-import org.w3c.dom.views.DocumentView;
 
 import invalid.adininspector.backend.records.Record;
 
@@ -25,19 +23,36 @@ public class MongoClientMediator {
     private MongoDatabase db;
 
     public MongoClientMediator(String udid, String password, String dbName) {
-        MongoCredential cred = MongoCredential.createCredential(udid, dbName, password.toCharArray());
-        client = new MongoClient(new ServerAddress("localhost"), Arrays.asList(cred));
+        
+        ServerAddress serverAddr = new ServerAddress("localhost");
+
+        p(udid+dbName+password);
+
+        //ScramSha1 is the default auth method from Mongo
+        MongoCredential cred = MongoCredential.createScramSha1Credential(udid,"admin", password.toCharArray());
+        
+    
+        client = new MongoClient(serverAddr, Collections.singletonList(cred));
+
         // get access to the database. I still don't know if doing it like this is
         // ideal.
         db = client.getDatabase(dbName);
+
+        //client.
+
     }
 
     public void addRecordToCollection(Record record, String collection) {
         try {
             db.getCollection(collection).insertOne(record.getAsDocument());
+            p("inserting to: "+ collection + " at offset: " +record.get_id());
         } catch (MongoWriteException ex) {
             // TODO: how to handle this, skip?, overwrite? or compare and decide which one to keep?
-            System.out.println("an entry with this offset already exists %n at offset: " + record.get_id());
+            System.out.println("an entry with this offset already exists at offset: " + record.get_id());
+        }
+        catch(Exception e)
+        {
+            p(e.getCause());
         }
     }
 
@@ -49,9 +64,9 @@ public class MongoClientMediator {
 
     public void ProcessCollection(String collection) {
         // DataProcessor
+      //  DataProcessor.processData(,this);
     }
 
-    // TODO: potentially we should convert this to String[] for the hub
     // do we need this ? potentially not
     private String[] getCollection(String collection) {
         return mongoIteratorToStringArray(db.getCollection(collection).find());
@@ -93,10 +108,15 @@ public class MongoClientMediator {
 
         db.listCollectionNames().forEach((Consumer<String>) colls::add);
 
+        for (int i = 0; i < colls.size(); i++) {
+            System.out.println(colls.get(i));
+        }
         // return colls.toArray(new String[colls.size()]);
         return mongoIteratorToStringArray(db.listCollectionNames());
     }
 
+
+    //HELPER FUNCTIONS
     private String[] mongoIteratorToStringArray(MongoIterable iterable) {
         List<String> colls = new ArrayList<>();
 
@@ -105,5 +125,14 @@ public class MongoClientMediator {
 
         return colls.toArray(new String[colls.size()]);
 
+    }
+
+    //TODO: implement me
+    private Record[] mongoIteratorToRecordArray(MongoIterable it)
+    {
+        return null;
+    }
+    void p(Object line) {
+        System.out.println(line);
     }
 }

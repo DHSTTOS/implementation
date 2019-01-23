@@ -37,6 +37,7 @@ public class MongoConsumer {
 
     public MongoConsumer(String udid, String pass, String dbName) {
 
+        //TODO: this should not stay like this in prod
         mongoMediator = new MongoClientMediator(udid, pass, dbName);
 
         Properties props = new Properties();
@@ -84,20 +85,21 @@ public class MongoConsumer {
 
                 //System.out.println(record.value());
 
-                Type type = new TypeToken<PacketRecord>() {
-                }.getType();
+                //TODO: fix this horrible hack
+                Type type = record.value().contains("Alarm") ? new TypeToken<AlarmRecord>(){}.getType() :new TypeToken<PacketRecord>() {}.getType();
 
                 // convert it into a java object
                 try {
-                    PacketRecord incomingRecord = gson.fromJson(record.value(), type);
+                    Record incomingRecord = gson.fromJson(record.value(), type);
                     // set the offset as ID in the DB
 
                     incomingRecord.set_id(Long.toString(record.offset()));
 
-                    // mongoMediator.addRecordToCollection(incomingRecord,record.topic());
+                    mongoMediator.addRecordToCollection(incomingRecord,record.topic());
 
                 } catch (Exception e) {
-                    System.out.println("Not impplemented type for record: " + record.value());
+                    System.out.println(e.getMessage());
+                    //System.out.println("Not impplemented type for record: " + record.value());
                 }
 
             }

@@ -4,19 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import invalid.adininspector.backend.MongoClientMediator;
+import invalid.adininspector.backend.records.Record;
 
 public class DataProcessor {
 
-    //should be paratremit
+    
     private static List<IAggregator> aggregators =  new ArrayList<IAggregator>();
     
-    public static void processData(String collection, MongoClientMediator clientMediator)
+    //TODO: compute and store the name of the aggregated collection
+    public static void processData(Record[] records, MongoClientMediator clientMediator)
     {
         for (IAggregator agg : aggregators) {
-            
+            clientMediator.addRecordsToCollection( agg.processData(records),"Name");
         }
-        //aggregators.forEach((Consumer<String>) );
     }
-
-
 }

@@ -2,19 +2,37 @@ package invalid.adininspector.backend.records;
 
 public class AlarmRecord extends Record{
 
-    private String AlarmId;
+    private String AlarmID;
     private String AlarmType;
-    private String AlarmOccurrenceTime;
+    private Timestamp AlarmOccurrenceTime;
     private String AlarmCategory;
     private String AlarmScore;
     private String AlarmDescription;
     private String PacketSummary;
 
+
+
+    //ankush's thing contains an object so this must also be a object
+    public class Timestamp {
+        //should be stored as UNIX timestamp? right??
+        public String $date;
+
+        public Timestamp(String $date) {
+            this.$date = $date;
+        }
+
+        @Override
+        public String toString() {
+            return $date;
+        }
+    }
+
+
     /**
      * @return the alarmId
      */
-    public String getAlarmId() {
-        return AlarmId;
+    public String getAlarmID() {
+        return AlarmID;
     }
 
     /**
@@ -77,13 +95,13 @@ public class AlarmRecord extends Record{
      * @return the alarmOccurrenceTime
      */
     public String getAlarmOccurrenceTime() {
-        return AlarmOccurrenceTime;
+        return AlarmOccurrenceTime.toString();
     }
 
     /**
      * @param alarmOccurrenceTime the alarmOccurrenceTime to set
      */
-    public void setAlarmOccurrenceTime(String alarmOccurrenceTime) {
+    public void setAlarmOccurrenceTime(Timestamp alarmOccurrenceTime) {
         this.AlarmOccurrenceTime = alarmOccurrenceTime;
     }
 
@@ -104,7 +122,7 @@ public class AlarmRecord extends Record{
     /**
      * @param alarmId the alarmId to set
      */
-    public void setAlarmId(String alarmId) {
-        this.AlarmId = alarmId;
+    public void setAlarmID(String alarmId) {
+        this.AlarmID = alarmId;
     }
 }

@@ -4,7 +4,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Properties;
-
+//TODO: we need to handle the service init properly 
+//TODO: wait for services to start and then start the consumer
 public class Initializer {
     // TODO: implement some argument parsing, probably here
     // diff between windows and linux is only the program that does execvp
@@ -46,13 +47,14 @@ public class Initializer {
 
         String[] cStopMongo = { "xterm", "-hold", "-e", "service mongod start" };
 
-        MongoConsumer m = new MongoConsumer(appProps.getProperty("mongo_admin_user"), "mongo_admin_pass",
-                "mongo_database_name");
-
-        if (true)
-            return;
-
+        System.out.println("Starting consumer");
+            MongoConsumer m = new MongoConsumer(appProps.getProperty("mongo_admin_user"),
+            appProps.getProperty("mongo_admin_pass"),
+            appProps.getProperty("mongo_database_name") );
+        
         try {
+             System.in.read();
+
             // TODO: route tcpdump for real-time
             // Process t = new ProcessBuilder("/bin/bash", "-c", "tcpdump").start();
 
@@ -63,8 +65,12 @@ public class Initializer {
             new ProcessBuilder(cStartMongo).start();
 
             // TODO: a proper way to close the application
-            System.in.read();
+            //System.in.read();
 
+
+            
+
+           
             // this does not run in the editor cause app it's a kill -9 which sucks major
             // ass
             Runtime.getRuntime().addShutdownHook(new Thread(() -> {
