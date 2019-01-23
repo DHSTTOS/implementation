@@ -1,17 +1,24 @@
-import appStore from "@stores/app";
-import dataStore from "@stores/data";
+import { appStore, dataStore } from "@stores";
 
 const socket = new WebSocket("wss://echo.websocket.org/");
+let msgIdCounter = 0;
 
 // as long as we keep these socket.something listener assignments within the same scope
 // as the socket construction, we won't miss the 'open' event etc.
-socket.onopen = _ => {
-  // authenticate again when opening socket
+
+const login_token = (name, token) => {
   const tokenMsg = {
-    username: appStore.username,
-    token: appStore.authToken,
+    cmd: "LOGIN_TOKEN",
+    user: name,
+    token: token,
+    id: msgIdCounter++,
   };
   socket.send(JSON.stringify(tokenMsg));
+};
+
+socket.onopen = _ => {
+  // authenticate again when opening socket
+  login_token(appStore.username, appStore.authToken);
 };
 
 socket.onerror = err => {
@@ -32,8 +39,118 @@ const handleData = data => {
   console.log(dataStore.data);
 };
 
-socket.onmessage = e => {
-  handleData(e.data);
+const handleSession = msg => {
+  if (appStore.wsLoggedIn) {
+    switch (msg.status) {
+      case "OK":
+        // can't really happen
+        console.log(
+          "websocket connection: got unexpected SESSION message: " +
+            msg.status +
+            ", " +
+            msg.par
+        );
+        break;
+      case "FAIL":
+        // user has logged out
+        appStore.wsLoggedIn = false;
+        // TODO close the connection
+        // TODO: present the login screen again
+        break;
+    }
+  } else {
+    //not logged in
+    switch (msg.status) {
+      case "OK":
+        // successful login to ws connection
+        appStore.wsLoggedIn = true;
+        break;
+      case "FAIL":
+        // login failed
+        console.log("login to websocket connection failed: " + msg.par);
+        // TODO: present the login screen again
+        break;
+    }
+  }
 };
 
-export default { socket };
+socket.onmessage = message => {
+  const msg = JSON.parse(message);
+  switch (msg.cmd) {
+    case "SESSION":
+      handleSession(msg);
+      break;
+    case "LIST_COL":
+      // msg.par will be array
+      dataStore.available_collections = msg.par;
+      break;
+    case "COLL_SIZE":
+      break;
+    case "DATA":
+      handleData(msg.par);
+      break;
+    default:
+      console.log("illegal message from server: " + msg.cmd);
+      break;
+  }
+};
+
+const getAvailableCollections = _ => {
+  const message = {
+    cmd: "GET_AV_COLL",
+    id: msgIdCounter++,
+  };
+  socket.send(JSON.stringify(message));
+};
+
+const getCollection = name => {
+  const message = {
+    cmd: "GET_COLL",
+    par: name,
+    id: msgIdCounter++,
+  };
+  socket.send(JSON.stringify(message));
+};
+
+const getCollectionSize = name => {
+  const message = {
+    cmd: "GET_COLL_SIZE",
+    par: name,
+    id: msgIdCounter++,
+  };
+  socket.send(JSON.stringify(message));
+};
+
+const getRecordsInRange = (name, key, startValue, endValue) => {
+  const message = {
+    cmd: "GET_RECORDS_RANGE",
+    par: name,
+    key: key,
+    start: startValue,
+    end: endValue,
+    id: msgIdCounter++,
+  };
+  socket.send(JSON.stringify(message));
+};
+
+const getRecordsInRangeSize = (name, key, startValue, endValue) => {
+  const message = {
+    cmd: "GET_RECORDS_RANGE_SIZE",
+    par: name,
+    key: key,
+    start: startValue,
+    end: endValue,
+    id: msgIdCounter++,
+  };
+  socket.send(JSON.stringify(message));
+};
+
+export default {
+  socket,
+  login_token,
+  getAvailableCollections,
+  getCollection,
+  getCollectionSize,
+  getRecordsInRange,
+  getRecordsInRangeSize,
+};
