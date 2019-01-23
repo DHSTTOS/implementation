@@ -127,7 +127,7 @@ public class Hub {
 	 * 
 	 * @return an array with collection names
 	 */
-	public String[] getAvailableCollections() {
+	public String[] getAvailableCollections(Session session) {
 		return null;
 	}
 	
