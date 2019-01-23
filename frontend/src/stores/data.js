@@ -3,7 +3,7 @@ import { DEFAULT_SOURCE_NAME } from "@libs";
 
 class DataStore {
   @observable
-  available_collections = [];
+  available_collections = []; //exampleCollection
 
   @observable
   data = [];
@@ -12,3 +12,9 @@ class DataStore {
 const dataStore = new DataStore();
 
 export default dataStore;
+
+export const exampleCollection = {
+  name: "1_RAW",
+  size: 1,
+  isRealTimeData: false,
+};

@@ -1,5 +1,4 @@
-import appStore from "@stores/app";
-import dataStore from "@stores/data";
+import { appStore, dataStore } from "@stores";
 
 const socket = new WebSocket("wss://echo.websocket.org/");
 let msgIdCounter = 0;
@@ -82,6 +81,7 @@ socket.onmessage = message => {
       handleSession(msg);
       break;
     case "LIST_COL":
+      // msg.par will be array
       dataStore.available_collections = msg.par;
       break;
     case "COLL_SIZE":
