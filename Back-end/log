@@ -1,0 +1,50 @@
+sudo: no tty present and no askpass program specified
+sudo: no tty present and no askpass program specified
+xterm: No absolute path found for shell: /opt/Kafka/kafka_2.12-2.1.0/bin/zookeeper-server-start.sh /opt/Kafka/kafka_2.12-2.1.0/config/zookeeper.properties
+xterm: bad command line option "-e /opt/Kafka/kafka_2.12-2.1.0/bin/zookeeper-server-start.sh /opt/Kafka/kafka_2.12-2.1.0/config/zookeeper.properties"
+
+usage:  xterm [-/+132] [-C] [-Sccn] [-T string] [-/+ah] [-/+ai] [-/+aw]
+    [-b number] [-baudrate rate] [-/+bc] [-bcf milliseconds]
+    [-bcn milliseconds] [-bd color] [-/+bdc] [-bg color] [-bw number] [-/+cb]
+    [-cc classrange] [-/+cjk_width] [-class string] [-/+cm] [-/+cn] [-cr color]
+    [-/+cu] [-/+dc] [-display displayname] [-e command args ...] [-fa pattern]
+    [-fb fontname] [-/+fbb] [-/+fbx] [-fd pattern] [-fg color] [-fi fontname]
+    [-fn fontname] [-fs size] [-/+fullscreen] [-fw fontname] [-fwb fontname]
+    [-fx fontname] [%geom] [#geom] [-geometry geom] [-help] [-/+hm] [-/+hold]
+    [-iconic] [-/+ie] [-/+im] [-into windowId] [-/+itc] [-/+j] [-/+k8]
+    [-kt keyboardtype] [-/+l] [-/+lc] [-lcc path] [-leftbar] [-lf filename]
+    [-/+ls] [-/+maximized] [-/+mb] [-mc milliseconds] [-/+mesg] [-/+mk_width]
+    [-ms color] [-n string] [-name string] [-nb number] [-/+nul] [-/+pc]
+    [-/+pob] [-report-charclass] [-report-colors] [-report-fonts] [-rightbar]
+    [-/+rv] [-/+rvc] [-/+rw] [-/+s] [-/+samename] [-/+sb] [-selbg color]
+    [-selfg color] [-/+sf] [-sh number] [-/+si] [-/+sk] [-sl number] [-/+sm]
+    [-/+sp] [-/+t] [-ti termid] [-title string] [-tm string] [-tn name] [-/+u8]
+    [-/+uc] [-/+ulc] [-/+ulit] [-/+ut] [-/+vb] [-version] [-/+wc] [-/+wf]
+    [-xrm resourcestring] [-ziconbeep percent]
+
+Type xterm -help for a full description.
+
+xterm: bad command line option "-e "
+
+usage:  xterm [-/+132] [-C] [-Sccn] [-T string] [-/+ah] [-/+ai] [-/+aw]
+    [-b number] [-baudrate rate] [-/+bc] [-bcf milliseconds]
+    [-bcn milliseconds] [-bd color] [-/+bdc] [-bg color] [-bw number] [-/+cb]
+    [-cc classrange] [-/+cjk_width] [-class string] [-/+cm] [-/+cn] [-cr color]
+    [-/+cu] [-/+dc] [-display displayname] [-e command args ...] [-fa pattern]
+    [-fb fontname] [-/+fbb] [-/+fbx] [-fd pattern] [-fg color] [-fi fontname]
+    [-fn fontname] [-fs size] [-/+fullscreen] [-fw fontname] [-fwb fontname]
+    [-fx fontname] [%geom] [#geom] [-geometry geom] [-help] [-/+hm] [-/+hold]
+    [-iconic] [-/+ie] [-/+im] [-into windowId] [-/+itc] [-/+j] [-/+k8]
+    [-kt keyboardtype] [-/+l] [-/+lc] [-lcc path] [-leftbar] [-lf filename]
+    [-/+ls] [-/+maximized] [-/+mb] [-mc milliseconds] [-/+mesg] [-/+mk_width]
+    [-ms color] [-n string] [-name string] [-nb number] [-/+nul] [-/+pc]
+    [-/+pob] [-report-charclass] [-report-colors] [-report-fonts] [-rightbar]
+    [-/+rv] [-/+rvc] [-/+rw] [-/+s] [-/+samename] [-/+sb] [-selbg color]
+    [-selfg color] [-/+sf] [-sh number] [-/+si] [-/+sk] [-sl number] [-/+sm]
+    [-/+sp] [-/+t] [-ti termid] [-title string] [-tm string] [-tn name] [-/+u8]
+    [-/+uc] [-/+ulc] [-/+ulit] [-/+ut] [-/+vb] [-version] [-/+wc] [-/+wf]
+    [-xrm resourcestring] [-ziconbeep percent]
+
+Type xterm -help for a full description.
+
+sudo: no tty present and no askpass program specified
