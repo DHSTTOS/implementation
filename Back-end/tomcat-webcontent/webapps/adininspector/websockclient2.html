@@ -73,9 +73,11 @@
 			webSocket.close();
 		}
 		function wsGetMessage(message) {
-			msg = JSON.parse(message);
-			echoText.value += "Message received from the server : "
-					+ msg.id + "\n";
+			echoText.value += "Message received from the server, raw : " + message + "\n";
+			echoText.value += "Message received from the server, data : " + message.data + "\n";
+			msg = JSON.parse(message.data);
+			echoText.value += "Message received from the server, parsed; id: "
+					+ msg.id + "\n\n";
 		}
 		function wsClose(message) {
 			echoText.value += "Disconnect: " + message;
