@@ -13,7 +13,7 @@ import javax.websocket.*;
  * This class implements the network handlers for the websocket connection
  * to the client and access methods for a database connection.
  */
-@ServerEndpoint("/adinhubsoc")
+@ServerEndpoint("/adinhubsoc2")
 public class Hub {
 	
 	
@@ -43,6 +43,7 @@ public class Hub {
 		requestHandler = new ClientProtocolHandler();
 		loginTokens = new HashMap<String, Session>();
 		sessions = new HashMap<Session, IUserSession>();
+		System.out.println("hub started");
 	}
 	
     /**
@@ -52,7 +53,7 @@ public class Hub {
      */
     @OnOpen
     public void handleOpen(Session session) {
-	System.out.println("open, session: " + session);
+	System.out.println("hub open, session: " + session);
 	session.setMaxIdleTimeout(-1);
     }
 
@@ -76,9 +77,9 @@ public class Hub {
      */
     @OnMessage
     public String handleMessage(String message, Session session) {
-    	//System.out.println("message from client: " + message);
+    	System.out.println("message from client1: " + message);
     	String echoMsg = requestHandler.handleRequest(this, session, message);
-    	//System.out.println("answer to client    : " + echoMsg);
+    	System.out.println("answer to client   1: " + echoMsg);
     	return echoMsg;                       
     }
 

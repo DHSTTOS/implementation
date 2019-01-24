@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-15">
+<title>adininspector-backend debugger</title>
+</head>
+<body>
+<H3>Debugger for adininspector-backend 3<H3>
+	<form>
+		msg: <input id="message" type="text">
+		url: <input id="wsurl" type="text">
+		<input onclick="wsSendMessage();" value="Echo" type="button">
+		<input onclick="wsOpenConnection();" value="Connect" type="button">
+		<input onclick="wsCloseConnection();" value="Disconnect" type="button">
+	</form>
+	<br>
+	<textarea id="echoText" rows="5" cols="30"></textarea>
+
+
+	<script src="wsutils.js"></script>
+
+	<script type="text/javascript">
+		// source:
+		// https://examples.javacodegeeks.com/enterprise-java/tomcat/apache-tomcat-websocket-tutorial/#toc630
+
+			// dataStore
+			//import {appStore} from "_stores";
+
+
+		var echoText = document.getElementById("echoText");
+		echoText.value = "";
+		var message = document.getElementById("message");
+		var wsurl = document.getElementById("wsurl");
+		wsurl.value = "ws://localhost:8080/adininspector/adinhubsoc2";
+
+		var webSocket = new WebSocket(
+			"ws://localhost:8080/adininspector/adinhubsoc2");
+			//"ws://localhost:8080/WebsocketServerExample/adinhubsoc");
+			//"ws://localhost:8080/adininspector-backend/adinhubsoc");
+//				"ws://localhost:8080/adininspector/adinhub/adinhubsoc2");
+
+		webSocket.onopen = function(message) {
+			wsOpen(message);
+		};
+		
+		
+		webSocket.onmessage = function(message) {
+			wsGetMessage(message);
+		};
+		
+		
+		webSocket.onclose = function(message) {
+			wsClose(message);
+		};
+		webSocket.onerror = function(message) {
+			wsError(message);
+		};
+		function wsOpen(message) {
+			echoText.value += "Connected: " + message + ", " + message.isTrusted + "\n";
+		}
+		function wsSendMessage() {
+			webSocket.send(message.value);
+			echoText.value += "Message sent to the server : " + message.value
+					+ "\n";
+			message.value = "";
+		}
+
+		function wsOpenConnection() {
+			webSocket = new WebSocket(wsurl.value);
+		}
+
+		function wsCloseConnection() {
+			webSocket.close();
+		}
+		function wsGetMessage(message) {
+			msg = JSON.parse(message);
+			echoText.value += "Message received from the server : "
+					+ msg.id + "\n";
+		}
+		function wsClose(message) {
+			echoText.value += "Disconnect: " + message;
+			echoText.value += ", " + message.code;
+			echoText.value += ", " + message.reason;
+			echoText.value += ", " + message.wasClean;
+			echoText.value += ", " + message.isTrusted;
+			echoText.value += "\n";
+		}
+
+		function wsError(message) {
+			echoText.value += "Error: " + message + "\n";
+		}
+	</script>
+
+</body>
+</html>
