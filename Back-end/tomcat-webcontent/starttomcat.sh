@@ -8,4 +8,10 @@ export CATALINA_BASE=$PWD
 
 export JAVA_HOME=/usr/local/openjdk8
 export PATH=$PATH:$CATALINA_HOME/bin
+
+# tomcat needs these directories; create them since git ignores empty dirs:
+mkdir logs
+mkdir temp
+mkdir work
+
 catalina.sh start
