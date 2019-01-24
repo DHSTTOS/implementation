@@ -35,20 +35,22 @@ public class MongoClientMediator {
 
         // ScramSha1 is the default auth method from Mongo
         // TODO this will try and log into the the admin database, this should change
-        MongoCredential cred = MongoCredential.createScramSha1Credential("", "admin", password.toCharArray());
+        MongoCredential cred = MongoCredential.createScramSha1Credential(udid, dbName, password.toCharArray());
 
+        try{
         client = new MongoClient(serverAddr, Collections.singletonList(cred));
 
         // get access to the database. I still don't know if doing it like this is
         // ideal.
         db = client.getDatabase(dbName);
 
-        try{
+        
         BasicDBObject ping = new BasicDBObject("ping", "1");
         db.runCommand(ping);
         }
         catch(MongoSecurityException e)
-        {
+        {            
+
             //force the caller to handle the exception
             throw new LoginFailureException(e.getMessage());
             //handle gracefully
@@ -56,7 +58,7 @@ public class MongoClientMediator {
     }
 
     public MongoClientMediator(String udid, String password)throws LoginFailureException {
-        this(udid, password, "");
+        this(udid, password, "test");
     }
 
     public void addRecordToCollection(Record record, String collection) {

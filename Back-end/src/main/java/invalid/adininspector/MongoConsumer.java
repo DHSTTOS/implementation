@@ -42,11 +42,12 @@ public class MongoConsumer {
         //TODO: this should not stay like this in prod
 
         try {
-            mongoMediator = new MongoClientMediator(udid, pass);
+            mongoMediator = new MongoClientMediator(udid, pass,dbName);
         } catch (LoginFailureException e) {
             //TODO: handle exception
             System.out.println("wait...what? ");
             e.printStackTrace();
+            return;
         }
 
         Properties props = new Properties();
@@ -87,9 +88,15 @@ public class MongoConsumer {
 
         while (true) {
 
+            Boolean hasNewRecords = false;
+
             ConsumerRecords<String, String> records = consumer.poll(pollingTimeOut);
 
             for (ConsumerRecord<String, String> record : records) {
+
+
+                hasNewRecords = !hasNewRecords;
+
                 //System.out.printf("offset = %d, key = %s, value = %s, partition = %d%n", record.offset(), record.key(),record.value(), record.partition());
 
                 //System.out.println(record.value());
@@ -105,8 +112,19 @@ public class MongoConsumer {
 
                     mongoMediator.addRecordToCollection(incomingRecord,record.topic());
 
-              
 
+            }
+            if(hasNewRecords)
+            {
+                 //TODO: notify the mediator that data needs to be processed
+                 System.out.println("New Records have been added, check if we need to preprocess something");
+                
+                for (ConsumerRecord<String, String> record : records) {
+                    //TODO: extract topics to update
+                }
+
+               
+                hasNewRecords = !hasNewRecords;
             }
         }
     }
