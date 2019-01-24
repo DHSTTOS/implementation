@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.stream.Collectors;
 
+import invalid.adininspector.exceptions.LoginFailureException;
 import invalid.adininspector.records.*;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -37,11 +38,16 @@ public class MongoConsumer {
 
     public MongoConsumer(String udid, String pass, String dbName) {
 
-        //default val;
-        dbName = "test";
-
+        
         //TODO: this should not stay like this in prod
-        mongoMediator = new MongoClientMediator(udid, pass, dbName);
+
+        try {
+            mongoMediator = new MongoClientMediator(udid, pass);
+        } catch (LoginFailureException e) {
+            //TODO: handle exception
+            System.out.println("wait...what? ");
+            e.printStackTrace();
+        }
 
         Properties props = new Properties();
         props.put("bootstrap.servers", "localhost:9092");
@@ -92,7 +98,6 @@ public class MongoConsumer {
                 Type type = record.value().contains("Alarm") ? new TypeToken<AlarmRecord>(){}.getType() :new TypeToken<PacketRecord>() {}.getType();
 
                 // convert it into a java object
-                try {
                     Record incomingRecord = gson.fromJson(record.value(), type);
                     // set the offset as ID in the DB
 
@@ -100,10 +105,7 @@ public class MongoConsumer {
 
                     mongoMediator.addRecordToCollection(incomingRecord,record.topic());
 
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
-                    //System.out.println("Not impplemented type for record: " + record.value());
-                }
+              
 
             }
         }
