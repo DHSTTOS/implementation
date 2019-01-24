@@ -100,7 +100,7 @@ class DiagramConfigModal extends Component {
                 Save
               </Button>
               <Button
-                onClick={this.handleOK}
+                onClick={this.handleCancel}
                 variant="contained"
                 color="secondary"
               >
