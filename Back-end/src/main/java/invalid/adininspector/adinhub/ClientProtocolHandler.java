@@ -17,7 +17,10 @@ public class ClientProtocolHandler {
 	public enum Command {
 		LOGIN_TOKEN("LOGIN_TOKEN") {
 			public Map<String, Object> execute(Hub hub, Session session, Map<String,Object> msgParsed) {
-				return null;
+				Map<String, Object> m = new HashMap<String, Object>();
+				m.put("cmd", "SESSION");
+				m.put("status", "OK");
+				return m;
 			}
 		},
 		GET_AV_COLL("GET_AV_COLL") {
@@ -131,7 +134,8 @@ public class ClientProtocolHandler {
 			for (Command c : Command.values()) {
 				if (c.command.equals(msgCommand)) {
 					Map <String, Object> m = c.execute(hub, session, msgParsed);
-					String id = (String)msgParsed.get("id");
+					Object id = msgParsed.get("id"); // id could be string or long
+					System.out.println("hR: id: " + id + " " + id.getClass().toString());
 					m.put("id", id);
 					return new Gson().toJson(m);
 				}
