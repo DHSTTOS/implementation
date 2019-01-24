@@ -7,10 +7,10 @@
 
 
 ## Example session
-open the url
+1) open the url
 http://localhost:8080/adininspector/websockclient2.html
 
-In the "msg" text field enter a client request, e.g.:
+2) In the "msg" text field enter a client request, e.g.:
 {"cmd": "LOGIN_TOKEN", "id": 12}
 
-click the "Echo" button
+3) click the "Echo" button
