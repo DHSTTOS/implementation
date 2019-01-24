@@ -11,11 +11,29 @@ import { appStore } from "@stores";
 
 const Container = styled(Paper)`
   position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   top: 50%;
   left: 50%;
   width: 45rem;
   height: 35rem;
   transform: translate(-50%, -50%);
+`;
+
+const ButtonsContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 10rem;
+  margin: 2rem;
+  /* background-color: red; */
+`;
+
+const Center = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 `;
 
 @observer
@@ -69,12 +87,27 @@ class DiagramConfigModal extends Component {
         onClose={this.handleCancel}
       >
         <Container>
-          <Typography variant="h6">
-            Configuring Diagram ID #{appStore.diagramConfigModal.diagramID}
+          <Typography variant="h6" align={"center"}>
+            Configure Diagram ID #{appStore.diagramConfigModal.diagramID}
           </Typography>
-          <Button onClick={this.handleOK} variant="contained" color="primary">
-            Save
-          </Button>
+          <Center>
+            <ButtonsContainer>
+              <Button
+                onClick={this.handleOK}
+                variant="contained"
+                color="primary"
+              >
+                Save
+              </Button>
+              <Button
+                onClick={this.handleOK}
+                variant="contained"
+                color="secondary"
+              >
+                Cancel
+              </Button>
+            </ButtonsContainer>
+          </Center>
         </Container>
       </Modal>
     );
