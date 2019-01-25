@@ -16,9 +16,17 @@ const StyledFormControl = styled(FormControl)`
   margin: 1rem;
 `;
 
-export default class SourceSelector extends Component {
+/**
+ * @typedef {object} Props
+ * @prop {string} name
+ * @prop {string[]} options
+ * @prop {Function} onChange
+ *
+ * @extends {Component<Props>}
+ */
+export default class Selector extends Component {
   state = {
-    source: "",
+    selection: "",
     labelWidth: 0,
   };
 
@@ -45,21 +53,21 @@ export default class SourceSelector extends Component {
               Source
             </InputLabel>
             <Select
-              value={this.state.source}
+              value={this.state.selection}
               onChange={this.handleChange}
               input={
                 <OutlinedInput
                   labelWidth={this.state.labelWidth}
-                  name="source"
+                  name={this.props.name}
                 />
               }
             >
               <MenuItem value="">
                 <em>None</em>
               </MenuItem>
-              <MenuItem value="source_1">Source 1</MenuItem>
-              <MenuItem value="source_2">Source 2</MenuItem>
-              <MenuItem value="source_3">Source 3</MenuItem>
+              {this.props.options.map(x => (
+                <MenuItem value={this.props.name + x}>{x}</MenuItem>
+              ))}
             </Select>
           </StyledFormControl>
         </form>

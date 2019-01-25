@@ -8,6 +8,7 @@ import Modal from "@material-ui/core/Modal";
 import Button from "@material-ui/core/Button";
 
 import { appStore } from "@stores";
+import Selector from "./Selector";
 
 const Container = styled(Paper)`
   position: absolute;
@@ -26,14 +27,19 @@ const ButtonsContainer = styled.div`
   flex-direction: row;
   justify-content: space-between;
   width: 10rem;
-  margin: 2rem;
-  /* background-color: red; */
+  margin: 1rem;
 `;
 
 const Center = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
+`;
+
+const Content = styled.div`
+  flex: 1;
+  margin: 1rem;
+  background-color: pink;
 `;
 
 @observer
@@ -90,6 +96,9 @@ class DiagramConfigModal extends Component {
           <Typography variant="h6" align={"center"}>
             Configure Diagram ID #{appStore.diagramConfigModal.diagramID}
           </Typography>
+          <Content>
+            <Selector />
+          </Content>
           <Center>
             <ButtonsContainer>
               <Button
