@@ -14,6 +14,14 @@ class AppStore {
     diagramID: -1,
   };
 
+  @action
+  openConfigModal = diagramID => {
+    this.diagramConfigModal = {
+      isOpen: true,
+      diagramID: diagramID,
+    };
+  };
+
   @observable
   username = "";
   @observable

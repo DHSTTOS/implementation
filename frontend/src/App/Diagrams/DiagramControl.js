@@ -26,7 +26,7 @@ const ControlWrapper = styled.div`
  */
 export default class DiagramControl extends Component {
   handleSettings = () => {
-    //TODO: open corresponding configs-modal
+    appStore.openConfigModal(this.props.diagramId);
   };
   handleFullscreen = () => {
     //TODO: opens another modal for fullscreen? (non-trivial)
