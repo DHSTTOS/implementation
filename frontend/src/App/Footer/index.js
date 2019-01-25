@@ -21,10 +21,7 @@ const StyledAddBoxIcon = styled(AddBoxIcon)`
 @observer
 class Footer extends Component {
   handleAddDiagram = () => {
-    appStore.diagramConfigModal = {
-      isOpen: true,
-      diagramID: appStore.diagramConfigs.length,
-    };
+    appStore.openConfigModal(appStore.diagramConfigs.length);
   };
 
   render() {

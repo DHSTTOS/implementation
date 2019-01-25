@@ -25,6 +25,26 @@ class AppStore {
   diagramConfigs = []; // format TBD
 
   @action
+  addNewDiagram = diagramConfig => {
+    this.diagramConfigs.push({
+      diagramID: this.diagramConfigModal.diagramID,
+      ...diagramConfig,
+    });
+  };
+
+  @action
+  updateDiagram = diagramID => diagramConfig => {
+    this.diagramConfigs = this.diagramConfigs.map(config =>
+      config.diagramID === diagramID
+        ? {
+            diagramID: diagramID,
+            ...diagramConfig,
+          }
+        : config
+    );
+  };
+
+  @action
   closeDiagram = diagramID => {
     this.diagramConfigs = this.diagramConfigs.filter(
       config => config.diagramID !== diagramID
@@ -42,6 +62,14 @@ class AppStore {
     this.diagramConfigModal = {
       isOpen: true,
       diagramID: diagramID,
+    };
+  };
+
+  @action
+  closeConfigModal = () => {
+    this.diagramConfigModal = {
+      isOpen: false,
+      diagramID: -1,
     };
   };
 
@@ -84,6 +112,7 @@ class AppStore {
   @action
   resetDiagramConfigs = () => {
     this.diagramConfigs = [];
+    this.updateDiagramDimension();
   };
 
   @action
