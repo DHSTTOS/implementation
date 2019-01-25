@@ -96,6 +96,7 @@ class AppStore {
     this.diagramConfigs = this.diagramConfigs.filter(
       config => config.diagramID !== diagramID
     );
+    console.log("Diagram ID #" + diagramID + " is removed.");
   };
 
   /**
@@ -118,6 +119,9 @@ class AppStore {
         isOpen: true,
         diagramConfig: existingCurrentConfig,
       };
+      console.log(
+        "Diagram ID #" + existingCurrentConfig.diagramID + " is updated."
+      );
     } else {
       // init default values for config modal if the diagramID passed in doesn't exist
       this.configModal = {
@@ -134,6 +138,7 @@ class AppStore {
           specConfig: null,
         },
       };
+      console.log("Diagram ID #" + diagramID + " is created.");
     }
   };
 
