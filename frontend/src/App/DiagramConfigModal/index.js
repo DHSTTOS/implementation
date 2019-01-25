@@ -62,7 +62,7 @@ class DiagramConfigModal extends Component {
 
   @action
   handleOK = () => {
-    const currentDiagramID = appStore.diagramConfigModal.diagramID;
+    const currentDiagramID = appStore.configModal.diagramID;
 
     if (currentDiagramID >= appStore.diagramConfigs.length) {
       appStore.addNewDiagram(this.currentConfig);
@@ -81,13 +81,13 @@ class DiagramConfigModal extends Component {
   render() {
     return (
       <Modal
-        open={appStore.diagramConfigModal.isOpen}
+        open={appStore.configModal.isOpen}
         onClose={this.handleCancel}
       >
         <Container>
           <ModalHeader>
             <Typography variant="h6" align={"center"}>
-              Configure Diagram ID #{appStore.diagramConfigModal.diagramID}
+              Configure Diagram ID #{appStore.configModal.diagramID}
             </Typography>
           </ModalHeader>
           <Content>

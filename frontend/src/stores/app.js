@@ -31,7 +31,7 @@ class AppStore {
   @action
   addNewDiagram = diagramConfig => {
     this.diagramConfigs.push({
-      diagramID: this.diagramConfigModal.diagramID,
+      diagramID: this.configModal.diagramID,
       ...diagramConfig,
     });
   };
@@ -55,15 +55,18 @@ class AppStore {
     );
   };
 
+  /**
+   * Modal UI state
+   */
   @observable
-  diagramConfigModal = {
+  configModal = {
     isOpen: false,
     diagramID: -1,
   };
 
   @action
   openConfigModal = diagramID => {
-    this.diagramConfigModal = {
+    this.configModal = {
       isOpen: true,
       diagramID: diagramID,
     };
@@ -71,7 +74,7 @@ class AppStore {
 
   @action
   closeConfigModal = () => {
-    this.diagramConfigModal = {
+    this.configModal = {
       isOpen: false,
       diagramID: -1,
     };
