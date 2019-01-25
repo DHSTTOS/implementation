@@ -1,0 +1,83 @@
+To import the mongo db use the mongorestore command from the folder where you have the dump/ folder
+
+Name of database: AdinInspector, admin
+                  DATA           UAC
+Names of users: Analyst, Operator, admin
+password:       123     123       admin
+
+User within Mongo:
+{
+        "_id" : "admin.Analyst",
+        "user" : "Analyst",
+        "db" : "admin",
+        "roles" : [
+                {
+                        "role" : "Analyst",
+                        "db" : "admin"
+                }
+        ],
+        "mechanisms" : [
+                "SCRAM-SHA-1",
+                "SCRAM-SHA-256"
+        ]
+}
+{
+        "_id" : "admin.Operator",
+        "user" : "Operator",
+        "db" : "admin",
+        "roles" : [
+                {
+                        "role" : "Operator",
+                        "db" : "admin"
+                }
+        ],
+        "mechanisms" : [
+                "SCRAM-SHA-1",
+                "SCRAM-SHA-256"
+        ]
+}
+{
+        "_id" : "admin.admin",
+        "user" : "admin",
+        "db" : "admin",
+        "roles" : [
+                {
+                        "role" : "userAdminAnyDatabase",
+                        "db" : "admin"
+                },
+                {
+                        "role" : "readWriteAnyDatabase",
+                        "db" : "admin"
+                }
+        ],
+        "mechanisms" : [
+                "SCRAM-SHA-1",
+                "SCRAM-SHA-256"
+        ]
+}
+
+
+
+roles within mongo: 
+
+{
+        "role" : "Operator",
+        "privileges" : [ ],
+        "roles" : [
+                {
+                        "role" : "read",
+                        "db" : "AdinInspector"
+                }
+        ]
+}
+db.createRole(
+{
+        "role" : "Analyst",
+        "privileges" : [ ],
+        "roles" : [
+                {
+                        "role" : "read",
+                        "db" : "AdinInspector"
+                }
+        ]
+})
