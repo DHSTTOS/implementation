@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { observer } from "mobx-react";
-import { observable, action } from "mobx";
+import { action } from "mobx";
 import styled from "@emotion/styled";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
@@ -57,37 +57,34 @@ const ModalHeader = styled.div`
 class DiagramConfigModal extends Component {
   @action
   handleCancel = () => {
+    console.log(
+      "Config modal #" +
+        appStore.configModal.diagramConfig.diagramID +
+        " is canceled."
+    );
     appStore.closeConfigModal();
   };
 
   @action
   handleOK = () => {
-    const currentDiagramID = appStore.configModal.diagramID;
-
-    if (currentDiagramID >= appStore.diagramConfigs.length) {
-      appStore.addNewDiagram(this.currentConfig);
-      console.log(`Diagram #${currentDiagramID} is saved.`);
-    } else {
-      appStore.updateDiagram(currentDiagramID)(this.currentConfig);
-    }
+    appStore.updateDiagram();
     appStore.closeConfigModal();
   };
 
-  @observable
-  currentConfig = {
-    isAwesome: true,
-  };
-
   render() {
+    appStore.configModal.isOpen &&
+      console.log(
+        "Diagram ID #" +
+          appStore.configModal.diagramConfig.diagramID +
+          " is being configured."
+      );
+
     return (
-      <Modal
-        open={appStore.configModal.isOpen}
-        onClose={this.handleCancel}
-      >
+      <Modal open={appStore.configModal.isOpen} onClose={this.handleCancel}>
         <Container>
           <ModalHeader>
             <Typography variant="h6" align={"center"}>
-              Configure Diagram ID #{appStore.configModal.diagramID}
+              Configure Diagram
             </Typography>
           </ModalHeader>
           <Content>
