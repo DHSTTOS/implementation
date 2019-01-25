@@ -3,6 +3,7 @@ import Icon from "@material-ui/core/Icon";
 import IconButton from "@material-ui/core/IconButton";
 
 import styled from "@emotion/styled";
+import { appStore } from "@stores";
 
 const Container = styled.div`
   display: flex;
@@ -31,7 +32,9 @@ export default class DiagramControl extends Component {
     //TODO: opens another modal for fullscreen? (non-trivial)
   };
   handleClose = () => {
-    //TODO: removes current diagram from configs list
+    appStore.diagramConfigs = appStore.diagramConfigs.filter(
+      config => config.diagramID !== this.props.diagramId
+    );
   };
 
   render() {
