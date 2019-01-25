@@ -23,9 +23,8 @@ public class MockMongoDBUserSession implements IUserSession {
 	 * Creates a new MongoDB session.
 	 */
 	public MockMongoDBUserSession() {
-		URL is = ClassLoader.getSystemResource("jsonstreams.txt");
-		System.out.println("is: " + is);
-		try (BufferedReader br = new BufferedReader(new FileReader(new File(is.getPath())))) {
+		InputStream is = this.getClass().getResourceAsStream("/jsonstreams.txt");
+		try (BufferedReader br = new BufferedReader(new InputStreamReader(is)) ) {
 			int counter = 0;
 			for(String line = br.readLine(); line != null; line = br.readLine()) {
 				//System.out.println("line" + counter + " " + line);
