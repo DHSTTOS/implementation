@@ -8,8 +8,10 @@ import Modal from "@material-ui/core/Modal";
 import Button from "@material-ui/core/Button";
 
 import { appStore } from "@stores";
-import Selector from "./Selector";
+
 import PlotTypeBar from "./PlotTypeBar";
+import DiagramSpecBlock from "./DiagramSpecBlock";
+import DiagramFiltersBlock from "./DiagramFiltersBlock";
 
 const Container = styled(Paper)`
   position: absolute;
@@ -19,7 +21,7 @@ const Container = styled(Paper)`
   top: 50%;
   left: 50%;
   width: 45rem;
-  height: 35rem;
+  height: 40rem;
   transform: translate(-50%, -50%);
 `;
 
@@ -39,8 +41,16 @@ const Center = styled.div`
 
 const Content = styled.div`
   flex: 1;
-  margin: 1rem;
+  display: flex;
+  flex-direction: column;
+  margin: 0.5rem;
+  align-items: center;
   /* background-color: pink; */
+`;
+
+const ModalHeader = styled.div`
+  margin: 0.5rem;
+  /* background-color: red; */
 `;
 
 @observer
@@ -94,11 +104,15 @@ class DiagramConfigModal extends Component {
         onClose={this.handleCancel}
       >
         <Container>
-          <Typography variant="h6" align={"center"}>
-            Configure Diagram ID #{appStore.diagramConfigModal.diagramID}
-          </Typography>
+          <ModalHeader>
+            <Typography variant="h6" align={"center"}>
+              Configure Diagram ID #{appStore.diagramConfigModal.diagramID}
+            </Typography>
+          </ModalHeader>
           <Content>
             <PlotTypeBar />
+            <DiagramSpecBlock />
+            <DiagramFiltersBlock />
           </Content>
           <Center>
             <ButtonsContainer>
