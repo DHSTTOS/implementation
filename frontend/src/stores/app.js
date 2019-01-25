@@ -1,8 +1,7 @@
 import { observable, action } from "mobx";
-import { DEFAULT_SOURCE_NAME } from "@libs";
+import { DEFAULT_SOURCE_NAME, DEFAULT_GLOBAL_FILTERS } from "@libs";
 
 // JS Doc type defs
-
 /**
  * @typedef DiagramConfig
  * @type {Object}
@@ -68,6 +67,8 @@ class AppStore {
 
   /**
    * This is the list containing the configs for each individual diagrams
+   *
+   * @type {DiagramConfig[]}
    */
   diagramConfigs = []; // format TBD
 
@@ -147,22 +148,7 @@ class AppStore {
   ];
 
   @observable
-  globalFilters = {
-    layers: {
-      layer1: false,
-      layer2: false,
-      layer3: false,
-      layer4: false,
-      layer5: false,
-      layer6: false,
-      layer7: false,
-    },
-    protocols: {
-      tcp: false,
-      udp: false,
-      // more protocols
-    },
-  };
+  globalFilters = DEFAULT_GLOBAL_FILTERS;
 
   @action
   resetDiagramConfigs = () => {
@@ -171,22 +157,7 @@ class AppStore {
   };
 
   @action
-  resetGlobalFilters = () => ({
-    layers: {
-      layer1: false,
-      layer2: false,
-      layer3: false,
-      layer4: false,
-      layer5: false,
-      layer6: false,
-      layer7: false,
-    },
-    protocols: {
-      tcp: false,
-      udp: false,
-      // more protocols
-    },
-  });
+  resetGlobalFilters = () => (this.globalFilters = DEFAULT_GLOBAL_FILTERS);
 
   @action
   updateGlobalFilters = (category, name) => value => {

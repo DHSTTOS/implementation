@@ -1,4 +1,4 @@
-import { DEFAULT_SOURCE_NAME } from "./consts";
+import { DEFAULT_SOURCE_NAME, DEFAULT_GLOBAL_FILTERS } from "./consts";
 
 import {
   socket,
@@ -39,6 +39,7 @@ const formatData = ({ groupName, x, y, rawData = [] }) => {
 
 export {
   DEFAULT_SOURCE_NAME,
+  DEFAULT_GLOBAL_FILTERS,
   socket,
   login_token,
   getAvailableCollections,
