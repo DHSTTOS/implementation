@@ -33,7 +33,7 @@ export default class Selector extends Component {
   inputLabelRef = React.createRef();
 
   handleChange = event => {
-    this.setState({ [event.target.name]: event.target.value }, () =>
+    this.setState({ selection: event.target.value }, () =>
       this.props.onSelect(event.target.value)
     );
   };
@@ -63,9 +63,12 @@ export default class Selector extends Component {
               <MenuItem value="">
                 <em>None</em>
               </MenuItem>
-              {this.props.options.map(x => (
-                <MenuItem value={this.props.name + x}>{x}</MenuItem>
-              ))}
+              {this.props.options &&
+                this.props.options.map(x => (
+                  <MenuItem value={x} key={this.props.name + x}>
+                    {x}
+                  </MenuItem>
+                ))}
             </Select>
           </StyledFormControl>
         </form>

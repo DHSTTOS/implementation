@@ -86,6 +86,8 @@ class DiagramConfigModal extends Component {
     isAwesome: true,
   };
 
+  sourceOptions = ["Option 1", "Option 2", "Option 3"];
+
   render() {
     return (
       <Modal
@@ -97,7 +99,11 @@ class DiagramConfigModal extends Component {
             Configure Diagram ID #{appStore.diagramConfigModal.diagramID}
           </Typography>
           <Content>
-            <Selector />
+            <Selector
+              name="Source"
+              options={this.sourceOptions}
+              onSelect={console.log}
+            />
           </Content>
           <Center>
             <ButtonsContainer>
