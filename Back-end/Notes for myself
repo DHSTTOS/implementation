@@ -67,7 +67,7 @@ roles within mongo:
                 }
         ]
 }
-db.createRole(
+
 {
         "role" : "Analyst",
         "privileges" : [ ],
@@ -77,7 +77,7 @@ db.createRole(
                         "db" : "AdinInspector"
                 }
         ]
-})
+}
 
 //Useful Kafka commands
 1. start zookeper
@@ -86,7 +86,7 @@ bin/zookeeper-server-start.sh config/zookeeper.properties
 bin/kafka-server-start.sh config/server.properties
 3.List topics
 bin/kafka-topics.sh --list --zookeeper localhost:2181
-4.delte topics
+4.delete topics
 
 
 
