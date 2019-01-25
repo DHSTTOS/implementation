@@ -12,11 +12,23 @@ import DiagramControl from "./DiagramControl";
 
 const Container = styled.div`
   display: flex;
+  flex: 1;
+  flex-direction: column;
+`;
+
+const Content = styled.div`
+  display: flex;
   flex-wrap: wrap;
   flex: 1;
   align-self: stretch;
   margin: 0.5rem;
-  height: 20rem;
+  /* height: 20rem; */
+`;
+
+const BottomPad = styled.div`
+  height: 3rem;
+  width: 100%;
+  /* background-color: red; */
 `;
 
 const StyledPaper = styled(Paper)`
@@ -54,20 +66,23 @@ class DiagramsContainer extends Component {
   render() {
     return (
       <Container>
-        {appStore.diagramConfigs.length === 0 ? (
-          <StyledPaper elevation={1}>
-            <CenteredTypography variant="subtitle1" color="textSecondary">
-              Please add a diagram
-            </CenteredTypography>
-          </StyledPaper>
-        ) : (
-          appStore.diagramConfigs.map(config => (
-            <StyledPaper elevation={1} key={config.diagramID}>
-              <DiagramControl diagramId={config.diagramID} />
-              <Diagram config={config} />
+        <Content>
+          {appStore.diagramConfigs.length === 0 ? (
+            <StyledPaper elevation={1}>
+              <CenteredTypography variant="subtitle1" color="textSecondary">
+                Please add a diagram
+              </CenteredTypography>
             </StyledPaper>
-          ))
-        )}
+          ) : (
+            appStore.diagramConfigs.map(config => (
+              <StyledPaper elevation={1} key={config.diagramID}>
+                <DiagramControl diagramId={config.diagramID} />
+                <Diagram config={config} />
+              </StyledPaper>
+            ))
+          )}
+        </Content>
+        <BottomPad />
       </Container>
     );
   }

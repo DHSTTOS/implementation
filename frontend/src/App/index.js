@@ -7,7 +7,7 @@ import Footer from "./Footer";
 import DiagramConfigModal from "./DiagramConfigModal";
 
 const Column = styled.div`
-  height: 97vh;
+  min-height: 97vh;
   display: flex;
   flex-direction: column;
   justify-content: space-between;

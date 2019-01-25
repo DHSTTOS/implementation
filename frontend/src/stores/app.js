@@ -4,8 +4,8 @@ import { DEFAULT_SOURCE_NAME } from "@libs";
 class AppStore {
   @observable
   diagramDimension = {
-    width: window.innerWidth * 0.9,
-    height: window.innerHeight * 0.68,
+    width: window.innerWidth * 0.85,
+    height: window.innerHeight * 0.6,
   };
 
   @action
