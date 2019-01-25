@@ -6,6 +6,8 @@ import java.util.Map;
 import javax.websocket.Session;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonSyntaxException;
 
 /**
  * This class handles client requests by parsing them, executing
@@ -124,9 +126,22 @@ public class ClientProtocolHandler {
 	 */
 	String handleRequest(Hub hub, Session session, String message) {
 		Gson gson = new Gson();
-		//gson.fromJson(message, Integer.class);
 		Map<String,Object> msgParsed = new Gson().fromJson(message, Map.class);
-		if (!msgParsed.containsKey("cmd")) {
+		try {
+			msgParsed = new Gson().fromJson(message, Map.class);
+			
+		} catch (JsonSyntaxException e) {
+			System.err.println("handleRequest() got non-JSON message: " + message.substring(0, 100));
+			return "";
+		} catch (JsonParseException e) {
+			System.err.println("handleRequest() got non-Map message: " + message.substring(0, 100));
+			return "";
+		}
+
+		if (msgParsed == null) {
+			return "";
+		} else if (!msgParsed.containsKey("cmd")) {
+			System.err.println("handleRequest() got not conforming message: " + message.substring(0, 100));
 			return "";
 		} else {
 			String msgCommand = (String)msgParsed.get("cmd");
