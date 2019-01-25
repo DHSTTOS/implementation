@@ -1,6 +1,50 @@
 import { observable, action } from "mobx";
 import { DEFAULT_SOURCE_NAME } from "@libs";
 
+// JS Doc type defs
+
+/**
+ * @typedef DiagramConfig
+ * @type {Object}
+ * @property {number} id
+ * @property {string} plotType
+ * @property {string} groupName
+ * @property {string} x
+ * @property {string} y
+ * @property {boolean} useColor
+ * @property {boolean} enableLegends
+ * @property {boolean} enableTooltip
+ * @property {(LinePlotConfig | ScatterPlotConfig | NetworkPlotConfig)} specConfig
+ */
+
+/**
+ * @typedef LinePlotConfig
+ * @type {Object}
+ * @property {number} lineWidth
+ * @property {number} lineOpacity
+ * @property {number} pointSize
+ * @property {number} pointOpacity
+ * @property {boolean} enableArea
+ * @property {number} areaOpacity
+ */
+
+/**
+ * @typedef ScatterPlotConfig
+ * @type {Object}
+ * @property {number} pointSize
+ * @property {number} pointOpacity
+ */
+
+/**
+ * @typedef NetworkPlotConfig
+ * @type {Object}
+ * @property {number} lineWidth
+ * @property {number} lineOpacity
+ * @property {number} pointSize
+ * @property {number} pointOpacity
+ */
+
+@observable
 class AppStore {
   /**
    * This is supposed to be used for sizing the diagrams, because "responsive"
@@ -25,7 +69,6 @@ class AppStore {
   /**
    * This is the list containing the configs for each individual diagrams
    */
-  @observable
   diagramConfigs = []; // format TBD
 
   @action
@@ -90,9 +133,11 @@ class AppStore {
     wsLoggedIn: false,
   };
 
+  /**
+   * Data source
+   */
   @observable
   sourceSelected = DEFAULT_SOURCE_NAME;
-
   @observable
   sourcesAvailable = [
     {
