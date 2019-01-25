@@ -121,7 +121,13 @@ public class Hub {
 	 * @param udid - the user id to login with
 	 * @param password the password
 	 */
-	public void createUserSession(int udid, String password) {}
+	public String createUserSession(Session session, String username, String password) {
+		IUserSession dbUserSession = database.createUserSession(username, password);
+		if (dbUserSession == null)
+			return "";
+		sessions.put(session, dbUserSession);
+		return "DIGNUS.EST.INTRARE";
+	}
 	
 	/**
 	 * Returns an array with the names of the collections available to the current user.
@@ -129,7 +135,12 @@ public class Hub {
 	 * @return an array with collection names
 	 */
 	public String[] getAvailableCollections(Session session) {
-		return null;
+		IUserSession userSession = sessions.get(session);
+		if (userSession == null) {
+			System.err.println("got reqeust for non-loggedin session" + session);
+			return null; // XXX return empty array?
+		}
+		return userSession.getAvailableCollections();
 	}
 	
 	

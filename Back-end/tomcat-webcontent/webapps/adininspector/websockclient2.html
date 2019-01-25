@@ -7,8 +7,15 @@
 <body>
 <H3>Debugger for adininspector-backend 3<H3>
 	<form>
-		msg: <input id="message" type="text">
-		url: <input id="wsurl" type="text">
+		url: <input id="wsurl" type="text" size="60"><p>
+
+		<input onclick="fillTextLogin();" value="LOGIN" type="button">
+		<input onclick="fillTextAvCol();" value="AV_COLL" type="button">
+		<input onclick="fillTextGetStart();" value="GET_START" type="button">
+		<input onclick="fillTextGetRange();" value="GET_RANGE" type="button">
+		<p>
+
+		msg: <input id="message" type="text" size="60" autofocus><p>
 		<input onclick="wsSendMessage();" value="Echo" type="button">
 		<input onclick="wsOpenConnection();" value="Connect" type="button">
 		<input onclick="wsCloseConnection();" value="Disconnect" type="button">
@@ -17,15 +24,10 @@
 	<textarea id="echoText" rows="5" cols="30"></textarea>
 
 
-	<script src="wsutils.js"></script>
 
 	<script type="text/javascript">
 		// source:
 		// https://examples.javacodegeeks.com/enterprise-java/tomcat/apache-tomcat-websocket-tutorial/#toc630
-
-			// dataStore
-			//import {appStore} from "_stores";
-
 
 		var echoText = document.getElementById("echoText");
 		echoText.value = "";
@@ -35,9 +37,6 @@
 
 		var webSocket = new WebSocket(
 			"ws://localhost:8080/adininspector/adinhubsoc2");
-			//"ws://localhost:8080/WebsocketServerExample/adinhubsoc");
-			//"ws://localhost:8080/adininspector-backend/adinhubsoc");
-//				"ws://localhost:8080/adininspector/adinhub/adinhubsoc2");
 
 		webSocket.onopen = function(message) {
 			wsOpen(message);
@@ -62,7 +61,7 @@
 			webSocket.send(message.value);
 			echoText.value += "Message sent to the server : " + message.value
 					+ "\n";
-			message.value = "";
+			//message.value = "";
 		}
 
 		function wsOpenConnection() {
@@ -73,10 +72,10 @@
 			webSocket.close();
 		}
 		function wsGetMessage(message) {
-			echoText.value += "Message received from the server, raw : " + message + "\n";
+			//echoText.value += "Message received from the server, raw : " + message + "\n";
 			echoText.value += "Message received from the server, data : " + message.data + "\n";
-			msg = JSON.parse(message.data);
-			echoText.value += "Message received from the server, parsed; id: "
+			//msg = JSON.parse(message.data);
+			//echoText.value += "Message received from the server, parsed; id: "
 					+ msg.id + "\n\n";
 		}
 		function wsClose(message) {
@@ -90,6 +89,22 @@
 
 		function wsError(message) {
 			echoText.value += "Error: " + message + "\n";
+		}
+
+		function fillTextLogin() {
+			message.value = '{"cmd": "LOGIN", "user": "skroob", "pwd": "12345", "id": "12"}';
+		}
+
+		function fillTextAvCol() {
+			message.value = '{"cmd": "GET_AV_COLL", "id": "13"}';
+		}
+
+		function fillTextGetStart() {
+			message.value = '{"cmd": "GET_START", "id": "13"}';
+		}
+
+		function fillTextGetRange() {
+			message.value = '{"cmd": "GET_RECORDS_RANGE", "par": "mockdataset", "key": "Timestamp", "start": "{\"$date\": 1541425229623}", "end": "{\"$date\": 1541425229945}", "id": "13"}';
 		}
 	</script>
 

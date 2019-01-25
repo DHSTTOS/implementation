@@ -2,34 +2,57 @@
 <html>
 <head>
 <meta charset="ISO-8859-15">
-<title>Websocketserverexample07</title>
+<title>adininspector-backend debugger</title>
 </head>
 <body>
+<H3>Debugger for adininspector-backend 3<H3>
 	<form>
-		<input id="message" type="text">
+		url: <input id="wsurl" type="text" size="60"><p>
+
+		<input onclick="fillTextLogin();" value="LOGIN" type="button">
+		<input onclick="fillTextAvCol();" value="AV_COLL" type="button">
+		<input onclick="fillTextGetStart();" value="GET_START" type="button">
+
+
+		<p>
+		coll: <input id="coll" type="text" size="15" value="mockdataset">
+		key: <input id="coll" type="text" size="15" value="SourceMACAddress">
+		start: <input id="start" type="text" size="15" value="f8:ca:b8:59:07:a4">
+		end: <input id="end" type="text" size="15" value="zz:ca:b8:59:07:a4">
+		<input id="GET_RANGE1" value="GET_RANGE1" type="button">
+		<input onclick="sendGetRange();" value="GET_RANGE" type="button"><p>
+		<p>
+
+		msg: <input id="message" type="text" size="60" autofocus><p>
 		<input onclick="wsSendMessage();" value="Echo" type="button">
+		<input onclick="wsOpenConnection();" value="Connect" type="button">
 		<input onclick="wsCloseConnection();" value="Disconnect" type="button">
 	</form>
 	<br>
 	<textarea id="echoText" rows="5" cols="30"></textarea>
 
-
-	<script src="../../frontend/src/libs/wsutils.js"></script>
-
-	<script type="text/javascript">
+	<script type="module" id="funcs">
+	import * as ws from './wsutils.js';
+		//ws.foo();
 		// source:
 		// https://examples.javacodegeeks.com/enterprise-java/tomcat/apache-tomcat-websocket-tutorial/#toc630
 
-			// dataStore
-			//import {appStore} from "_stores";
+		var sendGetRangeButton = document.getElementById("GET_RANGE1");
+		if (sendGetRangeButton.addEventListener)
+			sendGetRangeButton.addEventListener("click", sendGetRange, false);
+		else if (sendGetRangeButton.attachEvent)
+			sendGetRangeButton.attachEvent('onclick', sendGetRange);
 
+		
 
 		var echoText = document.getElementById("echoText");
 		echoText.value = "";
 		var message = document.getElementById("message");
+		var wsurl = document.getElementById("wsurl");
+		wsurl.value = "ws://localhost:8080/adininspector/adinhubsoc2";
 
 		var webSocket = new WebSocket(
-				"ws://localhost:8080/WebsocketServerExample/adinhubsoc");
+			"ws://localhost:8080/adininspector/adinhubsoc2");
 
 		webSocket.onopen = function(message) {
 			wsOpen(message);
@@ -54,22 +77,56 @@
 			webSocket.send(message.value);
 			echoText.value += "Message sent to the server : " + message.value
 					+ "\n";
-			message.value = "";
+			//message.value = "";
 		}
+
+		function wsOpenConnection() {
+			webSocket = new WebSocket(wsurl.value);
+		}
+
 		function wsCloseConnection() {
 			webSocket.close();
 		}
 		function wsGetMessage(message) {
-			msg = JSON.parse(message);
-			echoText.value += "Message received from the server : "
-					+ msg.id + "\n";
+			//echoText.value += "Message received from the server, raw : " + message + "\n";
+			echoText.value += "Message received from the server, data : " + message.data + "\n";
+			//msg = JSON.parse(message.data);
+			//echoText.value += "Message received from the server, parsed; id: "
+					+ msg.id + "\n\n";
 		}
 		function wsClose(message) {
-			echoText.value += "Disconnect: " + message + ", " + message.isTrusted + "\n";
+			echoText.value += "Disconnect: " + message;
+			echoText.value += ", " + message.code;
+			echoText.value += ", " + message.reason;
+			echoText.value += ", " + message.wasClean;
+			echoText.value += ", " + message.isTrusted;
+			echoText.value += "\n";
 		}
 
-		function wserror(message) {
+		function wsError(message) {
 			echoText.value += "Error: " + message + "\n";
+		}
+
+		function fillTextLogin() {
+			message.value = '{"cmd": "LOGIN", "user": "skroob", "pwd": "12345", "id": "12"}';
+		}
+
+		function fillTextAvCol() {
+			ws.getAvailableCollections();
+			//message.value = '{"cmd": "GET_AV_COLL", "id": "13"}';
+		}
+
+		function fillTextGetStart() {
+			message.value = '{"cmd": "GET_START", "id": "13"}';
+		}
+
+		function sendGetRange() {
+			//message.value = '{"cmd": "GET_RECORDS_RANGE", "par": "mockdataset", "key": "Timestamp", "start": "{\"$date\": 1541425229623}", "end": "{\"$date\": 1541425229945}", "id": "13"}';
+			ws.getRecordsInRange = (
+				document.getElementById("coll").value,
+				document.getElementById("key").value,
+				document.getElementById("start").value,
+				document.getElementById("end").value);
 		}
 	</script>
 

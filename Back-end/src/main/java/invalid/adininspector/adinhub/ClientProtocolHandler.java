@@ -6,6 +6,8 @@ import java.util.Map;
 import javax.websocket.Session;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonSyntaxException;
 
 /**
  * This class handles client requests by parsing them, executing
@@ -15,6 +17,24 @@ import com.google.gson.Gson;
 public class ClientProtocolHandler {
 
 	public enum Command {
+		LOGIN("LOGIN") {
+			public Map<String, Object> execute(Hub hub, Session session, Map<String,Object> msgParsed) {
+				Map<String, Object> m = new HashMap<String, Object>();
+				String username = (String)msgParsed.get("user");
+				String password = (String)msgParsed.get("pwd");
+				String res = hub.createUserSession(session, username, password);
+
+				m.put("cmd", "SESSION");
+				if ((res == null) || res.equals("")) {
+					m.put("status", "FAIL");
+					m.put("par", "");
+				} else {
+					m.put("status", "OK");
+					m.put("par", res);
+				}
+				return m;
+			}
+		},
 		LOGIN_TOKEN("LOGIN_TOKEN") {
 			public Map<String, Object> execute(Hub hub, Session session, Map<String,Object> msgParsed) {
 				Map<String, Object> m = new HashMap<String, Object>();
@@ -113,6 +133,12 @@ public class ClientProtocolHandler {
 		abstract Map<String, Object> execute(Hub hub, Session session, Map<String,Object> msgParsed);
 	}
 	
+	private String cleanString(String message) {
+		int len = message.length();
+		if (len > 1000) len = 1000;
+		return message.substring(0, len);
+	}
+	
 	/**
 	 * Parse the message from the client, call the corresponding method of the hub
 	 * and construct the response message which is then send via the hub
@@ -124,9 +150,22 @@ public class ClientProtocolHandler {
 	 */
 	String handleRequest(Hub hub, Session session, String message) {
 		Gson gson = new Gson();
-		//gson.fromJson(message, Integer.class);
-		Map<String,Object> msgParsed = new Gson().fromJson(message, Map.class);
-		if (!msgParsed.containsKey("cmd")) {
+		Map<String,Object> msgParsed = null;
+		try {
+			msgParsed = new Gson().fromJson(message, Map.class);
+			
+		} catch (JsonSyntaxException e) {
+			System.err.println("handleRequest() got non-JSON message: " + cleanString(message));
+			return "";
+		} catch (JsonParseException e) {
+			System.err.println("handleRequest() got non-Map message: " + cleanString(message));
+			return "";
+		}
+
+		if (msgParsed == null) {
+			return "";
+		} else if (!msgParsed.containsKey("cmd")) {
+			System.err.println("handleRequest() got not conforming message: " + cleanString(message));
 			return "";
 		} else {
 			String msgCommand = (String)msgParsed.get("cmd");
@@ -135,8 +174,11 @@ public class ClientProtocolHandler {
 				if (c.command.equals(msgCommand)) {
 					Map <String, Object> m = c.execute(hub, session, msgParsed);
 					Object id = msgParsed.get("id"); // id could be string or long
-					System.out.println("hR: id: " + id + " " + id.getClass().toString());
-					m.put("id", id);
+					if (id != null) {
+						System.out.println("hR: id: " + id + " " + id.getClass().toString());
+						m.put("id", id);
+					} else
+						m.put("id", 0);
 					return new Gson().toJson(m);
 				}
 			}
