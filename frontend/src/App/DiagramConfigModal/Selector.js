@@ -20,7 +20,7 @@ const StyledFormControl = styled(FormControl)`
  * @typedef {object} Props
  * @prop {string} name
  * @prop {string[]} options
- * @prop {Function} onChange
+ * @prop {Function} onSelect
  *
  * @extends {Component<Props>}
  */
@@ -30,13 +30,17 @@ export default class Selector extends Component {
     labelWidth: 0,
   };
 
+  inputLabelRef = React.createRef();
+
   handleChange = event => {
-    this.setState({ [event.target.name]: event.target.value });
+    this.setState({ [event.target.name]: event.target.value }, () =>
+      this.props.onSelect(event.target.value)
+    );
   };
 
   componentDidMount() {
     this.setState({
-      labelWidth: ReactDOM.findDOMNode(this.InputLabelRef).offsetWidth,
+      labelWidth: ReactDOM.findDOMNode(this.inputLabelRef.current).offsetWidth,
     });
   }
 
@@ -45,13 +49,7 @@ export default class Selector extends Component {
       <Container>
         <form autoComplete="off">
           <StyledFormControl variant="outlined">
-            <InputLabel
-              ref={ref => {
-                this.InputLabelRef = ref;
-              }}
-            >
-              Source
-            </InputLabel>
+            <InputLabel ref={this.inputLabelRef}>{this.props.name}</InputLabel>
             <Select
               value={this.state.selection}
               onChange={this.handleChange}
