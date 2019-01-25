@@ -10,6 +10,17 @@ import {
   getRecordsInRangeSize,
 } from "./wsutils";
 
+/**
+ * Formats raw data to nivo's format.
+ *
+ * @param {Object} p
+ * @param {string} p.groupName
+ * @param {string} p.x
+ * @param {string} p.y
+ * @param {Object[]} p.rawData
+ *
+ * @return {Object[]}
+ */
 const formatData = ({ groupName, x, y, rawData = [] }) => {
   // get all the names of groups of data by groupID
   const groups = new Set();
