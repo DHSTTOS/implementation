@@ -62,28 +62,13 @@ class DiagramConfigModal extends Component {
 
   @action
   handleOK = () => {
-    const currentDiagramID = appStore.configModal.diagramID;
-
-    if (currentDiagramID >= appStore.diagramConfigs.length) {
-      appStore.addNewDiagram(this.currentConfig);
-      console.log(`Diagram #${currentDiagramID} is saved.`);
-    } else {
-      appStore.updateDiagram(currentDiagramID)(this.currentConfig);
-    }
+    appStore.updateDiagram();
     appStore.closeConfigModal();
-  };
-
-  @observable
-  currentConfig = {
-    isAwesome: true,
   };
 
   render() {
     return (
-      <Modal
-        open={appStore.configModal.isOpen}
-        onClose={this.handleCancel}
-      >
+      <Modal open={appStore.configModal.isOpen} onClose={this.handleCancel}>
         <Container>
           <ModalHeader>
             <Typography variant="h6" align={"center"}>

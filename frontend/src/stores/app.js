@@ -5,7 +5,7 @@ import { DEFAULT_SOURCE_NAME, DEFAULT_GLOBAL_FILTERS } from "@libs";
 /**
  * @typedef DiagramConfig
  * @type {Object}
- * @property {number} diagramID
+ * @property {string} diagramID
  * @property {string} plotType
  * @property {string} groupName
  * @property {string} x
@@ -73,23 +73,22 @@ class AppStore {
   diagramConfigs = [];
 
   @action
-  addNewDiagram = diagramConfig => {
-    this.diagramConfigs.push({
-      diagramID: this.configModal.diagramID,
-      ...diagramConfig,
-    });
-  };
-
-  @action
-  updateDiagram = diagramID => diagramConfig => {
-    this.diagramConfigs = this.diagramConfigs.map(config =>
-      config.diagramID === diagramID
-        ? {
-            diagramID: diagramID,
-            ...diagramConfig,
-          }
-        : config
+  updateDiagram = () => {
+    const existingCurrentConfig = this.diagramConfigs.find(
+      x => x.diagramID === this.configModal.diagramConfig.diagramID
     );
+
+    // if exists, pull updated config from configModal
+    // if doesn't exist, add config from configModal to diagramConfigs
+    if (existingCurrentConfig) {
+      this.diagramConfigs = this.diagramConfigs.map(x =>
+        x.diagramID === existingCurrentConfig.diagramID
+          ? this.configModal.diagramConfig
+          : x
+      );
+    } else {
+      this.diagramConfigs.push(this.configModal.diagramConfig);
+    }
   };
 
   @action
@@ -105,22 +104,44 @@ class AppStore {
   @observable
   configModal = {
     isOpen: false,
-    diagramID: -1,
+    diagramConfig: {},
   };
 
   @action
   openConfigModal = diagramID => {
-    this.configModal = {
-      isOpen: true,
-      diagramID: diagramID,
-    };
+    const existingCurrentConfig = this.diagramConfigs.find(
+      x => x.diagramID === diagramID
+    );
+
+    if (existingCurrentConfig) {
+      this.configModal = {
+        isOpen: true,
+        diagramConfig: existingCurrentConfig,
+      };
+    } else {
+      // init default values for config modal if the diagramID passed in doesn't exist
+      this.configModal = {
+        isOpen: true,
+        diagramConfig: {
+          diagramID,
+          plotType: "",
+          groupName: "",
+          x: "",
+          y: "",
+          useColor: false,
+          enableLegends: false,
+          enableTooltip: false,
+          specConfig: null,
+        },
+      };
+    }
   };
 
   @action
   closeConfigModal = () => {
     this.configModal = {
       isOpen: false,
-      diagramID: -1,
+      diagramConfig: {},
     };
   };
 
@@ -158,11 +179,11 @@ class AppStore {
 
   @action
   resetGlobalFilters = () => (this.globalFilters = DEFAULT_GLOBAL_FILTERS);
-
   @action
   updateGlobalFilters = (category, name) => value => {
     this.globalFilters[category][name] = value;
   };
+
   @action
   updateSingleFilters = diagramID => (category, name) => value => {
     // TODO: finish this logic
