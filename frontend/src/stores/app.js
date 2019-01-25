@@ -2,6 +2,10 @@ import { observable, action } from "mobx";
 import { DEFAULT_SOURCE_NAME } from "@libs";
 
 class AppStore {
+  /**
+   * This is supposed to be used for sizing the diagrams, because "responsive"
+   * versions of nivo hogs resources...
+   */
   @observable
   diagramDimension = {
     width: window.innerWidth * 0.85,
