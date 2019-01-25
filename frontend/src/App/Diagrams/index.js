@@ -76,7 +76,7 @@ class DiagramsContainer extends Component {
           ) : (
             appStore.diagramConfigs.map(config => (
               <StyledPaper elevation={1} key={config.diagramID}>
-                <DiagramControl diagramId={config.diagramID} />
+                <DiagramControl diagramID={config.diagramID} />
                 <Diagram config={config} />
               </StyledPaper>
             ))

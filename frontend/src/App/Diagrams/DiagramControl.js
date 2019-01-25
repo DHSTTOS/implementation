@@ -20,19 +20,19 @@ const ControlWrapper = styled.div`
 
 /**
  * @typedef {object} Props
- * @prop {number} diagramId
+ * @prop {number} diagramID
  *
  * @extends {Component<Props>}
  */
 export default class DiagramControl extends Component {
   handleSettings = () => {
-    appStore.openConfigModal(this.props.diagramId);
+    appStore.openConfigModal(this.props.diagramID);
   };
   handleFullscreen = () => {
     //TODO: opens another modal for fullscreen? (non-trivial)
   };
   handleClose = () => {
-    appStore.closeDiagram(this.props.diagramId);
+    appStore.closeDiagram(this.props.diagramID);
   };
 
   render() {

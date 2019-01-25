@@ -5,7 +5,7 @@ import { DEFAULT_SOURCE_NAME, DEFAULT_GLOBAL_FILTERS } from "@libs";
 /**
  * @typedef DiagramConfig
  * @type {Object}
- * @property {number} id
+ * @property {number} diagramID
  * @property {string} plotType
  * @property {string} groupName
  * @property {string} x
@@ -70,7 +70,7 @@ class AppStore {
    *
    * @type {DiagramConfig[]}
    */
-  diagramConfigs = []; // format TBD
+  diagramConfigs = [];
 
   @action
   addNewDiagram = diagramConfig => {
