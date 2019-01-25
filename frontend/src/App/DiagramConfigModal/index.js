@@ -9,6 +9,7 @@ import Button from "@material-ui/core/Button";
 
 import { appStore } from "@stores";
 import Selector from "./Selector";
+import PlotTypeBar from "./PlotTypeBar";
 
 const Container = styled(Paper)`
   position: absolute;
@@ -39,7 +40,7 @@ const Center = styled.div`
 const Content = styled.div`
   flex: 1;
   margin: 1rem;
-  background-color: pink;
+  /* background-color: pink; */
 `;
 
 @observer
@@ -86,8 +87,6 @@ class DiagramConfigModal extends Component {
     isAwesome: true,
   };
 
-  sourceOptions = ["Option 1", "Option 2", "Option 3"];
-
   render() {
     return (
       <Modal
@@ -99,11 +98,7 @@ class DiagramConfigModal extends Component {
             Configure Diagram ID #{appStore.diagramConfigModal.diagramID}
           </Typography>
           <Content>
-            <Selector
-              name="Source"
-              options={this.sourceOptions}
-              onSelect={console.log}
-            />
+            <PlotTypeBar />
           </Content>
           <Center>
             <ButtonsContainer>

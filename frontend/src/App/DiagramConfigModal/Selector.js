@@ -9,10 +9,11 @@ import OutlinedInput from "@material-ui/core/OutlinedInput";
 
 const Container = styled.div`
   align-self: center;
+  margin: 0 1rem;
 `;
 
 const StyledFormControl = styled(FormControl)`
-  width: 13rem;
+  width: 8rem;
   margin: 1rem;
 `;
 
