@@ -18,7 +18,7 @@ const login_token = (name, token) => {
 
 socket.onopen = _ => {
   // authenticate again when opening socket
-  login_token(appStore.username, appStore.authToken);
+  login_token(appStore.userDetails.userName, appStore.userDetails.authToken);
 };
 
 socket.onerror = err => {
@@ -40,7 +40,7 @@ const handleData = data => {
 };
 
 const handleSession = msg => {
-  if (appStore.wsLoggedIn) {
+  if (appStore.userDetails.wsLoggedIn) {
     switch (msg.status) {
       case "OK":
         // can't really happen
@@ -53,7 +53,7 @@ const handleSession = msg => {
         break;
       case "FAIL":
         // user has logged out
-        appStore.wsLoggedIn = false;
+        appStore.userDetails.wsLoggedIn = false;
         // TODO close the connection
         // TODO: present the login screen again
         break;
@@ -63,7 +63,7 @@ const handleSession = msg => {
     switch (msg.status) {
       case "OK":
         // successful login to ws connection
-        appStore.wsLoggedIn = true;
+        appStore.userDetails.wsLoggedIn = true;
         break;
       case "FAIL":
         // login failed
