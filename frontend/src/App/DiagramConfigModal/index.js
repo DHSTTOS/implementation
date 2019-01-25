@@ -9,13 +9,48 @@ import Button from "@material-ui/core/Button";
 
 import { appStore } from "@stores";
 
+import PlotTypeBar from "./PlotTypeBar";
+import DiagramSpecBlock from "./DiagramSpecBlock";
+import DiagramFiltersBlock from "./DiagramFiltersBlock";
+
 const Container = styled(Paper)`
   position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   top: 50%;
   left: 50%;
   width: 45rem;
-  height: 35rem;
+  height: 40rem;
   transform: translate(-50%, -50%);
+`;
+
+const ButtonsContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 10rem;
+  margin: 1rem;
+`;
+
+const Center = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+`;
+
+const Content = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin: 0.5rem;
+  align-items: center;
+  /* background-color: pink; */
+`;
+
+const ModalHeader = styled.div`
+  margin: 0.5rem;
+  /* background-color: red; */
 `;
 
 @observer
@@ -69,12 +104,34 @@ class DiagramConfigModal extends Component {
         onClose={this.handleCancel}
       >
         <Container>
-          <Typography variant="h6">
-            Configuring Diagram ID #{appStore.diagramConfigModal.diagramID}
-          </Typography>
-          <Button onClick={this.handleOK} variant="contained" color="primary">
-            Save
-          </Button>
+          <ModalHeader>
+            <Typography variant="h6" align={"center"}>
+              Configure Diagram ID #{appStore.diagramConfigModal.diagramID}
+            </Typography>
+          </ModalHeader>
+          <Content>
+            <PlotTypeBar />
+            <DiagramSpecBlock />
+            <DiagramFiltersBlock />
+          </Content>
+          <Center>
+            <ButtonsContainer>
+              <Button
+                onClick={this.handleOK}
+                variant="contained"
+                color="primary"
+              >
+                Save
+              </Button>
+              <Button
+                onClick={this.handleCancel}
+                variant="contained"
+                color="secondary"
+              >
+                Cancel
+              </Button>
+            </ButtonsContainer>
+          </Center>
         </Container>
       </Modal>
     );

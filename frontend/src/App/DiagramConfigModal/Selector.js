@@ -9,26 +9,39 @@ import OutlinedInput from "@material-ui/core/OutlinedInput";
 
 const Container = styled.div`
   align-self: center;
+  margin: 0 1rem;
 `;
 
 const StyledFormControl = styled(FormControl)`
-  width: 13rem;
+  width: 8rem;
   margin: 1rem;
 `;
 
-export default class SourceSelector extends Component {
+/**
+ * @typedef {object} Props
+ * @prop {string} name
+ * @prop {string[]} options
+ * @prop {Function} onSelect
+ *
+ * @extends {Component<Props>}
+ */
+export default class Selector extends Component {
   state = {
-    source: "",
+    selection: "",
     labelWidth: 0,
   };
 
+  inputLabelRef = React.createRef();
+
   handleChange = event => {
-    this.setState({ [event.target.name]: event.target.value });
+    this.setState({ selection: event.target.value }, () =>
+      this.props.onSelect(event.target.value)
+    );
   };
 
   componentDidMount() {
     this.setState({
-      labelWidth: ReactDOM.findDOMNode(this.InputLabelRef).offsetWidth,
+      labelWidth: ReactDOM.findDOMNode(this.inputLabelRef.current).offsetWidth,
     });
   }
 
@@ -37,29 +50,26 @@ export default class SourceSelector extends Component {
       <Container>
         <form autoComplete="off">
           <StyledFormControl variant="outlined">
-            <InputLabel
-              ref={ref => {
-                this.InputLabelRef = ref;
-              }}
-            >
-              Source
-            </InputLabel>
+            <InputLabel ref={this.inputLabelRef}>{this.props.name}</InputLabel>
             <Select
-              value={this.state.source}
+              value={this.state.selection}
               onChange={this.handleChange}
               input={
                 <OutlinedInput
                   labelWidth={this.state.labelWidth}
-                  name="source"
+                  name={this.props.name}
                 />
               }
             >
               <MenuItem value="">
                 <em>None</em>
               </MenuItem>
-              <MenuItem value="source_1">Source 1</MenuItem>
-              <MenuItem value="source_2">Source 2</MenuItem>
-              <MenuItem value="source_3">Source 3</MenuItem>
+              {this.props.options &&
+                this.props.options.map(x => (
+                  <MenuItem value={x} key={this.props.name + x}>
+                    {x}
+                  </MenuItem>
+                ))}
             </Select>
           </StyledFormControl>
         </form>
