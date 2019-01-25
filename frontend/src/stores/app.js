@@ -8,6 +8,13 @@ class AppStore {
   @observable
   diagramConfigs = []; // format TBD
 
+  @action
+  closeDiagram = diagramID => {
+    this.diagramConfigs = this.diagramConfigs.filter(
+      config => config.diagramID !== diagramID
+    );
+  };
+
   @observable
   diagramConfigModal = {
     isOpen: false,
