@@ -8,8 +8,18 @@ import AddBoxIcon from "@material-ui/icons/AddBox";
 import { appStore } from "@stores";
 
 const Container = styled.div`
+  position: fixed;
+  bottom: 0;
   display: flex;
+  height: 5rem;
+  width: 100%;
+`;
+
+const Content = styled.div`
+  display: flex;
+  flex: 1;
   margin: 0 1rem;
+  padding: 0 2rem;
   justify-content: space-between;
   align-items: center;
 `;
@@ -27,17 +37,19 @@ class Footer extends Component {
   render() {
     return (
       <Container>
-        <Typography variant="body1" color="textSecondary">
-          {"© 2018 ADIN Frontend Contributors"}
-        </Typography>
-        <Button
-          onClick={this.handleAddDiagram}
-          variant="contained"
-          color="primary"
-        >
-          <StyledAddBoxIcon />
-          Add Diagram
-        </Button>
+        <Content>
+          <Typography variant="body1" color="textSecondary">
+            {"© 2018 ADIN Frontend Contributors"}
+          </Typography>
+          <Button
+            onClick={this.handleAddDiagram}
+            variant="contained"
+            color="primary"
+          >
+            <StyledAddBoxIcon />
+            Add Diagram
+          </Button>
+        </Content>
       </Container>
     );
   }
