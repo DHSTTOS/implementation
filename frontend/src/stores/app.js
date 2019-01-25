@@ -43,7 +43,6 @@ import { DEFAULT_SOURCE_NAME, DEFAULT_GLOBAL_FILTERS } from "@libs";
  * @property {number} pointOpacity
  */
 
-@observable
 class AppStore {
   /**
    * This is supposed to be used for sizing the diagrams, because "responsive"
@@ -70,6 +69,7 @@ class AppStore {
    *
    * @type {DiagramConfig[]}
    */
+  @observable
   diagramConfigs = [];
 
   @action
