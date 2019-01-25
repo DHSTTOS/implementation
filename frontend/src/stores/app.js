@@ -2,16 +2,75 @@ import { observable, action } from "mobx";
 import { DEFAULT_SOURCE_NAME } from "@libs";
 
 class AppStore {
+  @observable
+  diagramDimension = {
+    width: window.innerWidth * 0.9,
+    height: window.innerHeight * 0.68,
+  };
+
+  @action
+  updateDiagramDimension = () => {
+    const maxWidth = window.innerWidth * 0.85;
+    if (this.diagramConfigs.length > 1) {
+      this.diagramDimension.width = maxWidth / 2;
+    } else {
+      this.diagramDimension.width = maxWidth;
+    }
+  };
+
   /**
    * This is the list containing the configs for each individual diagrams
    */
   @observable
   diagramConfigs = []; // format TBD
 
+  @action
+  addNewDiagram = diagramConfig => {
+    this.diagramConfigs.push({
+      diagramID: this.diagramConfigModal.diagramID,
+      ...diagramConfig,
+    });
+  };
+
+  @action
+  updateDiagram = diagramID => diagramConfig => {
+    this.diagramConfigs = this.diagramConfigs.map(config =>
+      config.diagramID === diagramID
+        ? {
+            diagramID: diagramID,
+            ...diagramConfig,
+          }
+        : config
+    );
+  };
+
+  @action
+  closeDiagram = diagramID => {
+    this.diagramConfigs = this.diagramConfigs.filter(
+      config => config.diagramID !== diagramID
+    );
+  };
+
   @observable
   diagramConfigModal = {
     isOpen: false,
     diagramID: -1,
+  };
+
+  @action
+  openConfigModal = diagramID => {
+    this.diagramConfigModal = {
+      isOpen: true,
+      diagramID: diagramID,
+    };
+  };
+
+  @action
+  closeConfigModal = () => {
+    this.diagramConfigModal = {
+      isOpen: false,
+      diagramID: -1,
+    };
   };
 
   @observable
@@ -53,6 +112,7 @@ class AppStore {
   @action
   resetDiagramConfigs = () => {
     this.diagramConfigs = [];
+    this.updateDiagramDimension();
   };
 
   @action

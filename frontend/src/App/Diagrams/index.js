@@ -3,11 +3,12 @@ import { observer } from "mobx-react";
 import styled from "@emotion/styled";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
-import { ResponsiveScatterPlot } from "@nivo/scatterplot";
+import { ScatterPlot } from "@nivo/scatterplot";
 
 import { appStore } from "@stores";
 import { jsonstreams } from "../../../mockdata";
 import { formatData } from "@libs";
+import DiagramControl from "./DiagramControl";
 
 const Container = styled.div`
   display: flex;
@@ -21,6 +22,7 @@ const Container = styled.div`
 const StyledPaper = styled(Paper)`
   display: flex;
   flex: 1;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   align-self: stretch;
@@ -61,6 +63,7 @@ class DiagramsContainer extends Component {
         ) : (
           appStore.diagramConfigs.map(config => (
             <StyledPaper elevation={1} key={config.diagramID}>
+              <DiagramControl diagramId={config.diagramID} />
               <Diagram config={config} />
             </StyledPaper>
           ))
@@ -70,6 +73,7 @@ class DiagramsContainer extends Component {
   }
 }
 
+@observer
 class Diagram extends Component {
   render() {
     const data = formatData({
@@ -82,10 +86,12 @@ class Diagram extends Component {
 
     return (
       <PlotContainer>
-        <ResponsiveScatterPlot
+        <ScatterPlot
+          width={appStore.diagramDimension.width}
+          height={appStore.diagramDimension.height}
           data={data}
           margin={{
-            top: 60,
+            top: 35,
             right: 140,
             bottom: 70,
             left: 140,
@@ -96,8 +102,6 @@ class Diagram extends Component {
           yScale={{
             type: "point",
           }}
-          axisTop={null}
-          axisRight={null}
           axisBottom={{
             orient: "bottom",
             tickSize: 5,

@@ -57,39 +57,20 @@ const ModalHeader = styled.div`
 class DiagramConfigModal extends Component {
   @action
   handleCancel = () => {
-    appStore.diagramConfigModal = {
-      isOpen: false,
-      diagramID: -1,
-    };
+    appStore.closeConfigModal();
   };
 
   @action
   handleOK = () => {
-    if (
-      appStore.diagramConfigModal.diagramID >= appStore.diagramConfigs.length
-    ) {
-      // add new diagram
-      appStore.diagramConfigs.push({
-        // consider alias this observable in this class to save characters
-        diagramID: appStore.diagramConfigModal.diagramID,
-        ...this.currentConfig,
-      });
-      console.log(appStore.diagramConfigModal.diagramID);
+    const currentDiagramID = appStore.diagramConfigModal.diagramID;
+
+    if (currentDiagramID >= appStore.diagramConfigs.length) {
+      appStore.addNewDiagram(this.currentConfig);
+      console.log(`Diagram #${currentDiagramID} is saved.`);
     } else {
-      // modify config of existing diagram
-      appStore.diagramConfigs = appStore.diagramConfigs.map(config =>
-        config.diagramID === appStore.diagramConfigModal.diagramID
-          ? {
-              diagramID: appStore.diagramConfigModal.diagramID,
-              ...this.currentConfig,
-            }
-          : config
-      );
+      appStore.updateDiagram(currentDiagramID)(this.currentConfig);
     }
-    appStore.diagramConfigModal = {
-      isOpen: false,
-      diagramID: -1,
-    };
+    appStore.closeConfigModal();
   };
 
   @observable
