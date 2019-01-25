@@ -2,6 +2,22 @@ import { observable, action } from "mobx";
 import { DEFAULT_SOURCE_NAME } from "@libs";
 
 class AppStore {
+  @observable
+  diagramDimension = {
+    width: window.innerWidth * 0.9,
+    height: window.innerHeight * 0.68,
+  };
+
+  @action
+  updateDiagramDimension = () => {
+    const maxWidth = window.innerWidth * 0.85;
+    if (this.diagramConfigs.length > 1) {
+      this.diagramDimension.width = maxWidth / 2;
+    } else {
+      this.diagramDimension.width = maxWidth;
+    }
+  };
+
   /**
    * This is the list containing the configs for each individual diagrams
    */

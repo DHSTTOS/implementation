@@ -3,7 +3,7 @@ import { observer } from "mobx-react";
 import styled from "@emotion/styled";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
-import { ResponsiveScatterPlot } from "@nivo/scatterplot";
+import { ScatterPlot } from "@nivo/scatterplot";
 
 import { appStore } from "@stores";
 import { jsonstreams } from "../../../mockdata";
@@ -73,6 +73,7 @@ class DiagramsContainer extends Component {
   }
 }
 
+@observer
 class Diagram extends Component {
   render() {
     const data = formatData({
@@ -85,7 +86,9 @@ class Diagram extends Component {
 
     return (
       <PlotContainer>
-        <ResponsiveScatterPlot
+        <ScatterPlot
+          width={appStore.diagramDimension.width}
+          height={appStore.diagramDimension.height}
           data={data}
           margin={{
             top: 35,
@@ -99,8 +102,6 @@ class Diagram extends Component {
           yScale={{
             type: "point",
           }}
-          axisTop={null}
-          axisRight={null}
           axisBottom={{
             orient: "bottom",
             tickSize: 5,
