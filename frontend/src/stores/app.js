@@ -80,12 +80,15 @@ class AppStore {
     };
   };
 
+  /**
+   * User details object
+   */
   @observable
-  username = "";
-  @observable
-  authToken = "";
-  @observable
-  wsLoggedIn = false;
+  userDetails = {
+    userName: "",
+    authToken: "",
+    wsLoggedIn: false,
+  };
 
   @observable
   sourceSelected = DEFAULT_SOURCE_NAME;
