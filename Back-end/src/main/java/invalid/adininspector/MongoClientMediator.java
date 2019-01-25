@@ -31,11 +31,10 @@ public class MongoClientMediator {
     {
         ServerAddress serverAddr = new ServerAddress("localhost");
 
-        p(udid + dbName + password);
-
-        // ScramSha1 is the default auth method from Mongo
-        // TODO this will try and log into the the admin database, this should change
-        MongoCredential cred = MongoCredential.createScramSha1Credential(udid, dbName, password.toCharArray());
+        //ScramSha1 is the default auth method from Mongo
+        //TODO this will try and log into the the admin database, this should change
+        //we always use the admin database to check users.
+        MongoCredential cred = MongoCredential.createScramSha1Credential(udid, "admin", password.toCharArray());
 
         try{
         client = new MongoClient(serverAddr, Collections.singletonList(cred));
@@ -102,7 +101,7 @@ public class MongoClientMediator {
 
     // an int *should* suffice for now at least
     public int CollectionSize(String collection) {
-        // count is deprecated, there's an estimation which should work fine but
+        // count is deprecated, there's an estimation which should work fine but it's not gonna be accurate
         return (int) db.getCollection(collection).countDocuments();
     }
 
@@ -129,8 +128,9 @@ public class MongoClientMediator {
         for (int i = 0; i < colls.size(); i++) {
             System.out.println(colls.get(i));
         }
-        // return colls.toArray(new String[colls.size()]);
         return mongoIteratorToStringArray(db.listCollectionNames());
+
+        
     }
 
     // HELPER FUNCTIONS

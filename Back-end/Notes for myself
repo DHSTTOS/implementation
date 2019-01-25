@@ -1,0 +1,107 @@
+//constants we need just to have em somewhere
+Name of database: AdinInspector
+Names of users: Analyst, Operator
+
+User within Mongo:
+{
+        "_id" : "admin.Analyst",
+        "user" : "Analyst",
+        "db" : "admin",
+        "roles" : [
+                {
+                        "role" : "Analyst",
+                        "db" : "admin"
+                }
+        ],
+        "mechanisms" : [
+                "SCRAM-SHA-1",
+                "SCRAM-SHA-256"
+        ]
+}
+{
+        "_id" : "admin.Operator",
+        "user" : "Operator",
+        "db" : "admin",
+        "roles" : [
+                {
+                        "role" : "Operator",
+                        "db" : "admin"
+                }
+        ],
+        "mechanisms" : [
+                "SCRAM-SHA-1",
+                "SCRAM-SHA-256"
+        ]
+}
+{
+        "_id" : "admin.admin",
+        "user" : "admin",
+        "db" : "admin",
+        "roles" : [
+                {
+                        "role" : "userAdminAnyDatabase",
+                        "db" : "admin"
+                },
+                {
+                        "role" : "readWriteAnyDatabase",
+                        "db" : "admin"
+                }
+        ],
+        "mechanisms" : [
+                "SCRAM-SHA-1",
+                "SCRAM-SHA-256"
+        ]
+}
+
+
+
+roles within mongo: 
+
+{
+        "role" : "Operator",
+        "privileges" : [ ],
+        "roles" : [
+                {
+                        "role" : "read",
+                        "db" : "AdinInspector"
+                }
+        ]
+}
+db.createRole(
+{
+        "role" : "Analyst",
+        "privileges" : [ ],
+        "roles" : [
+                {
+                        "role" : "read",
+                        "db" : "AdinInspector"
+                }
+        ]
+})
+
+//Useful Kafka commands
+1. start zookeper
+bin/zookeeper-server-start.sh config/zookeeper.properties
+2. start Kafka
+bin/kafka-server-start.sh config/server.properties
+3.List topics
+bin/kafka-topics.sh --list --zookeeper localhost:2181
+4.delte topics
+
+
+
+//
+
+//things that I need to do
+MongoDB comparison for range? numerical? stringwise? M
+when a new collection is added the permissions for operators need to be updated on a per collection basis. 
+
+
+//things we would need for a server:
+mongo
+Kafka
+Tomcat
+java jdk
+
+>2GB of ram
+enough hdd for all testing data + realtime + OS
