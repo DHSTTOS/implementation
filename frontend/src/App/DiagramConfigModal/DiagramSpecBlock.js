@@ -10,7 +10,7 @@ import { appStore } from "@stores";
 const Container = styled(Paper)`
   display: flex;
   width: 43rem;
-  height: 12rem;
+  height: 15rem;
   margin: 1rem 0.5rem 0;
 `;
 

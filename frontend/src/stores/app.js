@@ -77,6 +77,11 @@ class AppStore {
   updateGlobalFilters = (category, name) => value => {
     this.globalFilters[category][name] = value;
   };
+  @action
+  updateSingleFilters = diagramID => (category, name) => value => {
+    // TODO: finish this logic
+    this.globalFilters[category][name] = value;
+  };
 }
 
 const appStore = new AppStore();
