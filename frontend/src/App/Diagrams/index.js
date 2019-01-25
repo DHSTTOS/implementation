@@ -8,6 +8,7 @@ import { ResponsiveScatterPlot } from "@nivo/scatterplot";
 import { appStore } from "@stores";
 import { jsonstreams } from "../../../mockdata";
 import { formatData } from "@libs";
+import DiagramControl from "./DiagramControl";
 
 const Container = styled.div`
   display: flex;
@@ -21,6 +22,7 @@ const Container = styled.div`
 const StyledPaper = styled(Paper)`
   display: flex;
   flex: 1;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   align-self: stretch;
@@ -61,6 +63,7 @@ class DiagramsContainer extends Component {
         ) : (
           appStore.diagramConfigs.map(config => (
             <StyledPaper elevation={1} key={config.diagramID}>
+              <DiagramControl diagramId={config.diagramID} />
               <Diagram config={config} />
             </StyledPaper>
           ))
@@ -85,7 +88,7 @@ class Diagram extends Component {
         <ResponsiveScatterPlot
           data={data}
           margin={{
-            top: 60,
+            top: 35,
             right: 140,
             bottom: 70,
             left: 140,
