@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.stream.Collectors;
 
+import invalid.adininspector.exceptions.LoginFailureException;
 import invalid.adininspector.records.*;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -37,11 +38,17 @@ public class MongoConsumer {
 
     public MongoConsumer(String udid, String pass, String dbName) {
 
-        //default val;
-        dbName = "test";
-
+        
         //TODO: this should not stay like this in prod
-        mongoMediator = new MongoClientMediator(udid, pass, dbName);
+
+        try {
+            mongoMediator = new MongoClientMediator(udid, pass,dbName);
+        } catch (LoginFailureException e) {
+            //TODO: handle exception
+            System.out.println("wait...what? ");
+            e.printStackTrace();
+            return;
+        }
 
         Properties props = new Properties();
         props.put("bootstrap.servers", "localhost:9092");
@@ -81,9 +88,15 @@ public class MongoConsumer {
 
         while (true) {
 
+            Boolean hasNewRecords = false;
+
             ConsumerRecords<String, String> records = consumer.poll(pollingTimeOut);
 
             for (ConsumerRecord<String, String> record : records) {
+
+
+                hasNewRecords = !hasNewRecords;
+
                 //System.out.printf("offset = %d, key = %s, value = %s, partition = %d%n", record.offset(), record.key(),record.value(), record.partition());
 
                 //System.out.println(record.value());
@@ -92,7 +105,6 @@ public class MongoConsumer {
                 Type type = record.value().contains("Alarm") ? new TypeToken<AlarmRecord>(){}.getType() :new TypeToken<PacketRecord>() {}.getType();
 
                 // convert it into a java object
-                try {
                     Record incomingRecord = gson.fromJson(record.value(), type);
                     // set the offset as ID in the DB
 
@@ -100,11 +112,19 @@ public class MongoConsumer {
 
                     mongoMediator.addRecordToCollection(incomingRecord,record.topic());
 
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
-                    //System.out.println("Not impplemented type for record: " + record.value());
+
+            }
+            if(hasNewRecords)
+            {
+                 //TODO: notify the mediator that data needs to be processed
+                 System.out.println("New Records have been added, check if we need to preprocess something");
+                
+                for (ConsumerRecord<String, String> record : records) {
+                    //TODO: extract topics to update
                 }
 
+               
+                hasNewRecords = !hasNewRecords;
             }
         }
     }

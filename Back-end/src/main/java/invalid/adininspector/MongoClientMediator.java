@@ -6,8 +6,12 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import com.mongodb.BasicDBObject;
+import com.mongodb.DB;
+import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
+import com.mongodb.MongoClientException;
 import com.mongodb.MongoCredential;
+import com.mongodb.MongoSecurityException;
 import com.mongodb.MongoWriteException;
 import com.mongodb.ServerAddress;
 import com.mongodb.client.MongoDatabase;
@@ -15,6 +19,7 @@ import com.mongodb.client.MongoIterable;
 
 import org.bson.Document;
 
+import invalid.adininspector.exceptions.LoginFailureException;
 import invalid.adininspector.records.Record;
 
 public class MongoClientMediator {
@@ -22,40 +27,48 @@ public class MongoClientMediator {
     private MongoClient client;
     private MongoDatabase db;
 
-    public MongoClientMediator(String udid, String password, String dbName) {
-        
+    public MongoClientMediator(String udid, String password, String dbName) throws LoginFailureException
+    {
         ServerAddress serverAddr = new ServerAddress("localhost");
 
-        p(udid+dbName+password);
-
         //ScramSha1 is the default auth method from Mongo
-        MongoCredential cred = MongoCredential.createScramSha1Credential(udid,"admin", password.toCharArray());
-        
-    
+        //TODO this will try and log into the the admin database, this should change
+        //we always use the admin database to check users.
+        MongoCredential cred = MongoCredential.createScramSha1Credential(udid, "admin", password.toCharArray());
+
+        try{
         client = new MongoClient(serverAddr, Collections.singletonList(cred));
 
         // get access to the database. I still don't know if doing it like this is
         // ideal.
         db = client.getDatabase(dbName);
 
-        //client.
+        
+        BasicDBObject ping = new BasicDBObject("ping", "1");
+        db.runCommand(ping);
+        }
+        catch(MongoSecurityException e)
+        {            
 
+            //force the caller to handle the exception
+            throw new LoginFailureException(e.getMessage());
+            //handle gracefully
+        }
     }
 
-    public MongoClientMediator(String udid, String password) {
-        this(udid,password,"");
+    public MongoClientMediator(String udid, String password)throws LoginFailureException {
+        this(udid, password, "test");
     }
 
     public void addRecordToCollection(Record record, String collection) {
         try {
             db.getCollection(collection).insertOne(record.getAsDocument());
-            p("inserting to: "+ collection + " at offset: " +record.get_id());
+            p("inserting to: " + collection + " at offset: " + record.get_id());
         } catch (MongoWriteException ex) {
-            // TODO: how to handle this, skip?, overwrite? or compare and decide which one to keep?
+            // TODO: how to handle this, skip?, overwrite? or compare and decide which one
+            // to keep?
             System.out.println("an entry with this offset already exists at offset: " + record.get_id());
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             p(e.getCause());
         }
     }
@@ -68,7 +81,7 @@ public class MongoClientMediator {
 
     public void ProcessCollection(String collection) {
         // DataProcessor
-      //  DataProcessor.processData(,this);
+        // DataProcessor.processData(,this);
     }
 
     // do we need this ? potentially not
@@ -88,7 +101,7 @@ public class MongoClientMediator {
 
     // an int *should* suffice for now at least
     public int CollectionSize(String collection) {
-        // count is deprecated, there's an estimation which should work fine but
+        // count is deprecated, there's an estimation which should work fine but it's not gonna be accurate
         return (int) db.getCollection(collection).countDocuments();
     }
 
@@ -115,12 +128,12 @@ public class MongoClientMediator {
         for (int i = 0; i < colls.size(); i++) {
             System.out.println(colls.get(i));
         }
-        // return colls.toArray(new String[colls.size()]);
         return mongoIteratorToStringArray(db.listCollectionNames());
+
+        
     }
 
-
-    //HELPER FUNCTIONS
+    // HELPER FUNCTIONS
     private String[] mongoIteratorToStringArray(MongoIterable iterable) {
         List<String> colls = new ArrayList<>();
 
@@ -131,11 +144,11 @@ public class MongoClientMediator {
 
     }
 
-    //TODO: implement me
-    private Record[] mongoIteratorToRecordArray(MongoIterable it)
-    {
+    // TODO: implement me
+    private Record[] mongoIteratorToRecordArray(MongoIterable it) {
         return null;
     }
+
     void p(Object line) {
         System.out.println(line);
     }
