@@ -31,12 +31,11 @@ socket.onclose = _ => {
 
 // Handle data below
 const handleData = data => {
-  console.log("Received message");
-  console.log(data);
+  console.log("Received data message: " + data.length + " " + data[0]);
 
   dataStore.data = data;
-  console.log("Updated data store");
-  console.log(dataStore.data);
+  console.log("Updated data store:");
+  console.log(dataStore.data.length + " " + dataStore.data[0]);
 };
 
 const handleSession = msg => {
