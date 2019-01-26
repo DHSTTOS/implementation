@@ -22,7 +22,7 @@ import {
   removeEther,
   removeProfinet,
   removeUDP,
-} from "./datafilters";
+} from "./dataFilters";
 
 /**
  * Formats raw data to nivo's format.
