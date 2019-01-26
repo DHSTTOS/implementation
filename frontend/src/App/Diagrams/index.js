@@ -9,6 +9,7 @@ import { jsonstreams } from "../../../mockdata";
 import { formatData, SCATTER_PLOT, LINE_CHART } from "@libs";
 import DiagramControl from "./DiagramControl";
 import ScatterPlotBlock from "./ScatterPlotBlock";
+import LineChartBlock from "./LineChartBlock";
 
 const Container = styled.div`
   display: flex;
