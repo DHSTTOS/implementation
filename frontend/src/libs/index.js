@@ -15,6 +15,15 @@ import {
   getRecordsInRangeSize,
 } from "./wsutils";
 
+import {
+  removeL2,
+  removeL3,
+  removeL4,
+  removeEther,
+  removeProfinet,
+  removeUDP,
+} from "./datafilters";
+
 /**
  * Formats raw data to nivo's format.
  *
@@ -61,4 +70,10 @@ export {
   getRecordsInRange,
   getRecordsInRangeSize,
   formatData,
+  removeL2,
+  removeL3,
+  removeL4,
+  removeEther,
+  removeProfinet,
+  removeUDP,
 };
