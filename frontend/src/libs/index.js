@@ -1,4 +1,9 @@
-import { DEFAULT_SOURCE_NAME, DEFAULT_GLOBAL_FILTERS } from "./consts";
+import {
+  DEFAULT_SOURCE_NAME,
+  DEFAULT_GLOBAL_FILTERS,
+  SCATTER_PLOT,
+  LINE_CHART,
+} from "./consts";
 
 import {
   socket,
@@ -40,6 +45,8 @@ const formatData = ({ groupName, x, y, rawData = [] }) => {
 export {
   DEFAULT_SOURCE_NAME,
   DEFAULT_GLOBAL_FILTERS,
+  SCATTER_PLOT,
+  LINE_CHART,
   socket,
   login_token,
   getAvailableCollections,
