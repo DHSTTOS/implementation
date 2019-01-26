@@ -3,12 +3,13 @@ import { observer } from "mobx-react";
 import styled from "@emotion/styled";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
-import { ScatterPlot } from "@nivo/scatterplot";
 
 import { appStore } from "@stores";
 import { jsonstreams } from "../../../mockdata";
-import { formatData } from "@libs";
+import { formatData, SCATTER_PLOT, LINE_CHART } from "@libs";
 import DiagramControl from "./DiagramControl";
+import ScatterPlotBlock from "./ScatterPlotBlock";
+import LineChartBlock from "./LineChartBlock";
 
 const Container = styled.div`
   display: flex;
@@ -91,74 +92,49 @@ class DiagramsContainer extends Component {
 @observer
 class Diagram extends Component {
   render() {
+    const { plotType, groupName, x, y } = this.props.config;
     const data = formatData({
-      groupName: "L2Protocol",
-      x: "SourceMACAddress",
-      y: "DestinationMACAddress",
+      groupName,
+      x,
+      y,
       rawData: jsonstreams,
     });
     console.log(data);
 
-    return (
-      <PlotContainer>
-        <ScatterPlot
-          width={appStore.diagramDimension.width}
-          height={appStore.diagramDimension.height}
-          data={data}
-          margin={{
-            top: 35,
-            right: 140,
-            bottom: 70,
-            left: 140,
-          }}
-          xScale={{
-            type: "point",
-          }}
-          yScale={{
-            type: "point",
-          }}
-          axisBottom={{
-            orient: "bottom",
-            tickSize: 5,
-            tickPadding: 5,
-            tickRotation: 0,
-            legend: "SourceMACAddress",
-            legendPosition: "middle",
-            legendOffset: 46,
-          }}
-          axisLeft={{
-            orient: "left",
-            tickSize: 5,
-            tickPadding: 5,
-            tickRotation: 0,
-            legend: "DestinationMACAddress",
-            legendPosition: "middle",
-            legendOffset: -120,
-          }}
-          legends={[
-            {
-              anchor: "bottom-right",
-              direction: "column",
-              translateX: 130,
-              itemWidth: 100,
-              itemHeight: 12,
-              itemsSpacing: 5,
-              itemTextColor: "#999",
-              symbolSize: 12,
-              symbolShape: "circle",
-              effects: [
-                {
-                  on: "hover",
-                  style: {
-                    itemTextColor: "#000",
-                  },
-                },
-              ],
-            },
-          ]}
-        />
-      </PlotContainer>
+    const { width, height } = appStore.diagramDimension;
+
+    let plot = (
+      <CenteredTypography variant="subtitle1" color="error">
+        Enable to render diagram, please check configs
+      </CenteredTypography>
     );
+
+    switch (plotType) {
+      case SCATTER_PLOT:
+        plot = (
+          <ScatterPlotBlock
+            data={data}
+            x={x}
+            y={y}
+            width={width}
+            height={height}
+          />
+        );
+        break;
+      case LINE_CHART:
+        plot = (
+          <LineChartBlock
+            data={data}
+            x={x}
+            y={y}
+            width={width}
+            height={height}
+          />
+        );
+        break;
+    }
+
+    return <PlotContainer>{plot}</PlotContainer>;
   }
 }
 

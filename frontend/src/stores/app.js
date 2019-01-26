@@ -117,7 +117,7 @@ class AppStore {
     if (existingCurrentConfig) {
       this.configModal = {
         isOpen: true,
-        diagramConfig: existingCurrentConfig,
+        diagramConfig: { ...existingCurrentConfig },
       };
       console.log(
         "Diagram ID #" + existingCurrentConfig.diagramID + " is updated."

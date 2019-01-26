@@ -16,3 +16,6 @@ export const DEFAULT_GLOBAL_FILTERS = {
     // more protocols
   },
 };
+
+export const SCATTER_PLOT = "Scatter Plot";
+export const LINE_CHART = "Line Chart";
