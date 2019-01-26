@@ -34,27 +34,32 @@ class PlotTypeBar extends Component {
 
   render() {
     const availableKeys = dataStore.availableKeys;
+    const diagramConfig = appStore.configModal.diagramConfig;
     return (
       <Container>
         <Selector
           name="Plot Type"
           options={this.availablePlotTypes}
           onSelect={this.selectPlotType}
+          currentSelection={diagramConfig.plotType}
         />
         <Selector
           name="X-Axis"
           options={availableKeys}
           onSelect={this.selectXAxis}
+          currentSelection={diagramConfig.x}
         />
         <Selector
           name="Y-Axis"
           options={availableKeys}
           onSelect={this.selectYAxis}
+          currentSelection={diagramConfig.y}
         />
         <Selector
           name="Group by"
           options={availableKeys}
           onSelect={this.selectGroupBy}
+          currentSelection={diagramConfig.groupName}
         />
       </Container>
     );
