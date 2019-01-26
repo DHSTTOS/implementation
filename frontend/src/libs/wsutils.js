@@ -178,5 +178,5 @@ export default {
   getRecordsInRange,
   getRecordsInRangeSize,
   getLocalCollection,
-  geLocalCollectionData
+  getLocalCollectionData
 };
