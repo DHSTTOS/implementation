@@ -27,13 +27,19 @@ import {
  * @return {Object[]}
  */
 const formatData = ({ groupName, x, y, rawData = [] }) => {
+  // normalize the timestamp
+  const normalizedRawData = rawData.map(x => ({
+    ...x,
+    Timestamp: x["Timestamp"]["$date"],
+  }));
+
   // get all the names of groups of data by groupID
   const groups = new Set();
-  rawData.forEach(e => groups.add(e[groupName]));
+  normalizedRawData.forEach(e => groups.add(e[groupName]));
   const dataArr = [];
   groups.forEach(e => dataArr.push({ id: e, data: [] }));
 
-  rawData.map(e => {
+  normalizedRawData.map(e => {
     dataArr
       .filter(o => o.id === e[groupName])
       .map(o => o.data.push({ x: e[x], y: e[y] }));
