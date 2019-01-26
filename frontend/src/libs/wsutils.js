@@ -6,7 +6,7 @@ let msgIdCounter = 0;
 // as long as we keep these socket.something listener assignments within the same scope
 // as the socket construction, we won't miss the 'open' event etc.
 
-const login_token = (name, token) => {
+const loginToken = (name, token) => {
   const tokenMsg = {
     cmd: "LOGIN_TOKEN",
     user: name,
@@ -18,7 +18,7 @@ const login_token = (name, token) => {
 
 socket.onopen = _ => {
   // authenticate again when opening socket
-  login_token(appStore.userDetails.userName, appStore.userDetails.authToken);
+  loginToken(appStore.userDetails.userName, appStore.userDetails.authToken);
 };
 
 socket.onerror = err => {
@@ -81,7 +81,7 @@ socket.onmessage = message => {
       break;
     case "LIST_COL":
       // msg.par will be array
-      dataStore.available_collections = msg.par;
+      dataStore.availableCollections = msg.par;
       break;
     case "COLL_SIZE":
       break;
@@ -171,7 +171,7 @@ const getLocalCollectionData = (collName) => {
 
 export default {
   socket,
-  login_token,
+  loginToken,
   getAvailableCollections,
   getCollection,
   getCollectionSize,

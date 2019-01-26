@@ -7,7 +7,7 @@ import {
 
 import {
   socket,
-  login_token,
+  loginToken,
   getAvailableCollections,
   getCollection,
   getCollectionSize,
@@ -48,7 +48,7 @@ export {
   SCATTER_PLOT,
   LINE_CHART,
   socket,
-  login_token,
+  loginToken,
   getAvailableCollections,
   getCollection,
   getCollectionSize,

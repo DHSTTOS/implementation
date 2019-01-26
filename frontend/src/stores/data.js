@@ -8,7 +8,7 @@ class DataStore {
   availableKeys = Object.keys(jsonstreams[0]);
 
   @observable
-  available_collections = []; //exampleCollection
+  availableCollections = []; //exampleCollection
 
   // Raw network data
   @observable
