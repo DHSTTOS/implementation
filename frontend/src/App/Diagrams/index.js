@@ -3,7 +3,6 @@ import { observer } from "mobx-react";
 import styled from "@emotion/styled";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
-import { ScatterPlot } from "@nivo/scatterplot";
 
 import { appStore } from "@stores";
 import { jsonstreams } from "../../../mockdata";

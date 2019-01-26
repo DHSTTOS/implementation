@@ -3,6 +3,7 @@ import { observer } from "mobx-react";
 import styled from "@emotion/styled";
 
 import Selector from "./Selector";
+import { dataStore } from "@stores";
 
 const Container = styled.div`
   display: flex;
@@ -15,29 +16,29 @@ const Container = styled.div`
 
 @observer
 class PlotTypeBar extends Component {
-  sourceOptions = ["Option 1", "Option 2", "Option 3"];
-
+  // placeholderOptions = ["Option 1", "Option 2", "Option 3"];
+  availablePlotTypes = ["Scatter Plot", "Line Chart"];
   render() {
     return (
       <Container>
         <Selector
           name="Plot Type"
-          options={this.sourceOptions}
+          options={this.availablePlotTypes}
           onSelect={console.log}
         />
         <Selector
           name="X-Axis"
-          options={this.sourceOptions}
+          options={dataStore.availableKeys}
           onSelect={console.log}
         />
         <Selector
           name="Y-Axis"
-          options={this.sourceOptions}
+          options={dataStore.availableKeys}
           onSelect={console.log}
         />
         <Selector
           name="Group by"
-          options={this.sourceOptions}
+          options={dataStore.availableKeys}
           onSelect={console.log}
         />
       </Container>

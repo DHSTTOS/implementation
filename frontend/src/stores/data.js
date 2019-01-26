@@ -1,7 +1,12 @@
 import { observable, action } from "mobx";
 import { DEFAULT_SOURCE_NAME } from "@libs";
+import { jsonstreams } from "../../mockdata";
 
 class DataStore {
+  @observable
+  // TODO: when ws binding is done, we'll make this flexible
+  availableKeys = Object.keys(jsonstreams[0]);
+
   @observable
   available_collections = []; //exampleCollection
 
