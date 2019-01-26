@@ -6,7 +6,7 @@ import Typography from "@material-ui/core/Typography";
 
 import { appStore } from "@stores";
 import { jsonstreams } from "../../../mockdata";
-import { formatData } from "@libs";
+import { formatData, SCATTER_PLOT, LINE_CHART } from "@libs";
 import DiagramControl from "./DiagramControl";
 import ScatterPlotBlock from "./ScatterPlotBlock";
 
@@ -105,7 +105,7 @@ class Diagram extends Component {
     let plot = <div />;
 
     switch (plotType) {
-      case "Scatter Plot":
+      case SCATTER_PLOT:
         plot = (
           <ScatterPlotBlock
             data={data}
@@ -116,7 +116,7 @@ class Diagram extends Component {
           />
         );
         break;
-      case "Line Chart":
+      case LINE_CHART:
         plot = (
           <LineChartBlock
             data={data}

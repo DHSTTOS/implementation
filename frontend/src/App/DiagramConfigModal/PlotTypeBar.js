@@ -4,6 +4,7 @@ import styled from "@emotion/styled";
 
 import Selector from "./Selector";
 import { dataStore } from "@stores";
+import { SCATTER_PLOT, LINE_CHART } from "@libs";
 
 const Container = styled.div`
   display: flex;
@@ -16,9 +17,10 @@ const Container = styled.div`
 
 @observer
 class PlotTypeBar extends Component {
-  // placeholderOptions = ["Option 1", "Option 2", "Option 3"];
-  availablePlotTypes = ["Scatter Plot", "Line Chart"];
+  availablePlotTypes = [SCATTER_PLOT, LINE_CHART];
+
   render() {
+    const availableKeys = dataStore.availableKeys;
     return (
       <Container>
         <Selector
@@ -28,17 +30,17 @@ class PlotTypeBar extends Component {
         />
         <Selector
           name="X-Axis"
-          options={dataStore.availableKeys}
+          options={availableKeys}
           onSelect={console.log}
         />
         <Selector
           name="Y-Axis"
-          options={dataStore.availableKeys}
+          options={availableKeys}
           onSelect={console.log}
         />
         <Selector
           name="Group by"
-          options={dataStore.availableKeys}
+          options={availableKeys}
           onSelect={console.log}
         />
       </Container>
