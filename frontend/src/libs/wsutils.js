@@ -144,6 +144,31 @@ const getRecordsInRangeSize = (name, key, startValue, endValue) => {
   socket.send(JSON.stringify(message));
 };
 
+
+// Get a collection. If no name given, return the raw data as a pseudo collection.
+const getCollection = (collName) => {
+  if (collName == "") {
+    return {
+      name: "",
+      keys: ["L2Protocol", "SourceMACAddress", "L4Protocol", "SourceIPAddress", "PacketSummary", "PacketID", "DestinationIPAddress", "Timestamp", "DestinationPort", "SourcePort", "L3Protocol", "DestinationMACAddress"],
+      data: dataStore.rawdata
+    };
+  } else {
+    return dataStore.alarms[collName];
+  }
+}
+
+
+// Get the data of the specified collection. Returns an array of JSON strings representing the datapoints.
+const getCollectionData = (collName) => {
+  if (collName == "") {
+    return dataStore.rawdata;
+  } else {
+    return dataStore.alarms[collName].data;
+  }
+}
+
+
 export default {
   socket,
   login_token,
@@ -152,4 +177,6 @@ export default {
   getCollectionSize,
   getRecordsInRange,
   getRecordsInRangeSize,
+  getCollection,
+  getCollectionData
 };
