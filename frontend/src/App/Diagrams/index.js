@@ -102,7 +102,11 @@ class Diagram extends Component {
 
     const { width, height } = appStore.diagramDimension;
 
-    let plot = <div />;
+    let plot = (
+      <CenteredTypography variant="subtitle1" color="error">
+        Enable to render diagram, please check configs
+      </CenteredTypography>
+    );
 
     switch (plotType) {
       case SCATTER_PLOT:
