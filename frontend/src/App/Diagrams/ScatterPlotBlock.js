@@ -38,7 +38,7 @@ class ScatterPlotBlock extends Component {
           tickSize: 5,
           tickPadding: 5,
           tickRotation: 0,
-          legend: y,
+          legend: x,
           legendPosition: "middle",
           legendOffset: 46,
         }}
@@ -47,7 +47,7 @@ class ScatterPlotBlock extends Component {
           tickSize: 5,
           tickPadding: 5,
           tickRotation: 0,
-          legend: x,
+          legend: y,
           legendPosition: "middle",
           legendOffset: -120,
         }}
