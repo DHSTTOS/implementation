@@ -2,18 +2,36 @@ import { appStore, dataStore } from "@stores";
 
 const socket = new WebSocket("wss://echo.websocket.org/");
 let msgIdCounter = 0;
+let msgRegister = [];
 
 // as long as we keep these socket.something listener assignments within the same scope
 // as the socket construction, we won't miss the 'open' event etc.
+
+
+// Takes a message object, adds id, registers it, and sends it.
+const sendRequest = msg => {
+  msg.id = msgIdCounter++,
+  msgRegister[id] = msg;
+  socket.send(JSON.stringify(tokenMsg));
+}
+
+
+const loginToken = (name, token) => {
+  const msg = {
+    cmd: "LOGIN",
+    user: name,
+    pwd: token,
+  };
+  sendRequest(tokenMsg);
+};
 
 const loginToken = (name, token) => {
   const tokenMsg = {
     cmd: "LOGIN_TOKEN",
     user: name,
     token: token,
-    id: msgIdCounter++,
   };
-  socket.send(JSON.stringify(tokenMsg));
+  sendRequest(tokenMsg);
 };
 
 socket.onopen = _ => {
@@ -30,10 +48,26 @@ socket.onclose = _ => {
 };
 
 // Handle data below
-const handleData = data => {
-  console.log("Received data message: " + data.length + " " + data[0]);
+const handleData = msg => {
+  console.log("Received data message: " + msg.data.length + " " + msg.data[0]);
+  if (!msgRegister[msg.id]) {
+    console.log("Protocol: bug: received unrequested message, dropping it: " + msg);
+    return;
+  }
+  let context = msgRegister[msg.id];  // the request that triggered this msg
+  let collName = context.par;
+  if (collName.index('_') > -1) {
+    dataStore.alarms[collName].data = {
+      name: collName,
+      keys: Object.keys(msg.data[0]),	// XXX: if data empty and this existed already, should we copy the old keys instead of overwriting with []?
+      data: msg.data
+    }
+  } else {
+    dataStore.rawdata = msg.data;
+    dataStore.availableKeys = Object.keys(msg.data[0]);
+  }
+  // TODO: remove msgRegister[msg.id]
 
-  dataStore.data = data;
   console.log("Updated data store:");
   console.log(dataStore.data.length + " " + dataStore.data[0]);
 };
@@ -86,7 +120,7 @@ socket.onmessage = message => {
     case "COLL_SIZE":
       break;
     case "DATA":
-      handleData(msg.par);
+      handleData(msg);
       break;
     default:
       console.log("illegal message from server: " + msg.cmd);
@@ -99,7 +133,7 @@ const getAvailableCollections = _ => {
     cmd: "GET_AV_COLL",
     id: msgIdCounter++,
   };
-  socket.send(JSON.stringify(message));
+  sendRequest(message);
 };
 
 const getCollection = name => {
@@ -108,7 +142,7 @@ const getCollection = name => {
     par: name,
     id: msgIdCounter++,
   };
-  socket.send(JSON.stringify(message));
+  sendRequest(message);
 };
 
 const getCollectionSize = name => {
@@ -117,7 +151,7 @@ const getCollectionSize = name => {
     par: name,
     id: msgIdCounter++,
   };
-  socket.send(JSON.stringify(message));
+  sendRequest(message);
 };
 
 const getRecordsInRange = (name, key, startValue, endValue) => {
@@ -129,7 +163,7 @@ const getRecordsInRange = (name, key, startValue, endValue) => {
     end: endValue,
     id: msgIdCounter++,
   };
-  socket.send(JSON.stringify(message));
+  sendRequest(message);
 };
 
 const getRecordsInRangeSize = (name, key, startValue, endValue) => {
@@ -141,7 +175,7 @@ const getRecordsInRangeSize = (name, key, startValue, endValue) => {
     end: endValue,
     id: msgIdCounter++,
   };
-  socket.send(JSON.stringify(message));
+  sendRequest(message);
 };
 
 
