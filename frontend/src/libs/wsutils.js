@@ -145,8 +145,8 @@ const getRecordsInRangeSize = (name, key, startValue, endValue) => {
 };
 
 
-// Get a collection. If no name given, return the raw data as a pseudo collection.
-const getCollection = (collName) => {
+// Get a collection from local storage. If no name given, return the raw data as a pseudo collection.
+const getLocalCollection = (collName) => {
   if (collName == "") {
     return {
       name: "",
@@ -159,8 +159,8 @@ const getCollection = (collName) => {
 }
 
 
-// Get the data of the specified collection. Returns an array of JSON strings representing the datapoints.
-const getCollectionData = (collName) => {
+// Get the data of the specified collection from local storage. Returns an array of JSON strings representing the datapoints.
+const getLocalCollectionData = (collName) => {
   if (collName == "") {
     return dataStore.rawdata;
   } else {
@@ -177,6 +177,6 @@ export default {
   getCollectionSize,
   getRecordsInRange,
   getRecordsInRangeSize,
-  getCollection,
-  getCollectionData
+  getLocalCollection,
+  geLocalCollectionData
 };
