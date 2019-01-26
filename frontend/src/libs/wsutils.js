@@ -16,7 +16,7 @@ const sendRequest = msg => {
 }
 
 
-const loginToken = (name, token) => {
+const login = (name, token) => {
   const msg = {
     cmd: "LOGIN",
     user: name,
