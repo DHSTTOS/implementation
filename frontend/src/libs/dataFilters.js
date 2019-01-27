@@ -22,58 +22,123 @@
  */
 
 /**
- * @param {DataPoint[]} data
- * @returns {DataPoint[]}
+ * @param {DataPoint} packet
+ * @returns {Boolean}
  */
-const removeL2 = data => {
-  return data.filter(x => x["L2Protocol"].length === 0);
+const passEther = packet => {
+  return packet["L2Protocol"] == "Ether";
 };
 
 /**
- * @param {DataPoint[]} data
- * @returns {DataPoint[]}
+ * @param {DataPoint} packet
+ * @returns {Boolean}
  */
-const removeL3 = data => {
-  return data.filter(x => x["L3Protocol"].length === 0);
+const passProfinet = packet => {
+  return packet["L2Protocol"] == "Profinet";
 };
 
 /**
- * @param {DataPoint[]} data
- * @returns {DataPoint[]}
+ * @param {DataPoint} packet
+ * @returns {Boolean}
  */
-const removeL4 = data => {
-  return data.filter(x => x["L4Protocol"].length === 0);
+const passL2Other = packet => {
+  return (packet["L2Protocol"] !== "Ether") && (packet["L2Protocol"] !== "Profinet");
 };
 
 /**
- * @param {DataPoint[]} data
- * @returns {DataPoint[]}
+ * @param {DataPoint} packet
+ * @returns {Boolean}
  */
-const removeEther = data => {
-  return data.filter(x => x["L2Protocol"] !== "Ether");
+const passUDP = packet => {
+  return packet["L4Protocol"] == "UDP";
+};
+
+
+/**
+ * @param {DataPoint} packet
+ * @returns {Boolean}
+ */
+const passTCP = packet => {
+  return packet["L4Protocol"] == "TCP";
+};
+
+
+/**
+ * @param {DataPoint} packet
+ * @returns {Boolean}
+ */
+const passL4Other = packet => {
+  return (packet["L4Protocol"] !== "UDP") && (packet["L4Protocol"] !== "TCP");
+};
+
+
+/**
+ * Pass a packet if it fits any L2 protcol that the user has enabled.
+ * @param {DataPoint} packet
+ * @returns {Boolean}
+ */
+const passL2 = packet => {
+/*
+  // pseudocode
+  return
+    GUICheckbox("Ether") && passEther(packet) ||
+    GUICheckbox("Profinet") && passProfinet(packet) ||
+    GUICheckbox("L2Other") && passL2Other(packet);
+*/
 };
 
 /**
- * @param {DataPoint[]} data
- * @returns {DataPoint[]}
+ * @param {DataPoint} packet
+ * @returns {Boolean}
  */
-const removeProfinet = data => {
-  return data.filter(x => x["L2Protocol"] !== "Profinet");
+const passL3 = packet => {
+  return packet["L3Protocol"].length !== 0;
+};
+
+
+/**
+ * Pass a packet if it fits any L4 protcol that the user has enabled.
+ * @param {DataPoint} packet
+ * @returns {Boolean}
+ */
+const passL4 = packet => {
+/*
+  // pseudocode
+  return
+    GUICheckbox("TCP") && passTCP(packet) ||
+    GUICheckbox("UDP") && passUDP(packet) ||
+    GUICheckbox("L4Other") && passL4Other(packet);
+*/
+ 
 };
 
 /**
+ * Return those packets that have been passed by one filter on each layer
  * @param {DataPoint[]} data
  * @returns {DataPoint[]}
  */
-const removeUDP = data => {
-  return data.filter(x => x["L4Protocol"] !== "UDP");
+const applyGUIFiltersStrictly = data => {
+  return data.filter(x => passL2(x) && passL3(x) && passL4(x));
+};
+
+/**
+ * Return those packets that have been passed by any filter
+ * @param {DataPoint[]} data
+ * @returns {DataPoint[]}
+ */
+const applyGUIFiltersLoosely = data => {
+  return data.filter(x => passL2(x) || passL3(x) || passL4(x));
 };
 
 export default {
-  removeL2,
-  removeL3,
-  removeL4,
-  removeEther,
-  removeProfinet,
-  removeUDP,
+  passEther,
+  passProfinet,
+  passL2Other,
+  passL2,
+  passL3,
+  passTCP,
+  passUDP,
+  passL4Other,
+  passL4,
+  applyGUIFilters
 };
