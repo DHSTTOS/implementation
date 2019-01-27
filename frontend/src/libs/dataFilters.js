@@ -1,3 +1,5 @@
+import { appStore } from "@stores";
+
 /**
  * @typedef DataPoint
  * @type {Object}
@@ -42,7 +44,9 @@ const passProfinet = packet => {
  * @returns {Boolean}
  */
 const passL2Other = packet => {
-  return (packet["L2Protocol"] !== "Ether") && (packet["L2Protocol"] !== "Profinet");
+  return (
+    packet["L2Protocol"] !== "Ether" && packet["L2Protocol"] !== "Profinet"
+  );
 };
 
 /**
@@ -53,7 +57,6 @@ const passUDP = packet => {
   return packet["L4Protocol"] == "UDP";
 };
 
-
 /**
  * @param {DataPoint} packet
  * @returns {Boolean}
@@ -62,15 +65,13 @@ const passTCP = packet => {
   return packet["L4Protocol"] == "TCP";
 };
 
-
 /**
  * @param {DataPoint} packet
  * @returns {Boolean}
  */
 const passL4Other = packet => {
-  return (packet["L4Protocol"] !== "UDP") && (packet["L4Protocol"] !== "TCP");
+  return packet["L4Protocol"] !== "UDP" && packet["L4Protocol"] !== "TCP";
 };
-
 
 /**
  * Pass a packet if it fits any L2 protcol that the user has enabled.
@@ -78,13 +79,11 @@ const passL4Other = packet => {
  * @returns {Boolean}
  */
 const passL2 = packet => {
-/*
-  // pseudocode
-  return
-    GUICheckbox("Ether") && passEther(packet) ||
-    GUICheckbox("Profinet") && passProfinet(packet) ||
-    GUICheckbox("L2Other") && passL2Other(packet);
-*/
+  return (
+    (appStore.globalFilters.ether && passEther(packet)) ||
+    (appStore.globalFilters.profinet && passProfinet(packet)) ||
+    (appStore.globalFilters.l2other && passL2Other(packet))
+  );
 };
 
 /**
@@ -95,21 +94,17 @@ const passL3 = packet => {
   return packet["L3Protocol"].length !== 0;
 };
 
-
 /**
  * Pass a packet if it fits any L4 protcol that the user has enabled.
  * @param {DataPoint} packet
  * @returns {Boolean}
  */
 const passL4 = packet => {
-/*
-  // pseudocode
-  return
-    GUICheckbox("TCP") && passTCP(packet) ||
-    GUICheckbox("UDP") && passUDP(packet) ||
-    GUICheckbox("L4Other") && passL4Other(packet);
-*/
- 
+  return (
+    (appStore.globalFilters.tcp && passTCP(packet)) ||
+    (appStore.globalFilters.udp && passUDP(packet)) ||
+    (appStore.globalFilters.l4other && passL4Other(packet))
+  );
 };
 
 /**
@@ -140,5 +135,7 @@ export default {
   passUDP,
   passL4Other,
   passL4,
-  applyGUIFilters
+  applyGUIFilters,
+  applyGUIFiltersStrictly,
+  applyGUIFiltersLoosely,
 };

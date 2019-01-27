@@ -211,6 +211,20 @@ class AppStore {
     },
   ];
 
+  /**
+   * @typedef {object} GlobalFilters
+   * @property {boolean} ether
+   * @property {boolean} profinet
+   * @property {boolean} l2other
+   * @property {boolean} l3
+   * @property {boolean} tcp
+   * @property {boolean} udp
+   * @property {boolean} l4other
+   */
+
+  /**
+   * @type {GlobalFilters}
+   */
   @observable
   globalFilters = DEFAULT_GLOBAL_FILTERS;
 
