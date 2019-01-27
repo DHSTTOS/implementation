@@ -135,7 +135,7 @@ export default {
   passUDP,
   passL4Other,
   passL4,
-  applyGUIFilters,
+  // applyGUIFilters,
   applyGUIFiltersStrictly,
   applyGUIFiltersLoosely,
 };
