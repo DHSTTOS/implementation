@@ -85,8 +85,8 @@ class DiagramSpecBlock extends Component {
     appStore.configModal.diagramConfig.specConfig[key] = event.target.value;
   };
 
-  selectColorScheme = colorScheme => {
-    appStore.configModal.diagramConfig.specConfig.colorScheme = colorScheme;
+  selectColors = colors => {
+    appStore.configModal.diagramConfig.specConfig.colors = colors;
   };
 
   render() {
@@ -94,13 +94,13 @@ class DiagramSpecBlock extends Component {
     switch (this.props.plotType) {
       case SCATTER_PLOT:
         controlOptions = [
-          { name: "Color Scheme", key: "colorScheme", type: "colorScheme" },
+          { name: "Color Scheme", key: "colors", type: "colors" },
           { name: "Symbol Size", key: "symbolSize", type: "input" },
         ];
         break;
       case LINE_CHART:
         controlOptions = [
-          { name: "Color Scheme", key: "colorScheme", type: "colorScheme" },
+          { name: "Color Scheme", key: "colors", type: "colors" },
           { name: "Line Width", key: "lineWidth", type: "input" },
           { name: "Enable Area", key: "enableArea", type: "checkbox" },
           { name: "Area Opacity", key: "areaOpacity", type: "input" },
@@ -132,6 +132,7 @@ class DiagramSpecBlock extends Component {
                         />
                       }
                       label={x.name}
+                      key={x.name}
                     />
                   ))}
                 </StyledFormGroup>
@@ -139,13 +140,14 @@ class DiagramSpecBlock extends Component {
             )}
             {controlOptions &&
               controlOptions
-                .filter(x => x.type === "colorScheme")
+                .filter(x => x.type === "colors")
                 .map(x => (
                   <Selector
                     name={x.name}
                     options={NIVO_COLOR_SCHEMES}
-                    onSelect={this.selectColorScheme}
-                    currentSelection={specConfig.colorScheme}
+                    onSelect={this.selectColors}
+                    currentSelection={specConfig.colors}
+                    key={x.name}
                   />
                 ))}
             <TextFieldsWrapper>
@@ -162,6 +164,7 @@ class DiagramSpecBlock extends Component {
                         shrink: true,
                       }}
                       margin="normal"
+                      key={x.name}
                     />
                   ))}
             </TextFieldsWrapper>

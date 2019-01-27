@@ -22,14 +22,14 @@ import {
 /**
  * @typedef ScatterPlotConfig
  * @type {Object}
- * @property {string} colorScheme
+ * @property {string} colors
  * @property {number} symbolSize
  */
 
 /**
  * @typedef LinePlotConfig
  * @type {Object}
- * @property {string} colorScheme
+ * @property {string} colors
  * @property {number} lineWidth
  * @property {boolean} enableArea
  * @property {number} areaOpacity
@@ -160,13 +160,13 @@ class AppStore {
     switch (plotType) {
       case SCATTER_PLOT:
         specConfig = {
-          colorScheme: NIVO_COLOR_SCHEMES[0],
+          colors: NIVO_COLOR_SCHEMES[0],
           symbolSize: 6,
         };
         break;
       case LINE_CHART:
         specConfig = {
-          colorScheme: NIVO_COLOR_SCHEMES[0],
+          colors: NIVO_COLOR_SCHEMES[0],
           lineWidth: 2,
           enableArea: false,
           areaOpacity: 0.2,

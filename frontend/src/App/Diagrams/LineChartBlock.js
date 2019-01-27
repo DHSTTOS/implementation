@@ -9,13 +9,28 @@ import { Line } from "@nivo/line";
  * @prop {object[]} data
  * @prop {string} x
  * @prop {string} y
+ * @prop {string} colors
+ * @prop {boolean} enableArea
+ * @prop {number} lineWidth
+ * @prop {number} areaOpacity
  *
  * @extends {Component<Props>}
  */
 @observer
 class LineChartBlock extends Component {
   render() {
-    const { width, height, data, x, y } = this.props;
+    const {
+      width,
+      height,
+      data,
+      x,
+      y,
+      colors,
+      enableArea,
+      lineWidth,
+      areaOpacity,
+    } = this.props;
+
     return (
       <Line
         width={width}
@@ -27,6 +42,10 @@ class LineChartBlock extends Component {
           bottom: 70,
           left: 140,
         }}
+        colors={colors}
+        enableArea={enableArea}
+        lineWidth={lineWidth}
+        areaOpacity={areaOpacity}
         xScale={{
           type: "point",
         }}

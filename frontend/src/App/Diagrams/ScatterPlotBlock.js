@@ -9,13 +9,15 @@ import { ScatterPlot } from "@nivo/scatterplot";
  * @prop {object[]} data
  * @prop {string} x
  * @prop {string} y
+ * @prop {string} colors
+ * @prop {number} symbolSize
  *
  * @extends {Component<Props>}
  */
 @observer
 class ScatterPlotBlock extends Component {
   render() {
-    const { width, height, data, x, y } = this.props;
+    const { width, height, data, x, y, colors, symbolSize } = this.props;
     return (
       <ScatterPlot
         width={width}
@@ -27,6 +29,8 @@ class ScatterPlotBlock extends Component {
           bottom: 70,
           left: 140,
         }}
+        colors={colors}
+        symbolSize={symbolSize}
         xScale={{
           type: "point",
         }}
