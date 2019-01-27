@@ -1,6 +1,7 @@
 package invalid.adininspector.adinhub;
 
 import invalid.adininspector.MongoClientMediator;
+import invalid.adininspector.exceptions.LoginFailureException;
 
 /**
  * Encapsulates a user session for a connection to a MongoDB database.
@@ -9,20 +10,21 @@ import invalid.adininspector.MongoClientMediator;
 public class MongoDBUserSession implements IUserSession {
 
 	private MongoClientMediator mongoClientMediator;
-	
+
 	/**
 	 * Creates a new MongoDB session.
+	 * @throws LoginFailureException 
 	 */
-	public MongoDBUserSession(String username, String password) {
-		// TODO: correct db name
+	public MongoDBUserSession(String username, String password) throws LoginFailureException {
 		mongoClientMediator = new MongoClientMediator(username, password);
 	}
 
 	public IUserSession createUserSession(String username, String password) {
-		MongoDBUserSession m = new MongoDBUserSession(username, password);
+		MongoDBUserSession m = null;
 		try {
+			m = new MongoDBUserSession(username, password);
 			m.getAvailableCollections();
-		} catch (Exception e) {	// TOODO: narrow this down to the mongodb exception
+		} catch (LoginFailureException e) {
 			System.err.println("createUserSession: login failed; u: " + username + "pw: " + password);
 			m = null;
 			return null;
@@ -48,7 +50,7 @@ public class MongoDBUserSession implements IUserSession {
 	public String getEndRecord(String collection) {
 		return mongoClientMediator.getEndRecord(collection);
 	}
-	
+
 	public long getCollectionSize(String collection) {
 		return mongoClientMediator.CollectionSize(collection);
 	}
