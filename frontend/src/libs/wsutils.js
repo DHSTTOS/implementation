@@ -1,6 +1,7 @@
 import { appStore, dataStore } from "@stores";
 
-const socket = new WebSocket("wss://echo.websocket.org/");
+//const socket = new WebSocket("wss://echo.websocket.org/");
+const socket = new WebSocket("ws://localhost:8080/adininspector/adinhubsoc2");
 let msgIdCounter = 0;
 let msgRegister = [];
 
@@ -8,28 +9,28 @@ let msgRegister = [];
 // as the socket construction, we won't miss the 'open' event etc.
 
 // Takes a message object, adds id, registers it, and sends it.
-const sendRequest = msg => {
-  msg.id = msgIdCounter++;
-  msgRegister[id] = msg;
-  socket.send(JSON.stringify(tokenMsg));
+const sendRequest = message => {
+  message.id = msgIdCounter++;
+  msgRegister[id] = message;
+  socket.send(JSON.stringify(message));
 };
 
-const login = (name, token) => {
-  const msg = {
+const login = (name, password) => {
+  const message = {
     cmd: "LOGIN",
     user: name,
-    pwd: token,
+    pwd: password,
   };
-  sendRequest(tokenMsg);
+  sendRequest(message);
 };
 
 const loginToken = (name, token) => {
-  const tokenMsg = {
+  const message = {
     cmd: "LOGIN_TOKEN",
     user: name,
     token: token,
   };
-  sendRequest(tokenMsg);
+  sendRequest(message);
 };
 
 socket.onopen = _ => {
@@ -72,11 +73,13 @@ const handleData = msg => {
   console.log(dataStore.data.length + " " + dataStore.data[0]);
 };
 
-const handleSession = msg => {
+const handleSession = async msg => {
   if (appStore.userDetails.wsLoggedIn) {
     switch (msg.status) {
       case "OK":
-        // can't really happen
+        // can't really happen unless we use the two-page login
+	let token = msg.par;
+        await localStorage.setItem('token', token);
         console.log(
           "websocket connection: got unexpected SESSION message: " +
             msg.status +
@@ -108,7 +111,8 @@ const handleSession = msg => {
 };
 
 socket.onmessage = message => {
-  const msg = JSON.parse(message);
+  console.log("onmessage: " + message.data);
+  const msg = JSON.parse(message.data);
   switch (msg.cmd) {
     case "SESSION":
       handleSession(msg);
