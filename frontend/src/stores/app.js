@@ -5,6 +5,7 @@ import {
   SCATTER_PLOT,
   LINE_CHART,
 } from "@libs";
+import { NIVO_COLOR_SCHEMES } from "@libs/consts";
 
 // JS Doc type defs
 /**
@@ -159,13 +160,13 @@ class AppStore {
     switch (plotType) {
       case SCATTER_PLOT:
         specConfig = {
-          colorScheme: "nivo",
+          colorScheme: NIVO_COLOR_SCHEMES[0],
           symbolSize: 6,
         };
         break;
       case LINE_CHART:
         specConfig = {
-          colorScheme: "nivo",
+          colorScheme: NIVO_COLOR_SCHEMES[0],
           lineWidth: 2,
           enableArea: false,
           areaOpacity: 0.2,
