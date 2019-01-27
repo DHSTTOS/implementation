@@ -10,15 +10,15 @@ import { DEFAULT_SOURCE_NAME, DEFAULT_GLOBAL_FILTERS } from "@libs";
  * @property {string} groupName
  * @property {string} x
  * @property {string} y
- * @property {boolean} useColor
- * @property {boolean} enableLegends
- * @property {boolean} enableTooltip
  * @property {(LinePlotConfig | ScatterPlotConfig | NetworkPlotConfig)} specConfig
  */
 
 /**
  * @typedef LinePlotConfig
  * @type {Object}
+ * @property {boolean} useColor
+ * @property {boolean} enableLegends
+ * @property {boolean} enableTooltip
  * @property {number} lineWidth
  * @property {number} lineOpacity
  * @property {number} pointSize
@@ -30,6 +30,9 @@ import { DEFAULT_SOURCE_NAME, DEFAULT_GLOBAL_FILTERS } from "@libs";
 /**
  * @typedef ScatterPlotConfig
  * @type {Object}
+ * @property {boolean} useColor
+ * @property {boolean} enableLegends
+ * @property {boolean} enableTooltip
  * @property {number} pointSize
  * @property {number} pointOpacity
  */
@@ -37,6 +40,9 @@ import { DEFAULT_SOURCE_NAME, DEFAULT_GLOBAL_FILTERS } from "@libs";
 /**
  * @typedef NetworkPlotConfig
  * @type {Object}
+ * @property {boolean} useColor
+ * @property {boolean} enableLegends
+ * @property {boolean} enableTooltip
  * @property {number} lineWidth
  * @property {number} lineOpacity
  * @property {number} pointSize
