@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { observer } from "mobx-react";
 import styled from "@emotion/styled";
 
-import Selector from "./Selector";
+import { Selector } from "@components";
 import { dataStore, appStore } from "@stores";
 import { SCATTER_PLOT, LINE_CHART } from "@libs";
 

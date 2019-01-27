@@ -12,7 +12,7 @@ import TextField from "@material-ui/core/TextField";
 
 import { appStore } from "@stores";
 import { SCATTER_PLOT, LINE_CHART, NIVO_COLOR_SCHEMES } from "@libs";
-import Selector from "./Selector";
+import { Selector } from "@components";
 
 const Container = styled(Paper)`
   display: flex;
