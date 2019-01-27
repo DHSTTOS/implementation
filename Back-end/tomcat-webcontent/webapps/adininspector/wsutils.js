@@ -164,13 +164,8 @@ const getRecordsInRangeSize = (name, key, startValue, endValue) => {
   socket.send(JSON.stringify(message));
 };
 
-export const foo = () => {
-  console.log("foo");
-  alert("foo");
-};
 
 export default {
-  foo,
   socket,
   login_token,
   getAvailableCollections,

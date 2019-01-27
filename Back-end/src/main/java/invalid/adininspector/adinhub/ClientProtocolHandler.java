@@ -22,7 +22,7 @@ public class ClientProtocolHandler {
 				Map<String, Object> m = new HashMap<String, Object>();
 				String username = (String)msgParsed.get("user");
 				String password = (String)msgParsed.get("pwd");
-				String res = hub.createUserSession(session, username, password);
+				String res = hub.login(session, username, password);
 
 				m.put("cmd", "SESSION");
 				if ((res == null) || res.equals("")) {
@@ -37,9 +37,23 @@ public class ClientProtocolHandler {
 		},
 		LOGIN_TOKEN("LOGIN_TOKEN") {
 			public Map<String, Object> execute(Hub hub, Session session, Map<String,Object> msgParsed) {
+				String username = (String)msgParsed.get("user");
+				String token = (String)msgParsed.get("token");
+				boolean loggedIn = hub.loginWithToken(session, username, token);
 				Map<String, Object> m = new HashMap<String, Object>();
 				m.put("cmd", "SESSION");
-				m.put("status", "OK");
+				m.put("status", loggedIn ? "OK" : "FAIL");
+				m.put("par", "");
+				return m;
+			}
+		},
+		LOGOUT("LOGOUT") {
+			public Map<String, Object> execute(Hub hub, Session session, Map<String,Object> msgParsed) {
+				hub.logOut(session);
+				Map<String, Object> m = new HashMap<String, Object>();
+				m.put("cmd", "SESSION");
+				m.put("status", "FAIL");
+				m.put("par", "");
 				return m;
 			}
 		},

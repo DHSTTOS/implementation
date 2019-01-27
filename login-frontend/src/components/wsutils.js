@@ -1,6 +1,10 @@
-import { appStore, dataStore } from "@stores";
+//import { appStore, dataStore } from "@stores";
+//import * as appStore from "./stores/app.js";
+import appStore from "./stores/app.js";
+//import * as dataStore from "./stores/data.js";
+import dataStore from "./stores/data.js";
 
-const socket = new WebSocket("wss://echo.websocket.org/");
+const socket = new WebSocket("ws://localhost:8080/adininspector/adinhubsoc2");
 let msgIdCounter = 0;
 let msgRegister = [];
 
@@ -10,19 +14,19 @@ let msgRegister = [];
 
 // Takes a message object, adds id, registers it, and sends it.
 const sendRequest = msg => {
-  msg.id = msgIdCounter++,
-  msgRegister[id] = msg;
-  socket.send(JSON.stringify(tokenMsg));
+  msg.id = msgIdCounter++;
+  msgRegister[msg.id] = msg;
+  socket.send(JSON.stringify(msg));
 }
 
 
-const login = (name, token) => {
+export const login = (name, password) => {
   const msg = {
     cmd: "LOGIN",
     user: name,
-    pwd: token,
+    pwd: password,
   };
-  sendRequest(tokenMsg);
+  sendRequest(msg);
 };
 
 const loginToken = (name, token) => {
@@ -205,6 +209,7 @@ const getLocalCollectionData = (collName) => {
 
 export default {
   socket,
+  login,
   loginToken,
   getAvailableCollections,
   getCollection,
