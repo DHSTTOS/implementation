@@ -10,9 +10,12 @@
 		url: <input id="wsurl" type="text" size="60"><p>
 
 		<input onclick="fillTextLogin();" value="LOGIN" type="button">
+		<input onclick="fillTextLoginToken();" value="LOGIN_TOKEN" type="button">
 		<input onclick="fillTextAvCol();" value="AV_COLL" type="button">
+		<input onclick="fillTextCollSize();" value="GET_COLL_SIZE" type="button">
 		<input onclick="fillTextGetStart();" value="GET_START" type="button">
 		<input onclick="fillTextGetRange();" value="GET_RANGE" type="button">
+		<input onclick="fillTextLogout();" value="LOGOUT" type="button">
 		<p>
 
 		msg: <input id="message" type="text" size="60" autofocus><p>
@@ -95,8 +98,20 @@
 			message.value = '{"cmd": "LOGIN", "user": "skroob", "pwd": "12345", "id": "12"}';
 		}
 
+		function fillTextLoginToken() {
+			message.value = '{"cmd": "LOGIN_TOKEN", "user": "skroob", "token": "DIGNUS", "id": "12"}';
+		}
+
+		function fillTextLogout() {
+			message.value = '{"cmd": "LOGOUT", "id": "12"}';
+		}
+
 		function fillTextAvCol() {
 			message.value = '{"cmd": "GET_AV_COLL", "id": "13"}';
+		}
+
+		function fillTextCollSize() {
+			message.value = '{"cmd": "GET_COLL_SIZE", "par": "mockdataset", "id": "13"}';
 		}
 
 		function fillTextGetStart() {
