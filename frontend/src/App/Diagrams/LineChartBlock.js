@@ -54,6 +54,7 @@ class LineChartBlock extends Component {
           legendPosition: "middle",
           legendOffset: -120,
         }}
+        animate={false}
         legends={[
           {
             anchor: "bottom-right",
