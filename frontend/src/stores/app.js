@@ -159,19 +159,16 @@ class AppStore {
     switch (plotType) {
       case SCATTER_PLOT:
         specConfig = {
-          useColor: true,
-          enableLegends: true,
-          enableTooltip: true,
+          colorScheme: "nivo",
           symbolSize: 6,
         };
         break;
       case LINE_CHART:
         specConfig = {
-          useColor: true,
-          enableLegends: true,
-          enableTooltip: true,
-          symbolSize: 6,
+          colorScheme: "nivo",
           lineWidth: 2,
+          enableArea: false,
+          areaOpacity: 0.2,
         };
         break;
     }
