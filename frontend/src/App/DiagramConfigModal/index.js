@@ -89,7 +89,9 @@ class DiagramConfigModal extends Component {
           </ModalHeader>
           <Content>
             <PlotTypeBar />
-            <DiagramSpecBlock />
+            <DiagramSpecBlock
+              plotType={appStore.configModal.diagramConfig.plotType}
+            />
             <DiagramFiltersBlock />
           </Content>
           <Center>
