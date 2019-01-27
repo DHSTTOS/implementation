@@ -56,7 +56,7 @@ const handleData = msg => {
   }
   let context = msgRegister[msg.id];  // the request that triggered this msg
   let collName = context.par;
-  if (collName.index('_') > -1) {
+  if (collName.indexOf('_') > -1) {
     dataStore.alarms[collName].data = {
       name: collName,
       keys: Object.keys(msg.data[0]),	// XXX: if data empty and this existed already, should we copy the old keys instead of overwriting with []?
