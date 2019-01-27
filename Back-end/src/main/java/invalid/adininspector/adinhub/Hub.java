@@ -175,7 +175,7 @@ public class Hub {
 	public String[] getAvailableCollections(Session session) {
 		IUserSession userSession = sessions.get(session);
 		if (userSession == null) {
-			System.err.println("got reqeust for non-loggedin session" + session);
+			System.err.println("got request for non-logged-in session" + session);
 			return null; // XXX return empty array?
 		}
 		return userSession.getAvailableCollections();
@@ -192,7 +192,7 @@ public class Hub {
 	public String[] getCollection(Session session, String collection){
 		IUserSession userSession = sessions.get(session);
 		if (userSession == null) {
-			System.err.println("got reqeust for non-loggedin session" + session);
+			System.err.println("got request for non-logged-in session" + session);
 			return null; // XXX return empty array?
 		}
 		return userSession.getCollection(collection);
@@ -207,7 +207,7 @@ public class Hub {
 	public String getStartRecord(Session session, String collection){
 		IUserSession userSession = sessions.get(session);
 		if (userSession == null) {
-			System.err.println("got reqeust for non-loggedin session" + session);
+			System.err.println("got request for non-logged-in session" + session);
 			return ""; // XXX return null?
 		}
 		return userSession.getStartRecord(collection);
@@ -222,7 +222,7 @@ public class Hub {
 	public String getEndRecord(Session session, String collection){
 		IUserSession userSession = sessions.get(session);
 		if (userSession == null) {
-			System.err.println("got reqeust for non-loggedin session" + session);
+			System.err.println("got request for non-logged-in session" + session);
 			return ""; // XXX return null?
 		}
 		return userSession.getEndRecord(collection);
@@ -239,7 +239,7 @@ public class Hub {
 	public long getCollectionSize(Session session, String collection) {
 		IUserSession userSession = sessions.get(session);
 		if (userSession == null) {
-			System.err.println("got reqeust for non-loggedin session" + session);
+			System.err.println("got request for non-logged-in session" + session);
 			return 0;
 		}
 		return userSession.getCollectionSize(collection);
@@ -270,7 +270,7 @@ public class Hub {
 	public String[] getRecordsInRange(Session session, String collection, String key, String start,String end) {
 		IUserSession userSession = sessions.get(session);
 		if (userSession == null) {
-			System.err.println("got reqeust for non-loggedin session" + session);
+			System.err.println("got request for non-logged-in session" + session);
 			return null; // XXX return empty array?
 		}
 		return userSession.getRecordsInRange(collection, key, start, end);
@@ -288,7 +288,7 @@ public class Hub {
 	public long getRecordsInRangeSize(Session session, String collection, String key, String start, String end) {
 		IUserSession userSession = sessions.get(session);
 		if (userSession == null) {
-			System.err.println("got reqeust for non-loggedin session" + session);
+			System.err.println("got request for non-logged-in session" + session);
 			return 0; // XXX return empty array?
 		}
 		return userSession.getRecordsInRangeSize(collection, key, start, end);
