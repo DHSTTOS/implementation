@@ -9,13 +9,15 @@ import { ScatterPlot } from "@nivo/scatterplot";
  * @prop {object[]} data
  * @prop {string} x
  * @prop {string} y
+ * @prop {string} colors
+ * @prop {number} symbolSize
  *
  * @extends {Component<Props>}
  */
 @observer
 class ScatterPlotBlock extends Component {
   render() {
-    const { width, height, data, x, y } = this.props;
+    const { width, height, data, x, y, colors, symbolSize } = this.props;
     return (
       <ScatterPlot
         width={width}
@@ -27,6 +29,8 @@ class ScatterPlotBlock extends Component {
           bottom: 70,
           left: 140,
         }}
+        colors={colors}
+        symbolSize={symbolSize}
         xScale={{
           type: "point",
         }}
@@ -38,7 +42,7 @@ class ScatterPlotBlock extends Component {
           tickSize: 5,
           tickPadding: 5,
           tickRotation: 0,
-          legend: y,
+          legend: x,
           legendPosition: "middle",
           legendOffset: 46,
         }}
@@ -47,10 +51,11 @@ class ScatterPlotBlock extends Component {
           tickSize: 5,
           tickPadding: 5,
           tickRotation: 0,
-          legend: x,
+          legend: y,
           legendPosition: "middle",
           legendOffset: -120,
         }}
+        animate={false}
         legends={[
           {
             anchor: "bottom-right",

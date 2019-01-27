@@ -89,7 +89,9 @@ class DiagramConfigModal extends Component {
           </ModalHeader>
           <Content>
             <PlotTypeBar />
-            <DiagramSpecBlock />
+            <DiagramSpecBlock
+              plotType={appStore.configModal.diagramConfig.plotType}
+            />
             <DiagramFiltersBlock />
           </Content>
           <Center>
@@ -98,6 +100,7 @@ class DiagramConfigModal extends Component {
                 onClick={this.handleOK}
                 variant="contained"
                 color="primary"
+                disabled={!appStore.canSaveConfig}
               >
                 Save
               </Button>
