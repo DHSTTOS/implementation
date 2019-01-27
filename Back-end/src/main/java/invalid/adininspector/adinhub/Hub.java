@@ -3,7 +3,6 @@ package invalid.adininspector.adinhub;
 import javax.websocket.OnOpen;
 import javax.websocket.server.ServerEndpoint;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -32,13 +31,13 @@ public class Hub {
 	 * Map login tokens to the websocket session in which they were requested
 	 * and provided by the server. 
 	 */
-	private Map<String, IUserSession> loginTokens;
+	private static Map<String, IUserSession> loginTokens;
 	
 
 	/**
 	 * Map a websocket connection to a IUserSession (i.e. a database connection).
 	 */
-	private Map<Session, IUserSession> sessions;
+	private static Map<Session, IUserSession> sessions;
 	
 	public Hub() {
 		database = new MockMongoDBUserSession();
@@ -66,7 +65,7 @@ public class Hub {
      */
     @OnClose
     public void handleClose(Session session) {
-	System.out.println("close, session: " + session);
+    	System.out.println("close, session: " + session);
     }
 
     /**
@@ -119,6 +118,11 @@ public class Hub {
     	String token = Long.toString(tokenValue);
     	sessions.put(session, dbUserSession);	// needed for single-ws-session case
     	loginTokens.put(token, dbUserSession);
+    	System.out.println("l #registered keys: "  + loginTokens.keySet().size());
+    	for (String key : loginTokens.keySet()) {
+			System.out.println("registered key: " + key);
+		}
+    	System.out.println("login: this " + this);
     	return token;
     }
     
@@ -135,7 +139,13 @@ public class Hub {
 	}
 
     boolean loginWithToken(Session session, String username, String token) {
+    	System.out.println("lWT: this " + this);
+    	System.out.println("lWT #registered keys: "  + loginTokens.keySet().size());
+    	for (String key : loginTokens.keySet()) {
+			System.out.println("lWT: registered key: " + key);
+		}
     	boolean isLoggedIn = loginTokens.containsKey(token);
+    	System.out.println("lWT: " + token + " " + isLoggedIn);
     	if (isLoggedIn) {
         	IUserSession dbUserSession = loginTokens.get(token);
 
@@ -154,7 +164,7 @@ public class Hub {
     void logOut(Session session) {
 		IUserSession dbUserSession = sessions.get(session);
 		if (dbUserSession == null) {
-			System.err.println("got request for non-logged-in session" + session);
+			System.err.println("logOut(): got request for non-logged-in session" + session);
 			return;
 		}
 
@@ -162,7 +172,7 @@ public class Hub {
 		sessions.remove(session);
     	// remove the token entry for this session:
     	for (String token : loginTokens.keySet()) {
-			if (loginTokens.get(dbUserSession).equals(dbUserSession))
+			if (loginTokens.get(token).equals(dbUserSession))
 				loginTokens.remove(token);
 		}
     }
