@@ -19,3 +19,12 @@ export const DEFAULT_GLOBAL_FILTERS = {
 
 export const SCATTER_PLOT = "Scatter Plot";
 export const LINE_CHART = "Line Chart";
+
+export const NIVO_COLOR_SCHEMES = [
+  "nivo",
+  "category10",
+  "red_grey",
+  "set1",
+  "set2",
+  "set3",
+];
