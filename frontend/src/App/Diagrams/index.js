@@ -93,6 +93,14 @@ class DiagramsContainer extends Component {
 class Diagram extends Component {
   render() {
     const { plotType, groupName, x, y } = this.props.config;
+    const {
+      colors,
+      enableArea,
+      lineWidth,
+      areaOpacity,
+      symbolSize,
+    } = this.props.config.specConfig;
+
     const data = formatData({
       groupName,
       x,
@@ -118,6 +126,8 @@ class Diagram extends Component {
             y={y}
             width={width}
             height={height}
+            colors={colors}
+            symbolSize={symbolSize}
           />
         );
         break;
@@ -129,6 +139,10 @@ class Diagram extends Component {
             y={y}
             width={width}
             height={height}
+            colors={colors}
+            enableArea={enableArea}
+            lineWidth={lineWidth}
+            areaOpacity={areaOpacity}
           />
         );
         break;
