@@ -1,5 +1,10 @@
 import { observable, action, computed } from "mobx";
-import { DEFAULT_SOURCE_NAME, DEFAULT_GLOBAL_FILTERS } from "@libs";
+import {
+  DEFAULT_SOURCE_NAME,
+  DEFAULT_GLOBAL_FILTERS,
+  SCATTER_PLOT,
+  LINE_CHART,
+} from "@libs";
 
 // JS Doc type defs
 /**
@@ -14,39 +19,27 @@ import { DEFAULT_SOURCE_NAME, DEFAULT_GLOBAL_FILTERS } from "@libs";
  */
 
 /**
+ * @typedef ScatterPlotConfig
+ * @type {Object}
+ * @property {string} colorScheme
+ * @property {number} symbolSize
+ */
+
+/**
  * @typedef LinePlotConfig
  * @type {Object}
- * @property {boolean} useColor
- * @property {boolean} enableLegends
- * @property {boolean} enableTooltip
- * @property {number} lineWidth
- * @property {number} lineOpacity
  * @property {string} colorScheme
- * @property {number} pointOpacity
+ * @property {number} lineWidth
  * @property {boolean} enableArea
  * @property {number} areaOpacity
  */
 
 /**
- * @typedef ScatterPlotConfig
- * @type {Object}
- * @property {boolean} useColor
- * @property {boolean} enableLegends
- * @property {boolean} enableTooltip
- * @property {number} pointSize
- * @property {number} pointOpacity
- */
-
-/**
  * @typedef NetworkPlotConfig
  * @type {Object}
- * @property {boolean} useColor
- * @property {boolean} enableLegends
- * @property {boolean} enableTooltip
  * @property {number} lineWidth
  * @property {number} lineOpacity
- * @property {number} pointSize
- * @property {number} pointOpacity
+ * @property {number} symbolSize
  */
 
 class AppStore {
@@ -144,9 +137,6 @@ class AppStore {
           groupName: "",
           x: "",
           y: "",
-          useColor: false,
-          enableLegends: false,
-          enableTooltip: false,
           specConfig: null,
         },
       };
@@ -160,6 +150,44 @@ class AppStore {
       isOpen: false,
       diagramConfig: {},
     };
+  };
+
+  @action
+  setPlotType = plotType => {
+    this.configModal.diagramConfig.plotType = plotType;
+    let specConfig;
+    switch (plotType) {
+      case SCATTER_PLOT:
+        specConfig = {
+          useColor: true,
+          enableLegends: true,
+          enableTooltip: true,
+          symbolSize: 6,
+        };
+        break;
+      case LINE_CHART:
+        specConfig = {
+          useColor: true,
+          enableLegends: true,
+          enableTooltip: true,
+          symbolSize: 6,
+          lineWidth: 2,
+        };
+        break;
+    }
+    this.configModal.diagramConfig.specConfig = specConfig;
+  };
+  @action
+  setXAxis = x => {
+    this.configModal.diagramConfig.x = x;
+  };
+  @action
+  setYAxis = y => {
+    this.configModal.diagramConfig.y = y;
+  };
+  @action
+  setGroupBy = groupName => {
+    this.configModal.diagramConfig.groupName = groupName;
   };
 
   /**
