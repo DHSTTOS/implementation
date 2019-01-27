@@ -4,8 +4,8 @@ import {
   DEFAULT_GLOBAL_FILTERS,
   SCATTER_PLOT,
   LINE_CHART,
+  NIVO_COLOR_SCHEMES,
 } from "@libs";
-import { NIVO_COLOR_SCHEMES } from "@libs/consts";
 
 // JS Doc type defs
 /**

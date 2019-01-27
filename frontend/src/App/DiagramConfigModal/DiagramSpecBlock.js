@@ -10,7 +10,8 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 
 import { appStore } from "@stores";
-import { SCATTER_PLOT, LINE_CHART } from "@libs";
+import { SCATTER_PLOT, LINE_CHART, NIVO_COLOR_SCHEMES } from "@libs";
+import Selector from "./Selector";
 
 const Container = styled(Paper)`
   display: flex;
@@ -115,6 +116,12 @@ class DiagramSpecBlock extends Component {
                     ))}
               </StyledFormGroup>
             </StyledFormControl>
+            {controlOptions &&
+              controlOptions
+                .filter(x => x.type === "colorScheme")
+                .map(x => (
+                  <Selector name={x.name} options={NIVO_COLOR_SCHEMES} />
+                ))}
           </Row>
         </Content>
       </Container>
