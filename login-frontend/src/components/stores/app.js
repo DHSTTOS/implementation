@@ -1,11 +1,5 @@
-import { observable, action, computed } from "mobx";
-import {
-  DEFAULT_SOURCE_NAME,
-  DEFAULT_GLOBAL_FILTERS,
-  SCATTER_PLOT,
-  LINE_CHART,
-  NIVO_COLOR_SCHEMES,
-} from "@libs";
+//import { observable, action } from "mobx";
+import { DEFAULT_SOURCE_NAME, DEFAULT_GLOBAL_FILTERS } from "./consts.js";
 
 // JS Doc type defs
 /**
@@ -16,23 +10,28 @@ import {
  * @property {string} groupName
  * @property {string} x
  * @property {string} y
+ * @property {boolean} useColor
+ * @property {boolean} enableLegends
+ * @property {boolean} enableTooltip
  * @property {(LinePlotConfig | ScatterPlotConfig | NetworkPlotConfig)} specConfig
- */
-
-/**
- * @typedef ScatterPlotConfig
- * @type {Object}
- * @property {string} colors
- * @property {number} symbolSize
  */
 
 /**
  * @typedef LinePlotConfig
  * @type {Object}
- * @property {string} colors
  * @property {number} lineWidth
+ * @property {number} lineOpacity
+ * @property {number} pointSize
+ * @property {number} pointOpacity
  * @property {boolean} enableArea
  * @property {number} areaOpacity
+ */
+
+/**
+ * @typedef ScatterPlotConfig
+ * @type {Object}
+ * @property {number} pointSize
+ * @property {number} pointOpacity
  */
 
 /**
@@ -40,7 +39,8 @@ import {
  * @type {Object}
  * @property {number} lineWidth
  * @property {number} lineOpacity
- * @property {number} symbolSize
+ * @property {number} pointSize
+ * @property {number} pointOpacity
  */
 
 class AppStore {
@@ -48,13 +48,13 @@ class AppStore {
    * This is supposed to be used for sizing the diagrams, because "responsive"
    * versions of nivo hogs resources...
    */
-  @observable
+  //@observable
   diagramDimension = {
     width: window.innerWidth * 0.85,
     height: window.innerHeight * 0.6,
   };
 
-  @action
+  //@action
   updateDiagramDimension = () => {
     const maxWidth = window.innerWidth * 0.85;
     if (this.diagramConfigs.length > 1) {
@@ -69,10 +69,10 @@ class AppStore {
    *
    * @type {DiagramConfig[]}
    */
-  @observable
+  //@observable
   diagramConfigs = [];
 
-  @action
+  //@action
   updateDiagram = () => {
     const existingCurrentConfig = this.diagramConfigs.find(
       x => x.diagramID === this.configModal.diagramConfig.diagramID
@@ -91,7 +91,7 @@ class AppStore {
     }
   };
 
-  @action
+  //@action
   closeDiagram = diagramID => {
     this.diagramConfigs = this.diagramConfigs.filter(
       config => config.diagramID !== diagramID
@@ -102,19 +102,13 @@ class AppStore {
   /**
    * Modal UI state
    */
-  @observable
+  //@observable
   configModal = {
     isOpen: false,
     diagramConfig: {},
   };
 
-  @computed
-  get canSaveConfig() {
-    const config = this.configModal.diagramConfig;
-    return !!(config.plotType && config.x && config.y && config.groupName);
-  }
-
-  @action
+  //@action
   openConfigModal = diagramID => {
     const existingCurrentConfig = this.diagramConfigs.find(
       x => x.diagramID === diagramID
@@ -138,6 +132,9 @@ class AppStore {
           groupName: "",
           x: "",
           y: "",
+          useColor: false,
+          enableLegends: false,
+          enableTooltip: false,
           specConfig: null,
         },
       };
@@ -145,7 +142,7 @@ class AppStore {
     }
   };
 
-  @action
+  //@action
   closeConfigModal = () => {
     this.configModal = {
       isOpen: false,
@@ -153,45 +150,10 @@ class AppStore {
     };
   };
 
-  @action
-  setPlotType = plotType => {
-    this.configModal.diagramConfig.plotType = plotType;
-    let specConfig;
-    switch (plotType) {
-      case SCATTER_PLOT:
-        specConfig = {
-          colors: NIVO_COLOR_SCHEMES[0],
-          symbolSize: 6,
-        };
-        break;
-      case LINE_CHART:
-        specConfig = {
-          colors: NIVO_COLOR_SCHEMES[0],
-          lineWidth: 2,
-          enableArea: false,
-          areaOpacity: 0.2,
-        };
-        break;
-    }
-    this.configModal.diagramConfig.specConfig = specConfig;
-  };
-  @action
-  setXAxis = x => {
-    this.configModal.diagramConfig.x = x;
-  };
-  @action
-  setYAxis = y => {
-    this.configModal.diagramConfig.y = y;
-  };
-  @action
-  setGroupBy = groupName => {
-    this.configModal.diagramConfig.groupName = groupName;
-  };
-
   /**
    * User details object
    */
-  @observable
+  //@observable
   userDetails = {
     userName: "",
     authToken: "",
@@ -201,9 +163,9 @@ class AppStore {
   /**
    * Data source
    */
-  @observable
+  //@observable
   sourceSelected = DEFAULT_SOURCE_NAME;
-  @observable
+  //@observable
   sourcesAvailable = [
     {
       name: DEFAULT_SOURCE_NAME,
@@ -211,26 +173,26 @@ class AppStore {
     },
   ];
 
-  @observable
+  //@observable
   globalFilters = DEFAULT_GLOBAL_FILTERS;
 
-  @action
+  //@action
   resetDiagramConfigs = () => {
     this.diagramConfigs = [];
     this.updateDiagramDimension();
   };
 
-  @action
+  //@action
   resetGlobalFilters = () => (this.globalFilters = DEFAULT_GLOBAL_FILTERS);
-  @action
-  updateGlobalFilters = name => value => {
-    this.globalFilters[name] = value;
+  //@action
+  updateGlobalFilters = (category, name) => value => {
+    this.globalFilters[category][name] = value;
   };
 
-  @action
+  //@action
   updateSingleFilters = diagramID => (category, name) => value => {
     // TODO: finish this logic
-    this.globalFilters[name] = value;
+    this.globalFilters[category][name] = value;
   };
 }
 

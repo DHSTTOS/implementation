@@ -1,6 +1,6 @@
 import React from "react";
 import TextField from "@material-ui/core/TextField";
-
+import * as ws from "./wsutils.js"
 // import Button from "@material-ui/core/Button";
 import styled from "@emotion/styled";
 
@@ -12,7 +12,13 @@ import { ContentSave } from "material-ui/svg-icons";
 function save () {
   var fieldValue = document.getElementById('endpoint').value;
   localStorage.setItem('text',fieldValue);
-
+  //let username = document.getElementById('username').value;
+  let username = this.state.username;
+  //let password = document.getElementById('password').value;
+  let password = this.state.password;
+  console.log("baz1 " + fieldValue + ";");
+  ws.login(username, password);
+  console.log("baz2 " + fieldValue + ";");
 }
 
 var tag = document.getElementById("Button");
@@ -65,12 +71,25 @@ class UserForm extends React.Component {
     this.setState({
       [e.target.name]: e.target.value
     });
+    console.log("change2: " + e + " " + e.target + " " + e.target.name);
   };
 
   onSubmit = e => {
     e.preventDefault();
     console.log(this.state);
   };
+
+  login = _ => {
+    var fieldValue = document.getElementById('endpoint').value;
+    localStorage.setItem('text',fieldValue);
+    //let username = document.getElementById('username').value;
+    let username = this.state.username;
+    //let password = document.getElementById('password').value;
+    let password = this.state.password;
+    console.log("baz1 " + fieldValue + ";");
+    ws.login(username, password);
+    console.log("baz2 " + fieldValue + ";");
+  }
 
   render() {
     localStorage.setItem("token", "eufigalfbs.");
@@ -103,7 +122,7 @@ class UserForm extends React.Component {
           name="endpoint"
           floatingLabelText="Endpoint"
           hintText="Endpoint"
-          placeholder="Endpoint"
+          placeholder="ws://localhost:8080/adininspector/adinhubsoc"
           value={this.state.endpoint}
           onChange={e => this.change(e)}
           floatingLabelFixed={true}
@@ -114,7 +133,8 @@ class UserForm extends React.Component {
         <MyButton
          label="Login" 
          //onClick={this.handleClick} 
-         onClick = {save}
+         //onClick = {save}
+         onClick = {this.login}
          id ="Button" onmouseover={mouseOver} 
          onmouseout={mouseOut}/>
        

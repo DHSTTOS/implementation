@@ -1,26 +1,32 @@
-import { appStore, dataStore } from "@stores";
+//import { appStore, dataStore } from "@stores";
+//import * as appStore from "./stores/app.js";
+import appStore from "./stores/app.js";
+//import * as dataStore from "./stores/data.js";
+import dataStore from "./stores/data.js";
 
-const socket = new WebSocket("wss://echo.websocket.org/");
+const socket = new WebSocket("ws://localhost:8080/adininspector/adinhubsoc2");
 let msgIdCounter = 0;
 let msgRegister = [];
 
 // as long as we keep these socket.something listener assignments within the same scope
 // as the socket construction, we won't miss the 'open' event etc.
 
+
 // Takes a message object, adds id, registers it, and sends it.
 const sendRequest = msg => {
   msg.id = msgIdCounter++;
-  msgRegister[id] = msg;
-  socket.send(JSON.stringify(tokenMsg));
-};
+  msgRegister[msg.id] = msg;
+  socket.send(JSON.stringify(msg));
+}
 
-const login = (name, token) => {
+
+export const login = (name, password) => {
   const msg = {
     cmd: "LOGIN",
     user: name,
-    pwd: token,
+    pwd: password,
   };
-  sendRequest(tokenMsg);
+  sendRequest(msg);
 };
 
 const loginToken = (name, token) => {
@@ -49,19 +55,17 @@ socket.onclose = _ => {
 const handleData = msg => {
   console.log("Received data message: " + msg.data.length + " " + msg.data[0]);
   if (!msgRegister[msg.id]) {
-    console.log(
-      "Protocol: bug: received unrequested message, dropping it: " + msg
-    );
+    console.log("Protocol: bug: received unrequested message, dropping it: " + msg);
     return;
   }
-  let context = msgRegister[msg.id]; // the request that triggered this msg
+  let context = msgRegister[msg.id];  // the request that triggered this msg
   let collName = context.par;
-  if (collName.indexOf("_") > -1) {
+  if (collName.indexOf('_') > -1) {
     dataStore.alarms[collName].data = {
       name: collName,
-      keys: Object.keys(msg.data[0]), // XXX: if data empty and this existed already, should we copy the old keys instead of overwriting with []?
-      data: msg.data,
-    };
+      keys: Object.keys(msg.data[0]),	// XXX: if data empty and this existed already, should we copy the old keys instead of overwriting with []?
+      data: msg.data
+    }
   } else {
     dataStore.rawdata = msg.data;
     dataStore.availableKeys = Object.keys(msg.data[0]);
@@ -178,43 +182,34 @@ const getRecordsInRangeSize = (name, key, startValue, endValue) => {
   sendRequest(message);
 };
 
+
 // Get a collection from local storage. If no name given, return the raw data as a pseudo collection.
-const getLocalCollection = collName => {
+const getLocalCollection = (collName) => {
   if (collName == "") {
     return {
       name: "",
-      keys: [
-        "L2Protocol",
-        "SourceMACAddress",
-        "L4Protocol",
-        "SourceIPAddress",
-        "PacketSummary",
-        "PacketID",
-        "DestinationIPAddress",
-        "Timestamp",
-        "DestinationPort",
-        "SourcePort",
-        "L3Protocol",
-        "DestinationMACAddress",
-      ],
-      data: dataStore.rawdata,
+      keys: ["L2Protocol", "SourceMACAddress", "L4Protocol", "SourceIPAddress", "PacketSummary", "PacketID", "DestinationIPAddress", "Timestamp", "DestinationPort", "SourcePort", "L3Protocol", "DestinationMACAddress"],
+      data: dataStore.rawdata
     };
   } else {
     return dataStore.alarms[collName];
   }
-};
+}
+
 
 // Get the data of the specified collection from local storage. Returns an array of JSON strings representing the datapoints.
-const getLocalCollectionData = collName => {
+const getLocalCollectionData = (collName) => {
   if (collName == "") {
     return dataStore.rawdata;
   } else {
     return dataStore.alarms[collName].data;
   }
-};
+}
+
 
 export default {
   socket,
+  login,
   loginToken,
   getAvailableCollections,
   getCollection,
@@ -222,5 +217,5 @@ export default {
   getRecordsInRange,
   getRecordsInRangeSize,
   getLocalCollection,
-  getLocalCollectionData,
+  getLocalCollectionData
 };

@@ -8,7 +8,7 @@ import {
 
 import {
   socket,
-  login_token,
+  loginToken,
   getAvailableCollections,
   getCollection,
   getCollectionSize,
@@ -65,7 +65,7 @@ export {
   LINE_CHART,
   NIVO_COLOR_SCHEMES,
   socket,
-  login_token,
+  loginToken,
   getAvailableCollections,
   getCollection,
   getCollectionSize,

@@ -1,21 +1,21 @@
-import { observable, action } from "mobx";
-import { DEFAULT_SOURCE_NAME } from "@libs";
+//import { observable, action } from "mobx";
+import { DEFAULT_SOURCE_NAME } from "./consts.js";
 import { jsonstreams } from "../../mockdata";
 
 class DataStore {
-  @observable
+  //@observable
   // TODO: when ws binding is done, we'll make this flexible
   availableKeys = Object.keys(jsonstreams[0]);
 
-  @observable
+  //@observable
   availableCollections = []; //exampleCollection
 
   // Raw network data
-  @observable
+  //@observable
   rawdata = [];
 
   // Array of notification/alarm data sets:
-  @observable
+  //@observable
   alarms = [
     {
       name: "",
