@@ -79,13 +79,22 @@ const Row = styled.div`
 @observer
 class DiagramSpecBlock extends Component {
   handleCheckbox = key => event => {
+    appStore.configModal.diagramConfig.specConfig = {
+      ...appStore.configModal.diagramConfig.specConfig,
+    };
     appStore.configModal.diagramConfig.specConfig[key] = event.target.checked;
   };
   handleInput = key => event => {
+    appStore.configModal.diagramConfig.specConfig = {
+      ...appStore.configModal.diagramConfig.specConfig,
+    };
     appStore.configModal.diagramConfig.specConfig[key] = event.target.value;
   };
 
   selectColors = colors => {
+    appStore.configModal.diagramConfig.specConfig = {
+      ...appStore.configModal.diagramConfig.specConfig,
+    };
     appStore.configModal.diagramConfig.specConfig.colors = colors;
   };
 
