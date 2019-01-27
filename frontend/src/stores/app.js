@@ -223,14 +223,14 @@ class AppStore {
   @action
   resetGlobalFilters = () => (this.globalFilters = DEFAULT_GLOBAL_FILTERS);
   @action
-  updateGlobalFilters = (category, name) => value => {
-    this.globalFilters[category][name] = value;
+  updateGlobalFilters = name => value => {
+    this.globalFilters[name] = value;
   };
 
   @action
   updateSingleFilters = diagramID => (category, name) => value => {
     // TODO: finish this logic
-    this.globalFilters[category][name] = value;
+    this.globalFilters[name] = value;
   };
 }
 
