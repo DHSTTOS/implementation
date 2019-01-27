@@ -1,4 +1,4 @@
-import { observable, action } from "mobx";
+import { observable, action, computed } from "mobx";
 import { DEFAULT_SOURCE_NAME, DEFAULT_GLOBAL_FILTERS } from "@libs";
 
 // JS Doc type defs
@@ -107,6 +107,12 @@ class AppStore {
     isOpen: false,
     diagramConfig: {},
   };
+
+  @computed
+  get canSaveConfig() {
+    const config = this.configModal.diagramConfig;
+    return !!(config.plotType && config.x && config.y && config.groupName);
+  }
 
   @action
   openConfigModal = diagramID => {

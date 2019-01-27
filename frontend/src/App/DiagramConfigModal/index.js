@@ -98,6 +98,7 @@ class DiagramConfigModal extends Component {
                 onClick={this.handleOK}
                 variant="contained"
                 color="primary"
+                disabled={!appStore.canSaveConfig}
               >
                 Save
               </Button>
