@@ -19,19 +19,6 @@ const Container = styled.div`
 class PlotTypeBar extends Component {
   availablePlotTypes = [SCATTER_PLOT, LINE_CHART];
 
-  selectPlotType = plotType => {
-    appStore.configModal.diagramConfig.plotType = plotType;
-  };
-  selectXAxis = x => {
-    appStore.configModal.diagramConfig.x = x;
-  };
-  selectYAxis = y => {
-    appStore.configModal.diagramConfig.y = y;
-  };
-  selectGroupBy = groupName => {
-    appStore.configModal.diagramConfig.groupName = groupName;
-  };
-
   render() {
     const availableKeys = dataStore.availableKeys;
     const diagramConfig = appStore.configModal.diagramConfig;
@@ -40,25 +27,25 @@ class PlotTypeBar extends Component {
         <Selector
           name="Plot Type"
           options={this.availablePlotTypes}
-          onSelect={this.selectPlotType}
+          onSelect={appStore.setPlotType}
           currentSelection={diagramConfig.plotType}
         />
         <Selector
           name="X-Axis"
           options={availableKeys}
-          onSelect={this.selectXAxis}
+          onSelect={appStore.setXAxis}
           currentSelection={diagramConfig.x}
         />
         <Selector
           name="Y-Axis"
           options={availableKeys}
-          onSelect={this.selectYAxis}
+          onSelect={appStore.setYAxis}
           currentSelection={diagramConfig.y}
         />
         <Selector
           name="Group by"
           options={availableKeys}
-          onSelect={this.selectGroupBy}
+          onSelect={appStore.setGroupBy}
           currentSelection={diagramConfig.groupName}
         />
       </Container>

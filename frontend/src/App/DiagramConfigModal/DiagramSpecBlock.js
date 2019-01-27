@@ -8,6 +8,7 @@ import FormControl from "@material-ui/core/FormControl";
 import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
+import TextField from "@material-ui/core/TextField";
 
 import { appStore } from "@stores";
 import { SCATTER_PLOT, LINE_CHART, NIVO_COLOR_SCHEMES } from "@libs";
@@ -31,7 +32,7 @@ const Content = styled.div`
 `;
 
 const StyledFormControl = styled(FormControl)`
-  flex: 1;
+  /* flex: 1; */
   align-self: auto;
 `;
 
@@ -48,11 +49,23 @@ const StyledFormControlLabel = styled(FormControlLabel)`
   align-self: flex-start;
 `;
 
+const StyledTextField = styled(TextField)`
+  width: 6rem;
+  /* margin: 1rem; */
+`;
+
+const TextFieldsWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: space-evenly;
+`;
+
 const Row = styled.div`
   display: flex;
   width: 100%;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: space-evenly;
   align-items: stretch;
   /* background-color: red; */
 `;
@@ -68,6 +81,13 @@ class DiagramSpecBlock extends Component {
   handleCheckbox = key => event => {
     appStore.configModal.diagramConfig.specConfig[key] = event.target.checked;
   };
+  handleInput = key => event => {
+    appStore.configModal.diagramConfig.specConfig[key] = event.target.value;
+  };
+
+  selectColorScheme = colorScheme => {
+    appStore.configModal.diagramConfig.specConfig.colorScheme = colorScheme;
+  };
 
   render() {
     let controlOptions;
@@ -75,7 +95,7 @@ class DiagramSpecBlock extends Component {
       case SCATTER_PLOT:
         controlOptions = [
           { name: "Color Scheme", key: "colorScheme", type: "colorScheme" },
-          { name: "Point Size", key: "pointSize", type: "input" },
+          { name: "Symbol Size", key: "symbolSize", type: "input" },
         ];
         break;
       case LINE_CHART:
@@ -89,6 +109,8 @@ class DiagramSpecBlock extends Component {
     }
 
     const specConfig = appStore.configModal.diagramConfig.specConfig;
+    const checkboxes =
+      controlOptions && controlOptions.filter(x => x.type === "checkbox");
 
     return (
       <Container>
@@ -97,31 +119,52 @@ class DiagramSpecBlock extends Component {
             Diagram Control
           </Typography>
           <Row>
-            <StyledFormControl component="fieldset">
-              <StyledFormGroup>
-                {controlOptions &&
-                  controlOptions
-                    .filter(x => x.type === "checkbox")
-                    .map(x => (
-                      <StyledFormControlLabel
-                        control={
-                          <Checkbox
-                            checked={specConfig && specConfig[x.key]}
-                            onChange={this.handleCheckbox(x.key)}
-                            value={x.key}
-                          />
-                        }
-                        label={x.name}
-                      />
-                    ))}
-              </StyledFormGroup>
-            </StyledFormControl>
+            {checkboxes && checkboxes.length > 0 && (
+              <StyledFormControl component="fieldset">
+                <StyledFormGroup>
+                  {checkboxes.map(x => (
+                    <StyledFormControlLabel
+                      control={
+                        <Checkbox
+                          checked={specConfig && specConfig[x.key]}
+                          onChange={this.handleCheckbox(x.key)}
+                          value={x.key}
+                        />
+                      }
+                      label={x.name}
+                    />
+                  ))}
+                </StyledFormGroup>
+              </StyledFormControl>
+            )}
             {controlOptions &&
               controlOptions
                 .filter(x => x.type === "colorScheme")
                 .map(x => (
-                  <Selector name={x.name} options={NIVO_COLOR_SCHEMES} />
+                  <Selector
+                    name={x.name}
+                    options={NIVO_COLOR_SCHEMES}
+                    onSelect={this.selectColorScheme}
+                    currentSelection={specConfig.colorScheme}
+                  />
                 ))}
+            <TextFieldsWrapper>
+              {controlOptions &&
+                controlOptions
+                  .filter(x => x.type === "input")
+                  .map(x => (
+                    <StyledTextField
+                      label={x.name}
+                      value={specConfig[x.key]}
+                      onChange={this.handleInput(x.key)}
+                      type="number"
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      margin="normal"
+                    />
+                  ))}
+            </TextFieldsWrapper>
           </Row>
         </Content>
       </Container>
