@@ -6,6 +6,7 @@ import javax.websocket.server.ServerEndpoint;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 import javax.websocket.*;
 
@@ -31,7 +32,8 @@ public class Hub {
 	 * Map login tokens to the websocket session in which they were requested
 	 * and provided by the server. 
 	 */
-	private Map<String, Session> loginTokens;
+	private Map<String, IUserSession> loginTokens;
+	
 
 	/**
 	 * Map a websocket connection to a IUserSession (i.e. a database connection).
@@ -41,7 +43,7 @@ public class Hub {
 	public Hub() {
 		database = new MockMongoDBUserSession();
 		requestHandler = new ClientProtocolHandler();
-		loginTokens = new HashMap<String, Session>();
+		loginTokens = new HashMap<String, IUserSession>();
 		sessions = new HashMap<Session, IUserSession>();
 		System.out.println("hub started");
 	}
@@ -108,9 +110,15 @@ public class Hub {
      * 
      * @return a token to identify the IUserSession
      */
-    String loginForToken(Session session, String username, String password) {
-    	IUserSession dbSession = null;
-    	String token = "";
+    String login(Session session, String username, String password) {
+		IUserSession dbUserSession = createUserSession(session, username, password);
+		if (dbUserSession == null)
+			return "";
+		
+		long tokenValue = new Random().nextLong();
+    	String token = Long.toString(tokenValue);
+    	sessions.put(session, dbUserSession);	// needed for single-ws-session case
+    	loginTokens.put(token, dbUserSession);
     	return token;
     }
     
@@ -121,15 +129,45 @@ public class Hub {
 	 * @param udid - the user id to login with
 	 * @param password the password
 	 */
-	public String createUserSession(Session session, String username, String password) {
+	public IUserSession createUserSession(Session session, String username, String password) {
 		IUserSession dbUserSession = database.createUserSession(username, password);
-		if (dbUserSession == null)
-			return "";
-		sessions.put(session, dbUserSession);
-		return "DIGNUS.EST.INTRARE";
+		return dbUserSession;
 	}
-	
-	/**
+
+    boolean loginWithToken(Session session, String username, String token) {
+    	boolean isLoggedIn = loginTokens.containsKey(token);
+    	if (isLoggedIn) {
+        	IUserSession dbUserSession = loginTokens.get(token);
+
+        	// remove the sessions entry for the login websocket session:
+        	for (Session oldSession : sessions.keySet()) {
+				if (sessions.get(oldSession).equals(dbUserSession))
+					sessions.remove(oldSession);
+			}
+        	
+        	sessions.put(session, dbUserSession);	// register the current ("work") session
+        	return true;
+    	}
+    	return false;
+    }
+
+    void logOut(Session session) {
+		IUserSession dbUserSession = sessions.get(session);
+		if (dbUserSession == null) {
+			System.err.println("got request for non-logged-in session" + session);
+			return;
+		}
+
+		// TODO: close the dbUserSession
+		sessions.remove(session);
+    	// remove the token entry for this session:
+    	for (String token : loginTokens.keySet()) {
+			if (loginTokens.get(dbUserSession).equals(dbUserSession))
+				loginTokens.remove(token);
+		}
+    }
+
+    /**
 	 * Returns an array with the names of the collections available to the current user.
 	 * 
 	 * @return an array with collection names
