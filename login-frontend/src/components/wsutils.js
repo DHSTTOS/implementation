@@ -21,21 +21,21 @@ const sendRequest = msg => {
 
 
 export const login = (name, password) => {
-  const msg = {
+  const message = {
     cmd: "LOGIN",
     user: name,
     pwd: password,
   };
-  sendRequest(msg);
+  sendRequest(message);
 };
 
 const loginToken = (name, token) => {
-  const tokenMsg = {
+  const message = {
     cmd: "LOGIN_TOKEN",
     user: name,
     token: token,
   };
-  sendRequest(tokenMsg);
+  sendRequest(message);
 };
 
 socket.onopen = _ => {
@@ -76,11 +76,14 @@ const handleData = msg => {
   console.log(dataStore.data.length + " " + dataStore.data[0]);
 };
 
-const handleSession = msg => {
+const handleSession = async msg => {
+  console.log("handleSession");
   if (appStore.userDetails.wsLoggedIn) {
     switch (msg.status) {
       case "OK":
-        // can't really happen
+        // can't really happen unless we use the two-page login
+	let token = msg.par;
+        await localStorage.setItem('token', token);
         console.log(
           "websocket connection: got unexpected SESSION message: " +
             msg.status +
@@ -97,10 +100,15 @@ const handleSession = msg => {
     }
   } else {
     //not logged in
+    console.log("not logged in, msg.status: " + msg.status);
     switch (msg.status) {
       case "OK":
         // successful login to ws connection
         appStore.userDetails.wsLoggedIn = true;
+	let token = msg.par;
+	console.log("not logged in, OK: " + token);
+	if (token)
+          await localStorage.setItem('token', token);
         break;
       case "FAIL":
         // login failed
@@ -112,7 +120,8 @@ const handleSession = msg => {
 };
 
 socket.onmessage = message => {
-  const msg = JSON.parse(message);
+  console.log("onmessage: " + message.data);
+  const msg = JSON.parse(message.data);
   switch (msg.cmd) {
     case "SESSION":
       handleSession(msg);
