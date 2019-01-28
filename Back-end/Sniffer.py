@@ -18,14 +18,12 @@ args = parser.parse_args()
 if args.interface:
     interface = args.interface
 else:
-    interface = "lo"
-    print("Using 'lo' interface to sniff raw packets.")
+    interface = "wlp3s0"
 
 if args.filter:
     filter = args.filter
 else:
     filter = "not(ether dst 00:00:00:00:00:00)"
-    print("Removing local packets.")
 
 # Produce RAW/bytes to Kafka topic
 def produceRawPacket(packet):
@@ -59,7 +57,6 @@ def dissectToJSON(raw_packet):
     dstPort = ''
 
     if ether_packet.haslayer(ProfinetIO):
-        print("PROFINET")
         L2Protocol = "Profinet"
     else:
         L2Protocol = "Ether"
