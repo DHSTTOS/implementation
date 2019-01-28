@@ -103,6 +103,8 @@ when a new collection is added the permissions for operators need to be updated 
 figure out 
 Mongo cannot insert things prepended with special symbols like $. either he fixes it or we remove special characters
 
+//Things to fix in documentation:
+Json format from FlowRatePerSecond is wrong since port number is only provided at L4
 
 //things we would need for a server:
 mongo
