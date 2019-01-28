@@ -17,7 +17,7 @@ const sendRequest = msg => {
   msg.id = msgIdCounter++;
   msgRegister[msg.id] = msg;
   socket.send(JSON.stringify(msg));
-}
+};
 
 
 export const login = (name, password) => {
@@ -65,7 +65,7 @@ const handleData = msg => {
       name: collName,
       keys: Object.keys(msg.data[0]),	// XXX: if data empty and this existed already, should we copy the old keys instead of overwriting with []?
       data: msg.data
-    }
+    };
   } else {
     dataStore.rawdata = msg.data;
     dataStore.availableKeys = Object.keys(msg.data[0]);
@@ -97,6 +97,9 @@ const handleSession = async msg => {
         // TODO close the connection
         // TODO: present the login screen again
         break;
+      default:
+        console.log("Protocol bug, logged in, invalid status: " + msg.status);
+        break;
     }
   } else {
     //not logged in
@@ -114,6 +117,9 @@ const handleSession = async msg => {
         // login failed
         console.log("login to websocket connection failed: " + msg.par);
         // TODO: present the login screen again
+        break;
+      default:
+        console.log("Protocol bug, not logged in, invalid status: " + msg.status);
         break;
     }
   }
@@ -194,7 +200,7 @@ const getRecordsInRangeSize = (name, key, startValue, endValue) => {
 
 // Get a collection from local storage. If no name given, return the raw data as a pseudo collection.
 const getLocalCollection = (collName) => {
-  if (collName == "") {
+  if (collName === "") {
     return {
       name: "",
       keys: ["L2Protocol", "SourceMACAddress", "L4Protocol", "SourceIPAddress", "PacketSummary", "PacketID", "DestinationIPAddress", "Timestamp", "DestinationPort", "SourcePort", "L3Protocol", "DestinationMACAddress"],
@@ -208,7 +214,7 @@ const getLocalCollection = (collName) => {
 
 // Get the data of the specified collection from local storage. Returns an array of JSON strings representing the datapoints.
 const getLocalCollectionData = (collName) => {
-  if (collName == "") {
+  if (collName === "") {
     return dataStore.rawdata;
   } else {
     return dataStore.alarms[collName].data;

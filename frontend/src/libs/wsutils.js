@@ -93,6 +93,9 @@ const handleSession = async msg => {
         // TODO close the connection
         // TODO: present the login screen again
         break;
+      default:
+        console.log("Protocol bug, logged in, invalid status: " + msg.status);
+        break;
     }
   } else {
     //not logged in
@@ -105,6 +108,9 @@ const handleSession = async msg => {
         // login failed
         console.log("login to websocket connection failed: " + msg.par);
         // TODO: present the login screen again
+        break;
+      default:
+        console.log("Protocol bug, not logged in, invalid status: " + msg.status);
         break;
     }
   }
@@ -184,7 +190,7 @@ const getRecordsInRangeSize = (name, key, startValue, endValue) => {
 
 // Get a collection from local storage. If no name given, return the raw data as a pseudo collection.
 const getLocalCollection = collName => {
-  if (collName == "") {
+  if (collName === "") {
     return {
       name: "",
       keys: [
@@ -210,7 +216,7 @@ const getLocalCollection = collName => {
 
 // Get the data of the specified collection from local storage. Returns an array of JSON strings representing the datapoints.
 const getLocalCollectionData = collName => {
-  if (collName == "") {
+  if (collName === "") {
     return dataStore.rawdata;
   } else {
     return dataStore.alarms[collName].data;
