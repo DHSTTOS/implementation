@@ -8,7 +8,7 @@ public class NumberOfConnectionsPerNode implements IAggregator {
 
 	@Override
 	public ArrayList<Record> processData( ArrayList<Record>  records) {
-		return null;
+		return records;
 	}
 
 }

@@ -160,13 +160,10 @@ public class MongoClientMediator {
 
         for (int i = 0; i < recordsToConvert.length; i++) {
 
-            p(recordsToConvert[i] + " of Type : " + collType.getTypeName());
+            //p(recordsToConvert[i] + " of Type : " + collType.getTypeName());
 
             records.add(gson.fromJson(recordsToConvert[i], collType));
         }
-
-        p("CONVERTED TOO");
-        p(records.get(0).getClass().getSimpleName());
 
         return records;
     }

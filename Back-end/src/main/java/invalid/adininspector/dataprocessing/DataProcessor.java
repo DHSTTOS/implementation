@@ -23,7 +23,7 @@ public class DataProcessor {
             agg.processData(clientMediator.getCollectionAsRecordsArrayList(collectionName)).forEach(rec -> 
             {
                 //TODO: give em back to the mediator for storage
-                clientMediator.p(rec.toString());
+                //clientMediator.p(rec.toString());
 
             });
             

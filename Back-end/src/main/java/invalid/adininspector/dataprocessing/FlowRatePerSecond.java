@@ -21,7 +21,7 @@ public class FlowRatePerSecond implements IAggregator {
         //we know that the records are organized by time
         //we are only doing aggregation on packetRecords
         Long timeStamp = Long.MIN_VALUE;
-
+        System.out.println("START PROCESSING");
         records.forEach(record -> {
            //PacketRecord r = record;
 
