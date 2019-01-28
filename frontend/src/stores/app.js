@@ -101,12 +101,24 @@ class AppStore {
 
   /**
    * Modal UI state
+   *
+   * @type {object}
+   * @property {boolean} isOpen
+   * @property {DiagramConfig} diagramConfig
    */
   @observable
   configModal = {
     isOpen: false,
     diagramConfig: {},
   };
+
+  /**
+   * ID of the currently full screen diagram. Empty means none.
+   *
+   * @type {string}
+   */
+  @observable
+  fullscreenDiagram = "";
 
   @computed
   get canSaveConfig() {
