@@ -1,12 +1,14 @@
 package invalid.adininspector.dataprocessing;
 
+import java.util.ArrayList;
+
 import invalid.adininspector.records.Record;
 
-public class NumberOfConnectionsPerNode implements IAggregator{
+public class NumberOfConnectionsPerNode implements IAggregator {
 
-    //TODO: implement me.
 	@Override
-	public Record[] processData(Record[] records) {
+	public ArrayList<Record> processData( ArrayList<Record>  records) {
 		return null;
 	}
+
 }

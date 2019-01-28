@@ -14,11 +14,11 @@ public class Initializer {
 
     public static void main(String[] args) {
 
-        // TODO: use first arg ,the install path
-
+        //TODO: fix me!
         // load the properties file
         String rootPath = Thread.currentThread().getContextClassLoader().getResource("").getPath();
-        URL testPath = Initializer.class.getClassLoader().getResource("");// ClassLoader.getSystemClassLoader().getResource(name)
+        URL testPath = Initializer.class.getClassLoader().getResource("");
+        
         System.out.println(rootPath);
         System.out.println(testPath);
 

@@ -81,20 +81,27 @@ roles within mongo:
 
 //Useful Kafka commands
 1. start zookeper
-bin/zookeeper-server-start.sh config/zookeeper.properties
+sudo bin/zookeeper-server-start.sh config/zookeeper.properties
 2. start Kafka
-bin/kafka-server-start.sh config/server.properties
+sudo bin/kafka-server-start.sh config/server.properties
 3.List topics
-bin/kafka-topics.sh --list --zookeeper localhost:2181
+sudo bin/kafka-topics.sh --list --zookeeper localhost:2181
 4.delete topics
+sudo bin/kafka-topics.sh --delete --zookeeper localhost:2181 --topic motor
+5.create topics
+sudo bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic test
 
-
+//Useful mongo stuff
+1.start service
+sudo service mongod start 
 
 //
 
 //things that I need to do
 MongoDB comparison for range? numerical? stringwise? M
 when a new collection is added the permissions for operators need to be updated on a per collection basis. 
+figure out 
+Mongo cannot insert things prepended with special symbols like $. either he fixes it or we remove special characters
 
 
 //things we would need for a server:

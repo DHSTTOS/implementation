@@ -1,15 +1,17 @@
 package invalid.adininspector;
 
+import java.lang.reflect.Type;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.mongodb.BasicDBObject;
-import com.mongodb.DB;
-import com.mongodb.DBObject;
+import com.mongodb.Block;
 import com.mongodb.MongoClient;
-import com.mongodb.MongoClientException;
 import com.mongodb.MongoCredential;
 import com.mongodb.MongoSecurityException;
 import com.mongodb.MongoWriteException;
@@ -20,7 +22,7 @@ import com.mongodb.client.MongoIterable;
 import org.bson.Document;
 
 import invalid.adininspector.exceptions.LoginFailureException;
-import invalid.adininspector.records.Record;
+import invalid.adininspector.records.*;
 
 public class MongoClientMediator {
 
@@ -52,7 +54,6 @@ public class MongoClientMediator {
 
             //force the caller to handle the exception
             throw new LoginFailureException(e.getMessage());
-            //handle gracefully
         }
     }
 
@@ -62,14 +63,15 @@ public class MongoClientMediator {
 
     public void addRecordToCollection(Record record, String collection) {
         try {
+            //p(record.getAsDocument());
             db.getCollection(collection).insertOne(record.getAsDocument());
             p("inserting to: " + collection + " at offset: " + record.get_id());
         } catch (MongoWriteException ex) {
             // TODO: how to handle this, skip?, overwrite? or compare and decide which one
             // to keep?
-            System.out.println("an entry with this offset already exists at offset: " + record.get_id());
+           System.out.println("an entry with this offset already exists at offset: " + record.get_id());
         } catch (Exception e) {
-            p(e.getCause());
+            e.printStackTrace();
         }
     }
 
@@ -128,20 +130,58 @@ public class MongoClientMediator {
         for (int i = 0; i < colls.size(); i++) {
             System.out.println(colls.get(i));
         }
-        return mongoIteratorToStringArray(db.listCollectionNames());
-
-        
+        return mongoIteratorToStringArray(db.listCollectionNames());   
     }
 
     // HELPER FUNCTIONS
     private String[] mongoIteratorToStringArray(MongoIterable iterable) {
         List<String> colls = new ArrayList<>();
 
-        // TODO: fix parametrization
-        iterable.forEach((Consumer<String>) colls::add);
-
+        
+        iterable.forEach((Block<Document>) document -> colls.add(document.toJson().toString()));
+        
         return colls.toArray(new String[colls.size()]);
+    }
 
+    //TODO: figure out a way to make this less wasteful
+    public  ArrayList<Record>  getCollectionAsRecordsArrayList(String collectionName)
+    {
+        Gson gson = new Gson();
+
+        ArrayList<Record> records = new ArrayList<>();
+
+        Type collType = getCollectionType(collectionName);
+        
+        String[] recordsToConvert = getCollection(collectionName);
+        
+        if(recordsToConvert.length == 0)
+            return null;
+
+
+        for (int i = 0; i < recordsToConvert.length; i++) {
+
+            p(recordsToConvert[i] + " of Type : " + collType.getTypeName());
+
+            records.add(gson.fromJson(recordsToConvert[i], collType));
+        }
+
+        p("CONVERTED TOO");
+        p(records.get(0).getClass().getSimpleName());
+
+        return records;
+    }
+
+    //Might be useful for the upper layers
+    public Type getCollectionType(String collectionName)
+    {
+        Type type = null;
+                
+        if(collectionName.contains("Alarm"))
+            type = new TypeToken<AlarmRecord>() {}.getType();
+        else 
+            type = new TypeToken<PacketRecord>() {}.getType();
+
+        return type;
     }
 
     // TODO: implement me
@@ -149,7 +189,7 @@ public class MongoClientMediator {
         return null;
     }
 
-    void p(Object line) {
+    public void p(Object line) {
         System.out.println(line);
     }
 }
