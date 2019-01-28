@@ -12,13 +12,6 @@ import { ContentSave } from "material-ui/svg-icons";
 function save () {
   var fieldValue = document.getElementById('endpoint').value;
   localStorage.setItem('text',fieldValue);
-  //let username = document.getElementById('username').value;
-  let username = this.state.username;
-  //let password = document.getElementById('password').value;
-  let password = this.state.password;
-  console.log("baz1 " + fieldValue + ";");
-  ws.login(username, password);
-  console.log("baz2 " + fieldValue + ";");
 }
 
 var tag = document.getElementById("Button");
@@ -79,20 +72,16 @@ class UserForm extends React.Component {
     console.log(this.state);
   };
 
-  login = _ => {
+  login = async _ => {
     var fieldValue = document.getElementById('endpoint').value;
-    localStorage.setItem('text',fieldValue);
-    //let username = document.getElementById('username').value;
+    await localStorage.setItem('text',fieldValue);
     let username = this.state.username;
-    //let password = document.getElementById('password').value;
     let password = this.state.password;
-    console.log("baz1 " + fieldValue + ";");
+    console.log("logging in; username: " + this.state.username);
     ws.login(username, password);
-    console.log("baz2 " + fieldValue + ";");
   }
 
   render() {
-    localStorage.setItem("token", "eufigalfbs.");
     return (
       <form>
         <MegaField
