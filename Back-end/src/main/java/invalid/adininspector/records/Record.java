@@ -25,16 +25,22 @@ public abstract class Record {
         for (Field var : this.getClass().getDeclaredFields()) {
             try {
                 Method m = this.getClass().getDeclaredMethod("get" + var.getName());
-                if (!var.getName().contentEquals("Timestamp"))
+                if (var.getType() == String.class) //if we get a string, cast the getter. EASY
                     doc.append(var.getName(), m.invoke(this));
-                else {
-                    //TODO: FIX THIS STUPID HACK FOR ANKUSH'S IDIOTIC TIMESTAMP HANDLING
+                else if(var.getType() == Timestamp.class) //STUPID HACK FOR ANKUSH'S IDIOTIC TIMESTAMP HANDLING
+                {
+                    //TODO: Fix this
                     Map<String, String> rightHereMap = new HashMap<String, String>();
                     rightHereMap.put("date", (String)m.invoke(this));
                         
 
                     doc.append(var.getName(), rightHereMap);
 
+                }
+                else 
+                {
+                    System.out.println("Data type of field not supported: " + var.getType().getSimpleName() 
+                                            + " of " + this.getClass().getSimpleName() );
                 }
             } catch (NoSuchMethodException e) {
                 System.out.println("no getter method for variable: " + var.getName());
