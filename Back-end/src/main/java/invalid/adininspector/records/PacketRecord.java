@@ -16,22 +16,6 @@ public class PacketRecord extends Record{
     private String L3Protocol;
     private String DestinationMACAddress;
 
-    //ankush's thing contains an object so this must also be a object
-    public class Timestamp {
-        //should be stored as UNIX timestamp? right??
-        public String $date;
-
-        public Timestamp(String $date) {
-            this.$date = $date;
-        }
-
-        @Override
-        public String toString() {
-            return $date;
-        }
-    }
-
-
     //MOCK RECORD
     public PacketRecord()
     {

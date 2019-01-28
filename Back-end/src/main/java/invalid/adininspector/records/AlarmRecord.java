@@ -10,24 +10,6 @@ public class AlarmRecord extends Record{
     private String AlarmDescription;
     private String PacketSummary;
 
-
-
-    //ankush's thing contains an object so this must also be a object
-    public class Timestamp {
-        //should be stored as UNIX timestamp? right??
-        public String $date;
-
-        public Timestamp(String $date) {
-            this.$date = $date;
-        }
-
-        @Override
-        public String toString() {
-            return $date;
-        }
-    }
-
-
     /**
      * @return the alarmId
      */

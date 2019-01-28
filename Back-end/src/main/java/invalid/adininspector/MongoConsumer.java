@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.stream.Collectors;
 
+import invalid.adininspector.dataprocessing.DataProcessor;
 import invalid.adininspector.exceptions.LoginFailureException;
 import invalid.adininspector.records.*;
 import com.google.gson.Gson;
@@ -27,7 +28,7 @@ import org.apache.kafka.common.TopicPartition;
 
 public class MongoConsumer {
 
-    private MongoClientMediator mongoMediator;
+    private MongoClientMediator clientMediator;
 
     private KafkaConsumer<String, String> consumer;
 
@@ -38,13 +39,9 @@ public class MongoConsumer {
 
     public MongoConsumer(String udid, String pass, String dbName) {
 
-        
-        //TODO: this should not stay like this in prod
-
         try {
-            mongoMediator = new MongoClientMediator(udid, pass,dbName);
+            clientMediator = new MongoClientMediator(udid, pass, dbName);
         } catch (LoginFailureException e) {
-            //TODO: handle exception
             System.out.println("wait...what? ");
             e.printStackTrace();
             return;
@@ -69,7 +66,7 @@ public class MongoConsumer {
         // this will be done once, all missing entries from kafka are added to the
         // appropriate collection
 
-        Collection<TopicPartition> partitions = getAllTopics();
+        Collection<TopicPartition> partitions = getAllTopicsPartitions();
 
         // TopicPartition topicPartition = new TopicPartition("test", 0);
         // List partitions = Arrays.asList(topicPartition);
@@ -86,50 +83,67 @@ public class MongoConsumer {
 
         Gson gson = new Gson();
 
+
         while (true) {
 
             Boolean hasNewRecords = false;
 
             ConsumerRecords<String, String> records = consumer.poll(pollingTimeOut);
 
-            for (ConsumerRecord<String, String> record : records) {
-
+   
+            for (ConsumerRecord<String, String> record : records ) {
 
                 hasNewRecords = !hasNewRecords;
 
-                //System.out.printf("offset = %d, key = %s, value = %s, partition = %d%n", record.offset(), record.key(),record.value(), record.partition());
+                // System.out.printf("offset = %d, key = %s, value = %s, partition = %d%n",
+                // record.offset(), record.key(),record.value(), record.partition());
 
-                //System.out.println(record.value());
+                // System.out.println(record.value());
 
-                //TODO: fix this horrible hack
-                Type type = record.value().contains("Alarm") ? new TypeToken<AlarmRecord>(){}.getType() :new TypeToken<PacketRecord>() {}.getType();
+                // TODO: fix this horrible hack // relegate it to the Mediator??? maybe?
+                Type type = null;
+                
+                if(record.value().contains("Alarm"))
+                {
+                    type = new TypeToken<AlarmRecord>() {}.getType();
+                }
+                else if (record.value().contains("L2"))
+                {
+                    type = new TypeToken<PacketRecord>() {}.getType();
+                }
+                else
+                {
+                    System.out.println("Non recognized record type");
+                    continue;
+                }
+               
+                //TODO: Tell ankush to fix his messy timestamp handling becuase mongo does not work with special chars
+                String fixedRecord = record.value().replace("$","");
+
+               // clientMediator.p(fixedRecord);
 
                 // convert it into a java object
-                    Record incomingRecord = gson.fromJson(record.value(), type);
-                    // set the offset as ID in the DB
+                Record incomingRecord = gson.fromJson(fixedRecord, type);
+                // set the offset as ID in the DB
 
-                    incomingRecord.set_id(Long.toString(record.offset()));
+                incomingRecord.set_id(Long.toString(record.offset()));
 
-                    mongoMediator.addRecordToCollection(incomingRecord,record.topic());
-
+                clientMediator.addRecordToCollection(incomingRecord, record.topic());
 
             }
-            if(hasNewRecords)
-            {
-                 //TODO: notify the mediator that data needs to be processed
-                 System.out.println("New Records have been added, check if we need to preprocess something");
+        
+            if (hasNewRecords) {
+                // TODO: notify the mediator that data needs to be processed
+                System.out.println("New Records have been added, check if we need to preprocess something");
                 
-                for (ConsumerRecord<String, String> record : records) {
-                    //TODO: extract topics to update
-                }
+                DataProcessor.processData(getAllTopics(), clientMediator);
 
-               
                 hasNewRecords = !hasNewRecords;
             }
         }
     }
 
-    Collection<TopicPartition> getAllTopics() {
+    Collection<TopicPartition> getAllTopicsPartitions() {
         Collection<TopicPartition> kafkaTopics = new ArrayList<>();
 
         Map<String, List<PartitionInfo>> topicsMap;
@@ -146,6 +160,29 @@ public class MongoConsumer {
                 kafkaTopics.add(new TopicPartition(topic.getKey(), 0));
                 System.out.println("Topic: " + topic.getKey());
             }
+            //
+            // System.out.println("Value: " + topic.getValue() + "\n");
+
+        }
+
+        return kafkaTopics;
+    }
+
+    //convinience method for geting all topics
+    ArrayList<String> getAllTopics() {
+        ArrayList<String> kafkaTopics = new ArrayList<>();
+
+        Map<String, List<PartitionInfo>> topicsMap;
+        topicsMap = consumer.listTopics();
+
+      
+
+        for (Map.Entry<String, List<PartitionInfo>> topic : topicsMap.entrySet()) {
+
+            // __consumer_offsets is internal to kafka and should be ignored
+            if (topic.getKey().contentEquals("motor")) {
+                kafkaTopics.add(topic.getKey());
+                        }
             //
             // System.out.println("Value: " + topic.getValue() + "\n");
 
