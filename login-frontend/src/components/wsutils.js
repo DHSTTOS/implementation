@@ -77,6 +77,7 @@ const handleData = msg => {
 };
 
 const handleSession = async msg => {
+  console.log("handleSession");
   if (appStore.userDetails.wsLoggedIn) {
     switch (msg.status) {
       case "OK":
@@ -99,10 +100,15 @@ const handleSession = async msg => {
     }
   } else {
     //not logged in
+    console.log("not logged in, msg.status: " + msg.status);
     switch (msg.status) {
       case "OK":
         // successful login to ws connection
         appStore.userDetails.wsLoggedIn = true;
+	let token = msg.par;
+	console.log("not logged in, OK: " + token);
+	if (token)
+          await localStorage.setItem('token', token);
         break;
       case "FAIL":
         // login failed
