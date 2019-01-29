@@ -48,10 +48,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/DHSTTOS/frontend-demo.git"
+    "url": "git+https://github.com/DHSTTOS/implementation.git"
   },
   "bugs": {
-    "url": "https://github.com/DHSTTOS/frontend-demo/issues"
+    "url": "https://github.com/DHSTTOS/implementation/issues"
   },
-  "homepage": "https://github.com/DHSTTOS/frontend-demo#readme"
+  "homepage": "https://github.com/DHSTTOS/implementation/frontend#readme",
+  "browserslist": [
+    "since 2018-06"
+  ]
 }
