@@ -61,7 +61,7 @@ public class MongoClientMediator {
         try {
             // p(record.getAsDocument());
             db.getCollection(collection).insertOne(record.getAsDocument());
-            p("inserting to: " + collection + " at offset: " + record.get_id());
+            //p("inserting to: " + collection + " at offset: " + record.get_id());
         } catch (MongoWriteException ex) {
             // TODO: how to handle this, skip?, overwrite? or compare and decide which one
             // to keep?
@@ -76,7 +76,7 @@ public class MongoClientMediator {
         try {
             // p(record.getAsDocument());
             db.getCollection(collection).insertOne(record);
-            p("inserting to: " + collection);
+          //  p("inserting to: " + collection);
         } catch (MongoWriteException ex) {
             // TODO: how to handle this, skip?, overwrite? or compare and decide which one
             // to keep?
@@ -88,6 +88,8 @@ public class MongoClientMediator {
 
     // we do not necessarly need a record for aggregated records. we can pass documents along
     public void addRecordsToCollection(ArrayList<Document> records, String collection) {
+
+        if(records == null) return;
 
         for(Document doc: records)
         {

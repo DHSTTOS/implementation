@@ -59,7 +59,7 @@ public class FlowRatePerSecond implements IAggregator {
                 // add it to our processed records
                 processedRecords.add(currentDocument);
 
-                System.out.println(currentDocument.toJson());
+               // System.out.println(currentDocument.toJson());
 
                 currentTstmp = Long.valueOf(r.getTimestamp());
 

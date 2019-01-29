@@ -78,22 +78,22 @@ public class MongoConsumer {
         ListenForRecords();
     }
 
-    // TODO: should we check if records already exist?
+    // TODO: we SHOULD check if records already exist?
+    // TODO: put ALL stored data in mongo before processing it.
+    // TODO: differentiage between realm-time and stored data
     void ListenForRecords() {
 
         Gson gson = new Gson();
 
+        Boolean processRecords = true;
 
         while (true) {
 
-            Boolean hasNewRecords = false;
+            
 
             ConsumerRecords<String, String> records = consumer.poll(pollingTimeOut);
 
-   
             for (ConsumerRecord<String, String> record : records ) {
-
-                hasNewRecords = !hasNewRecords;
 
                 // System.out.printf("offset = %d, key = %s, value = %s, partition = %d%n",
                 // record.offset(), record.key(),record.value(), record.partition());
@@ -131,14 +131,19 @@ public class MongoConsumer {
                 clientMediator.addRecordToCollection(incomingRecord, record.topic());
 
             }
+
+          
         
-            if (hasNewRecords) {
+            if (records.isEmpty() && processRecords) {
                 // TODO: notify the mediator that data needs to be processed
-                System.out.println("New Records have been added, check if we need to preprocess something");
+                System.out.println("Stored Records have been added, process them");
                 
                 DataProcessor.processData(getAllTopics(), clientMediator);
 
-                hasNewRecords = !hasNewRecords;
+                //stop processing records
+                processRecords = false;
+
+                System.out.println("all stored records have been processed");
             }
         }
     }
@@ -156,6 +161,7 @@ public class MongoConsumer {
         for (Map.Entry<String, List<PartitionInfo>> topic : topicsMap.entrySet()) {
 
             // __consumer_offsets is internal to kafka and should be ignored
+            // TODO: ignore real-time data
             if (!topic.getKey().contentEquals("__consumer_offsets")) {
                 kafkaTopics.add(new TopicPartition(topic.getKey(), 0));
                 System.out.println("Topic: " + topic.getKey());
@@ -180,7 +186,7 @@ public class MongoConsumer {
         for (Map.Entry<String, List<PartitionInfo>> topic : topicsMap.entrySet()) {
 
             // __consumer_offsets is internal to kafka and should be ignored
-            if (topic.getKey().contentEquals("motor")) {
+            if (!topic.getKey().contentEquals("__consumer_offsets")) {
                 kafkaTopics.add(topic.getKey());
                         }
             //
