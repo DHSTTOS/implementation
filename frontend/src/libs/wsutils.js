@@ -78,8 +78,8 @@ const handleSession = async msg => {
     switch (msg.status) {
       case "OK":
         // can't really happen unless we use the two-page login
-	let token = msg.par;
-        await localStorage.setItem('token', token);
+        let token = msg.par;
+        await localStorage.setItem("token", token);
         console.log(
           "websocket connection: got unexpected SESSION message: " +
             msg.status +
