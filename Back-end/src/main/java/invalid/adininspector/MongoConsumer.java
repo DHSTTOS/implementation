@@ -25,7 +25,9 @@ import org.apache.kafka.common.PartitionInfo;
 import org.apache.kafka.common.TopicPartition;
 
 //project hasn't even started and we're already doing hacky shit
-
+//TODO: convert TImestampo date vaue into a mongoDB timestamp object
+//TODO: check if changing Timestamp into a number fixes the use
+//TODO: test ignoring timestamp object and add our own timestamp object
 public class MongoConsumer {
 
     private MongoClientMediator clientMediator;
@@ -138,7 +140,7 @@ public class MongoConsumer {
                 // TODO: notify the mediator that data needs to be processed
                 System.out.println("Stored Records have been added, process them");
                 
-                DataProcessor.processData(getAllTopics(), clientMediator);
+                DataProcessor.processData(getTopcisForProcessing(), clientMediator);
 
                 //stop processing records
                 processRecords = false;
@@ -174,8 +176,8 @@ public class MongoConsumer {
         return kafkaTopics;
     }
 
-    //convinience method for geting all topics
-    ArrayList<String> getAllTopics() {
+    //convinience method for geting all topics to be processed
+    ArrayList<String> getTopcisForProcessing() {
         ArrayList<String> kafkaTopics = new ArrayList<>();
 
         Map<String, List<PartitionInfo>> topicsMap;
@@ -185,8 +187,9 @@ public class MongoConsumer {
 
         for (Map.Entry<String, List<PartitionInfo>> topic : topicsMap.entrySet()) {
 
-            // __consumer_offsets is internal to kafka and should be ignored
-            if (!topic.getKey().contentEquals("__consumer_offsets")) {
+            // __consumer_offsets is internal to kafka and should be ignored we also need to ingore everything that isn't Packet Records
+            //--> that means ignore everything that contains an underscore
+            if (!topic.getKey().contentEquals("__consumer_offsets") || !topic.getKey().contains("_")) {
                 kafkaTopics.add(topic.getKey());
                         }
             //

@@ -102,6 +102,9 @@ MongoDB comparison for range? numerical? stringwise? M
 when a new collection is added the permissions for operators need to be updated on a per collection basis. 
 figure out 
 Mongo cannot insert things prepended with special symbols like $. either he fixes it or we remove special characters
+check how to send chunks of data from mongo ro implement Async Mongoclient.
+for now. I believe hte best way would be to do it sync, but make it expandable.
+
 
 //Things to fix in documentation:
 Json format from FlowRatePerSecond is wrong since port number is only provided at L4

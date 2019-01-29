@@ -2,7 +2,6 @@ package invalid.adininspector.records;
 
 import java.util.Map;
 
-//TODO:add method too iterate over the map
 public class MiscRecord extends Record{
     private Map<String, Object> properties;
 

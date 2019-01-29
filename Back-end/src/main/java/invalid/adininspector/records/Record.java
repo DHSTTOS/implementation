@@ -9,9 +9,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 //Records are anything that can go into the mongoDb, on coversion from the dissector
+//TODO: handle maps properly, convert classes to maps and reuse the handling.
 public abstract class Record {
 
-    // every record has to have a
+    // every record has to have an id. if none is provided then mongo takes the Java object ID
     protected String _id;
 
     // serialize all variables (in order ) of a Record into a Bson document for

@@ -6,11 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.bson.BasicBSONObject;
-import org.bson.BsonArray;
-import org.bson.BsonValue;
 import org.bson.Document;
 
-import invalid.adininspector.MongoClientMediator;
 import invalid.adininspector.records.PacketRecord;
 import invalid.adininspector.records.Record;
 
@@ -22,6 +19,7 @@ public class FlowRatePerSecond implements IAggregator {
     private Document currentDocument;
     private long second = 1000;
 
+    //we need to be able to do processing on more types of records, probably specialist methods.
     @Override
     public ArrayList<Document> processData(ArrayList<Record> records) {
 
@@ -45,6 +43,7 @@ public class FlowRatePerSecond implements IAggregator {
 
             PacketRecord r = (PacketRecord) record;
 
+            //check if the current timestamp is smaller than it +1 second.
             int retval = Long.valueOf(r.getTimestamp()).compareTo(currentTstmp + second);
 
             if (retval > 0) {
@@ -59,20 +58,20 @@ public class FlowRatePerSecond implements IAggregator {
                 // add it to our processed records
                 processedRecords.add(currentDocument);
 
-               // System.out.println(currentDocument.toJson());
 
+                //set new timestamp
                 currentTstmp = Long.valueOf(r.getTimestamp());
 
-                // create new objects
+                // create new objects for processing
                 connectionsMapList = new ArrayList<>();
                 currentDocument = getNewAggregatorDocument(currentTstmp);
             }
 
             if (retval <= 0) {
                 Boolean destInMap = false;
-                Boolean srctInMap = false;
+                Boolean srcInMap = false;
 
-                // check if existing maps have the dst and src
+                // check if existing maps have the dst and src and increment the ocunt if that's the case
                 for (Map<String, Object> map : connectionsMapList) {
                 
                     // is the mac already part of the map?
@@ -88,7 +87,7 @@ public class FlowRatePerSecond implements IAggregator {
 
                     // is the mac already part of the map?
                     if (map.get("MAC").equals(r.getSourceMACAddress()) && map.get("In/Out").equals("In")) {
-                        srctInMap = !srctInMap;
+                        srcInMap = !srcInMap;
 
                         int count = Integer.parseInt((String) map.get("count")) + 1;
                         map.replace("count", Integer.toString(count));
@@ -109,7 +108,7 @@ public class FlowRatePerSecond implements IAggregator {
                 }
 
                 // we have not seen this src before this second
-                if (!srctInMap) {
+                if (!srcInMap) {
                     Map<String, Object> map = new HashMap<String, Object>();
 
                     // add it to the map
