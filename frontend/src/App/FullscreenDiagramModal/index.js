@@ -8,7 +8,8 @@ import Modal from "@material-ui/core/Modal";
 import Button from "@material-ui/core/Button";
 
 import { appStore } from "@stores";
-
+import { jsonstreams } from "../../../mockdata";
+import { formatData, SCATTER_PLOT, LINE_CHART } from "@libs";
 import DiagramControl from "./DiagramControl";
 import LineChartBlock from "./LineChartBlock";
 import ScatterPlotBlock from "./ScatterPlotBlock";
@@ -17,12 +18,21 @@ const Container = styled(Paper)`
   position: absolute;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  top: 50%;
-  left: 50%;
-  width: 45rem;
-  height: 40rem;
-  transform: translate(-50%, -50%);
+  justify-content: center;
+  /* transform: translate(-50%, -50%); */
+`;
+
+const CenteredTypography = styled(Typography)`
+  align-self: center;
+`;
+
+const PlotContainer = styled.div`
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  align-self: stretch;
+  margin: 0.5rem;
 `;
 
 const ButtonsContainer = styled.div`
@@ -31,6 +41,16 @@ const ButtonsContainer = styled.div`
   justify-content: space-between;
   width: 10rem;
   margin: 1rem;
+`;
+
+const StyledPaper = styled(Paper)`
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  align-self: stretch;
+  margin: 0.5rem;
 `;
 
 const Center = styled.div`
@@ -94,6 +114,69 @@ class FullscreenDiagramModal extends Component {
         </Container>
       </Modal>
     );
+  }
+}
+
+@observer
+class Diagram extends Component {
+  render() {
+    const { plotType, groupName, x, y } = this.props.config;
+    const {
+      colors,
+      enableArea,
+      lineWidth,
+      areaOpacity,
+      symbolSize,
+    } = this.props.config.specConfig;
+
+    const data = formatData({
+      groupName,
+      x,
+      y,
+      rawData: jsonstreams,
+    });
+    console.log(data);
+
+    const { width, height } = appStore.diagramDimension;
+
+    let plot = (
+      <CenteredTypography variant="subtitle1" color="error">
+        Enable to render diagram, please check configs
+      </CenteredTypography>
+    );
+
+    switch (plotType) {
+      case SCATTER_PLOT:
+        plot = (
+          <ScatterPlotBlock
+            data={data}
+            x={x}
+            y={y}
+            width={width}
+            height={height}
+            colors={colors}
+            symbolSize={symbolSize}
+          />
+        );
+        break;
+      case LINE_CHART:
+        plot = (
+          <LineChartBlock
+            data={data}
+            x={x}
+            y={y}
+            width={width}
+            height={height}
+            colors={colors}
+            enableArea={enableArea}
+            lineWidth={lineWidth}
+            areaOpacity={areaOpacity}
+          />
+        );
+        break;
+    }
+
+    return <PlotContainer>{plot}</PlotContainer>;
   }
 }
 

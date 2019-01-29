@@ -29,7 +29,7 @@ export default class DiagramControl extends Component {
     appStore.openConfigModal(this.props.diagramID);
   };
   handleFullscreen = () => {
-    //TODO: opens another modal for fullscreen? (non-trivial)
+    appStore.fullscreenDiagram = this.props.diagramID;
   };
   handleClose = () => {
     appStore.closeDiagram(this.props.diagramID);
