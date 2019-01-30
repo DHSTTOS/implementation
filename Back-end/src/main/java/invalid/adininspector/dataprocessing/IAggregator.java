@@ -1,6 +1,7 @@
 package invalid.adininspector.dataprocessing;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.bson.Document;
 
@@ -10,5 +11,5 @@ public interface IAggregator {
 
     public ArrayList<Document> processData( ArrayList<Record> records);
 
-    public Document getNewAggregatorDocument(long tstmp);
+    public Document getNewAggregatorDocument(Date tstmp);
 }

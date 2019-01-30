@@ -1,6 +1,8 @@
 package invalid.adininspector.records;
 
-public class PacketRecord extends Record{
+import java.util.Date;
+
+public class PacketRecordDesFromKafka extends Record {
 
 
     private String L2Protocol;
@@ -17,12 +19,12 @@ public class PacketRecord extends Record{
     private String DestinationMACAddress;
 
     //MOCK RECORD
-    public PacketRecord()
+    public PacketRecordDesFromKafka()
     {
 
     }
 
-    public PacketRecord(String l2Protocol, String sourceMACAddress, String l4Protocol, String sourceIPAddress, String packetSummary, String packetID, String destinationIPAddress, Timestamp timestamp, String destinationPort, String sourcePort, String l3Protocol, String destinationMACAddress) {
+    public PacketRecordDesFromKafka(String l2Protocol, String sourceMACAddress, String l4Protocol, String sourceIPAddress, String packetSummary, String packetID, String destinationIPAddress, Timestamp timestamp, String destinationPort, String sourcePort, String l3Protocol, String destinationMACAddress) {
         L2Protocol = l2Protocol;
         SourceMACAddress = sourceMACAddress;
         L4Protocol = l4Protocol;
@@ -94,8 +96,8 @@ public class PacketRecord extends Record{
         DestinationIPAddress = destinationIPAddress;
     }
 
-    public String getTimestamp() {
-        return Timestamp.toString();
+    public Date getTimestamp() {
+        return Timestamp.date;
     }
 
     public void setTimestamp(Timestamp timestamp) {

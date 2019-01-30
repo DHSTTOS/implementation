@@ -1,10 +1,12 @@
 package invalid.adininspector.records;
 
+import org.bson.BsonTimestamp;
 import org.bson.Document;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,11 +33,12 @@ public abstract class Record {
                 else if(var.getType() == Timestamp.class) //STUPID HACK FOR ANKUSH'S IDIOTIC TIMESTAMP HANDLING
                 {
                     //TODO: Fix this
-                    Map<String, String> rightHereMap = new HashMap<String, String>();
-                    rightHereMap.put("date", (String)m.invoke(this));
+                    Map<String, Date> rightHereMap = new HashMap<String, Date>();
+                    rightHereMap.put("date", (Date)m.invoke(this));
                         
 
-                    doc.append(var.getName(), rightHereMap);
+                    
+                    doc.append(var.getName(), m.invoke(this));
 
                 }
                 else 

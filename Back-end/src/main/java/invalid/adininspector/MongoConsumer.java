@@ -7,6 +7,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -16,6 +17,11 @@ import invalid.adininspector.dataprocessing.DataProcessor;
 import invalid.adininspector.exceptions.LoginFailureException;
 import invalid.adininspector.records.*;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -23,6 +29,8 @@ import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.PartitionInfo;
 import org.apache.kafka.common.TopicPartition;
+
+
 
 //project hasn't even started and we're already doing hacky shit
 //TODO: convert TImestampo date vaue into a mongoDB timestamp object
@@ -86,7 +94,18 @@ public class MongoConsumer {
     // TODO: differentiage between realm-time and stored data
     void ListenForRecords() {
 
-        Gson gson = new Gson();
+        GsonBuilder builder = new GsonBuilder(); 
+
+        // Register an adapter to manage the date types as long values 
+        builder.registerTypeAdapter(Date.class, new JsonDeserializer<Date>() { 
+           public Date deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+              return new Date(json.getAsJsonPrimitive().getAsLong()); 
+           } 
+        });
+        
+        
+
+        Gson gson = builder.create();
 
         Boolean processRecords = true;
         Boolean addedRecords = false;
@@ -113,7 +132,7 @@ public class MongoConsumer {
                 }
                 else if (record.value().contains("L2"))
                 {
-                    type = new TypeToken<PacketRecord>() {}.getType();
+                    type = new TypeToken<PacketRecordDesFromKafka>() {}.getType();
                 }
                 else
                 {

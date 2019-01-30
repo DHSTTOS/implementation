@@ -1,6 +1,7 @@
 package invalid.adininspector.dataprocessing;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,13 +9,13 @@ import java.util.Map;
 import org.bson.BasicBSONObject;
 import org.bson.Document;
 
-import invalid.adininspector.records.PacketRecord;
+import invalid.adininspector.records.PacketRecordDesFromMongo;
 import invalid.adininspector.records.Record;
 
 //TODO: this is terribly inneficient a better way would be to create a new record derivate and use the getAsDocument() function,
 public class FlowRatePerSecond implements IAggregator {
 
-    private Long currentTstmp;
+    private Date currentTstmp;
     private ArrayList<Map<String, Object>> connectionsMapList;
     private Document currentDocument;
     private long second = 1000;
@@ -34,7 +35,7 @@ public class FlowRatePerSecond implements IAggregator {
         // we know that the records are organized by time
         // we are only doing aggregation on packetRecords
         // get first timestamp
-        currentTstmp = (long) Long.valueOf(((PacketRecord) records.get(0)).getTimestamp());
+        currentTstmp =  ((PacketRecordDesFromMongo)records.get(0)).getTimestamp();
 
         System.out.println("START PROCESSING");
 
@@ -44,10 +45,10 @@ public class FlowRatePerSecond implements IAggregator {
 
         records.forEach(record -> {
 
-            PacketRecord r = (PacketRecord) record;
+            PacketRecordDesFromMongo r = (PacketRecordDesFromMongo) record;
 
             //check if the current timestamp is smaller than it +1 second.
-            int retval = Long.valueOf(r.getTimestamp()).compareTo(currentTstmp + second);
+            int retval = Long.valueOf(r.getTimestamp().getTime()).compareTo(currentTstmp.getTime() + second);
 
             if (retval > 0) {
                 List<BasicBSONObject> connectionsHolder = new ArrayList<>();
@@ -63,7 +64,7 @@ public class FlowRatePerSecond implements IAggregator {
 
 
                 //set new timestamp
-                currentTstmp = Long.valueOf(r.getTimestamp());
+                currentTstmp = r.getTimestamp();
 
                 // create new objects for processing
                 connectionsMapList = new ArrayList<>();
@@ -130,10 +131,10 @@ public class FlowRatePerSecond implements IAggregator {
     }
 
     @Override
-    public Document getNewAggregatorDocument(long tstmp) {
+    public Document getNewAggregatorDocument(Date tstmp) {
         Document d = new Document();
 
-        d.append("date", Long.toString(tstmp));
+        d.append("date", (tstmp));
         d.append("_id", id);
         id++;
 
