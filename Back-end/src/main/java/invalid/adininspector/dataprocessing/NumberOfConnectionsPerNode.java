@@ -17,6 +17,7 @@ public class NumberOfConnectionsPerNode implements IAggregator {
     private ArrayList<Map<String, Object>> connectionsMapList;
     private Document currentDocument;
     private long second = 1000;
+    private int id;
 
     //we need to be able to do processing on more types of records, probably using specialist methods. instead of taking records we take packetrecords, or alarmrecords and so on.
     @Override
@@ -24,6 +25,8 @@ public class NumberOfConnectionsPerNode implements IAggregator {
 
         if (records == null)
             return null;
+
+        id=0;
 
         ArrayList<Document> processedRecords = new ArrayList<>();
 
@@ -126,6 +129,8 @@ public class NumberOfConnectionsPerNode implements IAggregator {
         Document d = new Document();
 
         d.append("date", Long.toString(tstmp));
+        d.append("_id", id);
+        id++;
 
         return d;
     }

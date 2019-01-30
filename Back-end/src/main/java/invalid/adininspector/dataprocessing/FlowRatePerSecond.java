@@ -18,6 +18,7 @@ public class FlowRatePerSecond implements IAggregator {
     private ArrayList<Map<String, Object>> connectionsMapList;
     private Document currentDocument;
     private long second = 1000;
+    private int id = 0;
 
     //we need to be able to do processing on more types of records, probably specialist methods.
     @Override
@@ -25,6 +26,8 @@ public class FlowRatePerSecond implements IAggregator {
 
         if (records == null)
             return null;
+
+            int id = 0;
 
         ArrayList<Document> processedRecords = new ArrayList<>();
 
@@ -131,6 +134,8 @@ public class FlowRatePerSecond implements IAggregator {
         Document d = new Document();
 
         d.append("date", Long.toString(tstmp));
+        d.append("_id", id);
+        id++;
 
         return d;
     }

@@ -34,7 +34,7 @@ public class MongoConsumer {
 
     private KafkaConsumer<String, String> consumer;
 
-    private Duration pollingTimeOut = Duration.ofMillis(100);
+    private Duration pollingTimeOut = Duration.ofMillis(1000);
 
     // private String[] topics;
     List<String> topics;
@@ -57,6 +57,7 @@ public class MongoConsumer {
         props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         props.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         props.put("auto.offset.reset", "earliest");
+      //  props.put("max.poll.records","-1");
 
         consumer = new KafkaConsumer<>(props);
 
@@ -88,6 +89,7 @@ public class MongoConsumer {
         Gson gson = new Gson();
 
         Boolean processRecords = true;
+        Boolean addedRecords = false;
 
         while (true) {
 
@@ -131,6 +133,9 @@ public class MongoConsumer {
                 incomingRecord.set_id(Long.toString(record.offset()));
 
                 clientMediator.addRecordToCollection(incomingRecord, record.topic());
+
+                if(addedRecords)
+                    System.out.println(record.value());
 
             }
 
@@ -184,7 +189,6 @@ public class MongoConsumer {
         topicsMap = consumer.listTopics();
 
       
-
         for (Map.Entry<String, List<PartitionInfo>> topic : topicsMap.entrySet()) {
 
             // __consumer_offsets is internal to kafka and should be ignored we also need to ingore everything that isn't Packet Records
@@ -192,9 +196,7 @@ public class MongoConsumer {
             if (!topic.getKey().contentEquals("__consumer_offsets") || !topic.getKey().contains("_")) {
                 kafkaTopics.add(topic.getKey());
                         }
-            //
             // System.out.println("Value: " + topic.getValue() + "\n");
-
         }
 
         return kafkaTopics;
