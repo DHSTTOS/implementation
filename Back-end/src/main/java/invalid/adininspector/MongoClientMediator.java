@@ -142,17 +142,43 @@ public class MongoClientMediator {
 
     public String[] getRecordInRange(String collection, String key, String start, String end) {
         BasicDBObject query = new BasicDBObject();
-        query.put(key, new BasicDBObject("$gt", start).append("$lt", (end)));
+        query.put(key, new BasicDBObject("$gte", start).append("$lt", (end)));
 
         return mongoIteratorToStringArray(db.getCollection(collection).find(query));
     }
 
     public long getRecordsInRangeSize(String collection, String key, String start, String end) {
         BasicDBObject query = new BasicDBObject();
-        query.put(key, new BasicDBObject("$gt", start).append("$lt", (end)));
+        query.put(key, new BasicDBObject("$gte", start).append("$lt", (end)));
 
         return (int) db.getCollection(collection).countDocuments(query);
     }
+
+
+
+
+
+
+
+    public String[] getRecordInRange(String collection, String key, Object start,Object end) {
+        BasicDBObject query = new BasicDBObject();
+        query.put(key, new BasicDBObject("$gte", start).append("$lt", (end)));
+
+        return mongoIteratorToStringArray(db.getCollection(collection).find(query));
+    }
+
+    public long getRecordsInRangeSize(String collection, String key, Object start, Object end) {
+        BasicDBObject query = new BasicDBObject();
+        query.put(key, new BasicDBObject("$gte", start).append("$lt", (end)));
+
+        return (int) db.getCollection(collection).countDocuments(query);
+    }
+
+
+
+
+
+
 
     // get all names of all collections and put em in an Array.
     public String[] getAvailableCollections() {

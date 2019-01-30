@@ -4,6 +4,8 @@ package invalid.adininspector;
 import java.lang.reflect.Type;
 //For polling
 import java.time.Duration;
+import java.time.Instant;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -163,6 +165,18 @@ public class MongoConsumer {
             if (records.isEmpty() && processRecords) {
                 // TODO: notify the mediator that data needs to be processed
                 System.out.println("Stored Records have been added, process them");
+
+
+                // Instant instant = Instant.parse("2019-01-25T15:06:47.278Z"); //Pass your date.
+                // Instant instant2 = Instant.parse("2019-01-25T15:06:48.371Z"); //Pass your date.
+
+                // Date start = Date.from(instant);
+                // Date end = Date.from(instant2);
+
+                // long i = clientMediator.getRecordsInRangeSize("lmf", "Timestamp", start, end);
+
+                // clientMediator.p(i);
+
                 
                 DataProcessor.processData(getTopcisForProcessing(), clientMediator);
 
