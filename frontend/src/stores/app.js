@@ -210,8 +210,8 @@ class AppStore {
    */
   @observable
   userDetails = {
-    userName: '',
-    authToken: '',
+    userName: 'suitcase',
+    authToken: '12345',
     wsLoggedIn: false,
   };
 
