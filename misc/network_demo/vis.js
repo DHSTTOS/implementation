@@ -5,7 +5,7 @@ const RadialPlacement = function() {
   // how much to separate each location by
   let increment = 20;
   // how large to make the layout
-  let radius = 200;
+  let radius = 100;
   // where the center of the layout should be
   let center = { x: 0, y: 0 };
   // what angle to start at
@@ -54,8 +54,8 @@ const RadialPlacement = function() {
 
     // if we don't have enough keys, modify increment
     // so that they all fit in one circle
-   //0 if (keys.length < firstCircleCount) {
-      //increment = 360 / keys.length;
+   // if (keys.length < firstCircleCount) {
+     // increment = 360 / keys.length;
     ///}
 
     // set locations for inner circle
@@ -72,9 +72,10 @@ const RadialPlacement = function() {
     // setup outer circle
     radius = radius + radius / 1.8;
     increment = 360 / secondCircleKeys.length;
-    
+    //if (nodes.protocol == "TCP"){
     secondCircleKeys.forEach(k => place(k));
     // set locations for outer circle
+    //}else{
     const thirdCircleKeys = keys.slice(secondCircleCount,999);
 
     // setup outer circle
@@ -84,7 +85,7 @@ const RadialPlacement = function() {
     console.log(secondCircleKeys);
     console.log(thirdCircleKeys);
     return thirdCircleKeys.forEach(k => place(k));
-
+  //}
   };
 
   placement.keys = function(_) {
@@ -135,7 +136,7 @@ const Network = function() {
   // variables we want to access
   // in multiple places of Network
   const width = 960;
-  const height = 800;
+  const height = 960;
   // allData will store the unfiltered data
   let allData = [];
   let curLinksData = [];
@@ -155,7 +156,7 @@ const Network = function() {
   let filter = "all";
   let sort = "songs";
   // groupCenters will store our radial layout for
-  // the group by artist layout.
+  // the group by id layout.
   let groupCenters = null;
 
   // our force directed layout
@@ -165,7 +166,7 @@ const Network = function() {
   // tooltip used to display details
   const tooltip = Tooltip("vis-tooltip", 230);
 
-  // charge used in artist layout
+  // charge used in id layout
   const charge = node => -Math.pow(node.radius, 2.0) / 2;
 
   // Starting point for network visualization
@@ -207,8 +208,8 @@ const Network = function() {
     // sort nodes based on current sort and update centers for
     // radial layout
     if (layout === "radial") {
-      const artists = sortedArtists(curNodesData, curLinksData);
-      updateCenters(artists);
+      const id = sortedid(curNodesData, curLinksData);
+      updateCenters(id);
     }
 
     // reset nodes in force layout
@@ -249,10 +250,10 @@ const Network = function() {
 
   // Public function to switch between filter options
   network.toggleFilter = function(newFilter) {
-    force.stop();
-    setFilter(newFilter);
-    return update();
-  };
+  force.stop();
+ setFilter(newFilter);
+ return update();
+ };
 
   // Public function to switch between sort options
   network.toggleSort = function(newSort) {
@@ -263,7 +264,7 @@ const Network = function() {
 
   // Public function to update highlighted nodes
   // from search
-  network.updateSearch = function(searchTerm) {
+  /*network.updateSearch = function(searchTerm) {
     const searchRegEx = new RegExp(searchTerm.toLowerCase());
     return node.each(function(d) {
       const element = d3.select(this);
@@ -277,11 +278,11 @@ const Network = function() {
       } else {
         d.searched = false;
         return element
-          .style("fill", d => nodeColors(d.artist))
+          .style("fill", d => nodeColors(d.id))
           .style("stroke-width", 1.0);
       }
     });
-  };
+  };*/
 
   network.updateData = function(newData) {
     allData = setupData(newData);
@@ -295,7 +296,7 @@ const Network = function() {
   // Returns modified data
   var setupData = function(data) {
     // initialize circle radius scale
-    const countExtent = d3.extent(data.nodes, d => d.playcount);
+    const countExtent = d3.extent(data.nodes, d => 121020);
     const circleRadius = d3.scale
       .sqrt()
       .range([3, 12])
@@ -308,7 +309,7 @@ const Network = function() {
       n.x = randomnumber = Math.floor(Math.random() * width);
       n.y = randomnumber = Math.floor(Math.random() * height);
       // add radius to the node so we can use it later
-      return (n.radius = circleRadius(n.playcount));
+      return (n.radius = circleRadius(121020));
     });
 
     // id's -> node objects
@@ -316,9 +317,13 @@ const Network = function() {
 
     // switch links to point to node objects instead of id's
     data.links.forEach(function(l) {
+     // if(l.target != "0.0.0.0" || l.source == "0.0.0.0"){
       l.source = nodesMap.get(l.source);
       l.target = nodesMap.get(l.target);
-
+      //}
+      console.log(l);
+      console.log(l.source);
+      console.log(l.target);
       // linkedByIndex is used for link sorting
       return (linkedByIndex[`${l.source.id},${l.target.id}`] = 1);
     });
@@ -336,7 +341,7 @@ const Network = function() {
 
   // Helper function that returns an associative array
   // with counts of unique attr in nodes
-  // attr is value stored in node, like 'artist'
+  // attr is value stored in node, like 'id'
   const nodeCounts = function(nodes, attr) {
     const counts = {};
     nodes.forEach(function(d) {
@@ -373,49 +378,49 @@ const Network = function() {
     return filteredNodes;
   };
 
-  // Returns array of artists sorted based on
+  // Returns array of id sorted based on
   // current sorting method.
-  var sortedArtists = function(nodes, links) {
+  var sortedid = function(nodes, links) {
     let counts;
-    let artists = [];
+    let id = [];
     if (sort === "links") {
       counts = {};
       links.forEach(function(l) {
-        if (counts[l.source.artist] == null) {
-          counts[l.source.artist] = 0;
+        if (counts[l.source.id] == null) {
+          counts[l.source.id] = 0;
         }
-        counts[l.source.artist] += 1;
-        if (counts[l.target.artist] == null) {
-          counts[l.target.artist] = 0;
+        counts[l.source.id] += 1;
+        if (counts[l.target.id] == null) {
+          counts[l.target.id] = 0;
         }
-        return (counts[l.target.artist] += 1);
+        return (counts[l.target.id] += 1);
       });
-      // add any missing artists that dont have any links
+      // add any missing id that dont have any links
       nodes.forEach(n =>
-        counts[n.artist] != null ? counts[n.artist] : (counts[n.artist] = 0)
+        counts[n.id] != null ? counts[n.id] : (counts[n.id] = 0)
       );
 
       // sort based on counts
-      artists = d3.entries(counts).sort((a, b) => b.value - a.value);
+      id = d3.entries(counts).sort((a, b) => b.value - a.value);
       // get just names
-      artists = artists.map(v => v.key);
+      id = id.map(v => v.key);
     } else {
-      // sort artists by song count
-      counts = nodeCounts(nodes, "artist");
-      artists = d3.entries(counts).sort((a, b) => b.value - a.value);
-      artists = artists.map(v => v.key);
+      // sort id by song count
+      counts = nodeCounts(nodes, "id");
+      id = d3.entries(counts).sort((a, b) => b.value - a.value);
+      id = id.map(v => v.key);
     }
 
-    return artists;
+    return id;
   };
 
-  var updateCenters = function(artists) {
+  var updateCenters = function(id) {
     if (layout === "radial") {
       return (groupCenters = RadialPlacement()
         .center({ x: width / 2, y: height / 2 - 100 })
         .radius(300)
         .increment(18)
-        .keys(artists));
+        .keys(id));
     }
   };
 
@@ -423,10 +428,10 @@ const Network = function() {
   // source or target is not present in curNodes
   // Returns array of links
   var filterLinks = function(allLinks, curNodes) {
-    curNodes = mapNodes(curNodes);
-    return allLinks.filter(
-      l => curNodes.get(l.source.id) && curNodes.get(l.target.id)
-    );
+  curNodes = mapNodes(curNodes);
+  return allLinks.filter(
+  l => curNodes.get(l.source.id) && curNodes.get(l.target.id)
+  );
   };
 
   // enter/exit display for nodes
@@ -440,7 +445,7 @@ const Network = function() {
       .attr("cx", d => d.x)
       .attr("cy", d => d.y)
       .attr("r", d => d.radius)
-      .style("fill", d => nodeColors(d.artist))
+      .style("fill", d => nodeColors(d.id))
       .style("stroke", d => strokeFor(d))
       .style("stroke-width", 1.0);
 
@@ -480,6 +485,27 @@ const Network = function() {
       return force.on("tick", radialTick).charge(charge);
     }
   };
+    function fade(opacity) {
+      return function(d) {
+          node.style("stroke-opacity", function(o) {
+              thisOpacity = neighboring(d, o) ? 1 : opacity;
+              this.setAttribute('fill-opacity', thisOpacity);
+              return thisOpacity;
+          });
+ 
+        
+        link.style("stroke-opacity", function(o) {
+              return o.source === d || o.target === d ? 1 : opacity;
+          });       
+             
+      
+        
+        
+        
+      };
+}
+
+
 
   // switches filter option to new filter
   var setFilter = newFilter => (filter = newFilter);
@@ -516,7 +542,7 @@ const Network = function() {
   var moveToRadialLayout = function(alpha) {
     const k = alpha * 0.1;
     return function(d) {
-      const centerNode = groupCenters(d.artist);
+      const centerNode = groupCenters(d.id);
       d.x += (centerNode.x - d.x) * k;
       return (d.y += (centerNode.y - d.y) * k);
     };
@@ -526,15 +552,17 @@ const Network = function() {
   // particular node.
   var strokeFor = d =>
     d3
-      .rgb(nodeColors(d.artist))
+      .rgb(nodeColors(d.id))
       .darker()
       .toString();
 
   // Mouseover tooltip function
   var showDetails = function(d, i) {
-    let content = `<p class="main">${d.name}</span></p>`;
+    let content = `<p class="main">Mac Adress:  ${d.id}</span></p>`;
     content += '<hr class="tooltip-hr">';
-    content += `<p class="main">${d.artist}</span></p>`;
+    content += `<p class="main">id:  ${d.id}</span></p>`;
+    content += '<hr class="tooltip-hr">';
+    content += `<p class="main">Protocol:  ${d.protocol}</span></p>`;
     tooltip.showTooltip(content, d3.event);
 
     // higlight connected links
@@ -560,17 +588,17 @@ const Network = function() {
     // watch out - don't mess with node if search is currently matching
     node
       .style("stroke", function(n) {
-        if (n.searched || neighboring(d, n)) {
+        if ( neighboring(d, n)) {
           return "#555";
         } else {
           return strokeFor(n);
         }
       })
       .style("stroke-width", function(n) {
-        if (n.searched || neighboring(d, n)) {
+        if ( neighboring(d, n)) {
           return 2.0;
         } else {
-          return 1.0;
+          return fade(.1);
         }
       });
 
@@ -624,27 +652,11 @@ $(function() {
     return myNetwork.toggleLayout(newLayout);
   });
 
-  d3.selectAll("#filters a").on("click", function(d) {
-    const newFilter = d3.select(this).attr("id");
-    activate("filters", newFilter);
-    return myNetwork.toggleFilter(newFilter);
-  });
-
-  d3.selectAll("#sorts a").on("click", function(d) {
-    const newSort = d3.select(this).attr("id");
-    activate("sorts", newSort);
-    return myNetwork.toggleSort(newSort);
-  });
-
   $("#song_select").on("change", function(e) {
     const songFile = $(this).val();
     return d3.json(`data/${songFile}`, json => myNetwork.updateData(json));
   });
 
-  $("#search").keyup(function() {
-    const searchTerm = $(this).val();
-    return myNetwork.updateSearch(searchTerm);
-  });
 
-  return d3.json("data/call_me_al.json", json => myNetwork("#vis", json));
+  return d3.json("data/Source1.json", json => myNetwork("#vis", json));
 });
