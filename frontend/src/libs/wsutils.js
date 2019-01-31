@@ -7,8 +7,7 @@ const createConnection = _ => {
   // XXX should we check for an existing connection, and if so, close it?
   // Or maybe in the future we might have multiple connections to multiple servers?
   //
-  //const socket = new WebSocket("wss://echo.websocket.org/");
-  let newSocket = new WebSocket(appStore.webSocketUrl);
+  let newSocket = new WebSocket(appStore.wsEndpointURL);
   initHandlers(newSocket);
 
   msgIdCounter = 0;
@@ -19,8 +18,8 @@ const createConnection = _ => {
 // as long as we keep these socket.something listener assignments within the same scope
 // as the socket construction, we won't miss the 'open' event etc.
 
-const initHandlers = webSocket => {
-  webSocket.onopen = message => {
+const initHandlers = socket => {
+  socket.onopen = message => {
     console.log('WebSocket onopen: ', message);
     logObjectInfo(message);
 
@@ -28,12 +27,12 @@ const initHandlers = webSocket => {
     loginToken(appStore.userDetails.userName, appStore.userDetails.authToken);
   };
 
-  webSocket.onerror = message => {
+  socket.onerror = message => {
     console.log('WebSocket onerror: ', message);
     logObjectInfo(message);
   };
 
-  webSocket.onclose = message => {
+  socket.onclose = message => {
     console.log('WebSocket onclose:');
     logObjectInfo(message);
     let echoText = 'Disconnect: ' + message;
@@ -48,7 +47,7 @@ const initHandlers = webSocket => {
     // else try to open the connection again and login again, with token
   };
 
-  webSocket.onmessage = message => {
+  socket.onmessage = message => {
     console.log('WebSocket onmessage: ');
     logObjectInfo(message);
     handleMessage(JSON.parse(message.data));
@@ -152,10 +151,11 @@ const handleSession = async msg => {
 
 /***
  * Takes a message object, adds the id, registers it, and sends it.
- * @param {type} message
+ * @param {any} message
+ * @param {WebSocket} socket
  * @returns {undefined}
  */
-const sendRequest = message => {
+const sendRequest = (message, socket) => {
   message.id = msgIdCounter++;
   msgRegister[message.id] = message;
   socket.send(JSON.stringify(message));
