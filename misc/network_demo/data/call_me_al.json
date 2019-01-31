@@ -348,7 +348,7 @@
       "name": "Don't Stop Believin'",
       "artist": "Journey",
       "id": "dont_stop_believin_journey",
-      "playcount": 4217289
+      "playcount": 6017289
     },
     {
       "match": 0.335493,
@@ -774,25 +774,25 @@
       "match": 0.440955,
       "name": "Hurts So Good",
       "artist": "John Mellencamp",
-      "id": "hurts_so_good_john_mellencamp",
+      "id": "M2",
       "playcount": 397742
     },
     {
       "match": 0.439593,
-      "name": "Missing You",
+      "name": "M1",
       "artist": "John Waite",
-      "id": "missing_you_john_waite",
+      "id": "M1",
       "playcount": 481722
     }
   ],
   "links": [
     {
-      "source": "you_can_call_me_al_paul_simon",
-      "target": "diamonds_on_the_soles_of_her_shoes_paul_simon"
+      "source": "M1",
+      "target": "M2"
     },
     {
-      "source": "you_can_call_me_al_paul_simon",
-      "target": "graceland_paul_simon"
+      "source": "M1",
+      "target": "M3"
     },
     {
       "source": "you_can_call_me_al_paul_simon",

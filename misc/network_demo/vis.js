@@ -49,26 +49,42 @@ const RadialPlacement = function() {
     values = d3.map();
 
     // number of keys to go in first circle
-    const firstCircleCount = 360 / increment;
+    const firstCircleCount = 10;
+    const secondCircleCount = 20;
 
     // if we don't have enough keys, modify increment
     // so that they all fit in one circle
-    if (keys.length < firstCircleCount) {
-      increment = 360 / keys.length;
-    }
+   //0 if (keys.length < firstCircleCount) {
+      //increment = 360 / keys.length;
+    ///}
 
     // set locations for inner circle
     const firstCircleKeys = keys.slice(0, firstCircleCount);
+    increment = 360 / firstCircleKeys.length;
     firstCircleKeys.forEach(k => place(k));
 
+    
+
     // set locations for outer circle
-    const secondCircleKeys = keys.slice(firstCircleCount);
+    const secondCircleKeys = keys.slice(firstCircleCount,secondCircleCount);
+   
 
     // setup outer circle
     radius = radius + radius / 1.8;
     increment = 360 / secondCircleKeys.length;
+    
+    secondCircleKeys.forEach(k => place(k));
+    // set locations for outer circle
+    const thirdCircleKeys = keys.slice(secondCircleCount,999);
 
-    return secondCircleKeys.forEach(k => place(k));
+    // setup outer circle
+    radius = radius + radius / 1.8;
+    increment = 360 / thirdCircleKeys.length;
+    console.log(firstCircleKeys);
+    console.log(secondCircleKeys);
+    console.log(thirdCircleKeys);
+    return thirdCircleKeys.forEach(k => place(k));
+
   };
 
   placement.keys = function(_) {
@@ -135,7 +151,7 @@ const Network = function() {
   let link = null;
   // variables to refect the current settings
   // of the visualization
-  let layout = "force";
+  let layout = "radial";
   let filter = "all";
   let sort = "songs";
   // groupCenters will store our radial layout for
@@ -170,7 +186,7 @@ const Network = function() {
     // setup the size of the force environment
     force.size([width, height]);
 
-    setLayout("force");
+    setLayout("radial");
     setFilter("all");
 
     // perform rendering and start force layout
