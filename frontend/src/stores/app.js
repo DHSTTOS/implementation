@@ -51,7 +51,7 @@ class AppStore {
   @observable
   diagramDimension = {
     width: window.innerWidth * 0.85,
-    height: window.innerHeight * 0.6,
+    height: window.innerHeight * 0.55,
   };
 
   @action

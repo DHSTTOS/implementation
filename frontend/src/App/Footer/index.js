@@ -7,22 +7,24 @@ import AddBoxIcon from '@material-ui/icons/AddBox';
 import uniqid from 'uniqid';
 
 import { appStore } from '@stores';
+import Brush from './Brush';
 
 const Container = styled.div`
   position: fixed;
   bottom: 0;
   display: flex;
-  height: 5rem;
+  height: 6rem;
   width: 100%;
 `;
 
 const Content = styled.div`
-  display: flex;
   flex: 1;
+  display: grid;
+  align-items: center;
+  justify-items: center;
   margin: 0 1rem;
   padding: 0 2rem;
-  justify-content: space-between;
-  align-items: center;
+  grid-template-columns: 10rem auto 10rem;
 `;
 
 const StyledAddBoxIcon = styled(AddBoxIcon)`
@@ -39,17 +41,22 @@ class Footer extends Component {
     return (
       <Container>
         <Content>
-          <Typography variant="body1" color="textSecondary">
-            {'© 2018 ADIN Frontend Contributors'}
-          </Typography>
-          <Button
-            onClick={this.handleAddDiagram}
-            variant="contained"
-            color="primary"
-          >
-            <StyledAddBoxIcon />
-            Add Diagram
-          </Button>
+          <div>
+            <Typography variant="body1" color="textSecondary">
+              {'© 2018 DHSTTOS Frontend Contributors'}
+            </Typography>
+          </div>
+          <Brush />
+          <div>
+            <Button
+              onClick={this.handleAddDiagram}
+              variant="contained"
+              color="primary"
+            >
+              <StyledAddBoxIcon />
+              Add Diagram
+            </Button>
+          </div>
         </Content>
       </Container>
     );

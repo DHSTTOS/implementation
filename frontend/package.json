@@ -15,6 +15,7 @@
     "@nivo/scatterplot": "^0.52.0",
     "@nivo/stream": "^0.52.0",
     "axios": "0.18.0",
+    "d3": "5.8.0",
     "mobx": "5.7.0",
     "mobx-react": "5.4.2",
     "react": "^16.6.3",
