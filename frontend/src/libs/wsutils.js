@@ -24,7 +24,11 @@ const initHandlers = socket => {
     logObjectInfo(message);
 
     // authenticate again when opening socket
-    loginToken(appStore.userDetails.userName, appStore.userDetails.authToken);
+    loginToken(
+      socket,
+      appStore.userDetails.userName,
+      appStore.userDetails.authToken
+    );
   };
 
   socket.onerror = message => {
