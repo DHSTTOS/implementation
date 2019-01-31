@@ -21,7 +21,7 @@ const createConnection = () => {
 const initHandlers = socket => {
   socket.onopen = message => {
     console.log('WebSocket onopen: ', message);
-    logObjectInfo(message);
+    console.dir(message);
 
     // authenticate again when opening socket
     loginToken(
@@ -33,12 +33,12 @@ const initHandlers = socket => {
 
   socket.onerror = message => {
     console.log('WebSocket onerror: ', message);
-    logObjectInfo(message);
+    console.dir(message);
   };
 
   socket.onclose = message => {
     console.log('WebSocket onclose:');
-    logObjectInfo(message);
+    console.dir(message);
     let echoText = 'Disconnect: ' + message;
     echoText += ', ' + message.code;
     echoText += ', ' + message.reason;
@@ -53,7 +53,7 @@ const initHandlers = socket => {
 
   socket.onmessage = message => {
     console.log('WebSocket onmessage: ');
-    logObjectInfo(message);
+    console.dir(message);
     handleMessage(JSON.parse(message.data));
   };
 };
@@ -62,6 +62,7 @@ const initHandlers = socket => {
  * Take the JSON-formatted message and handle it according to the protocol.
  */
 const handleMessage = msg => {
+  console.log(msg);
   switch (msg.cmd) {
     case 'SESSION':
       handleSession(msg);
@@ -142,6 +143,7 @@ const handleSession = async msg => {
       case 'FAIL':
         // login failed
         console.log('login to websocket connection failed: ' + msg.par);
+        console.log(msg);
         // TODO: present the login screen again
         break;
       default:
@@ -266,13 +268,6 @@ const getLocalCollectionData = collName => {
   } else {
     return dataStore.alarms[collName].data;
   }
-};
-
-const logObjectInfo = o => {
-  for (let k in Object.keys(o)) {
-    console.log(k + ': ' + o[k]);
-  }
-  console.log('OwnPropertyNames: ' + Object.getOwnPropertyNames(o));
 };
 
 export {
