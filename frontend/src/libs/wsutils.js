@@ -1,15 +1,12 @@
 import { appStore, dataStore } from '@stores';
 
-var msgIdCounter = 0;
-var msgRegister = [];
-
-var socket = createConnection();
-
+let msgIdCounter = 0;
+let msgRegister = [];
 
 const createConnection = _ => {
   // XXX should we check for an existing connection, and if so, close it?
   // Or maybe in the future we might have multiple connections to multiple servers?
-  // 
+  //
   //const socket = new WebSocket("wss://echo.websocket.org/");
   let newSocket = new WebSocket(appStore.webSocketUrl);
   initHandlers(newSocket);
@@ -23,9 +20,8 @@ const createConnection = _ => {
 // as the socket construction, we won't miss the 'open' event etc.
 
 const initHandlers = webSocket => {
-
   webSocket.onopen = message => {
-    console.log("WebSocket onopen: ", message);
+    console.log('WebSocket onopen: ', message);
     logObjectInfo(message);
 
     // authenticate again when opening socket
@@ -33,19 +29,19 @@ const initHandlers = webSocket => {
   };
 
   webSocket.onerror = message => {
-    console.log("WebSocket onerror: ", message);
+    console.log('WebSocket onerror: ', message);
     logObjectInfo(message);
   };
 
   webSocket.onclose = message => {
-    console.log("WebSocket onclose:");
+    console.log('WebSocket onclose:');
     logObjectInfo(message);
-    let echoText = "Disconnect: " + message;
-    echoText += ", " + message.code;
-    echoText += ", " + message.reason;
-    echoText += ", " + message.wasClean;
-    echoText += ", " + message.isTrusted;
-    echoText += "\n";
+    let echoText = 'Disconnect: ' + message;
+    echoText += ', ' + message.code;
+    echoText += ', ' + message.reason;
+    echoText += ', ' + message.wasClean;
+    echoText += ', ' + message.isTrusted;
+    echoText += '\n';
     console.log(echoText);
 
     // TODO XXX: if logout was called (intentional) then do nothing (stay logged out),
@@ -53,7 +49,7 @@ const initHandlers = webSocket => {
   };
 
   webSocket.onmessage = message => {
-    console.log("WebSocket onmessage: ");
+    console.log('WebSocket onmessage: ');
     logObjectInfo(message);
     handleMessage(JSON.parse(message.data));
   };
@@ -64,20 +60,20 @@ const initHandlers = webSocket => {
  */
 const handleMessage = msg => {
   switch (msg.cmd) {
-    case "SESSION":
+    case 'SESSION':
       handleSession(msg);
       break;
-    case "LIST_COL":
+    case 'LIST_COL':
       // msg.par will be array
       dataStore.availableCollections = msg.par;
       break;
-    case "COLL_SIZE":
+    case 'COLL_SIZE':
       break;
-    case "DATA":
+    case 'DATA':
       handleData(msg);
       break;
     default:
-      console.log("error: unknown request from server: " + msg.cmd);
+      console.log('error: unknown request from server: ' + msg.cmd);
       break;
   }
 };
@@ -130,7 +126,7 @@ const handleSession = async msg => {
         // TODO: present the login screen again
         break;
       default:
-        console.log("Protocol bug, logged in, invalid status: " + msg.status);
+        console.log('Protocol bug, logged in, invalid status: ' + msg.status);
         break;
     }
   } else {
@@ -146,7 +142,9 @@ const handleSession = async msg => {
         // TODO: present the login screen again
         break;
       default:
-        console.log("Protocol bug, not logged in, invalid status: " + msg.status);
+        console.log(
+          'Protocol bug, not logged in, invalid status: ' + msg.status
+        );
         break;
     }
   }
@@ -163,10 +161,9 @@ const sendRequest = message => {
   socket.send(JSON.stringify(message));
 };
 
-
 const login = (name, password) => {
   const message = {
-    cmd: "LOGIN",
+    cmd: 'LOGIN',
     user: name,
     pwd: password,
   };
@@ -175,13 +172,12 @@ const login = (name, password) => {
 
 const loginToken = (name, token) => {
   const message = {
-    cmd: "LOGIN_TOKEN",
+    cmd: 'LOGIN_TOKEN',
     user: name,
     token: token,
   };
   sendRequest(message);
 };
-
 
 const getAvailableCollections = _ => {
   const message = {
@@ -235,7 +231,7 @@ const getRecordsInRangeSize = (name, key, startValue, endValue) => {
 
 // Get a collection from local storage. If no name given, return the raw data as a pseudo collection.
 const getLocalCollection = collName => {
-  if (collName === "") {
+  if (collName === '') {
     return {
       name: '',
       keys: [
@@ -261,7 +257,7 @@ const getLocalCollection = collName => {
 
 // Get the data of the specified collection from local storage. Returns an array of JSON strings representing the datapoints.
 const getLocalCollectionData = collName => {
-  if (collName === "") {
+  if (collName === '') {
     return dataStore.rawdata;
   } else {
     return dataStore.alarms[collName].data;
@@ -270,10 +266,12 @@ const getLocalCollectionData = collName => {
 
 const logObjectInfo = o => {
   for (let k in Object.keys(o)) {
-      console.log(k + ": " + o[k]);
+    console.log(k + ': ' + o[k]);
   }
-  console.log("OwnPropertyNames: " + Object.getOwnPropertyNames(o));
+  console.log('OwnPropertyNames: ' + Object.getOwnPropertyNames(o));
 };
+
+let socket = createConnection();
 
 export default {
   socket,

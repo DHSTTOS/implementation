@@ -220,7 +220,7 @@ class AppStore {
    * Use the address of our droplet cloud server as default.
    */
   @observable
-  webSocketUrl = "ws://159.89.213.72:8080/adininspector/adinhubsoc2";
+  webSocketUrl = 'ws://159.89.213.72:8080/adininspector/adinhubsoc2';
 
   /**
    * Data source
