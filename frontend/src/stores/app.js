@@ -1,11 +1,11 @@
-import { observable, action, computed } from "mobx";
+import { observable, action, computed } from 'mobx';
 import {
   DEFAULT_SOURCE_NAME,
   DEFAULT_GLOBAL_FILTERS,
   SCATTER_PLOT,
   LINE_CHART,
   NIVO_COLOR_SCHEMES,
-} from "@libs";
+} from '@libs';
 
 // JS Doc type defs
 /**
@@ -96,7 +96,7 @@ class AppStore {
     this.diagramConfigs = this.diagramConfigs.filter(
       config => config.diagramID !== diagramID
     );
-    console.log("Diagram ID #" + diagramID + " is removed.");
+    console.log('Diagram ID #' + diagramID + ' is removed.');
   };
 
   /**
@@ -118,7 +118,7 @@ class AppStore {
    * @type {string}
    */
   @observable
-  fullscreenDiagram = "";
+  fullscreenDiagram = '';
 
   @computed
   get canSaveConfig() {
@@ -138,7 +138,7 @@ class AppStore {
         diagramConfig: { ...existingCurrentConfig },
       };
       console.log(
-        "Diagram ID #" + existingCurrentConfig.diagramID + " is updated."
+        'Diagram ID #' + existingCurrentConfig.diagramID + ' is updated.'
       );
     } else {
       // init default values for config modal if the diagramID passed in doesn't exist
@@ -146,14 +146,14 @@ class AppStore {
         isOpen: true,
         diagramConfig: {
           diagramID,
-          plotType: "",
-          groupName: "",
-          x: "",
-          y: "",
+          plotType: '',
+          groupName: '',
+          x: '',
+          y: '',
           specConfig: null,
         },
       };
-      console.log("Diagram ID #" + diagramID + " is created.");
+      console.log('Diagram ID #' + diagramID + ' is created.');
     }
   };
 
@@ -205,8 +205,8 @@ class AppStore {
    */
   @observable
   userDetails = {
-    userName: "",
-    authToken: "",
+    userName: '',
+    authToken: '',
     wsLoggedIn: false,
   };
 

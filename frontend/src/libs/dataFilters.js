@@ -26,7 +26,7 @@
  * @returns {DataPoint[]}
  */
 const removeL2 = data => {
-  return data.filter(x => x["L2Protocol"].length === 0);
+  return data.filter(x => x['L2Protocol'].length === 0);
 };
 
 /**
@@ -34,7 +34,7 @@ const removeL2 = data => {
  * @returns {DataPoint[]}
  */
 const removeL3 = data => {
-  return data.filter(x => x["L3Protocol"].length === 0);
+  return data.filter(x => x['L3Protocol'].length === 0);
 };
 
 /**
@@ -42,7 +42,7 @@ const removeL3 = data => {
  * @returns {DataPoint[]}
  */
 const removeL4 = data => {
-  return data.filter(x => x["L4Protocol"].length === 0);
+  return data.filter(x => x['L4Protocol'].length === 0);
 };
 
 /**
@@ -50,7 +50,7 @@ const removeL4 = data => {
  * @returns {DataPoint[]}
  */
 const removeEther = data => {
-  return data.filter(x => x["L2Protocol"] !== "Ether");
+  return data.filter(x => x['L2Protocol'] !== 'Ether');
 };
 
 /**
@@ -58,7 +58,7 @@ const removeEther = data => {
  * @returns {DataPoint[]}
  */
 const removeProfinet = data => {
-  return data.filter(x => x["L2Protocol"] !== "Profinet");
+  return data.filter(x => x['L2Protocol'] !== 'Profinet');
 };
 
 /**
@@ -66,7 +66,7 @@ const removeProfinet = data => {
  * @returns {DataPoint[]}
  */
 const removeUDP = data => {
-  return data.filter(x => x["L4Protocol"] !== "UDP");
+  return data.filter(x => x['L4Protocol'] !== 'UDP');
 };
 
 export default {

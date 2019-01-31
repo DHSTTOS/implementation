@@ -1,14 +1,14 @@
-import React, { Component } from "react";
-import { observer } from "mobx-react";
-import styled from "@emotion/styled";
-import Paper from "@material-ui/core/Paper";
-import Typography from "@material-ui/core/Typography";
-import FormControl from "@material-ui/core/FormControl";
-import FormGroup from "@material-ui/core/FormGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
+import React, { Component } from 'react';
+import { observer } from 'mobx-react';
+import styled from '@emotion/styled';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+import FormControl from '@material-ui/core/FormControl';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
 
-import { appStore } from "@stores";
+import { appStore } from '@stores';
 
 const Container = styled.div`
   flex: 1;
@@ -74,7 +74,7 @@ class GlobalFilters extends Component {
                     control={
                       <Checkbox
                         checked={appStore.globalFilters.ether}
-                        onChange={this.handleChange("ether")}
+                        onChange={this.handleChange('ether')}
                         value="ether"
                       />
                     }
@@ -84,7 +84,7 @@ class GlobalFilters extends Component {
                     control={
                       <Checkbox
                         checked={appStore.globalFilters.profinet}
-                        onChange={this.handleChange("profinet")}
+                        onChange={this.handleChange('profinet')}
                         value="profinet"
                       />
                     }
@@ -94,7 +94,7 @@ class GlobalFilters extends Component {
                     control={
                       <Checkbox
                         checked={appStore.globalFilters.l2other}
-                        onChange={this.handleChange("l2other")}
+                        onChange={this.handleChange('l2other')}
                         value="l2other"
                       />
                     }
@@ -104,7 +104,7 @@ class GlobalFilters extends Component {
                     control={
                       <Checkbox
                         checked={appStore.globalFilters.l3}
-                        onChange={this.handleChange("l3")}
+                        onChange={this.handleChange('l3')}
                         value="l3"
                       />
                     }
@@ -114,7 +114,7 @@ class GlobalFilters extends Component {
                     control={
                       <Checkbox
                         checked={appStore.globalFilters.tcp}
-                        onChange={this.handleChange("tcp")}
+                        onChange={this.handleChange('tcp')}
                         value="tcp"
                       />
                     }
@@ -124,7 +124,7 @@ class GlobalFilters extends Component {
                     control={
                       <Checkbox
                         checked={appStore.globalFilters.udp}
-                        onChange={this.handleChange("udp")}
+                        onChange={this.handleChange('udp')}
                         value="udp"
                       />
                     }
@@ -134,7 +134,7 @@ class GlobalFilters extends Component {
                     control={
                       <Checkbox
                         checked={appStore.globalFilters.l4other}
-                        onChange={this.handleChange("l4other")}
+                        onChange={this.handleChange('l4other')}
                         value="l4other"
                       />
                     }

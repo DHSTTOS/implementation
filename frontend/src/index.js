@@ -1,10 +1,10 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import App from "./App";
-import { socket } from "@libs";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './App';
+import { socket } from '@libs';
 
 // Considering to use context instead of directly importing socket in the app...
-const WSContext = React.createContext("ws");
+const WSContext = React.createContext('ws');
 
 const AppWithContext = () => (
   <WSContext.Provider value={socket}>
@@ -12,4 +12,4 @@ const AppWithContext = () => (
   </WSContext.Provider>
 );
 
-ReactDOM.render(<AppWithContext />, document.getElementById("root"));
+ReactDOM.render(<AppWithContext />, document.getElementById('root'));

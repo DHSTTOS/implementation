@@ -1,18 +1,18 @@
-import React, { Component } from "react";
-import { observer } from "mobx-react";
-import { action } from "mobx";
-import styled from "@emotion/styled";
-import Paper from "@material-ui/core/Paper";
-import Typography from "@material-ui/core/Typography";
-import Modal from "@material-ui/core/Modal";
-import Button from "@material-ui/core/Button";
+import React, { Component } from 'react';
+import { observer } from 'mobx-react';
+import { action } from 'mobx';
+import styled from '@emotion/styled';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+import Modal from '@material-ui/core/Modal';
+import Button from '@material-ui/core/Button';
 
-import { appStore } from "@stores";
-import { jsonstreams } from "../../../mockdata";
-import { formatData, SCATTER_PLOT, LINE_CHART } from "@libs";
-import DiagramControl from "./DiagramControl";
-import LineChartBlock from "./LineChartBlock";
-import ScatterPlotBlock from "./ScatterPlotBlock";
+import { appStore } from '@stores';
+import { jsonstreams } from '../../../mockdata';
+import { formatData, SCATTER_PLOT, LINE_CHART } from '@libs';
+import DiagramControl from './DiagramControl';
+import LineChartBlock from './LineChartBlock';
+import ScatterPlotBlock from './ScatterPlotBlock';
 
 const Container = styled(Paper)`
   position: absolute;
@@ -78,9 +78,9 @@ class FullscreenDiagramModal extends Component {
   @action
   handleCancel = () => {
     console.log(
-      "Config modal #" +
+      'Config modal #' +
         appStore.configModal.diagramConfig.diagramID +
-        " is canceled."
+        ' is canceled.'
     );
     appStore.closeConfigModal();
   };
@@ -94,7 +94,7 @@ class FullscreenDiagramModal extends Component {
   render() {
     !!appStore.fullscreenDiagram &&
       console.log(
-        "Diagram ID #" + appStore.fullscreenDiagram + " is set to fullscreen."
+        'Diagram ID #' + appStore.fullscreenDiagram + ' is set to fullscreen.'
       );
     const config = appStore.diagramConfigs.find(
       x => x.diagramID === appStore.fullscreenDiagram
