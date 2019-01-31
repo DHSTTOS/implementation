@@ -40,7 +40,7 @@ class Footer extends Component {
       <Container>
         <Content>
           <Typography variant="body1" color="textSecondary">
-            {'© 2018 ADIN Frontend Contributors'}
+            {'© 2018 DHSTTOS Frontend Contributors'}
           </Typography>
           <Button
             onClick={this.handleAddDiagram}
