@@ -3,7 +3,7 @@ import { appStore, dataStore } from '@stores';
 let msgIdCounter = 0;
 let msgRegister = [];
 
-const createConnection = _ => {
+const createConnection = () => {
   // XXX should we check for an existing connection, and if so, close it?
   // Or maybe in the future we might have multiple connections to multiple servers?
   //
@@ -95,7 +95,7 @@ const handleData = msg => {
       data: msg.data,
     };
   } else {
-    dataStore.rawdata = msg.data;
+    dataStore.rawData = msg.data;
     dataStore.availableKeys = Object.keys(msg.data[0]);
   }
   // TODO: remove msgRegister[msg.id]
@@ -248,7 +248,7 @@ const getLocalCollection = collName => {
         'L3Protocol',
         'DestinationMACAddress',
       ],
-      data: dataStore.rawdata,
+      data: dataStore.rawData,
     };
   } else {
     return dataStore.alarms[collName];
@@ -258,7 +258,7 @@ const getLocalCollection = collName => {
 // Get the data of the specified collection from local storage. Returns an array of JSON strings representing the datapoints.
 const getLocalCollectionData = collName => {
   if (collName === '') {
-    return dataStore.rawdata;
+    return dataStore.rawData;
   } else {
     return dataStore.alarms[collName].data;
   }

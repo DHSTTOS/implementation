@@ -12,7 +12,7 @@ class DataStore {
 
   // Raw network data
   @observable
-  rawdata = [];
+  rawData = [];
 
   // Array of notification/alarm data sets:
   @observable
