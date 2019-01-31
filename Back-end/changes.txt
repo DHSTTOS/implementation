@@ -55,6 +55,20 @@ ProcessData class:
     removed variable MongoClientMediator client.
     
     
+IAggregator Class:
 
+    Methods:
+    
+    public ArrayList<Document> processData( ArrayList<Record> records); #3
 
+    changed return type to an array of documents to be added into mongo. it was unspecofied in the Design Document
+    
+    public Document getNewAggregatorDocument(Date tstmp); #3
+    
+    Variables:
+    
+    private ArrayList<Map<String, Object>> connectionsMapList; #1
+    private Document currentDocument; #1
+    
+    These both are simply there to keep track of which document is being processed now and which connections happened within this second.
     
