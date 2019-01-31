@@ -29,8 +29,8 @@ const dataStore = new DataStore();
 
 export default dataStore;
 
-export const exampleCollection = {
-  name: '1_RAW',
-  size: 1,
-  isRealTimeData: false,
-};
+// export const exampleCollection = {
+//   name: '1_RAW',
+//   size: 1,
+//   isRealTimeData: false,
+// };
