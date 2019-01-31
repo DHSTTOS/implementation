@@ -1,4 +1,4 @@
-import { appStore, dataStore } from '@stores';
+import { userStore, dataStore } from '@stores';
 
 let msgIdCounter = 0;
 let msgRegister = [];
@@ -7,7 +7,7 @@ const createConnection = () => {
   // XXX should we check for an existing connection, and if so, close it?
   // Or maybe in the future we might have multiple connections to multiple servers?
   //
-  let newSocket = new WebSocket(appStore.wsEndpointURL);
+  let newSocket = new WebSocket(userStore.wsEndpointURL);
   initHandlers(newSocket);
 
   msgIdCounter = 0;
@@ -26,8 +26,8 @@ const initHandlers = socket => {
     // authenticate again when opening socket
     loginToken(
       socket,
-      appStore.userDetails.userName,
-      appStore.userDetails.authToken
+      userStore.userDetails.userName,
+      userStore.userDetails.authToken
     );
   };
 
@@ -110,7 +110,7 @@ const handleData = msg => {
 };
 
 const handleSession = async msg => {
-  if (appStore.userDetails.wsLoggedIn) {
+  if (userStore.userDetails.wsLoggedIn) {
     switch (msg.status) {
       case 'OK':
         // can't really happen unless we use the two-page login
@@ -125,7 +125,7 @@ const handleSession = async msg => {
         break;
       case 'FAIL':
         // user has logged out
-        appStore.userDetails.wsLoggedIn = false;
+        userStore.userDetails.wsLoggedIn = false;
         // TODO close the connection
         // TODO: present the login screen again
         break;
@@ -138,7 +138,7 @@ const handleSession = async msg => {
     switch (msg.status) {
       case 'OK':
         // successful login to ws connection
-        appStore.userDetails.wsLoggedIn = true;
+        userStore.userDetails.wsLoggedIn = true;
         break;
       case 'FAIL':
         // login failed
