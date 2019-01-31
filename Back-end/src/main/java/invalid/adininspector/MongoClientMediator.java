@@ -40,11 +40,16 @@ public class MongoClientMediator {
     private MongoDatabase db;
 
     public MongoClientMediator(String udid, String password, String dbName) throws LoginFailureException {
+       
+        if(dbName.isEmpty())
+            throw new LoginFailureException("dbName cannot be empty");
+
+        //TODO: might not be the localhost
         ServerAddress serverAddr = new ServerAddress("localhost");
 
+        //TODO: bad practice to use magic var for the database name
         // ScramSha1 is the default auth method from Mongo
-        // TODO this will try and log into the the admin database, this should change
-        // we always use the admin database to check users.
+        // we always use the admin database to check users. so mongoCredential is tied to admin
         MongoCredential cred = MongoCredential.createScramSha1Credential(udid, "admin", password.toCharArray());
 
         try {
@@ -64,10 +69,11 @@ public class MongoClientMediator {
     }
 
     public MongoClientMediator(String udid, String password) throws LoginFailureException {
-        this(udid, password, "test");
+        this(udid, password, "AdinInspector");
     }
 
     public void addRecordToCollection(Record record, String collection) {
+
         try {
             // p(record.getAsDocument());
             db.getCollection(collection).insertOne(record.getAsDocument());
@@ -76,7 +82,8 @@ public class MongoClientMediator {
             // TODO: how to handle this, skip?, overwrite? or compare and decide which one
             // to keep?
             //System.out.println("an entry with this offset already exists at offset: " + record.get_id());
-        } catch (Exception e) {
+        } 
+        catch (Exception e) {
             e.printStackTrace();
         }
     }
