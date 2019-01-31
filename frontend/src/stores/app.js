@@ -206,23 +206,6 @@ class AppStore {
   };
 
   /**
-   * User details object
-   */
-  @observable
-  userDetails = {
-    userName: '',
-    authToken: '',
-    wsLoggedIn: false,
-  };
-
-  /**
-   * Websocket address of backend/data server.
-   * Use the address of our droplet cloud server as default.
-   */
-  @observable
-  wsEndpointURL = 'ws://159.89.213.72:8080/adininspector/adinhubsoc2';
-
-  /**
    * Data source
    */
   @observable

@@ -2,18 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import { createConnection } from '@libs';
+import { userStore } from '@stores';
 
-// Considering to use context instead of directly importing socket in the app...
-const WSContext = React.createContext('ws');
+// Now the socket field is accessible throughout the known universe and until the end of time
+userStore.socket = createConnection();
 
-// If there's a need to reassign a WebSocket to socket, please make this into an object
-// or create a callback function to reassign the variable, of course, change const to `let`
-const socket = createConnection();
-
-const AppWithContext = () => (
-  <WSContext.Provider value={socket}>
-    <App />
-  </WSContext.Provider>
-);
-
-ReactDOM.render(<AppWithContext />, document.getElementById('root'));
+ReactDOM.render(<App />, document.getElementById('root'));
