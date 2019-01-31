@@ -72,7 +72,7 @@ class UserForm extends React.Component {
     console.log(this.state);
   };
 
-  login = async _ => {
+  login2 = async _ => {
     var fieldValue = document.getElementById('endpoint').value;
     await localStorage.setItem('text',fieldValue);
     let username = this.state.username;
@@ -111,7 +111,7 @@ class UserForm extends React.Component {
           name="endpoint"
           floatingLabelText="Endpoint"
           hintText="Endpoint"
-          placeholder="ws://localhost:8080/adininspector/adinhubsoc"
+          placeholder="ws://159.89.213.72:8080/adininspector/adinhubsoc"
           value={this.state.endpoint}
           onChange={e => this.change(e)}
           floatingLabelFixed={true}
@@ -123,7 +123,7 @@ class UserForm extends React.Component {
          label="Login" 
          //onClick={this.handleClick} 
          //onClick = {save}
-         onClick = {this.login}
+         onClick = {this.login2}
          id ="Button" onmouseover={mouseOver} 
          onmouseout={mouseOut}/>
        
