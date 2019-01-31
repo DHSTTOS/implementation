@@ -79,11 +79,7 @@ const ModalHeader = styled.div`
 class FullscreenDiagramModal extends Component {
   @action
   handleCancel = () => {
-    console.log(
-      'Config modal #' +
-        appStore.configModal.diagramConfig.diagramID +
-        ' is canceled.'
-    );
+    console.log('Fullscreen #' + appStore.fullscreenDiagram + ' exits.');
     appStore.resetFullscreenDiagram();
   };
 
@@ -109,7 +105,7 @@ class FullscreenDiagramModal extends Component {
             {config && (
               <StyledPaper elevation={1} key={config.diagramID}>
                 <DiagramControl diagramID={config.diagramID} />
-                <Diagram config={config} />
+                <Diagram config={config} isFullscreen />
               </StyledPaper>
             )}
           </Content>
@@ -139,7 +135,14 @@ class Diagram extends Component {
     });
     console.log(data);
 
-    const { width, height } = appStore.diagramDimension;
+    let width, height;
+    if (this.props.isFullscreen) {
+      width = window.innerWidth * 0.9;
+      height = window.innerHeight * 0.9;
+    } else {
+      width = appStore.diagramDimension.width;
+      height = appStore.diagramDimension.height;
+    }
 
     let plot = (
       <CenteredTypography variant="subtitle1" color="error">
