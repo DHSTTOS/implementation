@@ -25,6 +25,7 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
+import com.mongodb.MongoSecurityException;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
@@ -49,15 +50,23 @@ public class MongoConsumer {
     // private String[] topics;
     List<String> topics;
 
-    public MongoConsumer(String udid, String pass, String dbName) {
+    public MongoConsumer(String udid, String pass, String dbName) throws LoginFailureException {
+
+
+        if(dbName.isEmpty()){
+            throw new LoginFailureException("dbName cannot be empty");
+        }
 
         try {
             clientMediator = new MongoClientMediator(udid, pass, dbName);
-        } catch (LoginFailureException e) {
-            System.out.println("wait...what? ");
-            e.printStackTrace();
-            return;
+            
+        } catch (MongoSecurityException e) {
+
+            // force the caller to handle the exception
+            throw new LoginFailureException(e.getMessage());
         }
+
+        
 
         Properties props = new Properties();
         props.put("bootstrap.servers", "localhost:9092");
@@ -178,7 +187,7 @@ public class MongoConsumer {
                 // clientMediator.p(i);
 
                 
-                DataProcessor.processData(getTopcisForProcessing(), clientMediator);
+                DataProcessor.processData(getTopicsForProcessing(), clientMediator);
 
                 //stop processing records
                 processRecords = false;
@@ -215,7 +224,7 @@ public class MongoConsumer {
     }
 
     //convinience method for geting all topics to be processed
-    ArrayList<String> getTopcisForProcessing() {
+    ArrayList<String> getTopicsForProcessing() {
         ArrayList<String> kafkaTopics = new ArrayList<>();
 
         Map<String, List<PartitionInfo>> topicsMap;
