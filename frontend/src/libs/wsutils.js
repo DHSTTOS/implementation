@@ -1,45 +1,63 @@
 import { appStore, dataStore } from "@stores";
 
-//const socket = new WebSocket("wss://echo.websocket.org/");
-const socket = new WebSocket("ws://localhost:8080/adininspector/adinhubsoc2");
-let msgIdCounter = 0;
-let msgRegister = [];
+var msgIdCounter = 0;
+var msgRegister = [];
+
+var socket = createConnection();
+
+
+const createConnection = _ => {
+  // XXX should we check for an existing connection, and if so, close it?
+  // Or maybe in the future we might have multiple connections to multiple servers?
+  // 
+  //const socket = new WebSocket("wss://echo.websocket.org/");
+  let newSocket = new WebSocket(appStore.webSocketUrl);
+  initHandlers(newSocket);
+
+  msgIdCounter = 0;
+  msgRegister = [];
+  return newSocket;
+};
 
 // as long as we keep these socket.something listener assignments within the same scope
 // as the socket construction, we won't miss the 'open' event etc.
 
-socket.onopen = message => {
-  console.log("WebSocket onopen: ", message);
-  logObjectInfo(message);
-    
-  // authenticate again when opening socket
-  loginToken(appStore.userDetails.userName, appStore.userDetails.authToken);
+const initHandlers = webSocket => {
+
+  webSocket.onopen = message => {
+    console.log("WebSocket onopen: ", message);
+    logObjectInfo(message);
+
+    // authenticate again when opening socket
+    loginToken(appStore.userDetails.userName, appStore.userDetails.authToken);
+  };
+
+  webSocket.onerror = message => {
+    console.log("WebSocket onerror: ", message);
+    logObjectInfo(message);
+  };
+
+  webSocket.onclose = message => {
+    console.log("WebSocket onclose:");
+    logObjectInfo(message);
+    let echoText = "Disconnect: " + message;
+    echoText += ", " + message.code;
+    echoText += ", " + message.reason;
+    echoText += ", " + message.wasClean;
+    echoText += ", " + message.isTrusted;
+    echoText += "\n";
+    console.log(echoText);
+
+    // TODO XXX: if logout was called (intentional) then do nothing (stay logged out),
+    // else try to open the connection again and login again, with token
+  };
+
+  webSocket.onmessage = message => {
+    console.log("WebSocket onmessage: ");
+    logObjectInfo(message);
+    handleMessage(JSON.parse(message.data));
+  };
 };
-
-socket.onerror = message => {
-  console.log("WebSocket onerror: ", message);
-  logObjectInfo(message);
-};
-
-socket.onclose = message => {
-  console.log("WebSocket onclose:");
-  logObjectInfo(message);
-  echoText.value += "Disconnect: " + message;
-  echoText.value += ", " + message.code;
-  echoText.value += ", " + message.reason;
-  echoText.value += ", " + message.wasClean;
-  echoText.value += ", " + message.isTrusted;
-  echoText.value += "\n";
-
-  // TODO XXX: if logout was called (intentional) the do nothig (stay logged out),
-  // else try to open the connection again and login again, with token
-};
-
-socket.onmessage = message => {
-  console.log("WebSocket onmessage: ");
-  logObjectInfo(message);
-  handleMessage(JSON.parse(message.data));
-}
 
 /*
  * Take the JSON-formatted message and handle it according to the protocol.
@@ -141,7 +159,7 @@ const handleSession = async msg => {
  */
 const sendRequest = message => {
   message.id = msgIdCounter++;
-  msgRegister[id] = message;
+  msgRegister[message.id] = message;
   socket.send(JSON.stringify(message));
 };
 
@@ -251,14 +269,16 @@ const getLocalCollectionData = collName => {
 };
 
 const logObjectInfo = o => {
-  for (k in Object.keys(o)) {
+  for (let k in Object.keys(o)) {
       console.log(k + ": " + o[k]);
   }
-  console.log("OwnPropertyNames: " + bject.getOwnPropertyNames(o));
+  console.log("OwnPropertyNames: " + Object.getOwnPropertyNames(o));
 };
 
 export default {
   socket,
+  createConnection,
+  login,
   loginToken,
   getAvailableCollections,
   getCollection,
