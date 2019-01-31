@@ -46,6 +46,29 @@ socket.onclose = _ => {
   console.log("WebSocket connection closed.");
 };
 
+socket.onmessage = message => {
+  console.log("onmessage: " + message.data);
+  const msg = JSON.parse(message.data);
+  switch (msg.cmd) {
+    case "SESSION":
+      handleSession(msg);
+      break;
+    case "LIST_COL":
+      // msg.par will be array
+      dataStore.availableCollections = msg.par;
+      break;
+    case "COLL_SIZE":
+      break;
+    case "DATA":
+      handleData(msg);
+      break;
+    default:
+      console.log("illegal message from server: " + msg.cmd);
+      break;
+  }
+};
+
+
 // Handle data below
 const handleData = msg => {
   console.log("Received data message: " + msg.data.length + " " + msg.data[0]);
@@ -113,28 +136,6 @@ const handleSession = async msg => {
         console.log("Protocol bug, not logged in, invalid status: " + msg.status);
         break;
     }
-  }
-};
-
-socket.onmessage = message => {
-  console.log("onmessage: " + message.data);
-  const msg = JSON.parse(message.data);
-  switch (msg.cmd) {
-    case "SESSION":
-      handleSession(msg);
-      break;
-    case "LIST_COL":
-      // msg.par will be array
-      dataStore.availableCollections = msg.par;
-      break;
-    case "COLL_SIZE":
-      break;
-    case "DATA":
-      handleData(msg);
-      break;
-    default:
-      console.log("illegal message from server: " + msg.cmd);
-      break;
   }
 };
 
@@ -221,6 +222,11 @@ const getLocalCollectionData = collName => {
   } else {
     return dataStore.alarms[collName].data;
   }
+};
+
+const logObjectInfo = o => {
+  console.log(Object.keys(o));
+  console.log(Object.getOwnPropertyNames(o));
 };
 
 export default {
