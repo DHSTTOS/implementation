@@ -3,12 +3,11 @@ import { appStore, dataStore } from '@stores';
 let msgIdCounter = 0;
 let msgRegister = [];
 
-const createConnection = _ => {
+const createConnection = () => {
   // XXX should we check for an existing connection, and if so, close it?
   // Or maybe in the future we might have multiple connections to multiple servers?
   //
-  //const socket = new WebSocket("wss://echo.websocket.org/");
-  let newSocket = new WebSocket(appStore.webSocketUrl);
+  let newSocket = new WebSocket(appStore.wsEndpointURL);
   initHandlers(newSocket);
 
   msgIdCounter = 0;
@@ -19,21 +18,25 @@ const createConnection = _ => {
 // as long as we keep these socket.something listener assignments within the same scope
 // as the socket construction, we won't miss the 'open' event etc.
 
-const initHandlers = webSocket => {
-  webSocket.onopen = message => {
+const initHandlers = socket => {
+  socket.onopen = message => {
     console.log('WebSocket onopen: ', message);
     logObjectInfo(message);
 
     // authenticate again when opening socket
-    loginToken(appStore.userDetails.userName, appStore.userDetails.authToken);
+    loginToken(
+      socket,
+      appStore.userDetails.userName,
+      appStore.userDetails.authToken
+    );
   };
 
-  webSocket.onerror = message => {
+  socket.onerror = message => {
     console.log('WebSocket onerror: ', message);
     logObjectInfo(message);
   };
 
-  webSocket.onclose = message => {
+  socket.onclose = message => {
     console.log('WebSocket onclose:');
     logObjectInfo(message);
     let echoText = 'Disconnect: ' + message;
@@ -48,7 +51,7 @@ const initHandlers = webSocket => {
     // else try to open the connection again and login again, with token
   };
 
-  webSocket.onmessage = message => {
+  socket.onmessage = message => {
     console.log('WebSocket onmessage: ');
     logObjectInfo(message);
     handleMessage(JSON.parse(message.data));
@@ -96,7 +99,7 @@ const handleData = msg => {
       data: msg.data,
     };
   } else {
-    dataStore.rawdata = msg.data;
+    dataStore.rawData = msg.data;
     dataStore.availableKeys = Object.keys(msg.data[0]);
   }
   // TODO: remove msgRegister[msg.id]
@@ -152,60 +155,61 @@ const handleSession = async msg => {
 
 /***
  * Takes a message object, adds the id, registers it, and sends it.
- * @param {type} message
+ * @param {any} message
+ * @param {WebSocket} socket
  * @returns {undefined}
  */
-const sendRequest = message => {
+const sendRequest = (socket, message) => {
   message.id = msgIdCounter++;
   msgRegister[message.id] = message;
   socket.send(JSON.stringify(message));
 };
 
-const login = (name, password) => {
+const login = (socket, name, password) => {
   const message = {
     cmd: 'LOGIN',
     user: name,
     pwd: password,
   };
-  sendRequest(message);
+  sendRequest(socket, message);
 };
 
-const loginToken = (name, token) => {
+const loginToken = (socket, name, token) => {
   const message = {
     cmd: 'LOGIN_TOKEN',
     user: name,
     token: token,
   };
-  sendRequest(message);
+  sendRequest(socket, message);
 };
 
-const getAvailableCollections = _ => {
+const getAvailableCollections = socket => {
   const message = {
     cmd: 'GET_AV_COLL',
     id: msgIdCounter++,
   };
-  sendRequest(message);
+  sendRequest(socket, message);
 };
 
-const getCollection = name => {
+const getCollection = (socket, name) => {
   const message = {
     cmd: 'GET_COLL',
     par: name,
     id: msgIdCounter++,
   };
-  sendRequest(message);
+  sendRequest(socket, message);
 };
 
-const getCollectionSize = name => {
+const getCollectionSize = (socket, name) => {
   const message = {
     cmd: 'GET_COLL_SIZE',
     par: name,
     id: msgIdCounter++,
   };
-  sendRequest(message);
+  sendRequest(socket, message);
 };
 
-const getRecordsInRange = (name, key, startValue, endValue) => {
+const getRecordsInRange = (socket, name, key, startValue, endValue) => {
   const message = {
     cmd: 'GET_RECORDS_RANGE',
     par: name,
@@ -214,10 +218,10 @@ const getRecordsInRange = (name, key, startValue, endValue) => {
     end: endValue,
     id: msgIdCounter++,
   };
-  sendRequest(message);
+  sendRequest(socket, message);
 };
 
-const getRecordsInRangeSize = (name, key, startValue, endValue) => {
+const getRecordsInRangeSize = (socket, name, key, startValue, endValue) => {
   const message = {
     cmd: 'GET_RECORDS_RANGE_SIZE',
     par: name,
@@ -226,7 +230,7 @@ const getRecordsInRangeSize = (name, key, startValue, endValue) => {
     end: endValue,
     id: msgIdCounter++,
   };
-  sendRequest(message);
+  sendRequest(socket, message);
 };
 
 // Get a collection from local storage. If no name given, return the raw data as a pseudo collection.
@@ -248,7 +252,7 @@ const getLocalCollection = collName => {
         'L3Protocol',
         'DestinationMACAddress',
       ],
-      data: dataStore.rawdata,
+      data: dataStore.rawData,
     };
   } else {
     return dataStore.alarms[collName];
@@ -258,7 +262,7 @@ const getLocalCollection = collName => {
 // Get the data of the specified collection from local storage. Returns an array of JSON strings representing the datapoints.
 const getLocalCollectionData = collName => {
   if (collName === '') {
-    return dataStore.rawdata;
+    return dataStore.rawData;
   } else {
     return dataStore.alarms[collName].data;
   }
@@ -271,10 +275,7 @@ const logObjectInfo = o => {
   console.log('OwnPropertyNames: ' + Object.getOwnPropertyNames(o));
 };
 
-// let socket = createConnection();
-
 export {
-  // socket,
   createConnection,
   login,
   loginToken,

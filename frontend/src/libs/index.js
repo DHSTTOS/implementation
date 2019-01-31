@@ -7,13 +7,16 @@ import {
 } from './consts';
 
 import {
-  socket,
+  createConnection,
+  login,
   loginToken,
   getAvailableCollections,
   getCollection,
   getCollectionSize,
   getRecordsInRange,
   getRecordsInRangeSize,
+  getLocalCollection,
+  getLocalCollectionData,
 } from './wsutils';
 
 import {
@@ -64,13 +67,16 @@ export {
   SCATTER_PLOT,
   LINE_CHART,
   NIVO_COLOR_SCHEMES,
-  socket,
+  createConnection,
+  login,
   loginToken,
   getAvailableCollections,
   getCollection,
   getCollectionSize,
   getRecordsInRange,
   getRecordsInRangeSize,
+  getLocalCollection,
+  getLocalCollectionData,
   formatData,
   removeL2,
   removeL3,
