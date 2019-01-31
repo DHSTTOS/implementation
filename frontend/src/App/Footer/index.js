@@ -1,12 +1,12 @@
-import React, { Component } from "react";
-import { observer } from "mobx-react";
-import styled from "@emotion/styled";
-import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
-import AddBoxIcon from "@material-ui/icons/AddBox";
-import uniqid from "uniqid";
+import React, { Component } from 'react';
+import { observer } from 'mobx-react';
+import styled from '@emotion/styled';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+import AddBoxIcon from '@material-ui/icons/AddBox';
+import uniqid from 'uniqid';
 
-import { appStore } from "@stores";
+import { appStore } from '@stores';
 
 const Container = styled.div`
   position: fixed;
@@ -40,7 +40,7 @@ class Footer extends Component {
       <Container>
         <Content>
           <Typography variant="body1" color="textSecondary">
-            {"© 2018 ADIN Frontend Contributors"}
+            {'© 2018 ADIN Frontend Contributors'}
           </Typography>
           <Button
             onClick={this.handleAddDiagram}

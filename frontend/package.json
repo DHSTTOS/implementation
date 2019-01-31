@@ -32,12 +32,14 @@
     "babel-plugin-transform-decorators-legacy": "1.3.5",
     "babel-preset-env": "1.7.0",
     "babel-preset-react": "6.24.1",
-    "parcel-bundler": "^1.10.3"
+    "parcel-bundler": "^1.10.3",
+    "prettier": "1.16.3"
   },
-  "license": "MIT",
+  "license": "BSD-4-Clause",
   "scripts": {
     "start": "parcel ./src/index.html",
-    "build": "parcel build ./src/index.html"
+    "build": "parcel build ./src/index.html",
+    "format": "prettier --config ./.prettierrc --write \"./src/**/*.js\""
   },
   "alias": {
     "@libs": "./src/libs",
@@ -48,10 +50,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/DHSTTOS/frontend-demo.git"
+    "url": "git+https://github.com/DHSTTOS/implementation.git"
   },
   "bugs": {
-    "url": "https://github.com/DHSTTOS/frontend-demo/issues"
+    "url": "https://github.com/DHSTTOS/implementation/issues"
   },
-  "homepage": "https://github.com/DHSTTOS/frontend-demo#readme"
+  "homepage": "https://github.com/DHSTTOS/implementation/frontend#readme",
+  "browserslist": [
+    "since 2018-06"
+  ]
 }

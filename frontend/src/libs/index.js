@@ -4,7 +4,7 @@ import {
   SCATTER_PLOT,
   LINE_CHART,
   NIVO_COLOR_SCHEMES,
-} from "./consts";
+} from './consts';
 
 import {
   socket,
@@ -14,7 +14,7 @@ import {
   getCollectionSize,
   getRecordsInRange,
   getRecordsInRangeSize,
-} from "./wsutils";
+} from './wsutils';
 
 import {
   removeL2,
@@ -23,7 +23,7 @@ import {
   removeEther,
   removeProfinet,
   removeUDP,
-} from "./dataFilters";
+} from './dataFilters';
 
 /**
  * Formats raw data to nivo's format.
@@ -40,7 +40,7 @@ const formatData = ({ groupName, x, y, rawData = [] }) => {
   // normalize the timestamp
   const normalizedRawData = rawData.map(x => ({
     ...x,
-    Timestamp: x["Timestamp"]["$date"],
+    Timestamp: x['Timestamp']['$date'],
   }));
 
   // get all the names of groups of data by groupID

@@ -1,4 +1,4 @@
-import { appStore, dataStore } from "@stores";
+import { appStore, dataStore } from '@stores';
 
 var msgIdCounter = 0;
 var msgRegister = [];
@@ -84,16 +84,16 @@ const handleMessage = msg => {
 
 // Handle data below
 const handleData = msg => {
-  console.log("Received data message: " + msg.data.length + " " + msg.data[0]);
+  console.log('Received data message: ' + msg.data.length + ' ' + msg.data[0]);
   if (!msgRegister[msg.id]) {
     console.log(
-      "Protocol: bug: received unrequested message, dropping it: " + msg
+      'Protocol: bug: received unrequested message, dropping it: ' + msg
     );
     return;
   }
   let context = msgRegister[msg.id]; // the request that triggered this msg
   let collName = context.par;
-  if (collName.indexOf("_") > -1) {
+  if (collName.indexOf('_') > -1) {
     dataStore.alarms[collName].data = {
       name: collName,
       keys: Object.keys(msg.data[0]), // XXX: if data empty and this existed already, should we copy the old keys instead of overwriting with []?
@@ -105,25 +105,25 @@ const handleData = msg => {
   }
   // TODO: remove msgRegister[msg.id]
 
-  console.log("Updated data store:");
-  console.log(dataStore.data.length + " " + dataStore.data[0]);
+  console.log('Updated data store:');
+  console.log(dataStore.data.length + ' ' + dataStore.data[0]);
 };
 
 const handleSession = async msg => {
   if (appStore.userDetails.wsLoggedIn) {
     switch (msg.status) {
-      case "OK":
+      case 'OK':
         // can't really happen unless we use the two-page login
-	let token = msg.par;
+        let token = msg.par;
         await localStorage.setItem('token', token);
         console.log(
-          "websocket connection: got unexpected SESSION message: " +
+          'websocket connection: got unexpected SESSION message: ' +
             msg.status +
-            ", " +
+            ', ' +
             msg.par
         );
         break;
-      case "FAIL":
+      case 'FAIL':
         // user has logged out
         appStore.userDetails.wsLoggedIn = false;
         // TODO close the connection
@@ -136,13 +136,13 @@ const handleSession = async msg => {
   } else {
     //not logged in
     switch (msg.status) {
-      case "OK":
+      case 'OK':
         // successful login to ws connection
         appStore.userDetails.wsLoggedIn = true;
         break;
-      case "FAIL":
+      case 'FAIL':
         // login failed
-        console.log("login to websocket connection failed: " + msg.par);
+        console.log('login to websocket connection failed: ' + msg.par);
         // TODO: present the login screen again
         break;
       default:
@@ -185,7 +185,7 @@ const loginToken = (name, token) => {
 
 const getAvailableCollections = _ => {
   const message = {
-    cmd: "GET_AV_COLL",
+    cmd: 'GET_AV_COLL',
     id: msgIdCounter++,
   };
   sendRequest(message);
@@ -193,7 +193,7 @@ const getAvailableCollections = _ => {
 
 const getCollection = name => {
   const message = {
-    cmd: "GET_COLL",
+    cmd: 'GET_COLL',
     par: name,
     id: msgIdCounter++,
   };
@@ -202,7 +202,7 @@ const getCollection = name => {
 
 const getCollectionSize = name => {
   const message = {
-    cmd: "GET_COLL_SIZE",
+    cmd: 'GET_COLL_SIZE',
     par: name,
     id: msgIdCounter++,
   };
@@ -211,7 +211,7 @@ const getCollectionSize = name => {
 
 const getRecordsInRange = (name, key, startValue, endValue) => {
   const message = {
-    cmd: "GET_RECORDS_RANGE",
+    cmd: 'GET_RECORDS_RANGE',
     par: name,
     key: key,
     start: startValue,
@@ -223,7 +223,7 @@ const getRecordsInRange = (name, key, startValue, endValue) => {
 
 const getRecordsInRangeSize = (name, key, startValue, endValue) => {
   const message = {
-    cmd: "GET_RECORDS_RANGE_SIZE",
+    cmd: 'GET_RECORDS_RANGE_SIZE',
     par: name,
     key: key,
     start: startValue,
@@ -237,20 +237,20 @@ const getRecordsInRangeSize = (name, key, startValue, endValue) => {
 const getLocalCollection = collName => {
   if (collName === "") {
     return {
-      name: "",
+      name: '',
       keys: [
-        "L2Protocol",
-        "SourceMACAddress",
-        "L4Protocol",
-        "SourceIPAddress",
-        "PacketSummary",
-        "PacketID",
-        "DestinationIPAddress",
-        "Timestamp",
-        "DestinationPort",
-        "SourcePort",
-        "L3Protocol",
-        "DestinationMACAddress",
+        'L2Protocol',
+        'SourceMACAddress',
+        'L4Protocol',
+        'SourceIPAddress',
+        'PacketSummary',
+        'PacketID',
+        'DestinationIPAddress',
+        'Timestamp',
+        'DestinationPort',
+        'SourcePort',
+        'L3Protocol',
+        'DestinationMACAddress',
       ],
       data: dataStore.rawdata,
     };
