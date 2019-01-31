@@ -271,10 +271,7 @@ const logObjectInfo = o => {
   console.log('OwnPropertyNames: ' + Object.getOwnPropertyNames(o));
 };
 
-// let socket = createConnection();
-
 export {
-  // socket,
   createConnection,
   login,
   loginToken,
