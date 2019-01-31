@@ -155,57 +155,57 @@ const handleSession = async msg => {
  * @param {WebSocket} socket
  * @returns {undefined}
  */
-const sendRequest = (message, socket) => {
+const sendRequest = (socket, message) => {
   message.id = msgIdCounter++;
   msgRegister[message.id] = message;
   socket.send(JSON.stringify(message));
 };
 
-const login = (name, password) => {
+const login = (socket, name, password) => {
   const message = {
     cmd: 'LOGIN',
     user: name,
     pwd: password,
   };
-  sendRequest(message);
+  sendRequest(socket, message);
 };
 
-const loginToken = (name, token) => {
+const loginToken = (socket, name, token) => {
   const message = {
     cmd: 'LOGIN_TOKEN',
     user: name,
     token: token,
   };
-  sendRequest(message);
+  sendRequest(socket, message);
 };
 
-const getAvailableCollections = _ => {
+const getAvailableCollections = socket => {
   const message = {
     cmd: 'GET_AV_COLL',
     id: msgIdCounter++,
   };
-  sendRequest(message);
+  sendRequest(socket, message);
 };
 
-const getCollection = name => {
+const getCollection = (socket, name) => {
   const message = {
     cmd: 'GET_COLL',
     par: name,
     id: msgIdCounter++,
   };
-  sendRequest(message);
+  sendRequest(socket, message);
 };
 
-const getCollectionSize = name => {
+const getCollectionSize = (socket, name) => {
   const message = {
     cmd: 'GET_COLL_SIZE',
     par: name,
     id: msgIdCounter++,
   };
-  sendRequest(message);
+  sendRequest(socket, message);
 };
 
-const getRecordsInRange = (name, key, startValue, endValue) => {
+const getRecordsInRange = (socket, name, key, startValue, endValue) => {
   const message = {
     cmd: 'GET_RECORDS_RANGE',
     par: name,
@@ -214,10 +214,10 @@ const getRecordsInRange = (name, key, startValue, endValue) => {
     end: endValue,
     id: msgIdCounter++,
   };
-  sendRequest(message);
+  sendRequest(socket, message);
 };
 
-const getRecordsInRangeSize = (name, key, startValue, endValue) => {
+const getRecordsInRangeSize = (socket, name, key, startValue, endValue) => {
   const message = {
     cmd: 'GET_RECORDS_RANGE_SIZE',
     par: name,
@@ -226,7 +226,7 @@ const getRecordsInRangeSize = (name, key, startValue, endValue) => {
     end: endValue,
     id: msgIdCounter++,
   };
-  sendRequest(message);
+  sendRequest(socket, message);
 };
 
 // Get a collection from local storage. If no name given, return the raw data as a pseudo collection.
