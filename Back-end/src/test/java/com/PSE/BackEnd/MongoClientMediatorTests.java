@@ -31,7 +31,19 @@ public class MongoClientMediatorTests {
     @Test
     public void testAddingNullRecord()
     {
-        
+        MongoClientMediator mcm = getMCM();
+
+        //mcm.addRecordToCollection((Object)null, "");
     }
 
+    public MongoClientMediator getMCM()
+    {
+        try {
+            return new MongoClientMediator("admin", "admin", "AdinInspector");
+        } catch (LoginFailureException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

@@ -4,20 +4,13 @@ package invalid.adininspector;
 import java.lang.reflect.Type;
 //For polling
 import java.time.Duration;
-import java.time.Instant;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.stream.Collectors;
 
-import invalid.adininspector.dataprocessing.DataProcessor;
-import invalid.adininspector.exceptions.LoginFailureException;
-import invalid.adininspector.records.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;
@@ -33,6 +26,12 @@ import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.PartitionInfo;
 import org.apache.kafka.common.TopicPartition;
 
+import invalid.adininspector.dataprocessing.DataProcessor;
+import invalid.adininspector.exceptions.LoginFailureException;
+import invalid.adininspector.records.AlarmRecord;
+import invalid.adininspector.records.PacketRecordDesFromKafka;
+import invalid.adininspector.records.Record;
+
 
 
 //project hasn't even started and we're already doing hacky shit
@@ -44,8 +43,6 @@ public class MongoConsumer {
     private MongoClientMediator clientMediator;
 
     private KafkaConsumer<String, String> consumer;
-
-    private Duration pollingTimeOut = Duration.ofMillis(1000);
 
     // private String[] topics;
     List<String> topics;
@@ -121,10 +118,10 @@ public class MongoConsumer {
         Boolean processRecords = true;
         Boolean addedRecords = false;
 
+        Duration pollingTimeOut = Duration.ofMillis(1000);
+
         while (true) {
-
             
-
             ConsumerRecords<String, String> records = consumer.poll(pollingTimeOut);
 
             for (ConsumerRecord<String, String> record : records ) {
@@ -169,23 +166,9 @@ public class MongoConsumer {
 
             }
 
-          
-        
             if (records.isEmpty() && processRecords) {
                 // TODO: notify the mediator that data needs to be processed
                 System.out.println("Stored Records have been added, process them");
-
-
-                // Instant instant = Instant.parse("2019-01-25T15:06:47.278Z"); //Pass your date.
-                // Instant instant2 = Instant.parse("2019-01-25T15:06:48.371Z"); //Pass your date.
-
-                // Date start = Date.from(instant);
-                // Date end = Date.from(instant2);
-
-                // long i = clientMediator.getRecordsInRangeSize("lmf", "Timestamp", start, end);
-
-                // clientMediator.p(i);
-
                 
                 DataProcessor.processData(getTopicsForProcessing(), clientMediator);
 
@@ -211,7 +194,7 @@ public class MongoConsumer {
 
             // __consumer_offsets is internal to kafka and should be ignored
             // TODO: ignore real-time data
-            if (!topic.getKey().contentEquals("__consumer_offsets")) {
+            if (!topic.getKey().contentEquals("__consumer_offsets") && topic.getKey().contentEquals("motor")) {
                 kafkaTopics.add(new TopicPartition(topic.getKey(), 0));
                 System.out.println("Topic: " + topic.getKey());
             }

@@ -8,8 +8,9 @@ import invalid.adininspector.records.Record;
 
 public class DataProcessor {
     private static List<IAggregator> aggregators =  new ArrayList<IAggregator>(){{
-        add(new FlowRatePerSecond());
-        add(new NumberOfConnectionsPerNode());
+        //add(new FlowRatePerSecond());
+        //add(new NumberOfConnectionsPerNode());
+        add(new AddressesAndLinks());
     }};
     
     //TODO: compute and store the name of the aggregated collection

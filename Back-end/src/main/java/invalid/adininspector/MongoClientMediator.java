@@ -183,10 +183,10 @@ public class MongoClientMediator {
 
 
 
+    
 
 
-
-
+    
     // get all names of all collections and put em in an Array.
     public String[] getAvailableCollections() {
         List<String> colls = new ArrayList<>();
