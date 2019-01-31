@@ -1,127 +1,179 @@
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset="ISO-8859-15">
-<title>adininspector-backend debugger</title>
-</head>
-<body>
-<H3>Debugger for adininspector-backend 3<H3>
-	<form>
-		url: <input id="wsurl" type="text" size="60"><p>
+    <head>
+        <meta charset="ISO-8859-15">
+        <title>adininspector-backend debugger</title>
+    </head>
+    <body>
+        <H3>Debugger for adininspector-backend 4.2</H3>
+        <form>
+            <input onclick="fillWsUrlLocal();" value="localhost" type="button">
+            <input onclick="fillWsUrlMe();" value="local IP" type="button">
+            <input onclick="fillWsUrlDroplet1();" value="droplet1" type="button">
+            <input onclick="fillWsUrlDroplet2();" value="droplet2" type="button">
+            <p>
+                url: <input id="wsurl" type="text" size="60"><p>
 
-		<input onclick="fillTextLogin();" value="LOGIN" type="button">
-		<input onclick="fillTextLoginToken();" value="LOGIN_TOKEN" type="button">
-		<input onclick="fillTextAvCol();" value="AV_COLL" type="button">
-		<input onclick="fillTextCollSize();" value="GET_COLL_SIZE" type="button">
-		<input onclick="fillTextGetStart();" value="GET_START" type="button">
-		<input onclick="fillTextGetRange();" value="GET_RANGE" type="button">
-		<input onclick="fillTextLogout();" value="LOGOUT" type="button">
-		<p>
+                <input onclick="fillTextLogin();" value="LOGIN" type="button">
+                <input onclick="fillTextLoginToken();" value="LOGIN_TOKEN" type="button">
+                <input onclick="fillTextAvCol();" value="AV_COLL" type="button">
+                <input onclick="fillTextCollSize();" value="GET_COLL_SIZE" type="button">
+                <input onclick="fillTextGetStart();" value="GET_START" type="button">
+                <input onclick="fillTextGetRange();" value="GET_RANGE" type="button">
+                <input onclick="fillTextLogout();" value="LOGOUT" type="button">
+            <p>
 
-		msg: <input id="message" type="text" size="60" autofocus><p>
-		<input onclick="wsSendMessage();" value="Echo" type="button">
-		<input onclick="wsOpenConnection();" value="Connect" type="button">
-		<input onclick="wsCloseConnection();" value="Disconnect" type="button">
-	</form>
-	<br>
-	<textarea id="echoText" rows="5" cols="30"></textarea>
+                msg: <input id="message" type="text" size="60" autofocus><p>
+                <input onclick="wsSendMessage();" value="Echo" type="button">
+                <input onclick="wsOpenConnection();" value="Connect" type="button">
+                <input onclick="wsCloseConnection();" value="Disconnect" type="button">
+        </form>
+        <br>
+        <textarea id="echoText" rows="5" cols="30"></textarea>
 
 
 
-	<script type="text/javascript">
-		// source:
-		// https://examples.javacodegeeks.com/enterprise-java/tomcat/apache-tomcat-websocket-tutorial/#toc630
+        <script type="text/javascript">
+            // Followin this tutorial:
+            // https://examples.javacodegeeks.com/enterprise-java/tomcat/apache-tomcat-websocket-tutorial/#toc630
 
-		var echoText = document.getElementById("echoText");
-		echoText.value = "";
-		var message = document.getElementById("message");
-		var wsurl = document.getElementById("wsurl");
-		wsurl.value = "ws://localhost:8080/adininspector/adinhubsoc2";
+            var echoText = document.getElementById("echoText");
+            echoText.value = "";
+            var message = document.getElementById("message");
+            var wsurl = document.getElementById("wsurl");
+            let wsUrlPath = "/adininspector/adinhubsoc2";
+            wsurl.value = "ws://localhost:8080" + wsUrlPath;
 
-		var webSocket = new WebSocket(
-			"ws://localhost:8080/adininspector/adinhubsoc2");
+            var webSocket = new WebSocket(wsurl.value);
+            console.log("webSocket:");
+            console.log("readyState: " + webSocket.readyState);
+            logObjectInfo(webSocket);
 
-		webSocket.onopen = function(message) {
-			wsOpen(message);
-		};
-		
-		
-		webSocket.onmessage = function(message) {
-			wsGetMessage(message);
-		};
-		
-		
-		webSocket.onclose = function(message) {
-			wsClose(message);
-		};
-		webSocket.onerror = function(message) {
-			wsError(message);
-		};
-		function wsOpen(message) {
-			echoText.value += "Connected: " + message + ", " + message.isTrusted + "\n";
-		}
-		function wsSendMessage() {
-			webSocket.send(message.value);
-			echoText.value += "Message sent to the server : " + message.value
-					+ "\n";
-			//message.value = "";
-		}
+            function logObjectInfo(o) {
+                console.log(Object.keys(o));
+                console.log(Object.getOwnPropertyNames(o));
+            };
 
-		function wsOpenConnection() {
-			webSocket = new WebSocket(wsurl.value);
-		}
 
-		function wsCloseConnection() {
-			webSocket.close();
-		}
-		function wsGetMessage(message) {
-			//echoText.value += "Message received from the server, raw : " + message + "\n";
-			echoText.value += "Message received from the server, data : " + message.data + "\n";
-			//msg = JSON.parse(message.data);
-			//echoText.value += "Message received from the server, parsed; par: "
-					//+ msg.par + "\n\n";
-		}
-		function wsClose(message) {
-			echoText.value += "Disconnect: " + message;
-			echoText.value += ", " + message.code;
-			echoText.value += ", " + message.reason;
-			echoText.value += ", " + message.wasClean;
-			echoText.value += ", " + message.isTrusted;
-			echoText.value += "\n";
-		}
+            var initHandlers = function (webSocket) {
 
-		function wsError(message) {
-			echoText.value += "Error: " + message + "\n";
-		}
+                webSocket.onopen = function (message) {
+                    console.log("onopen:");
+                    logObjectInfo(message);
+                    wsOpen(message);
+                };
 
-		function fillTextLogin() {
-			message.value = '{"cmd": "LOGIN", "user": "skroob", "pwd": "12345", "id": "12"}';
-		}
 
-		function fillTextLoginToken() {
-			message.value = '{"cmd": "LOGIN_TOKEN", "user": "skroob", "token": "DIGNUS", "id": "12"}';
-		}
+                webSocket.onmessage = function (message) {
+                    console.log("onmessage:");
+                    logObjectInfo(message);
+                    wsGetMessage(message);
+                };
 
-		function fillTextLogout() {
-			message.value = '{"cmd": "LOGOUT", "id": "12"}';
-		}
 
-		function fillTextAvCol() {
-			message.value = '{"cmd": "GET_AV_COLL", "id": "13"}';
-		}
+                webSocket.onclose = function (message) {
+                    console.log("onclose:");
+                    logObjectInfo(message);
+                    wsClose(message);
+                };
 
-		function fillTextCollSize() {
-			message.value = '{"cmd": "GET_COLL_SIZE", "par": "mockdataset", "id": "13"}';
-		}
+                webSocket.onerror = function (message) {
+                    console.log("onerror:");
+                    logObjectInfo(message);
+                    wsError(message);
+                };
 
-		function fillTextGetStart() {
-			message.value = '{"cmd": "GET_START", "id": "13"}';
-		}
+            }
 
-		function fillTextGetRange() {
-			message.value = '{"cmd": "GET_RECORDS_RANGE", "par": "mockdataset", "key": "Timestamp", "start": "{\"$date\": 1541425229623}", "end": "{\"$date\": 1541425229945}", "id": "13"}';
-		}
-	</script>
+            initHandlers(webSocket);
+            
 
-</body>
+            function wsOpen(message) {
+                echoText.value += "Connected: " + message + ", " + message.isTrusted + "\n";
+            }
+            function wsSendMessage() {
+                webSocket.send(message.value);
+                echoText.value += "Message sent to the server : " + message.value
+                        + "\n";
+                //message.value = "";
+            }
+
+            function wsOpenConnection() {
+                webSocket = new WebSocket(wsurl.value);
+                console.log("webSocket:");
+                console.log("readyState: " + webSocket.readyState);
+                logObjectInfo(webSocket);
+                initHandlers(webSocket);
+            }
+
+            function wsCloseConnection() {
+                webSocket.close();
+            }
+            function wsGetMessage(message) {
+                //echoText.value += "Message received from the server, raw : " + message + "\n";
+                echoText.value += "Message received from the server, data : " + message.data + "\n";
+                //msg = JSON.parse(message.data);
+                //echoText.value += "Message received from the server, parsed; par: "
+                //+ msg.par + "\n\n";
+            }
+            function wsClose(message) {
+                echoText.value += "Disconnect: " + message;
+                echoText.value += ", " + message.code;
+                echoText.value += ", " + message.reason;
+                echoText.value += ", " + message.wasClean;
+                echoText.value += ", " + message.isTrusted;
+                echoText.value += "\n";
+            }
+
+            function wsError(message) {
+                echoText.value += "Error: " + message + "\n";
+            }
+
+            function fillTextLogin() {
+                message.value = '{"cmd": "LOGIN", "user": "skroob", "pwd": "12345", "id": "12"}';
+            }
+
+            function fillTextLoginToken() {
+                message.value = '{"cmd": "LOGIN_TOKEN", "user": "skroob", "token": "DIGNUS", "id": "12"}';
+            }
+
+            function fillTextLogout() {
+                message.value = '{"cmd": "LOGOUT", "id": "12"}';
+            }
+
+            function fillTextAvCol() {
+                message.value = '{"cmd": "GET_AV_COLL", "id": "13"}';
+            }
+
+            function fillTextCollSize() {
+                message.value = '{"cmd": "GET_COLL_SIZE", "par": "mockdataset", "id": "13"}';
+            }
+
+            function fillTextGetStart() {
+                message.value = '{"cmd": "GET_START", "id": "13"}';
+            };
+
+            function fillTextGetRange() {
+                message.value = '{"cmd": "GET_RECORDS_RANGE", "par": "mockdataset", "key": "Timestamp", "start": "{\"$date\": 1541425229623}", "end": "{\"$date\": 1541425229945}", "id": "13"}';
+            };
+
+            function fillWsUrlLocal() {
+                wsurl.value = "ws://localhost:8080" + wsUrlPath;
+            };
+
+            function fillWsUrlMe() {
+                wsurl.value = "ws://192.168.1.2:8080" + wsUrlPath;
+            };
+
+            function fillWsUrlDroplet1() {
+                wsurl.value = "ws://159.89.213.72:8080" + wsUrlPath;
+            };
+
+            function fillWsUrlDroplet2() {
+                wsurl.value = "ws://139.59.214.141:8080" + wsUrlPath;
+            }
+            ;
+        </script>
+
+    </body>
 </html>
