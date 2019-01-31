@@ -120,6 +120,11 @@ class AppStore {
   @observable
   fullscreenDiagram = '';
 
+  @action
+  resetFullscreenDiagram = () => {
+    this.fullscreenDiagram = '';
+  };
+
   @computed
   get canSaveConfig() {
     const config = this.configModal.diagramConfig;

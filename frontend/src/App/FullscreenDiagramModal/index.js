@@ -17,6 +17,8 @@ import ScatterPlotBlock from './ScatterPlotBlock';
 const Container = styled(Paper)`
   position: absolute;
   display: flex;
+  width: 100%;
+  height: 100%;
   flex-direction: column;
   justify-content: center;
   /* transform: translate(-50%, -50%); */
@@ -82,7 +84,7 @@ class FullscreenDiagramModal extends Component {
         appStore.configModal.diagramConfig.diagramID +
         ' is canceled.'
     );
-    appStore.closeConfigModal();
+    appStore.resetFullscreenDiagram();
   };
 
   @action
