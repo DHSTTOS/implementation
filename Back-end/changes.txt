@@ -18,5 +18,43 @@ MongoConsumer Class:
 	
 
 	Additions:
+	Methods:
 	ArrayList<String> getTopicsForProcessing() #3 & #1
 	there are some topics in kakfka which are for internal use like __consumeroffsets this returns the topics we need to process
+	
+	Variables:
+    private KafkaConsumer<String, String> consumer; #1
+    other funcitons need to use the consumer 
+	
+MongoClientMediator Class:
+
+MANY leave for end
+
+PacketRecordDesFromKafka Class:
+    same as design
+
+PacketRecordDesFromMongo Class:
+    Date Timestamp #2 
+
+split it two to handle different formats, the correct one and the one from ankush.
+
+All other records stayed the same:
+
+
+ProcessData class:
+
+    Methods:
+    public static void processData(String collectionName, MongoClientMediator clientMediator) #3 & #1
+
+    added MongoClientMediator as param cause several clients might want to process data
+    
+    public static void processData(ArrayList<String> collectionNames, MongoClientMediator clientMediator) #1
+    
+    convinience cause we get a list of topics, so a list of collections to be processed, this calls processData for each topic.
+    
+    removed variable MongoClientMediator client.
+    
+    
+
+
+    
