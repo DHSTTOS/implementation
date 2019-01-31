@@ -8,47 +8,43 @@ let msgRegister = [];
 // as long as we keep these socket.something listener assignments within the same scope
 // as the socket construction, we won't miss the 'open' event etc.
 
-// Takes a message object, adds id, registers it, and sends it.
-const sendRequest = message => {
-  message.id = msgIdCounter++;
-  msgRegister[id] = message;
-  socket.send(JSON.stringify(message));
-};
-
-const login = (name, password) => {
-  const message = {
-    cmd: "LOGIN",
-    user: name,
-    pwd: password,
-  };
-  sendRequest(message);
-};
-
-const loginToken = (name, token) => {
-  const message = {
-    cmd: "LOGIN_TOKEN",
-    user: name,
-    token: token,
-  };
-  sendRequest(message);
-};
-
-socket.onopen = _ => {
+socket.onopen = message => {
+  console.log("WebSocket onopen: ", message);
+  logObjectInfo(message);
+    
   // authenticate again when opening socket
   loginToken(appStore.userDetails.userName, appStore.userDetails.authToken);
 };
 
-socket.onerror = err => {
-  console.log("WebSocket Error: ", err);
+socket.onerror = message => {
+  console.log("WebSocket onerror: ", message);
+  logObjectInfo(message);
 };
 
-socket.onclose = _ => {
-  console.log("WebSocket connection closed.");
+socket.onclose = message => {
+  console.log("WebSocket onclose:");
+  logObjectInfo(message);
+  echoText.value += "Disconnect: " + message;
+  echoText.value += ", " + message.code;
+  echoText.value += ", " + message.reason;
+  echoText.value += ", " + message.wasClean;
+  echoText.value += ", " + message.isTrusted;
+  echoText.value += "\n";
+
+  // TODO XXX: if logout was called (intentional) the do nothig (stay logged out),
+  // else try to open the connection again and login again, with token
 };
 
 socket.onmessage = message => {
-  console.log("onmessage: " + message.data);
-  const msg = JSON.parse(message.data);
+  console.log("WebSocket onmessage: ");
+  logObjectInfo(message);
+  handleMessage(JSON.parse(message.data));
+}
+
+/*
+ * Take the JSON-formatted message and handle it according to the protocol.
+ */
+const handleMessage = msg => {
   switch (msg.cmd) {
     case "SESSION":
       handleSession(msg);
@@ -63,11 +59,10 @@ socket.onmessage = message => {
       handleData(msg);
       break;
     default:
-      console.log("illegal message from server: " + msg.cmd);
+      console.log("error: unknown request from server: " + msg.cmd);
       break;
   }
 };
-
 
 // Handle data below
 const handleData = msg => {
@@ -138,6 +133,37 @@ const handleSession = async msg => {
     }
   }
 };
+
+/***
+ * Takes a message object, adds the id, registers it, and sends it.
+ * @param {type} message
+ * @returns {undefined}
+ */
+const sendRequest = message => {
+  message.id = msgIdCounter++;
+  msgRegister[id] = message;
+  socket.send(JSON.stringify(message));
+};
+
+
+const login = (name, password) => {
+  const message = {
+    cmd: "LOGIN",
+    user: name,
+    pwd: password,
+  };
+  sendRequest(message);
+};
+
+const loginToken = (name, token) => {
+  const message = {
+    cmd: "LOGIN_TOKEN",
+    user: name,
+    token: token,
+  };
+  sendRequest(message);
+};
+
 
 const getAvailableCollections = _ => {
   const message = {
@@ -225,8 +251,10 @@ const getLocalCollectionData = collName => {
 };
 
 const logObjectInfo = o => {
-  console.log(Object.keys(o));
-  console.log(Object.getOwnPropertyNames(o));
+  for (k in Object.keys(o)) {
+      console.log(k + ": " + o[k]);
+  }
+  console.log("OwnPropertyNames: " + bject.getOwnPropertyNames(o));
 };
 
 export default {
