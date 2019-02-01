@@ -27,7 +27,7 @@ const initHandlers = socket => {
     loginToken(
       socket,
       userStore.userDetails.userName,
-      userStore.userDetails.authToken
+      userStore.userDetails.password
     );
   };
 
@@ -139,6 +139,8 @@ const handleSession = async msg => {
       case 'OK':
         // successful login to ws connection
         userStore.userDetails.wsLoggedIn = true;
+        let token = msg.par;
+        await localStorage.setItem('token', token);
         break;
       case 'FAIL':
         // login failed
