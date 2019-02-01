@@ -4,6 +4,7 @@ import javax.websocket.OnOpen;
 import javax.websocket.server.ServerEndpoint;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Random;
 
@@ -168,13 +169,19 @@ public class Hub {
 			return;
 		}
 
-		// TODO: close the dbUserSession
 		sessions.remove(session);
     	// remove the token entry for this session:
-    	for (String token : loginTokens.keySet()) {
-			if (loginTokens.get(token).equals(dbUserSession))
-				loginTokens.remove(token);
+		Iterator<String> tokenSet = loginTokens.keySet().iterator();
+		for(; tokenSet.hasNext();) {
+			String token = tokenSet.next();
+			if (loginTokens.get(token).equals(dbUserSession)) {
+				tokenSet.remove();
+			}
 		}
+
+		// The session will ultimately be closed when the garbage collection
+		// removes it:
+		dbUserSession = null;
     }
 
     /**
