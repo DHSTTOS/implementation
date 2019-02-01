@@ -23,10 +23,9 @@ public class DataProcessorTest {
     {
         DataProcessor.processData("notExsist", getMCM());
 
-        assertTrue( "we did not add anything",getMCM().getCollection("notExsists").length == 0 );
+        assertTrue( "we did not add anythingcollection",getMCM().getCollection("notExsists").length == 0 );
 
     }
-
 
     public MongoClientMediator getMCM() {
         try {
