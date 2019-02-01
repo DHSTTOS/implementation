@@ -27,8 +27,8 @@ public class NumberOfConnectionsPerNode implements IAggregator {
     @Override
     public ArrayList<Document> processData(ArrayList<Record> records) {
 
-        if (records == null)
-         return new ArrayList<>();
+        if (records.size() == 0)
+                 return new ArrayList<>();
 
         id=0;
 
