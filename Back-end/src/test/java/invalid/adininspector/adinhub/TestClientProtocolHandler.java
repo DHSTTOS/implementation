@@ -20,23 +20,36 @@ public class TestClientProtocolHandler {
 	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		hub = new Hub();
-		cph = new ClientProtocolHandler();
 	}
 
 	@Before
 	public void setUp() throws Exception {
+		hub = new Hub();
+		cph = new ClientProtocolHandler();
 	}
 
 	@After
 	public void tearDown() throws Exception {
 	}
 
-	@Test
-	public void test() {
-		cph.handleRequest(hub, session,
+	// Don't test for now because we need to handle the random token correctly
+	public void testLogin() {
+		String response = cph.handleRequest(hub, session,
 				"{\"cmd\": \"LOGIN\", \"user\": \"foo\", \"pwd\": \"swordfish\", \"id\": \"12\"}");
-		fail("Not yet implemented");
+		assertEquals("{\"par\":\"-2032461221211193280\",\"cmd\":\"SESSION\",\"id\":\"12\",\"status\":\"OK\"}", response);
+	}
+
+	// Don't test for now because we need to handle the random token correctly
+	@Test
+	public void testAvailableCollections() {
+		String response = cph.handleRequest(hub, session,
+				"{\"cmd\": \"LOGIN\", \"user\": \"foo\", \"pwd\": \"swordfish\", \"id\": \"12\"}");
+		//assertEquals("{\"par\":\"-2032461221211193280\",\"cmd\":\"SESSION\",\"id\":\"12\",\"status\":\"OK\"}", response);
+		response = cph.handleRequest(hub, session,
+				"{\"cmd\": \"GET_AV_COLL\", \"id\": \"12\"}");
+		assertEquals("{\"par\":[\"mockdataset\"],\"cmd\":\"LIST_COL\",\"id\":\"12\"}", response);
+		
+		
 	}
 
 }
