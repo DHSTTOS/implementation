@@ -2,12 +2,18 @@ package invalid.adininspector.adinhub;
 
 import static org.junit.Assert.*;
 
+import java.util.Map;
+
 import javax.websocket.Session;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonSyntaxException;
 
 /**
  * NOTE: these tests require Hub to access MockMongoDBUserSession().
@@ -32,24 +38,33 @@ public class TestClientProtocolHandler {
 	public void tearDown() throws Exception {
 	}
 
-	// Don't test for now because we need to handle the random token correctly
+	@Test
 	public void testLogin() {
 		String response = cph.handleRequest(hub, session,
 				"{\"cmd\": \"LOGIN\", \"user\": \"foo\", \"pwd\": \"swordfish\", \"id\": \"12\"}");
-		assertEquals("{\"par\":\"-2032461221211193280\",\"cmd\":\"SESSION\",\"id\":\"12\",\"status\":\"OK\"}", response);
-	}
+		Map<String,Object> msgParsed = null;
+		try {
+			msgParsed = new Gson().fromJson(response, Map.class);
 
-	// Don't test for now because we need to handle the random token correctly
+		} catch (JsonSyntaxException e) {
+			System.err.println("handleRequest() got non-JSON message: " + response);
+			return;
+		} catch (JsonParseException e) {
+			System.err.println("handleRequest() got non-Map message: " + response);
+			return;
+		}
+		assertEquals("SESSION", msgParsed.get("cmd"));
+		assertEquals("OK", msgParsed.get("status"));
+		assertEquals("12", msgParsed.get("id"));
+}
+
 	@Test
 	public void testAvailableCollections() {
 		String response = cph.handleRequest(hub, session,
 				"{\"cmd\": \"LOGIN\", \"user\": \"foo\", \"pwd\": \"swordfish\", \"id\": \"12\"}");
-		//assertEquals("{\"par\":\"-2032461221211193280\",\"cmd\":\"SESSION\",\"id\":\"12\",\"status\":\"OK\"}", response);
 		response = cph.handleRequest(hub, session,
 				"{\"cmd\": \"GET_AV_COLL\", \"id\": \"12\"}");
 		assertEquals("{\"par\":[\"mockdataset\"],\"cmd\":\"LIST_COL\",\"id\":\"12\"}", response);
-		
-		
 	}
 
 }
