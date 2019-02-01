@@ -1,3 +1,6 @@
+/* Copyright (C) 2018,2019 Mario A. Gonzalez Ordiano - All Rights Reserved
+ * For any questions please contact me at: mario,ordiano@gmail.com
+ */
 package invalid.adininspector;
 
 import java.lang.reflect.Type;
@@ -97,7 +100,7 @@ public class MongoClientMediator {
         } catch (MongoWriteException ex) {
             // TODO: how to handle this, skip?, overwrite? or compare and decide which one
             // to keep?
-            //System.out.println("an entry with this offset already exists ");
+            System.out.println("an entry with this offset already exists ");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -126,7 +129,7 @@ public class MongoClientMediator {
     }
 
     // do we need this ? potentially not
-    private String[] getCollection(String collection) {
+    public String[] getCollection(String collection) {
         return mongoIteratorToStringArray(db.getCollection(collection).find());
     }
 
@@ -252,7 +255,7 @@ public class MongoClientMediator {
         String[] recordsToConvert = getCollection(collectionName);
 
         if (recordsToConvert.length == 0)
-            return null;
+            return new ArrayList<>();
 
         for (int i = 0; i < recordsToConvert.length; i++) {
 

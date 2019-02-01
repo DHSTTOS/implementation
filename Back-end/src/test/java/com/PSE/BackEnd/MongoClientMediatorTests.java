@@ -1,5 +1,10 @@
+/* Copyright (C) 2018,2019 Mario A. Gonzalez Ordiano - All Rights Reserved
+ * For any questions please contact me at: mario,ordiano@gmail.com
+ */
 package com.PSE.BackEnd;
 
+import invalid.adininspector.records.*;
+import org.bson.Document;
 import org.junit.*;
 import org.junit.rules.ExpectedException;
 
@@ -7,7 +12,7 @@ import invalid.adininspector.MongoClientMediator;
 import invalid.adininspector.exceptions.LoginFailureException;
 
 import static org.junit.Assert.*;
- 
+
 import java.util.*;
 
 //TODO: test things!
@@ -19,25 +24,40 @@ public class MongoClientMediatorTests {
     @Test
     public void testLoginEmptyDbName() throws LoginFailureException {
         exception.expect(LoginFailureException.class);
-        new MongoClientMediator("","","");
+        new MongoClientMediator("", "", "");
     }
-    
+
     @Test
     public void testLoginBadCredentials() throws LoginFailureException {
         exception.expect(LoginFailureException.class);
-        new MongoClientMediator("fake","McMoustache");
+        new MongoClientMediator("fake", "McMoustache");
     }
 
     @Test
-    public void testAddingNullRecord()
-    {
+    public void testAddingNullRecord() {
         MongoClientMediator mcm = getMCM();
 
-        //mcm.addRecordToCollection((Object)null, "");
+        mcm.addRecordToCollection(((Document) null), "dasdsa");
     }
 
-    public MongoClientMediator getMCM()
+    @Test
+    public void testGettingUnexistentCollection()
     {
+        String[] o = getMCM().getCollection("fsdafsafsadfdsafsda");
+
+        
+        assertTrue("is zero", o.length == 0);
+    }
+
+    @Test
+    public void testGetCollectionToStringArrayUnexistent() {
+        ArrayList<Record> o =   getMCM().getCollectionAsRecordsArrayList("fjdshlkjfhlkf");
+
+        assertTrue("is zero", o.size() == 0);
+
+    }
+    
+    public MongoClientMediator getMCM() {
         try {
             return new MongoClientMediator("admin", "admin", "AdinInspector");
         } catch (LoginFailureException e) {

@@ -28,5 +28,4 @@ public class MongoConsumerTests {
         new MongoConsumer("fake","McMoustache","AdinInspector");
     }
 
-
 }

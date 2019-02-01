@@ -1,3 +1,6 @@
+/* Copyright (C) 2018,2019 Mario A. Gonzalez Ordiano - All Rights Reserved
+ * For any questions please contact me at: mario,ordiano@gmail.com
+ */
 package invalid.adininspector.dataprocessing;
 
 import java.util.List;
@@ -25,7 +28,7 @@ public class NumberOfConnectionsPerNode implements IAggregator {
     public ArrayList<Document> processData(ArrayList<Record> records) {
 
         if (records == null)
-            return null;
+         return new ArrayList<>();
 
         id=0;
 
