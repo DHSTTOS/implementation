@@ -3,7 +3,7 @@ const RadialPlacement = function() {
   // stores the key -> location values
   let values = d3.map();
   // how much to separate each location by
-  let increment = 20;
+  let increment = 5;
   // how large to make the layout
   let radius = 100;
   // where the center of the layout should be
@@ -11,6 +11,9 @@ const RadialPlacement = function() {
   // what angle to start at
   let start = -120;
   let current = start;
+  var l4 = document.getElementsByTagName("L4").length;
+  var l3 = document.getElementsByTagName("L3").length;
+  var l2 = document.getElementsByTagName("L2").length;
 
   // Given an center point, angle, and radius length,
   // return a radial position for that angle
@@ -48,44 +51,66 @@ const RadialPlacement = function() {
     // start with an empty values
     values = d3.map();
 
-    // number of keys to go in first circle
-    const firstCircleCount = 10;
-    const secondCircleCount = 20;
+    keys.forEach(k => console.log(k));
 
-    // if we don't have enough keys, modify increment
-    // so that they all fit in one circle
-   // if (keys.length < firstCircleCount) {
-     // increment = 360 / keys.length;
-    ///}
+    // number of keys to go in first circle
+    // const firstCircleCount = 10;
+    // const secondCircleCount = 20;
 
     // set locations for inner circle
-    const firstCircleKeys = keys.slice(0, firstCircleCount);
-    increment = 360 / firstCircleKeys.length;
-    firstCircleKeys.forEach(k => place(k));
+    //const firstCircleKeys = keys.slice(0, firstCircleCount);
+    incrementL2 = 360 / l2;
 
-    
+    console.log(l2);
+    console.log(l3);
+    console.log(l4);
+
+    incrementL3 = 360 / l3;
+
+    incrementL4 = 360 / l4;
+    increment = 25;
+
+    return keys.forEach(k => {
+      if (k.includes(":")) {
+        //increment = 360;
+        radius = 200;
+        // increment = 20;
+        place(k);
+      } else if (k.includes(".")) {
+        radius = 500;
+        // increment = 40;
+        place(k);
+      } else {
+        radius = 800;
+        //  increment = 60;
+        place(k);
+      }
+    });
+
+    //firstCircleKeys.forEach(k => place(k));
 
     // set locations for outer circle
-    const secondCircleKeys = keys.slice(firstCircleCount,secondCircleCount);
-   
+    const secondCircleKeys = keys.slice(firstCircleCount, secondCircleCount);
 
     // setup outer circle
-    radius = radius + radius / 1.8;
+    radius = radius + radius / 2;
     increment = 360 / secondCircleKeys.length;
     //if (nodes.protocol == "TCP"){
     secondCircleKeys.forEach(k => place(k));
     // set locations for outer circle
     //}else{
-    const thirdCircleKeys = keys.slice(secondCircleCount,999);
+    const thirdCircleKeys = keys.slice(secondCircleCount, 999);
 
     // setup outer circle
-    radius = radius + radius / 1.8;
+    radius = radius + radius / 2;
     increment = 360 / thirdCircleKeys.length;
-    console.log(firstCircleKeys);
-    console.log(secondCircleKeys);
-    console.log(thirdCircleKeys);
+    // console.log(firstCircleKeys);
+    // console.log(secondCircleKeys);
+    // console.log(thirdCircleKeys);
+    //console.log((nodes.match(new RegExp("IP", "g")) || []).length);
+
     return thirdCircleKeys.forEach(k => place(k));
-  //}
+    //}
   };
 
   placement.keys = function(_) {
@@ -203,6 +228,7 @@ const Network = function() {
   var update = function() {
     // filter data to show based on current filter settings.
     curNodesData = filterNodes(allData.nodes);
+    console.log(allData.node);
     curLinksData = filterLinks(allData.links, curNodesData);
 
     // sort nodes based on current sort and update centers for
@@ -248,42 +274,6 @@ const Network = function() {
     return update();
   };
 
-  // Public function to switch between filter options
-  network.toggleFilter = function(newFilter) {
-  force.stop();
- setFilter(newFilter);
- return update();
- };
-
-  // Public function to switch between sort options
-  network.toggleSort = function(newSort) {
-    force.stop();
-    setSort(newSort);
-    return update();
-  };
-
-  // Public function to update highlighted nodes
-  // from search
-  /*network.updateSearch = function(searchTerm) {
-    const searchRegEx = new RegExp(searchTerm.toLowerCase());
-    return node.each(function(d) {
-      const element = d3.select(this);
-      const match = d.name.toLowerCase().search(searchRegEx);
-      if (searchTerm.length > 0 && match >= 0) {
-        element
-          .style("fill", "#F38630")
-          .style("stroke-width", 2.0)
-          .style("stroke", "#555");
-        return (d.searched = true);
-      } else {
-        d.searched = false;
-        return element
-          .style("fill", d => nodeColors(d.id))
-          .style("stroke-width", 1.0);
-      }
-    });
-  };*/
-
   network.updateData = function(newData) {
     allData = setupData(newData);
     link.remove();
@@ -308,6 +298,7 @@ const Network = function() {
       let randomnumber;
       n.x = randomnumber = Math.floor(Math.random() * width);
       n.y = randomnumber = Math.floor(Math.random() * height);
+
       // add radius to the node so we can use it later
       return (n.radius = circleRadius(121020));
     });
@@ -317,13 +308,13 @@ const Network = function() {
 
     // switch links to point to node objects instead of id's
     data.links.forEach(function(l) {
-     // if(l.target != "0.0.0.0" || l.source == "0.0.0.0"){
+      // if(l.target != "0.0.0.0" || l.source == "0.0.0.0"){
       l.source = nodesMap.get(l.source);
       l.target = nodesMap.get(l.target);
       //}
-      console.log(l);
-      console.log(l.source);
-      console.log(l.target);
+      // console.log(l);
+      // console.log(l.source);
+      // console.log(l.target);
       // linkedByIndex is used for link sorting
       return (linkedByIndex[`${l.source.id},${l.target.id}`] = 1);
     });
@@ -334,9 +325,22 @@ const Network = function() {
   // Helper function to map node id's to node objects.
   // Returns d3.map of ids -> nodes
   var mapNodes = function(nodes) {
-    const nodesMap = d3.map();
-    nodes.forEach(n => nodesMap.set(n.id, n));
-    return nodesMap;
+    const l2Map = d3.map();
+    const l3Map = d3.map();
+    const l4Map = d3.map();
+
+    nodes.forEach(n => {
+      //   if(n.type == "L2"){
+      l2Map.set(n.id, n);
+      // }else if (n.type == "L3"){
+      // l3Map.set(n.id, n);
+      // }else{
+      // l4Map.set(n.id,n);
+      // }
+    });
+
+    return l2Map;
+    // return new Map([l2Map,l3Map,l4Map]);
   };
 
   // Helper function that returns an associative array
@@ -428,10 +432,10 @@ const Network = function() {
   // source or target is not present in curNodes
   // Returns array of links
   var filterLinks = function(allLinks, curNodes) {
-  curNodes = mapNodes(curNodes);
-  return allLinks.filter(
-  l => curNodes.get(l.source.id) && curNodes.get(l.target.id)
-  );
+    curNodes = mapNodes(curNodes);
+    return allLinks.filter(
+      l => curNodes.get(l.source.id) && curNodes.get(l.target.id)
+    );
   };
 
   // enter/exit display for nodes
@@ -470,6 +474,8 @@ const Network = function() {
       .attr("x2", d => d.target.x)
       .attr("y2", d => d.target.y);
 
+    link.on("mouseover", showLinkDetails).on("mouseout", hideLinkDetails);
+
     return link.exit().remove();
   };
 
@@ -485,27 +491,19 @@ const Network = function() {
       return force.on("tick", radialTick).charge(charge);
     }
   };
-    function fade(opacity) {
-      return function(d) {
-          node.style("stroke-opacity", function(o) {
-              thisOpacity = neighboring(d, o) ? 1 : opacity;
-              this.setAttribute('fill-opacity', thisOpacity);
-              return thisOpacity;
-          });
- 
-        
-        link.style("stroke-opacity", function(o) {
-              return o.source === d || o.target === d ? 1 : opacity;
-          });       
-             
-      
-        
-        
-        
-      };
-}
+  function fade(opacity) {
+    return function(d) {
+      node.style("stroke-opacity", function(o) {
+        thisOpacity = neighboring(d, o) ? 1 : opacity;
+        this.setAttribute("fill-opacity", thisOpacity);
+        return thisOpacity;
+      });
 
-
+      link.style("stroke-opacity", function(o) {
+        return o.source === d || o.target === d ? 1 : opacity;
+      });
+    };
+  }
 
   // switches filter option to new filter
   var setFilter = newFilter => (filter = newFilter);
@@ -588,17 +586,17 @@ const Network = function() {
     // watch out - don't mess with node if search is currently matching
     node
       .style("stroke", function(n) {
-        if ( neighboring(d, n)) {
+        if (neighboring(d, n)) {
           return "#555";
         } else {
           return strokeFor(n);
         }
       })
       .style("stroke-width", function(n) {
-        if ( neighboring(d, n)) {
+        if (neighboring(d, n)) {
           return 2.0;
         } else {
-          return fade(.1);
+          return fade(0.1);
         }
       });
 
@@ -609,6 +607,17 @@ const Network = function() {
       .style("stroke-width", 2.0);
   };
 
+  var showLinkDetails = function(d, i) {
+    let content = `<p class="main">Source:  ${d.source.id}</span></p>`;
+    console.log(d.source.id);
+    content += '<hr class="tooltip-hr">';
+    content += `<p class="main">Target:  ${d.target.id}</span></p>`;
+    tooltip.showTooltip(content, d3.event);
+  };
+
+  var hideLinkDetails = function(d, i) {
+    tooltip.hideTooltip();
+  };
   // Mouseout function
   var hideDetails = function(d, i) {
     tooltip.hideTooltip();
@@ -645,18 +654,10 @@ const activate = function(group, link) {
 
 $(function() {
   const myNetwork = Network();
-
-  d3.selectAll("#layouts a").on("click", function(d) {
-    const newLayout = d3.select(this).attr("id");
-    activate("layouts", newLayout);
-    return myNetwork.toggleLayout(newLayout);
-  });
-
   $("#song_select").on("change", function(e) {
     const songFile = $(this).val();
     return d3.json(`data/${songFile}`, json => myNetwork.updateData(json));
   });
-
 
   return d3.json("data/Source1.json", json => myNetwork("#vis", json));
 });
