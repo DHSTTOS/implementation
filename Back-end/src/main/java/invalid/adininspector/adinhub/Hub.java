@@ -139,7 +139,7 @@ public class Hub {
 		return dbUserSession;
 	}
 
-    boolean loginWithToken(Session session, String username, String token) {
+    boolean loginWithToken(Session session, String token) {
     	System.out.println("lWT: this " + this);
     	System.out.println("lWT #registered keys: "  + loginTokens.keySet().size());
     	for (String key : loginTokens.keySet()) {

@@ -22,9 +22,10 @@ const initHandlers = socket => {
   socket.onopen = message => {
     console.log('WebSocket onopen: ', message);
     console.dir(message);
-
     // authenticate again when opening socket
-    loginToken(
+    // XXX i.e. this should call auth()
+    // XXX but for now (debugging the main page alone) use login
+    login(
       socket,
       userStore.userDetails.userName,
       userStore.userDetails.password
@@ -63,15 +64,22 @@ const initHandlers = socket => {
  */
 const handleMessage = msg => {
   console.log(msg);
+  if (!msgRegister[msg.id]) {
+    console.log('Protocol: bug: this message was unrequested');
+  }
+
   switch (msg.cmd) {
     case 'SESSION':
       handleSession(msg);
       break;
-    case 'LIST_COL':
+    case 'LIST_COLL':
       // msg.par will be array
       dataStore.availableCollections = msg.par;
       break;
     case 'COLL_SIZE':
+      break;
+    case 'DATA_ENDPOINTS':
+      handleDataEndpoints(msg);
       break;
     case 'DATA':
       handleData(msg);
@@ -80,9 +88,20 @@ const handleMessage = msg => {
       console.log('error: unknown request from server: ' + msg.cmd);
       break;
   }
+  // Now that msg has been handled, delete its request:
+  delete msgRegister[msg.id];
 };
 
 // Handle data below
+const handleDataEndpoints = msg => {
+  dataStore.availableCollections = msg.par;
+  if (collName.indexOf('_') > -1) {
+    dataStore.alarms[collName].endpoints = msg.data;
+  } else {
+    dataStore.endpoints = msg.data;
+  }
+};
+
 const handleData = msg => {
   console.log('Received data message: ' + msg.data.length + ' ' + msg.data[0]);
   if (!msgRegister[msg.id]) {
@@ -110,50 +129,30 @@ const handleData = msg => {
 };
 
 const handleSession = async msg => {
-  if (userStore.userDetails.wsLoggedIn) {
-    switch (msg.status) {
-      case 'OK':
-        // can't really happen unless we use the two-page login
-        let token = msg.par;
-        await localStorage.setItem('token', token);
-        console.log(
-          'websocket connection: got unexpected SESSION message: ' +
-            msg.status +
-            ', ' +
-            msg.par
-        );
-        break;
-      case 'FAIL':
-        // user has logged out
-        userStore.userDetails.wsLoggedIn = false;
-        // TODO close the connection
-        // TODO: present the login screen again
-        break;
-      default:
-        console.log('Protocol bug, logged in, invalid status: ' + msg.status);
-        break;
-    }
-  } else {
-    //not logged in
-    switch (msg.status) {
-      case 'OK':
-        // successful login to ws connection
-        userStore.userDetails.wsLoggedIn = true;
-        let token = msg.par;
-        await localStorage.setItem('token', token);
-        break;
-      case 'FAIL':
-        // login failed
-        console.log('login to websocket connection failed: ' + msg.par);
-        console.log(msg);
-        // TODO: present the login screen again
-        break;
-      default:
-        console.log(
-          'Protocol bug, not logged in, invalid status: ' + msg.status
-        );
-        break;
-    }
+  switch (msg.par) {
+    case 'LOGIN':
+      if (msg.status === 'OK') {
+        await localStorage.setItem('token', msg.token);
+        // TODO: present the main page
+      } else {
+        // TODO: present the login screen again, with a "Username or password wrong" notice
+      }
+      break;
+    case 'AUTH':
+      if (msg.status !== 'OK') {
+        console.log('websocket connection: AUTHentication failed:');
+        console.dir(msg);
+        // TODO: present the login screen again, with a "Login failed, maybe technical problems" notice
+      }
+      break;
+    case 'LOGOUT':
+      await localStorage.removeItem('token');
+      // TODO: present the login screen again
+      break;
+    default:
+      console.log('Protocol error: got unknown SESSION message:');
+      console.dir(msg);
+      break;
   }
 };
 
@@ -178,11 +177,18 @@ const login = (socket, name, password) => {
   sendRequest(socket, message);
 };
 
-const loginToken = (socket, name, token) => {
+const auth = (socket, name, token) => {
   const message = {
-    cmd: 'LOGIN_TOKEN',
+    cmd: 'AUTH',
     user: name,
     token: token,
+  };
+  sendRequest(socket, message);
+};
+
+const logout = socket => {
+  const message = {
+    cmd: 'LOGOUT',
   };
   sendRequest(socket, message);
 };
@@ -190,7 +196,6 @@ const loginToken = (socket, name, token) => {
 const getAvailableCollections = socket => {
   const message = {
     cmd: 'GET_AV_COLL',
-    id: msgIdCounter++,
   };
   sendRequest(socket, message);
 };
@@ -199,7 +204,6 @@ const getCollection = (socket, name) => {
   const message = {
     cmd: 'GET_COLL',
     par: name,
-    id: msgIdCounter++,
   };
   sendRequest(socket, message);
 };
@@ -208,7 +212,14 @@ const getCollectionSize = (socket, name) => {
   const message = {
     cmd: 'GET_COLL_SIZE',
     par: name,
-    id: msgIdCounter++,
+  };
+  sendRequest(socket, message);
+};
+
+const getEndpoints = (socket, name) => {
+  const message = {
+    cmd: 'GET_ENDPOINTS',
+    par: name,
   };
   sendRequest(socket, message);
 };
@@ -220,7 +231,6 @@ const getRecordsInRange = (socket, name, key, startValue, endValue) => {
     key: key,
     start: startValue,
     end: endValue,
-    id: msgIdCounter++,
   };
   sendRequest(socket, message);
 };
@@ -232,7 +242,6 @@ const getRecordsInRangeSize = (socket, name, key, startValue, endValue) => {
     key: key,
     start: startValue,
     end: endValue,
-    id: msgIdCounter++,
   };
   sendRequest(socket, message);
 };
@@ -275,7 +284,8 @@ const getLocalCollectionData = collName => {
 export {
   createConnection,
   login,
-  loginToken,
+  auth,
+  logout,
   getAvailableCollections,
   getCollection,
   getCollectionSize,

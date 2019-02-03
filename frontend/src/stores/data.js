@@ -14,6 +14,14 @@ class DataStore {
   @observable
   rawData = [];
 
+  @observable
+  endpoints = []; // The start and end indices for the x-axis
+
+  // The slice of raw data that is currently selected by the slider:
+  currentlySelectedData = [];
+
+
+
   // Array of notification/alarm data sets:
   @observable
   alarms = [
@@ -21,6 +29,7 @@ class DataStore {
       name: '',
       keys: [], // array of the JSON keys that this alarm type has
       data: [], // array of JSON strings representing the datapoints
+      endpoints: [],
     },
   ];
 }

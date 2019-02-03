@@ -25,25 +25,25 @@ public class ClientProtocolHandler {
 				String res = hub.login(session, username, password);
 
 				m.put("cmd", "SESSION");
+				m.put("par", "LOGIN");
 				if ((res == null) || res.equals("")) {
 					m.put("status", "FAIL");
-					m.put("par", "");
+					m.put("token", "");
 				} else {
 					m.put("status", "OK");
-					m.put("par", res);
+					m.put("token", res);
 				}
 				return m;
 			}
 		},
-		LOGIN_TOKEN("LOGIN_TOKEN") {
+		AUTH("AUTH") {
 			public Map<String, Object> execute(Hub hub, Session session, Map<String,Object> msgParsed) {
-				String username = (String)msgParsed.get("user");
 				String token = (String)msgParsed.get("token");
-				boolean loggedIn = hub.loginWithToken(session, username, token);
+				boolean loggedIn = hub.loginWithToken(session, token);
 				Map<String, Object> m = new HashMap<String, Object>();
 				m.put("cmd", "SESSION");
+				m.put("par", "AUTH");
 				m.put("status", loggedIn ? "OK" : "FAIL");
-				m.put("par", "");
 				return m;
 			}
 		},
@@ -52,18 +52,17 @@ public class ClientProtocolHandler {
 				hub.logOut(session);
 				Map<String, Object> m = new HashMap<String, Object>();
 				m.put("cmd", "SESSION");
-				m.put("status", "FAIL");
-				m.put("par", "");
+				m.put("par", "LOGOUT");
+				m.put("status", "OK");
 				return m;
 			}
 		},
 		GET_AV_COLL("GET_AV_COLL") {
 			public Map<String, Object> execute(Hub hub, Session session, Map<String,Object> msgParsed) {
 				String[] collections = hub.getAvailableCollections(session);
-				Map<String, Object> m = new HashMap<String, Object>();
-				m.put("cmd", "LIST_COL");
-				m.put("par", collections);
-				return m;
+				msgParsed.put("cmd", "LIST_COL");
+				msgParsed.put("par", collections);
+				return msgParsed;
 			}
 		},
 		
@@ -73,7 +72,9 @@ public class ClientProtocolHandler {
 				String[] data = hub.getCollection(session, collectionName);
 				Map<String, Object> m = new HashMap<String, Object>();
 				m.put("cmd", "DATA");
-				m.put("par", data);
+				m.put("name", collectionName);
+				m.put("key", "");
+				m.put("data", data);
 				return m;
 			}
 		},
@@ -83,8 +84,10 @@ public class ClientProtocolHandler {
 				String collectionName = (String)msgParsed.get("par");
 				String data = hub.getStartRecord(session, collectionName);
 				Map<String, Object> m = new HashMap<String, Object>();
-				m.put("cmd", "DATA");
-				m.put("par", data);
+				m.put("cmd", "DATASINGLE");
+				m.put("name", collectionName);
+				m.put("idx", "start");
+				m.put("data", data);
 				return m;
 			}
 		},
@@ -94,18 +97,35 @@ public class ClientProtocolHandler {
 				String collectionName = (String)msgParsed.get("par");
 				String data = hub.getEndRecord(session, collectionName);
 				Map<String, Object> m = new HashMap<String, Object>();
-				m.put("cmd", "DATA");
-				m.put("par", data);
+				m.put("cmd", "DATASINGLE");
+				m.put("name", collectionName);
+				m.put("idx", "end");
+				m.put("data", data);
 				return m;
 			}
 		},
 
+		GET_ENDPOINTS("GET_ENDPOINTS") {
+			public Map<String, Object> execute(Hub hub, Session session, Map<String,Object> msgParsed) {
+				String collectionName = (String)msgParsed.get("par");
+				String start = hub.getStartRecord(session, collectionName);
+				String end = hub.getEndRecord(session, collectionName);
+				//send augmented request back:
+				msgParsed.put("cmd", "DATA_ENDPOINTS");
+				msgParsed.put("name", collectionName);
+				msgParsed.put("data", new String[]{start, end});
+				return msgParsed;
+			}
+		},
+		
 		GET_COLL_SIZE("GET_COLL_SIZE") {
 			public Map<String, Object> execute(Hub hub, Session session, Map<String,Object> msgParsed) {
 				String collectionName = (String)msgParsed.get("par");
 				long size = hub.getCollectionSize(session, collectionName);
 				Map<String, Object> m = new HashMap<String, Object>();
 				m.put("cmd", "COLL_SIZE");
+				m.put("name", collectionName);
+				m.put("key", "");
 				m.put("par", size);
 				return m;
 			}
@@ -118,10 +138,12 @@ public class ClientProtocolHandler {
 				String start = (String)msgParsed.get("start");
 				String end = (String)msgParsed.get("end");
 				String[] data = hub.getRecordsInRange(session, collectionName, key, start, end);
-				Map<String, Object> m = new HashMap<String, Object>();
-				m.put("cmd", "DATA");
-				m.put("par", data);
-				return m;
+				//send augmented request back:
+				msgParsed.put("cmd", "DATA");
+				msgParsed.put("name", collectionName);
+				msgParsed.put("data", data);
+				msgParsed.remove("par");
+				return msgParsed;
 			}
 		},
 
@@ -132,10 +154,11 @@ public class ClientProtocolHandler {
 				String start = (String)msgParsed.get("start");
 				String end = (String)msgParsed.get("end");
 				long size = hub.getRecordsInRangeSize(session, collectionName, key, start, end);
-				Map<String, Object> m = new HashMap<String, Object>();
-				m.put("cmd", "COLL_SIZE");
-				m.put("par", size);
-				return m;
+				//send augmented request back:
+				msgParsed.put("cmd", "COLL_SIZE");
+				msgParsed.put("name", collectionName);
+				msgParsed.put("par", size);
+				return msgParsed;
 			}
 		};
 		

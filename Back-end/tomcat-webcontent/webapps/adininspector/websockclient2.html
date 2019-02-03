@@ -5,7 +5,7 @@
         <title>adininspector-backend debugger</title>
     </head>
     <body>
-        <H3>Debugger for adininspector-backend 4.2</H3>
+        <H3>Debugger for adininspector-backend 5.1</H3>
         <form>
             <input onclick="fillWsUrlLocal();" value="localhost" type="button">
             <input onclick="fillWsUrlMe();" value="local IP" type="button">
@@ -15,11 +15,12 @@
                 url: <input id="wsurl" type="text" size="60"><p>
 
                 <input onclick="fillTextLogin();" value="LOGIN" type="button">
-                <input onclick="fillTextLoginToken();" value="LOGIN_TOKEN" type="button">
+                <input onclick="fillTextAuth();" value="AUTH" type="button">
                 <input onclick="fillTextAvCol();" value="AV_COLL" type="button">
                 <input onclick="fillTextCollSize();" value="GET_COLL_SIZE" type="button">
                 <input onclick="fillTextGetStart();" value="GET_START" type="button">
-                <input onclick="fillTextGetRange();" value="GET_RANGE" type="button">
+                <input onclick="fillTextGetStartEnd();" value="GET_START_END" type="button">
+                <input onclick="fillTextGetRecordsRange();" value="GET_RECORDS_IN_RANGE" type="button">
                 <input onclick="fillTextLogout();" value="LOGOUT" type="button">
             <p>
 
@@ -30,6 +31,12 @@
         </form>
         <br>
         <textarea id="echoText" rows="5" cols="30"></textarea>
+
+	<p>
+	Mini-manual:<BR>
+	1. Select the websocket server to connect to: click button "Disconnect", then "droplet1", then "Connect"<br>
+	2. Now you can send requests to the server. You can enter them manually or use the buttons to fill in typical requests. Send a request by clicking "Echo". "login" must be your first command.<br>
+	example: "LOGIN" - "Echo" - "AV_COLL" - "Echo" - "GET_COLL_SIZE" - "Echo"<br>
 
 
 
@@ -50,8 +57,10 @@
             logObjectInfo(webSocket);
 
             function logObjectInfo(o) {
+                console.log(o);
                 console.log(Object.keys(o));
                 console.log(Object.getOwnPropertyNames(o));
+		console.log("--");
             };
 
 
@@ -100,8 +109,8 @@
 
             function wsOpenConnection() {
                 webSocket = new WebSocket(wsurl.value);
-                console.log("webSocket:");
-                console.log("readyState: " + webSocket.readyState);
+                console.log("webSocket to: " + wsurl.value);
+                console.dir(webSocket)
                 logObjectInfo(webSocket);
                 initHandlers(webSocket);
             }
@@ -133,8 +142,8 @@
                 message.value = '{"cmd": "LOGIN", "user": "skroob", "pwd": "12345", "id": "12"}';
             }
 
-            function fillTextLoginToken() {
-                message.value = '{"cmd": "LOGIN_TOKEN", "user": "skroob", "token": "DIGNUS", "id": "12"}';
+            function fillTextAuth() {
+                message.value = '{"cmd": "AUTH", "user": "skroob", "token": "DIGNUS", "id": "12"}';
             }
 
             function fillTextLogout() {
@@ -150,10 +159,14 @@
             }
 
             function fillTextGetStart() {
-                message.value = '{"cmd": "GET_START", "id": "13"}';
+                message.value = '{"cmd": "GET_START", "par": "mockdataset", "id": "13"}';
             };
 
-            function fillTextGetRange() {
+            function fillTextGetStartEnd() {
+                message.value = '{"cmd": "GET_START_END", "par": "mockdataset", "id": "13"}';
+            };
+
+            function fillTextGetRecordsRange() {
                 message.value = '{"cmd": "GET_RECORDS_RANGE", "par": "mockdataset", "key": "Timestamp", "start": "{\"$date\": 1541425229623}", "end": "{\"$date\": 1541425229945}", "id": "13"}';
             };
 
