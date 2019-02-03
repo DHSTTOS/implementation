@@ -63,6 +63,9 @@ const initHandlers = socket => {
  */
 const handleMessage = msg => {
   console.log(msg);
+  if (!msgRegister[msg.id]) {
+    console.log('Protocol: bug: this message was unrequested');
+  }
   switch (msg.cmd) {
     case 'SESSION':
       handleSession(msg);
@@ -80,6 +83,8 @@ const handleMessage = msg => {
       console.log('error: unknown request from server: ' + msg.cmd);
       break;
   }
+  // Now that msg has been handled, delete its request:
+  delete msgRegister[msg.id];
 };
 
 // Handle data below
@@ -190,7 +195,6 @@ const loginToken = (socket, name, token) => {
 const getAvailableCollections = socket => {
   const message = {
     cmd: 'GET_AV_COLL',
-    id: msgIdCounter++,
   };
   sendRequest(socket, message);
 };
@@ -199,7 +203,6 @@ const getCollection = (socket, name) => {
   const message = {
     cmd: 'GET_COLL',
     par: name,
-    id: msgIdCounter++,
   };
   sendRequest(socket, message);
 };
@@ -208,7 +211,6 @@ const getCollectionSize = (socket, name) => {
   const message = {
     cmd: 'GET_COLL_SIZE',
     par: name,
-    id: msgIdCounter++,
   };
   sendRequest(socket, message);
 };
@@ -220,7 +222,6 @@ const getRecordsInRange = (socket, name, key, startValue, endValue) => {
     key: key,
     start: startValue,
     end: endValue,
-    id: msgIdCounter++,
   };
   sendRequest(socket, message);
 };
@@ -232,7 +233,6 @@ const getRecordsInRangeSize = (socket, name, key, startValue, endValue) => {
     key: key,
     start: startValue,
     end: endValue,
-    id: msgIdCounter++,
   };
   sendRequest(socket, message);
 };
