@@ -2,7 +2,7 @@
 const RadialPlacement = function() {
   // stores the key -> location values
   let values = d3.map();
-  var playButton = d3.select("#play-button");
+  var playButton = d3.select('#play-button');
   // how much to separate each location by
   let increment = 5;
   // how large to make the layout
@@ -12,9 +12,9 @@ const RadialPlacement = function() {
   // what angle to start at
   let start = -120;
   let current = start;
-  var l4 = document.getElementsByTagName("L4").length;
-  var l3 = document.getElementsByTagName("L3").length;
-  var l2 = document.getElementsByTagName("L2").length;
+  var l4 = document.getElementsByTagName('L4').length;
+  var l3 = document.getElementsByTagName('L3').length;
+  var l2 = document.getElementsByTagName('L2').length;
 
   // Given an center point, angle, and radius length,
   // return a radial position for that angle
@@ -48,64 +48,30 @@ const RadialPlacement = function() {
   // Expects radius, increment, and center to be set.
   // If there are a small number of keys, just make
   // one circle.
-  const setKeys = function(keys) {
+  const setKeys = keys => {
     // start with an empty values
     values = d3.map();
 
-    keys.forEach(k => console.log(k));
+    // keys.forEach(k => console.log(k));
 
-    // number of keys to go in first circle
-    // const firstCircleCount = 10;
-    // const secondCircleCount = 20;
-
-    // set locations for inner circle
-    //const firstCircleKeys = keys.slice(0, firstCircleCount);
-    incrementL2 = 360 / l2;
-    incrementL3 = 360 / l3;
-    incrementL4 = 360 / l4;
     increment = 25;
 
-    return keys.forEach(k => {
-      if (k.includes(":")) {
+    keys.forEach(k => {
+      if (k.includes(':')) {
         //increment = 360;
         radius = 200;
-        // increment = 20;
+        //increment = 360;
         place(k);
-      } else if (k.includes(".")) {
+      } else if (k.includes('.')) {
         radius = 500;
-        // increment = 40;
+        // increment = 360;
         place(k);
       } else {
         radius = 800;
-        //  increment = 60;
+        //increment = 360;
         place(k);
       }
     });
-
-    //firstCircleKeys.forEach(k => place(k));
-
-    // set locations for outer circle
-    const secondCircleKeys = keys.slice(firstCircleCount, secondCircleCount);
-
-    // setup outer circle
-    radius = radius + radius / 2;
-    increment = 360 / secondCircleKeys.length;
-    //if (nodes.protocol == "TCP"){
-    secondCircleKeys.forEach(k => place(k));
-    // set locations for outer circle
-    //}else{
-    const thirdCircleKeys = keys.slice(secondCircleCount, 999);
-
-    // setup outer circle
-    radius = radius + radius / 2;
-    increment = 360 / thirdCircleKeys.length;
-    // console.log(firstCircleKeys);
-    // console.log(secondCircleKeys);
-    // console.log(thirdCircleKeys);
-    //console.log((nodes.match(new RegExp("IP", "g")) || []).length);
-
-    return thirdCircleKeys.forEach(k => place(k));
-    //}
   };
 
   placement.keys = function(_) {
@@ -158,13 +124,6 @@ const Network = function() {
   const width = 960;
   const height = 960;
 
-  var moving = false;
-var currentValue = 0;
-var targetValue = width;
-/*var x = d3.scaleTime()
-    .domain([startDate, endDate])
-    .range([0, targetValue])
-    .clamp(true);*/
   // allData will store the unfiltered data
   let allData = [];
   let curLinksData = [];
@@ -178,12 +137,11 @@ var targetValue = width;
   // of the nodes and links
   let node = null;
   let link = null;
-  // interaction: { multiselect: true}
+
   // variables to refect the current settings
   // of the visualization
-  let layout = "radial";
-  let filter = "all";
-  let sort = "songs";
+  let layout = 'radial';
+  let sort = 'data';
   // groupCenters will store our radial layout for
   // the group by id layout.
   let groupCenters = null;
@@ -193,39 +151,35 @@ var targetValue = width;
   // color function used to color nodes
   const nodeColors = d3.scale.category20();
   // tooltip used to display details
-  const tooltip = Tooltip("vis-tooltip", 230);
+  const tooltip = Tooltip('vis-tooltip', 230);
 
-  // charge used in id layout
-  const charge = node => -Math.pow(node.radius, 2.0) / 2;
+  // // charge used in id layout
+  // const charge = node => -Math.pow(node.radius, 2.0) / 2;
 
   // Starting point for network visualization
   // Initializes visualization and starts force layout
   const network = function(selection, data) {
     // format our data
     allData = setupData(data);
-//network.setOptions(options);
+    //network.setOptions(options);
     // create our svg and groups
     const vis = d3
       .select(selection)
-      .append("svg")
-      .attr("width", width)
-      .attr("height", height);
-    linksG = vis.append("g").attr("id", "links");
-    nodesG = vis.append("g").attr("id", "nodes");
-
-
-
-   
+      .append('svg')
+      .attr('width', width)
+      .attr('height', height);
+    linksG = vis.append('g').attr('id', 'links');
+    nodesG = vis.append('g').attr('id', 'nodes');
 
     // setup the size of the force environment
     force.size([width, height]);
-  
 
-    setLayout("radial");
-    setFilter("all");
+    force.on('tick', radialTick);
+    // .charge(charge);
+    setFilter('all');
 
     // perform rendering and start force layout
-    return update();
+    update();
   };
 
   // The update() function performs the bulk of the
@@ -234,18 +188,17 @@ var targetValue = width;
   //
   // update() is called everytime a parameter changes
   // and the network needs to be reset.
-  var update = function(allData) {
+  var update = function() {
     // filter data to show based on current filter settings.
     curNodesData = filterNodes(allData.nodes);
-   // console.log(allData.node);
+    // console.log(allData.node);
     curLinksData = filterLinks(allData.links, curNodesData);
 
     // sort nodes based on current sort and update centers for
     // radial layout
-    if (layout === "radial") {
-      const id = sortedid(curNodesData, curLinksData);
-      updateCenters(id);
-    }
+
+    const id = sortedId(curNodesData, curLinksData);
+    updateCenters(id);
 
     // reset nodes in force layout
     force.nodes(curNodesData);
@@ -253,34 +206,23 @@ var targetValue = width;
     // enter / exit for nodes
     updateNodes();
 
-    // always show links in force layout
-    if (layout === "force") {
-      force.links(curLinksData);
-      updateLinks();
-    } else {
-      // reset links so they do not interfere with
-      // other layouts. updateLinks() will be called when
-      // force is done animating.
-      force.links([]);
-      // if present, remove them from svg
-      if (link) {
-        link
-          .data([])
-          .exit()
-          .remove();
-        link = null;
-      }
+    // reset links so they do not interfere with
+    // other layouts. updateLinks() will be called when
+    // force is done animating.
+    force.links([]);
+    // if present, remove them from svg
+    if (link) {
+      // console.log(link)
+      link
+        .data([])
+        .exit()
+        .remove();
+      link = null;
     }
+    // }
 
     // start me up!
-    return force.start();
-  };
-
-  // Public function to switch between layouts
-  network.toggleLayout = function(newLayout) {
-    force.stop();
-    setLayout(newLayout);
-    return update();
+    force.start();
   };
 
   network.updateData = function(newData) {
@@ -289,15 +231,14 @@ var targetValue = width;
     node.remove();
     return update();
   };
- 
-  
- // network.setOptions(options);
+
+  // network.setOptions(options);
   // called once to clean up raw data and switch links to
   // point to node instances
   // Returns modified data
   var setupData = function(data) {
     // initialize circle radius scale
-    const countExtent = d3.extent(data.nodes, d => 121020);
+    const countExtent = d3.extent(data.nodes, d => 12);
     const circleRadius = d3.scale
       .sqrt()
       .range([3, 12])
@@ -306,12 +247,9 @@ var targetValue = width;
     data.nodes.forEach(function(n) {
       // set initial x/y to values within the width/height
       // of the visualization
-      let randomnumber;
-      n.x = randomnumber = Math.floor(Math.random() * width);
-      n.y = randomnumber = Math.floor(Math.random() * height);
 
       // add radius to the node so we can use it later
-      return (n.radius = circleRadius(121020));
+      n.radius = circleRadius(12);
     });
 
     // id's -> node objects
@@ -372,7 +310,7 @@ var targetValue = width;
   // there is a link between them.
   // Uses linkedByIndex initialized in setupData
   const neighboring = (a, b) =>
-    linkedByIndex[a.id + "," + b.id] || linkedByIndex[b.id + "," + a.id];
+    linkedByIndex[a.id + ',' + b.id] || linkedByIndex[b.id + ',' + a.id];
   // Removes nodes from input array
   // based on current filter setting.
   // Returns array of nodes
@@ -395,10 +333,10 @@ var targetValue = width;
 
   // Returns array of id sorted based on
   // current sorting method.
-  var sortedid = function(nodes, links) {
+  var sortedId = function(nodes, links) {
     let counts;
     let id = [];
-    if (sort === "links") {
+    if (sort === 'links') {
       counts = {};
       links.forEach(function(l) {
         if (counts[l.source.id] == null) {
@@ -421,7 +359,7 @@ var targetValue = width;
       id = id.map(v => v.key);
     } else {
       // sort id by song count
-      counts = nodeCounts(nodes, "id");
+      counts = nodeCounts(nodes, 'id');
       id = d3.entries(counts).sort((a, b) => b.value - a.value);
       id = id.map(v => v.key);
     }
@@ -430,13 +368,11 @@ var targetValue = width;
   };
 
   var updateCenters = function(id) {
-    if (layout === "radial") {
-      return (groupCenters = RadialPlacement()
-        .center({ x: width / 2, y: height / 2 - 100 })
-        .radius(300)
-        .increment(18)
-        .keys(id));
-    }
+    groupCenters = RadialPlacement()
+      .center({ x: width / 2, y: height / 2 - 100 })
+      .radius(300)
+      //.increment(18)
+      .keys(id);
   };
 
   // Removes links from allLinks whose
@@ -451,20 +387,20 @@ var targetValue = width;
 
   // enter/exit display for nodes
   var updateNodes = function() {
-    node = nodesG.selectAll("circle.node").data(curNodesData, d => d.id);
+    node = nodesG.selectAll('circle.node').data(curNodesData, d => d.id);
 
     node
       .enter()
-      .append("circle")
-      .attr("class", "node")
-      .attr("cx", d => d.x)
-      .attr("cy", d => d.y)
-      .attr("r", d => d.radius)
-      .style("fill", d => nodeColors(d.id))
-      .style("stroke", d => strokeFor(d))
-      .style("stroke-width", 1.0);
+      .append('circle')
+      .attr('class', 'node')
+      .attr('cx', d => d.x)
+      .attr('cy', d => d.y)
+      .attr('r', d => d.radius)
+      .style('fill', d => nodeColors(d.id))
+      .style('stroke', d => strokeFor(d))
+      .style('stroke-width', 1.0);
 
-    node.on("mouseover", showDetails).on("mouseout", hideDetails);
+    node.on('mouseover', showDetails).on('mouseout', hideDetails);
 
     return node.exit().remove();
   };
@@ -472,45 +408,33 @@ var targetValue = width;
   // enter/exit display for links
   var updateLinks = function() {
     link = linksG
-      .selectAll("line.link")
+      .selectAll('line.link')
       .data(curLinksData, d => `${d.source.id}_${d.target.id}`);
     link
       .enter()
-      .append("line")
-      .attr("class", "link")
-      .attr("stroke", "#ddd")
-      .attr("stroke-opacity", 0.8)
-      .attr("x1", d => d.source.x)
-      .attr("y1", d => d.source.y)
-      .attr("x2", d => d.target.x)
-      .attr("y2", d => d.target.y);
+      .append('line')
+      .attr('class', 'link')
+      .attr('stroke', '#ddd')
+      .attr('stroke-opacity', 0.8)
+      .attr('x1', d => d.source.x)
+      .attr('y1', d => d.source.y)
+      .attr('x2', d => d.target.x)
+      .attr('y2', d => d.target.y);
 
-    link.on("mouseover", showLinkDetails).on("mouseout", hideLinkDetails);
+    link.on('mouseover', showLinkDetails).on('mouseout', hideLinkDetails);
 
     return link.exit().remove();
   };
 
-  // switches force to new layout parameters
-  var setLayout = function(newLayout) {
-    layout = newLayout;
-    if (layout === "force") {
-      return force
-        .on("tick", forceTick)
-        .charge(-200)
-        .linkDistance(50);
-    } else if (layout === "radial") {
-      return force.on("tick", radialTick).charge(charge);
-    }
-  };
   function fade(opacity) {
     return function(d) {
-      node.style("stroke-opacity", function(o) {
+      node.style('stroke-opacity', function(o) {
         thisOpacity = neighboring(d, o) ? 1 : opacity;
-        this.setAttribute("fill-opacity", thisOpacity);
+        this.setAttribute('fill-opacity', thisOpacity);
         return thisOpacity;
       });
 
-      link.style("stroke-opacity", function(o) {
+      link.style('stroke-opacity', function(o) {
         return o.source === d || o.target === d ? 1 : opacity;
       });
     };
@@ -520,28 +444,28 @@ var targetValue = width;
   var setFilter = newFilter => (filter = newFilter);
 
   // switches sort option to new sort
- // var setSort = newSort => (sort = newSort);
+  // var setSort = newSort => (sort = newSort);
 
   // tick function for force directed layout
-  var forceTick = function(e) {
-    node.attr("cx", d => d.x).attr("cy", d => d.y);
+  // var forceTick = function(e) {
+  //   node.attr('cx', d => d.x).attr('cy', d => d.y);
 
-    return link
-      .attr("x1", d => d.source.x)
-      .attr("y1", d => d.source.y)
-      .attr("x2", d => d.target.x)
-      .attr("y2", d => d.target.y);
-  };
+  //   return link
+  //     .attr('x1', d => d.source.x)
+  //     .attr('y1', d => d.source.y)
+  //     .attr('x2', d => d.target.x)
+  //     .attr('y2', d => d.target.y);
+  // };
 
   // tick function for radial layout
   var radialTick = function(e) {
     node.each(moveToRadialLayout(e.alpha));
 
-    node.attr("cx", d => d.x).attr("cy", d => d.y);
+    node.attr('cx', d => d.x).attr('cy', d => d.y);
 
     if (e.alpha < 0.03) {
+      updateLinks();
       force.stop();
-      return updateLinks();
     }
   };
 
@@ -567,7 +491,7 @@ var targetValue = width;
 
   // Mouseover tooltip function
   var showDetails = function(d, i) {
-   let content = `<p class="main">id:  ${d.id}</span></p>`;
+    let content = `<p class="main">id:  ${d.id}</span></p>`;
     content += '<hr class="tooltip-hr">';
     content += `<p class="main">Protocol:  ${d.Protocol}</span></p>`;
     tooltip.showTooltip(content, d3.event);
@@ -575,14 +499,14 @@ var targetValue = width;
     // higlight connected links
     if (link) {
       link
-        .attr("stroke", function(l) {
+        .attr('stroke', function(l) {
           if (l.source === d || l.target === d) {
-            return "#007243";
+            return '#007243';
           } else {
-            return "#ddd";
+            return '#ddd';
           }
         })
-        .attr("stroke-opacity", function(l) {
+        .attr('stroke-opacity', function(l) {
           if (l.source === d || l.target === d) {
             return 10.0;
           } else {
@@ -590,19 +514,18 @@ var targetValue = width;
           }
         });
     }
-    
 
     // highlight neighboring nodes
     // watch out - don't mess with node if search is currently matching
     node
-      .style("stroke", function(n) {
+      .style('stroke', function(n) {
         if (neighboring(d, n)) {
-          return "#007243";
+          return '#007243';
         } else {
           return strokeFor(n);
         }
       })
-      .style("stroke-width", function(n) {
+      .style('stroke-width', function(n) {
         if (neighboring(d, n)) {
           return 2.0;
         } else {
@@ -613,15 +536,15 @@ var targetValue = width;
     // highlight the node being moused over
     return d3
       .select(this)
-      .style("stroke", "black")
-      .style("stroke-width", 2.0);
+      .style('stroke', 'black')
+      .style('stroke-width', 2.0);
   };
 
   var showLinkDetails = function(d, i) {
-    let content = `<p class="main">Source:  ${d.source.id}</span></p>`;
-    console.log(d.source.id);
-    content += '<hr class="tooltip-hr">';
-    content += `<p class="main">Target:  ${d.target.id}</span></p>`;
+    let content = `<p class="main">Source: ${d.source.id}</span></p>
+    <hr class="tooltip-hr">
+    <p class="main">Target:  ${d.target.id}</span></p>`;
+    // console.log(d.source.id);
     tooltip.showTooltip(content, d3.event);
   };
 
@@ -633,14 +556,14 @@ var targetValue = width;
     tooltip.hideTooltip();
     // watch out - don't mess with node if search is currently matching
     node
-      .style("stroke", function(n) {
+      .style('stroke', function(n) {
         if (!n.searched) {
           return strokeFor(n);
         } else {
-          return "#555";
+          return '#555';
         }
       })
-      .style("stroke-width", function(n) {
+      .style('stroke-width', function(n) {
         if (!n.searched) {
           return 1.0;
         } else {
@@ -648,7 +571,7 @@ var targetValue = width;
         }
       });
     if (link) {
-      return link.attr("stroke", "#ddd").attr("stroke-opacity", 0.8);
+      return link.attr('stroke', '#ddd').attr('stroke-opacity', 0.8);
     }
   };
 
@@ -656,40 +579,32 @@ var targetValue = width;
   return network;
 };
 
-function animate({timing, draw, duration}) {
+// function animate({ timing, draw, duration }) {
+//   let start = performance.now();
 
-  let start = performance.now();
+//   requestAnimationFrame(function animate(time) {
+//     // timeFraction goes from 0 to 1
+//     let timeFraction = (time - start) / duration;
+//     if (timeFraction > 1) timeFraction = 1;
 
-  requestAnimationFrame(function animate(time) {
-    // timeFraction goes from 0 to 1
-    let timeFraction = (time - start) / duration;
-    if (timeFraction > 1) timeFraction = 1;
+//     // calculate the current animation state
+//     let progress = timing(timeFraction);
 
-    // calculate the current animation state
-    let progress = timing(timeFraction);
+//     draw(progress); // draw it
 
-    draw(progress); // draw it
-
-    if (timeFraction < 1) {
-      requestAnimationFrame(animate);
-    }
-
-  });
-}
-
-
-// Activate selector button
-const activate = function(group, link) {
-  d3.selectAll(`#${group} a`).classed("active", false);
-  return d3.select(`#${group} #${link}`).classed("active", true);
-};
+//     if (timeFraction < 1) {
+//       requestAnimationFrame(animate);
+//     }
+//   });
+// }
 
 $(function() {
   const myNetwork = Network();
-  $("#song_select").on("change", function(e) {
-    const songFile = $(this).val();
-    return d3.json(`data/${songFile}`, json => myNetwork.updateData(json));
-  });
+  // inits the diagram with empty data
+  myNetwork('#vis', { nodes: [], links: [] });
 
-  return d3.json("data/Source1.json", json => myNetwork("#vis", json));
+  $('#song_select').on('change', function() {
+    const songFile = $(this).val();
+    d3.json(`data/${songFile}`, json => myNetwork.updateData(json));
+  });
 });

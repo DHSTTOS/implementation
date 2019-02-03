@@ -1,1 +1,13 @@
-{ "trailingComma": "es5", "parser": "babylon" }
+{
+    "trailingComma": "es5",
+    "printWidth": 80,
+    "singleQuote": true,
+    "overrides": [
+      {
+        "files": "*.js",
+        "options": {
+          "parser": "babylon"
+        }
+      }
+    ]
+  }

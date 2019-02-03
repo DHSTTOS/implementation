@@ -3,9 +3,13 @@ body {
 }
 
 a, a:visited {
-  color: #4d4d4d;
+  color: #25a8b9;
   text-decoration: underline;
   
+}
+a:hover {
+  color: rgb(141, 42, 42) ;
+  background-color: #cfc ;
 }
 
 #container {
@@ -48,21 +52,8 @@ a, a:visited {
   background: #555;
 }
 
-p.search_title {
-  display: inline;
-  text-align: left;  
-  font-weight: normal;
-  color: #777;
-}
 
-#search_section {
-  padding-top: 23px;
-  padding-left: 20px;
-}
 
-#search_form #search {
-  margin-left: 10px;
-}
 
 footer p {
   text-align: center;
