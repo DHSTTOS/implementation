@@ -5,7 +5,7 @@
         <title>adininspector-backend debugger</title>
     </head>
     <body>
-        <H3>Debugger for adininspector-backend 5.0</H3>
+        <H3>Debugger for adininspector-backend 5.1</H3>
         <form>
             <input onclick="fillWsUrlLocal();" value="localhost" type="button">
             <input onclick="fillWsUrlMe();" value="local IP" type="button">
@@ -57,8 +57,10 @@
             logObjectInfo(webSocket);
 
             function logObjectInfo(o) {
+                console.log(o);
                 console.log(Object.keys(o));
                 console.log(Object.getOwnPropertyNames(o));
+		console.log("--");
             };
 
 
@@ -107,8 +109,8 @@
 
             function wsOpenConnection() {
                 webSocket = new WebSocket(wsurl.value);
-                console.log("webSocket:");
-                console.log("readyState: " + webSocket.readyState);
+                console.log("webSocket to: " + wsurl.value);
+                console.dir(webSocket)
                 logObjectInfo(webSocket);
                 initHandlers(webSocket);
             }
