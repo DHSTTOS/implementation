@@ -105,19 +105,18 @@ public class ClientProtocolHandler {
 			}
 		},
 
-		GET_START_END("GET_START_END") {
+		GET_ENDPOINTS("GET_ENDPOINTS") {
 			public Map<String, Object> execute(Hub hub, Session session, Map<String,Object> msgParsed) {
 				String collectionName = (String)msgParsed.get("par");
 				String start = hub.getStartRecord(session, collectionName);
 				String end = hub.getEndRecord(session, collectionName);
-				Map<String, Object> m = new HashMap<String, Object>();
-				m.put("cmd", "DATA_START_END");
-				m.put("name", collectionName);
-				m.put("data", new String[]{start, end});
-				return m;
+				//send augmented request back:
+				msgParsed.put("cmd", "DATA_ENDPOINTS");
+				msgParsed.put("name", collectionName);
+				msgParsed.put("data", new String[]{start, end});
+				return msgParsed;
 			}
 		},
-
 		
 		GET_COLL_SIZE("GET_COLL_SIZE") {
 			public Map<String, Object> execute(Hub hub, Session session, Map<String,Object> msgParsed) {

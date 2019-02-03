@@ -22,9 +22,10 @@ const initHandlers = socket => {
   socket.onopen = message => {
     console.log('WebSocket onopen: ', message);
     console.dir(message);
-
     // authenticate again when opening socket
-    auth(
+    // XXX i.e. this should call auth()
+    // XXX but for now (debugging the main page alone) use login
+    login(
       socket,
       userStore.userDetails.userName,
       userStore.userDetails.password
@@ -77,6 +78,9 @@ const handleMessage = msg => {
       break;
     case 'COLL_SIZE':
       break;
+    case 'DATA_ENDPOINTS':
+      handleDataEndpoints(msg);
+      break;
     case 'DATA':
       handleData(msg);
       break;
@@ -89,6 +93,15 @@ const handleMessage = msg => {
 };
 
 // Handle data below
+const handleDataEndpoints = msg => {
+  dataStore.availableCollections = msg.par;
+  if (collName.indexOf('_') > -1) {
+    dataStore.alarms[collName].endpoints = msg.data;
+  } else {
+    dataStore.endpoints = msg.data;
+  }
+};
+
 const handleData = msg => {
   console.log('Received data message: ' + msg.data.length + ' ' + msg.data[0]);
   if (!msgRegister[msg.id]) {
@@ -198,6 +211,14 @@ const getCollection = (socket, name) => {
 const getCollectionSize = (socket, name) => {
   const message = {
     cmd: 'GET_COLL_SIZE',
+    par: name,
+  };
+  sendRequest(socket, message);
+};
+
+const getEndpoints = (socket, name) => {
+  const message = {
+    cmd: 'GET_ENDPOINTS',
     par: name,
   };
   sendRequest(socket, message);
