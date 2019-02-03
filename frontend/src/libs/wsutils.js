@@ -24,7 +24,7 @@ const initHandlers = socket => {
     console.dir(message);
 
     // authenticate again when opening socket
-    loginToken(
+    auth(
       socket,
       userStore.userDetails.userName,
       userStore.userDetails.password
@@ -66,6 +66,7 @@ const handleMessage = msg => {
   if (!msgRegister[msg.id]) {
     console.log('Protocol: bug: this message was unrequested');
   }
+
   switch (msg.cmd) {
     case 'SESSION':
       handleSession(msg);
@@ -115,52 +116,32 @@ const handleData = msg => {
 };
 
 const handleSession = async msg => {
-  if (userStore.userDetails.wsLoggedIn) {
-    switch (msg.status) {
-      case 'OK':
-        // can't really happen unless we use the two-page login
-        let token = msg.par;
-        await localStorage.setItem('token', token);
-        console.log(
-          'websocket connection: got unexpected SESSION message: ' +
-            msg.status +
-            ', ' +
-            msg.par
-        );
-        break;
-      case 'FAIL':
-        // user has logged out
-        userStore.userDetails.wsLoggedIn = false;
-        // TODO close the connection
-        // TODO: present the login screen again
-        break;
-      default:
-        console.log('Protocol bug, logged in, invalid status: ' + msg.status);
-        break;
-    }
-  } else {
-    //not logged in
-    switch (msg.status) {
-      case 'OK':
-        // successful login to ws connection
-        userStore.userDetails.wsLoggedIn = true;
-        let token = msg.par;
-        await localStorage.setItem('token', token);
-        break;
-      case 'FAIL':
-        // login failed
-        console.log('login to websocket connection failed: ' + msg.par);
-        console.log(msg);
-        // TODO: present the login screen again
-        break;
-      default:
-        console.log(
-          'Protocol bug, not logged in, invalid status: ' + msg.status
-        );
-        break;
-    }
+  switch (msg.par) {
+    case 'LOGIN':
+      if (msg.status === 'OK') {
+        await localStorage.setItem('token', msg.token);
+	// TODO: present the main page
+      } else
+        // TODO: present the login screen again, with a "Username or password wrong" notice
+      break;
+    case 'AUTH':
+      if (msg.status !== 'OK') {
+        console.log('websocket connection: AUTHentication failed:');
+	console.dir(msg);
+        // TODO: present the login screen again, with a "Login failed, maybe technical problems" notice
+      }
+      break;
+    case 'LOGOUT':
+      await localStorage.setItem('token', '');
+      // TODO: present the login screen again
+      break;
+    default:
+      console.log('Protocol error: got unknown SESSION message:');
+      console.dir(msg);
+      break;
   }
 };
+
 
 /***
  * Takes a message object, adds the id, registers it, and sends it.
@@ -183,11 +164,18 @@ const login = (socket, name, password) => {
   sendRequest(socket, message);
 };
 
-const loginToken = (socket, name, token) => {
+const auth = (socket, name, token) => {
   const message = {
-    cmd: 'LOGIN_TOKEN',
+    cmd: 'AUTH',
     user: name,
     token: token,
+  };
+  sendRequest(socket, message);
+};
+
+const logout = (socket) => {
+  const message = {
+    cmd: 'LOGOUT',
   };
   sendRequest(socket, message);
 };
@@ -275,7 +263,8 @@ const getLocalCollectionData = collName => {
 export {
   createConnection,
   login,
-  loginToken,
+  auth,
+  logout,
   getAvailableCollections,
   getCollection,
   getCollectionSize,
