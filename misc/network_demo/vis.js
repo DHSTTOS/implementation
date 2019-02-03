@@ -2,6 +2,7 @@
 const RadialPlacement = function() {
   // stores the key -> location values
   let values = d3.map();
+  var playButton = d3.select("#play-button");
   // how much to separate each location by
   let increment = 5;
   // how large to make the layout
@@ -60,13 +61,7 @@ const RadialPlacement = function() {
     // set locations for inner circle
     //const firstCircleKeys = keys.slice(0, firstCircleCount);
     incrementL2 = 360 / l2;
-
-    console.log(l2);
-    console.log(l3);
-    console.log(l4);
-
     incrementL3 = 360 / l3;
-
     incrementL4 = 360 / l4;
     increment = 25;
 
@@ -162,6 +157,14 @@ const Network = function() {
   // in multiple places of Network
   const width = 960;
   const height = 960;
+
+  var moving = false;
+var currentValue = 0;
+var targetValue = width;
+/*var x = d3.scaleTime()
+    .domain([startDate, endDate])
+    .range([0, targetValue])
+    .clamp(true);*/
   // allData will store the unfiltered data
   let allData = [];
   let curLinksData = [];
@@ -175,6 +178,7 @@ const Network = function() {
   // of the nodes and links
   let node = null;
   let link = null;
+  // interaction: { multiselect: true}
   // variables to refect the current settings
   // of the visualization
   let layout = "radial";
@@ -199,7 +203,7 @@ const Network = function() {
   const network = function(selection, data) {
     // format our data
     allData = setupData(data);
-
+//network.setOptions(options);
     // create our svg and groups
     const vis = d3
       .select(selection)
@@ -209,8 +213,13 @@ const Network = function() {
     linksG = vis.append("g").attr("id", "links");
     nodesG = vis.append("g").attr("id", "nodes");
 
+
+
+   
+
     // setup the size of the force environment
     force.size([width, height]);
+  
 
     setLayout("radial");
     setFilter("all");
@@ -225,10 +234,10 @@ const Network = function() {
   //
   // update() is called everytime a parameter changes
   // and the network needs to be reset.
-  var update = function() {
+  var update = function(allData) {
     // filter data to show based on current filter settings.
     curNodesData = filterNodes(allData.nodes);
-    console.log(allData.node);
+   // console.log(allData.node);
     curLinksData = filterLinks(allData.links, curNodesData);
 
     // sort nodes based on current sort and update centers for
@@ -280,7 +289,9 @@ const Network = function() {
     node.remove();
     return update();
   };
-
+ 
+  
+ // network.setOptions(options);
   // called once to clean up raw data and switch links to
   // point to node instances
   // Returns modified data
@@ -367,7 +378,7 @@ const Network = function() {
   // Returns array of nodes
   var filterNodes = function(allNodes) {
     let filteredNodes = allNodes;
-    if (filter === "popular" || filter === "obscure") {
+    /*if (filter === "popular" || filter === "obscure") {
       const playcounts = allNodes.map(d => d.playcount).sort(d3.ascending);
       const cutoff = d3.quantile(playcounts, 0.5);
       filteredNodes = allNodes.filter(function(n) {
@@ -377,7 +388,7 @@ const Network = function() {
           return n.playcount <= cutoff;
         }
       });
-    }
+    }*/
 
     return filteredNodes;
   };
@@ -509,7 +520,7 @@ const Network = function() {
   var setFilter = newFilter => (filter = newFilter);
 
   // switches sort option to new sort
-  var setSort = newSort => (sort = newSort);
+ // var setSort = newSort => (sort = newSort);
 
   // tick function for force directed layout
   var forceTick = function(e) {
@@ -556,11 +567,9 @@ const Network = function() {
 
   // Mouseover tooltip function
   var showDetails = function(d, i) {
-    let content = `<p class="main">Mac Adress:  ${d.id}</span></p>`;
+   let content = `<p class="main">id:  ${d.id}</span></p>`;
     content += '<hr class="tooltip-hr">';
-    content += `<p class="main">id:  ${d.id}</span></p>`;
-    content += '<hr class="tooltip-hr">';
-    content += `<p class="main">Protocol:  ${d.protocol}</span></p>`;
+    content += `<p class="main">Protocol:  ${d.Protocol}</span></p>`;
     tooltip.showTooltip(content, d3.event);
 
     // higlight connected links
@@ -568,26 +577,27 @@ const Network = function() {
       link
         .attr("stroke", function(l) {
           if (l.source === d || l.target === d) {
-            return "#555";
+            return "#007243";
           } else {
             return "#ddd";
           }
         })
         .attr("stroke-opacity", function(l) {
           if (l.source === d || l.target === d) {
-            return 1.0;
+            return 10.0;
           } else {
             return 0.5;
           }
         });
     }
+    
 
     // highlight neighboring nodes
     // watch out - don't mess with node if search is currently matching
     node
       .style("stroke", function(n) {
         if (neighboring(d, n)) {
-          return "#555";
+          return "#007243";
         } else {
           return strokeFor(n);
         }
@@ -645,6 +655,28 @@ const Network = function() {
   // Final act of Network() function is to return the inner 'network()' function.
   return network;
 };
+
+function animate({timing, draw, duration}) {
+
+  let start = performance.now();
+
+  requestAnimationFrame(function animate(time) {
+    // timeFraction goes from 0 to 1
+    let timeFraction = (time - start) / duration;
+    if (timeFraction > 1) timeFraction = 1;
+
+    // calculate the current animation state
+    let progress = timing(timeFraction);
+
+    draw(progress); // draw it
+
+    if (timeFraction < 1) {
+      requestAnimationFrame(animate);
+    }
+
+  });
+}
+
 
 // Activate selector button
 const activate = function(group, link) {
