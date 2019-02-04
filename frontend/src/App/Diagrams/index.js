@@ -5,6 +5,7 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 
 import { appStore } from '@stores';
+import { dataStore } from '@stores';
 import { jsonstreams } from '../../../mockdata';
 import { formatData, SCATTER_PLOT, LINE_CHART } from '@libs';
 import DiagramControl from './DiagramControl';
@@ -101,13 +102,15 @@ class Diagram extends Component {
       symbolSize,
     } = this.props.config.specConfig;
 
+    const tmp = dataStore.currentlySelectedData;
+    console.log(tmp);
+
     const data = formatData({
       groupName,
       x,
       y,
-      rawData: jsonstreams,
+      rawData: dataStore.currentlySelectedData,
     });
-    console.log(data);
 
     const { width, height } = appStore.diagramDimension;
 
