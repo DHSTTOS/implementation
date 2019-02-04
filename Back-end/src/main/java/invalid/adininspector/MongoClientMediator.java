@@ -28,6 +28,7 @@ import com.mongodb.MongoCredential;
 import com.mongodb.MongoSecurityException;
 import com.mongodb.MongoWriteException;
 import com.mongodb.ServerAddress;
+import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.MongoIterable;
 
@@ -64,11 +65,14 @@ public class MongoClientMediator {
 
             BasicDBObject ping = new BasicDBObject("ping", "1");
             db.runCommand(ping);
+
         } catch (MongoSecurityException e) {
 
             // force the caller to handle the exception
             throw new LoginFailureException(e.getMessage());
         }
+
+        System.out.println(getStartRecord("lemgo"));
     }
 
     public MongoClientMediator(String udid, String password) throws LoginFailureException {
@@ -135,12 +139,16 @@ public class MongoClientMediator {
 
     // find returns a cursor to the first object so we simple return that one
     public String getStartRecord(String collection) {
-        return db.getCollection(collection).find().first().toString();
+        //TODO: check if collection is null
+
+        MongoCollection<Document> coll = db.getCollection(collection);
+
+        return db.getCollection(collection).find().first().toJson();
     }
 
     // we sort descending by id and then get the first (last object)
     public String getEndRecord(String collection) {
-        return db.getCollection(collection).find().sort(new Document("_id", -1)).first().toString();
+        return db.getCollection(collection).find().sort(new Document("_id", -1)).first().toJson();
     }
 
     // an int *should* suffice for now at least
@@ -206,7 +214,7 @@ public class MongoClientMediator {
     private String[] mongoIteratorToStringArray(MongoIterable iterable) {
         List<String> colls = new ArrayList<>();
 
-        iterable.forEach((Block<Document>) document -> colls.add(document.toJson().toString()));
+        iterable.forEach((Block<Document>) document -> colls.add(document.toJson()));
 
         return colls.toArray(new String[colls.size()]);
     }
