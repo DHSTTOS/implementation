@@ -9,7 +9,7 @@ import appStore from './app';
 
 class DataStore {
   // TODO: when ws binding is done, we'll make this flexible
-  availableKeys = Object.keys(jsonstreams[0]);
+  availableKeys = Object.keys(lmf[0]);
 
   @observable
   availableCollections = []; //exampleCollection
@@ -32,7 +32,7 @@ class DataStore {
 
   // The slice of raw data that is currently selected by the slider:
   @observable.shallow
-  currentlySelectedData = jsonstreams;
+  currentlySelectedData = lmf;
 
   @observable
   sourceOptions = ['Source 1', 'Live'];

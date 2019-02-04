@@ -3,8 +3,8 @@ import { observer } from 'mobx-react';
 import styled from '@emotion/styled';
 import Typography from '@material-ui/core/Typography';
 
-import { jsonstreams } from '../../../mockdata';
 import { formatData, SCATTER_PLOT, LINE_CHART } from '@libs';
+import { dataStore } from '@stores';
 
 import LineChartBlock from './LineChartBlock';
 import ScatterPlotBlock from './ScatterPlotBlock';
@@ -45,7 +45,7 @@ class Diagram extends Component {
       groupName,
       x,
       y,
-      rawData: jsonstreams,
+      rawData: dataStore.currentlySelectedData,
     });
     console.log(data);
 
@@ -60,7 +60,7 @@ class Diagram extends Component {
 
     let plot = (
       <CenteredTypography variant="subtitle1" color="error">
-        Enable to render diagram, please check configs
+        Unable to render diagram, please check configs
       </CenteredTypography>
     );
 
