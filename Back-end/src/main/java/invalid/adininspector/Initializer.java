@@ -1,9 +1,16 @@
+
+/* Copyright (C) 2018,2019 Mario A. Gonzalez Ordiano - All Rights Reserved
+ * For any questions please contact me at: mario,ordiano@gmail.com
+ */
 package invalid.adininspector;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Properties;
+
+import invalid.adininspector.exceptions.LoginFailureException;
+
 //TODO: we need to handle the service init properly 
 //TODO: wait for services to start and then start the consumer
 public class Initializer {
@@ -14,11 +21,11 @@ public class Initializer {
 
     public static void main(String[] args) {
 
-        // TODO: use first arg ,the install path
-
+        // TODO: fix me!
         // load the properties file
         String rootPath = Thread.currentThread().getContextClassLoader().getResource("").getPath();
-        URL testPath = Initializer.class.getClassLoader().getResource("");// ClassLoader.getSystemClassLoader().getResource(name)
+        URL testPath = Initializer.class.getClassLoader().getResource("");
+
         System.out.println(rootPath);
         System.out.println(testPath);
 
@@ -48,9 +55,13 @@ public class Initializer {
         String[] cStopMongo = { "xterm", "-hold", "-e", "service mongod start" };
 
         System.out.println("Starting consumer");
+        try {
             MongoConsumer m = new MongoConsumer(appProps.getProperty("mongo_admin_user"),
-            appProps.getProperty("mongo_admin_pass"),
-            appProps.getProperty("mongo_database_name") );
+                    appProps.getProperty("mongo_admin_pass"), appProps.getProperty("mongo_database_name"));
+        } catch (LoginFailureException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
         
         try {
              System.in.read();

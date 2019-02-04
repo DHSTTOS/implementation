@@ -1,8 +1,10 @@
+/* Copyright (C) 2018,2019 Mario A. Gonzalez Ordiano - All Rights Reserved
+ * For any questions please contact me at: mario,ordiano@gmail.com
+ */
 package invalid.adininspector.records;
 
 import java.util.Map;
 
-//TODO:add method too iterate over the map
 public class MiscRecord extends Record{
     private Map<String, Object> properties;
 
