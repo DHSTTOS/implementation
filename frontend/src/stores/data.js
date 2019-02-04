@@ -1,6 +1,7 @@
 import { observable, action } from 'mobx';
 import { DEFAULT_SOURCE_NAME } from '@libs';
 import { jsonstreams } from '../../mockdata';
+import appStore from './app';
 
 class DataStore {
   @observable
@@ -26,6 +27,8 @@ class DataStore {
   currentlySelectedSource = '';
   @action
   selectSource = source => {
+    appStore.resetDiagramConfigs();
+    this.resetData();
     this.currentlySelectedSource = source;
   };
 
@@ -39,6 +42,15 @@ class DataStore {
       endpoints: [],
     },
   ];
+
+  @action
+  resetData = () => {
+    this.availableCollections = [];
+    this.rawData = [];
+    this.endpoints = [];
+    this.currentlySelectedData = [];
+    this.alarms = [];
+  };
 }
 
 const dataStore = new DataStore();
