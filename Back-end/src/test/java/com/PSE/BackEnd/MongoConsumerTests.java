@@ -9,9 +9,6 @@ import org.junit.rules.ExpectedException;
 import invalid.adininspector.MongoConsumer;
 import invalid.adininspector.exceptions.LoginFailureException;
 
-import static org.junit.Assert.*;
- 
-import java.util.*;
 
 //TODO: test things!
 public class MongoConsumerTests {

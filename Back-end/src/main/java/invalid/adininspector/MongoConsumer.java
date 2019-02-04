@@ -221,7 +221,7 @@ public class MongoConsumer {
 
             // __consumer_offsets is internal to kafka and should be ignored we also need to ingore everything that isn't Packet Records
             //--> that means ignore everything that contains an underscore
-            if (!topic.getKey().contentEquals("__consumer_offsets") || !topic.getKey().contains("_")) {
+            if (!topic.getKey().contentEquals("__consumer_offsets") ) {
                 kafkaTopics.add(topic.getKey());
                         }
             // System.out.println("Value: " + topic.getValue() + "\n");
