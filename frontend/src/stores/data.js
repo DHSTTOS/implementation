@@ -11,17 +11,15 @@ class DataStore {
   availableCollections = []; //exampleCollection
 
   // Raw network data
-  @observable
-  //rawData = [];
+  @observable.shallow
   rawData = jsonstreams;
 
   @observable
   endpoints = []; // The start and end indices for the x-axis
 
-
-
   // The slice of raw data that is currently selected by the slider:
-  currentlySelectedData = ['1', '2'];
+  @observable.shallow
+  currentlySelectedData = jsonstreams;
 
   @observable
   sourceOptions = ['Source 1', 'Live'];
@@ -30,7 +28,7 @@ class DataStore {
   @action
   selectSource = source => {
     if (this.currentlySelectedSource === source) return;
-    
+
     appStore.resetDiagramConfigs();
     this.resetData();
     this.currentlySelectedSource = source;
