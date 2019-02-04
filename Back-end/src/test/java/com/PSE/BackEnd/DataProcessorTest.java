@@ -17,6 +17,7 @@ import static org.junit.Assert.*;
 import java.util.*;
 
 //TODO: test things!
+@Ignore // needs a database to connect to
 public class DataProcessorTest {
 
 
