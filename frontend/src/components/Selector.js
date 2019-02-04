@@ -14,7 +14,8 @@ const Container = styled.div`
 `;
 
 const StyledFormControl = styled(FormControl)`
-  width: 8rem;
+  /* width: 8rem; */
+  width: ${props => props.width || '8rem'};
   margin: 1rem;
 `;
 
@@ -24,6 +25,7 @@ const StyledFormControl = styled(FormControl)`
  * @prop {string[]} options
  * @prop {Function} onSelect
  * @prop {string} currentSelection
+ * @prop {(string | number)} width
  *
  * @extends {Component<Props>}
  */
@@ -49,7 +51,7 @@ class Selector extends Component {
     return (
       <Container>
         <form autoComplete="off">
-          <StyledFormControl variant="outlined">
+          <StyledFormControl variant="outlined" width={this.props.width}>
             <InputLabel ref={this.inputLabelRef}>{this.props.name}</InputLabel>
             <Select
               value={this.props.currentSelection}
