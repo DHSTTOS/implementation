@@ -133,14 +133,15 @@ const handleSession = async msg => {
     case 'LOGIN':
       if (msg.status === 'OK') {
         await localStorage.setItem('token', msg.token);
-	// TODO: present the main page
-      } else
-        // TODO: present the login screen again, with a "Username or password wrong" notice
+        // TODO: present the main page
+      }
+      // TODO: present the login screen again, with a "Username or password wrong" notice
+
       break;
     case 'AUTH':
       if (msg.status !== 'OK') {
         console.log('websocket connection: AUTHentication failed:');
-	console.dir(msg);
+        console.dir(msg);
         // TODO: present the login screen again, with a "Login failed, maybe technical problems" notice
       }
       break;
@@ -154,7 +155,6 @@ const handleSession = async msg => {
       break;
   }
 };
-
 
 /***
  * Takes a message object, adds the id, registers it, and sends it.
@@ -186,7 +186,7 @@ const auth = (socket, name, token) => {
   sendRequest(socket, message);
 };
 
-const logout = (socket) => {
+const logout = socket => {
   const message = {
     cmd: 'LOGOUT',
   };
