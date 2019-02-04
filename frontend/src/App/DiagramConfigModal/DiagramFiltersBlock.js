@@ -1,15 +1,15 @@
-import React, { Component } from "react";
-import { observer } from "mobx-react";
-import { observable, action } from "mobx";
-import styled from "@emotion/styled";
-import Paper from "@material-ui/core/Paper";
-import Typography from "@material-ui/core/Typography";
-import FormControl from "@material-ui/core/FormControl";
-import FormGroup from "@material-ui/core/FormGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
+import React, { Component } from 'react';
+import { observer } from 'mobx-react';
+import { observable, action } from 'mobx';
+import styled from '@emotion/styled';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+import FormControl from '@material-ui/core/FormControl';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
 
-import { appStore } from "@stores";
+import { appStore } from '@stores';
 
 const Container = styled(Paper)`
   display: flex;

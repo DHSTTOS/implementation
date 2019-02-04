@@ -160,6 +160,8 @@ class AppStore {
     wsLoggedIn: false,
   };
 
+  webSocketUrl = "ws://159.89.213.72:8080/adininspector/adinhubsoc2";
+
   /**
    * Data source
    */

@@ -1,0 +1,107 @@
+changes from Design docs
+
+
+Reasons:
+convinience : 1
+data format : 2
+unexpected complexity : 3	
+
+MongoConsumer Class:
+    
+    Changes:
+    
+	MongoConsumer(user, pass, dbName) #1
+	added DBname for creating a reference to pass onto the MongoClientMediator
+	
+	getAllTopics() -> getAllTopicsPartitions() #1 & #3
+	returns a Collection of topic partitions essentially to force kafka to send all records from the start, convinient becuase it relegates topic creation to another method. it was complex to make kafka read all the topics from the beginning.
+	
+
+	Additions:
+	Methods:
+	ArrayList<String> getTopicsForProcessing() #3 & #1
+	there are some topics in kakfka which are for internal use like __consumeroffsets this returns the topics we need to process
+	
+	Variables:
+    private KafkaConsumer<String, String> consumer; #1
+    other funcitons need to use the consumer 
+	
+MongoClientMediator Class:
+
+    Variables:
+    private MongoDatabase db; # 1
+    added a reference to the database all methods need to access
+
+    Methods:
+    Modified:
+    
+    constructor now throws a LoginFailureException
+    
+    public MongoClientMediator(String udid, String password, String dbName) throws LoginFailureException #3
+    added dbName to MongoClientMediator since we need to know from which DB we want to read/write collections.
+    
+    addRecordToCollection(Record record, String collection) #1 #3
+    takes a record instead of a json string. converting to record is done outside of this
+    
+    added variations of this for convinience that take instead of a Record a document or an list of documents or an array of records
+    
+    
+    Added:
+    getCollectionAsRecordsArrayList() #1
+    it's super convinient for DataProcessor
+    
+    mongoIteratorToStringArray(MongoIterable) #3
+    the hub expects an array but mongo on read returns a MongoIterable
+
+PacketRecordDesFromKafka Class:
+    same as design
+
+PacketRecordDesFromMongo Class:
+    Date Timestamp #2 
+
+split it two to handle different formats, the correct one and the one from ankush.
+
+All other records stayed the same:
+
+
+ProcessData class:
+
+    Methods:
+    public static void processData(String collectionName, MongoClientMediator clientMediator) #3 & #1
+
+    added MongoClientMediator as param cause several clients might want to process data
+    
+    public static void processData(ArrayList<String> collectionNames, MongoClientMediator clientMediator) #1
+    
+    convinience cause we get a list of topics, so a list of collections to be processed, this calls processData for each topic.
+    
+    removed variable MongoClientMediator client.
+    
+    
+IAggregator Class:
+
+    Methods:
+    
+    public ArrayList<Document> processData( ArrayList<Record> records); #3
+
+    changed return type to an array of documents to be added into mongo. it was unspecofied in the Design Document
+    
+    public Document getNewAggregatorDocument(Date tstmp); #3
+    
+    Variables:
+    
+    private ArrayList<Map<String, Object>> connectionsMapList; #1
+    private Document currentDocument; #1
+    
+    These both are simply there to keep track of which document is being processed now and which connections happened within this second.
+    
+LoginFailureException Class: #3 & #2
+    Added to create a checked excpetion on Login Failure
+
+    here's the constructor
+    public LoginFailureException(String errorMessage) {
+        super(errorMessage);
+    }
+    
+    
+    

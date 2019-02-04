@@ -1,15 +1,15 @@
-import React, { Component } from "react";
-import { observer } from "mobx-react";
-import styled from "@emotion/styled";
-import Paper from "@material-ui/core/Paper";
-import Typography from "@material-ui/core/Typography";
+import React, { Component } from 'react';
+import { observer } from 'mobx-react';
+import styled from '@emotion/styled';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
 
-import { appStore } from "@stores";
-import { jsonstreams } from "../../../mockdata";
-import { formatData, SCATTER_PLOT, LINE_CHART } from "@libs";
-import DiagramControl from "./DiagramControl";
-import ScatterPlotBlock from "./ScatterPlotBlock";
-import LineChartBlock from "./LineChartBlock";
+import { appStore } from '@stores';
+import { jsonstreams } from '../../../mockdata';
+import { formatData, SCATTER_PLOT, LINE_CHART } from '@libs';
+import DiagramControl from './DiagramControl';
+import ScatterPlotBlock from './ScatterPlotBlock';
+import LineChartBlock from './LineChartBlock';
 
 const Container = styled.div`
   display: flex;
@@ -27,7 +27,7 @@ const Content = styled.div`
 `;
 
 const BottomPad = styled.div`
-  height: 3rem;
+  height: 4rem;
   width: 100%;
   /* background-color: red; */
 `;

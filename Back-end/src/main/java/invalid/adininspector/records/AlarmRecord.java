@@ -1,3 +1,6 @@
+/* Copyright (C) 2018,2019 Mario A. Gonzalez Ordiano - All Rights Reserved
+ * For any questions please contact me at: mario,ordiano@gmail.com
+ */
 package invalid.adininspector.records;
 
 public class AlarmRecord extends Record{
@@ -9,24 +12,6 @@ public class AlarmRecord extends Record{
     private String AlarmScore;
     private String AlarmDescription;
     private String PacketSummary;
-
-
-
-    //ankush's thing contains an object so this must also be a object
-    public class Timestamp {
-        //should be stored as UNIX timestamp? right??
-        public String $date;
-
-        public Timestamp(String $date) {
-            this.$date = $date;
-        }
-
-        @Override
-        public String toString() {
-            return $date;
-        }
-    }
-
 
     /**
      * @return the alarmId

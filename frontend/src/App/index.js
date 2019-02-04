@@ -1,11 +1,11 @@
-import React, { Component } from "react";
-import styled from "@emotion/styled";
+import React, { Component } from 'react';
+import styled from '@emotion/styled';
 
-import Diagrams from "./Diagrams";
-import ControlPanel from "./ControlPanel";
-import Footer from "./Footer";
-import DiagramConfigModal from "./DiagramConfigModal";
-import FullscreenDiagramModal from "./FullscreenDiagramModal";
+import Diagrams from './Diagrams';
+import ControlPanel from './ControlPanel';
+import Footer from './Footer';
+import DiagramConfigModal from './DiagramConfigModal';
+import FullscreenDiagramModal from './FullscreenDiagramModal';
 
 const Column = styled.div`
   min-height: 97vh;
