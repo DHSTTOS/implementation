@@ -171,14 +171,14 @@ public class MongoConsumer {
 
             if (records.isEmpty() && processRecords) {
                 // TODO: notify the mediator that data needs to be processed
-                System.out.println("Stored Records have been added, process them");
+               // System.out.println("Stored Records have been added, process them");
                 
                 DataProcessor.processData(getTopicsForProcessing(), clientMediator);
 
                 //stop processing records
                 processRecords = false;
 
-                System.out.println("all stored records have been processed");
+                //System.out.println("all stored records have been processed");
             }
         }
     }

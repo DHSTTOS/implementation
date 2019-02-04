@@ -197,9 +197,9 @@ public class MongoClientMediator {
         db.listCollectionNames().forEach((Consumer<String>) colls::add);
 
         for (int i = 0; i < colls.size(); i++) {
-            System.out.println(colls.get(i));
+            //System.out.println(colls.get(i));
         }
-        return mongoIteratorToStringArray(db.listCollectionNames());
+        return colls.toArray(new String[colls.size()]); //mongoIteratorToStringArray(db.listCollectionNames());
     }
 
     // HELPER FUNCTIONS
