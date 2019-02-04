@@ -1,15 +1,10 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import App from "./App";
-import { socket } from "@libs";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './App';
+import { createConnection } from '@libs';
+import { userStore } from '@stores';
 
-// Considering to use context instead of directly importing socket in the app...
-const WSContext = React.createContext("ws");
+// Now the socket field is accessible throughout the known universe and until the end of time
+userStore.socket = createConnection();
 
-const AppWithContext = () => (
-  <WSContext.Provider value={socket}>
-    <App />
-  </WSContext.Provider>
-);
-
-ReactDOM.render(<AppWithContext />, document.getElementById("root"));
+ReactDOM.render(<App />, document.getElementById('root'));

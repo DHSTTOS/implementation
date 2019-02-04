@@ -16,3 +16,7 @@ Back-end/\.vscode/
 Back-end/\.settings/
 
 \.directory
+/login-frontend/nbproject/
+
+# vim recovery files:
+.*.swp

@@ -1,14 +1,14 @@
-import React, { Component } from "react";
-import { observer } from "mobx-react";
-import styled from "@emotion/styled";
-import Paper from "@material-ui/core/Paper";
-import Typography from "@material-ui/core/Typography";
-import FormControl from "@material-ui/core/FormControl";
-import FormGroup from "@material-ui/core/FormGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
+import React, { Component } from 'react';
+import { observer } from 'mobx-react';
+import styled from '@emotion/styled';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+import FormControl from '@material-ui/core/FormControl';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
 
-import { appStore } from "@stores";
+import { appStore } from '@stores';
 
 const Container = styled.div`
   flex: 1;
@@ -55,8 +55,8 @@ const Row = styled.div`
 
 @observer
 class GlobalFilters extends Component {
-  handleChange = (category, name) => event => {
-    appStore.updateGlobalFilters(category, name)(event.target.checked);
+  handleChange = name => event => {
+    appStore.updateGlobalFilters(name)(event.target.checked);
   };
 
   render() {
@@ -73,82 +73,48 @@ class GlobalFilters extends Component {
                   <StyledFormControlLabel
                     control={
                       <Checkbox
-                        checked={appStore.globalFilters.layers.layer1}
-                        onChange={this.handleChange("layers", "layer1")}
-                        value="layer1"
+                        checked={appStore.globalFilters.ether}
+                        onChange={this.handleChange('ether')}
+                        value="ether"
                       />
                     }
-                    label="Layer 1"
+                    label="Ether"
                   />
                   <StyledFormControlLabel
                     control={
                       <Checkbox
-                        checked={appStore.globalFilters.layers.layer2}
-                        onChange={this.handleChange("layers", "layer2")}
-                        value="layer2"
+                        checked={appStore.globalFilters.profinet}
+                        onChange={this.handleChange('profinet')}
+                        value="profinet"
                       />
                     }
-                    label="Layer 2"
+                    label="Profinet"
                   />
                   <StyledFormControlLabel
                     control={
                       <Checkbox
-                        checked={appStore.globalFilters.layers.layer3}
-                        onChange={this.handleChange("layers", "layer3")}
-                        value="layer1"
+                        checked={appStore.globalFilters.l2other}
+                        onChange={this.handleChange('l2other')}
+                        value="l2other"
                       />
                     }
-                    label="Layer 3"
+                    label="Other L2"
                   />
                   <StyledFormControlLabel
                     control={
                       <Checkbox
-                        checked={appStore.globalFilters.layers.layer4}
-                        onChange={this.handleChange("layers", "layer4")}
-                        value="layer4"
+                        checked={appStore.globalFilters.l3}
+                        onChange={this.handleChange('l3')}
+                        value="l3"
                       />
                     }
-                    label="Layer 4"
+                    label="L3"
                   />
                   <StyledFormControlLabel
                     control={
                       <Checkbox
-                        checked={appStore.globalFilters.layers.layer5}
-                        onChange={this.handleChange("layers", "layer5")}
-                        value="layer5"
-                      />
-                    }
-                    label="Layer 5"
-                  />
-                  <StyledFormControlLabel
-                    control={
-                      <Checkbox
-                        checked={appStore.globalFilters.layers.layer6}
-                        onChange={this.handleChange("layers", "layer6")}
-                        value="layer6"
-                      />
-                    }
-                    label="Layer 6"
-                  />
-                  <StyledFormControlLabel
-                    control={
-                      <Checkbox
-                        checked={appStore.globalFilters.layers.layer7}
-                        onChange={this.handleChange("layers", "layer7")}
-                        value="layer7"
-                      />
-                    }
-                    label="Layer 7"
-                  />
-                </StyledFormGroup>
-              </StyledFormControl>
-              <StyledFormControl component="fieldset">
-                <StyledFormGroup>
-                  <StyledFormControlLabel
-                    control={
-                      <Checkbox
-                        checked={appStore.globalFilters.protocols.tcp}
-                        onChange={this.handleChange("protocols", "tcp")}
+                        checked={appStore.globalFilters.tcp}
+                        onChange={this.handleChange('tcp')}
                         value="tcp"
                       />
                     }
@@ -157,12 +123,22 @@ class GlobalFilters extends Component {
                   <StyledFormControlLabel
                     control={
                       <Checkbox
-                        checked={appStore.globalFilters.protocols.udp}
-                        onChange={this.handleChange("protocols", "udp")}
+                        checked={appStore.globalFilters.udp}
+                        onChange={this.handleChange('udp')}
                         value="udp"
                       />
                     }
                     label="UDP"
+                  />
+                  <StyledFormControlLabel
+                    control={
+                      <Checkbox
+                        checked={appStore.globalFilters.l4other}
+                        onChange={this.handleChange('l4other')}
+                        value="l4other"
+                      />
+                    }
+                    label="Other L4"
                   />
                 </StyledFormGroup>
               </StyledFormControl>

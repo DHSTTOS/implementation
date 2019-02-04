@@ -12,10 +12,7 @@ M: MongoDB, Backend Structure,
 
 ALL: diagram implementaion, take a look at react + d3
 
-First set of deadlines:
-
-Meet up on: Sat 19 or Sun 20
-
+To add the mongo database check mongo notes
 
 First steps:
 

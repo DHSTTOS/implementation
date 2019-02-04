@@ -3,9 +3,10 @@ package invalid.adininspector.adinhub;
 import javax.websocket.OnOpen;
 import javax.websocket.server.ServerEndpoint;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Random;
 
 import javax.websocket.*;
 
@@ -13,7 +14,7 @@ import javax.websocket.*;
  * This class implements the network handlers for the websocket connection
  * to the client and access methods for a database connection.
  */
-@ServerEndpoint("/adinhubsoc")
+@ServerEndpoint("/adinhubsoc2")
 public class Hub {
 	
 	
@@ -31,18 +32,20 @@ public class Hub {
 	 * Map login tokens to the websocket session in which they were requested
 	 * and provided by the server. 
 	 */
-	private Map<String, Session> loginTokens;
+	private static Map<String, IUserSession> loginTokens;
+	
 
 	/**
 	 * Map a websocket connection to a IUserSession (i.e. a database connection).
 	 */
-	private Map<Session, IUserSession> sessions;
+	private static Map<Session, IUserSession> sessions;
 	
 	public Hub() {
 		database = new MockMongoDBUserSession();
 		requestHandler = new ClientProtocolHandler();
-		loginTokens = new HashMap<String, Session>();
+		loginTokens = new HashMap<String, IUserSession>();
 		sessions = new HashMap<Session, IUserSession>();
+		System.out.println("hub started");
 	}
 	
     /**
@@ -52,7 +55,7 @@ public class Hub {
      */
     @OnOpen
     public void handleOpen(Session session) {
-	System.out.println("open, session: " + session);
+	System.out.println("hub open, session: " + session);
 	session.setMaxIdleTimeout(-1);
     }
 
@@ -63,7 +66,7 @@ public class Hub {
      */
     @OnClose
     public void handleClose(Session session) {
-	System.out.println("close, session: " + session);
+    	System.out.println("close, session: " + session);
     }
 
     /**
@@ -76,9 +79,9 @@ public class Hub {
      */
     @OnMessage
     public String handleMessage(String message, Session session) {
-    	//System.out.println("message from client: " + message);
+    	System.out.println("message from client1: " + message);
     	String echoMsg = requestHandler.handleRequest(this, session, message);
-    	//System.out.println("answer to client    : " + echoMsg);
+    	System.out.println("answer to client   1: " + echoMsg);
     	return echoMsg;                       
     }
 
@@ -107,9 +110,20 @@ public class Hub {
      * 
      * @return a token to identify the IUserSession
      */
-    String loginForToken(Session session, String username, String password) {
-    	IUserSession dbSession = null;
-    	String token = "";
+    String login(Session session, String username, String password) {
+		IUserSession dbUserSession = createUserSession(session, username, password);
+		if (dbUserSession == null)
+			return "";
+		
+		long tokenValue = new Random().nextLong();
+    	String token = Long.toString(tokenValue);
+    	sessions.put(session, dbUserSession);	// needed for single-ws-session case
+    	loginTokens.put(token, dbUserSession);
+    	System.out.println("l #registered keys: "  + loginTokens.keySet().size());
+    	for (String key : loginTokens.keySet()) {
+			System.out.println("registered key: " + key);
+		}
+    	System.out.println("login: this " + this);
     	return token;
     }
     
@@ -120,15 +134,68 @@ public class Hub {
 	 * @param udid - the user id to login with
 	 * @param password the password
 	 */
-	public void createUserSession(int udid, String password) {}
-	
-	/**
+	public IUserSession createUserSession(Session session, String username, String password) {
+		IUserSession dbUserSession = database.createUserSession(username, password);
+		return dbUserSession;
+	}
+
+    boolean loginWithToken(Session session, String token) {
+    	System.out.println("lWT: this " + this);
+    	System.out.println("lWT #registered keys: "  + loginTokens.keySet().size());
+    	for (String key : loginTokens.keySet()) {
+			System.out.println("lWT: registered key: " + key);
+		}
+    	boolean isLoggedIn = loginTokens.containsKey(token);
+    	System.out.println("lWT: " + token + " " + isLoggedIn);
+    	if (isLoggedIn) {
+        	IUserSession dbUserSession = loginTokens.get(token);
+
+        	// remove the sessions entry for the login websocket session:
+        	for (Session oldSession : sessions.keySet()) {
+				if (sessions.get(oldSession).equals(dbUserSession))
+					sessions.remove(oldSession);
+			}
+        	
+        	sessions.put(session, dbUserSession);	// register the current ("work") session
+        	return true;
+    	}
+    	return false;
+    }
+
+    void logOut(Session session) {
+		IUserSession dbUserSession = sessions.get(session);
+		if (dbUserSession == null) {
+			System.err.println("logOut(): got request for non-logged-in session" + session);
+			return;
+		}
+
+		sessions.remove(session);
+    	// remove the token entry for this session:
+		Iterator<String> tokenSet = loginTokens.keySet().iterator();
+		for(; tokenSet.hasNext();) {
+			String token = tokenSet.next();
+			if (loginTokens.get(token).equals(dbUserSession)) {
+				tokenSet.remove();
+			}
+		}
+
+		// The session will ultimately be closed when the garbage collection
+		// removes it:
+		dbUserSession = null;
+    }
+
+    /**
 	 * Returns an array with the names of the collections available to the current user.
 	 * 
 	 * @return an array with collection names
 	 */
 	public String[] getAvailableCollections(Session session) {
-		return null;
+		IUserSession userSession = sessions.get(session);
+		if (userSession == null) {
+			System.err.println("got request for non-logged-in session" + session);
+			return null; // XXX return empty array?
+		}
+		return userSession.getAvailableCollections();
 	}
 	
 	
@@ -142,7 +209,7 @@ public class Hub {
 	public String[] getCollection(Session session, String collection){
 		IUserSession userSession = sessions.get(session);
 		if (userSession == null) {
-			System.err.println("got reqeust for non-loggedin session" + session);
+			System.err.println("got request for non-logged-in session" + session);
 			return null; // XXX return empty array?
 		}
 		return userSession.getCollection(collection);
@@ -157,7 +224,7 @@ public class Hub {
 	public String getStartRecord(Session session, String collection){
 		IUserSession userSession = sessions.get(session);
 		if (userSession == null) {
-			System.err.println("got reqeust for non-loggedin session" + session);
+			System.err.println("got request for non-logged-in session" + session);
 			return ""; // XXX return null?
 		}
 		return userSession.getStartRecord(collection);
@@ -172,7 +239,7 @@ public class Hub {
 	public String getEndRecord(Session session, String collection){
 		IUserSession userSession = sessions.get(session);
 		if (userSession == null) {
-			System.err.println("got reqeust for non-loggedin session" + session);
+			System.err.println("got request for non-logged-in session" + session);
 			return ""; // XXX return null?
 		}
 		return userSession.getEndRecord(collection);
@@ -189,7 +256,7 @@ public class Hub {
 	public long getCollectionSize(Session session, String collection) {
 		IUserSession userSession = sessions.get(session);
 		if (userSession == null) {
-			System.err.println("got reqeust for non-loggedin session" + session);
+			System.err.println("got request for non-logged-in session" + session);
 			return 0;
 		}
 		return userSession.getCollectionSize(collection);
@@ -220,7 +287,7 @@ public class Hub {
 	public String[] getRecordsInRange(Session session, String collection, String key, String start,String end) {
 		IUserSession userSession = sessions.get(session);
 		if (userSession == null) {
-			System.err.println("got reqeust for non-loggedin session" + session);
+			System.err.println("got request for non-logged-in session" + session);
 			return null; // XXX return empty array?
 		}
 		return userSession.getRecordsInRange(collection, key, start, end);
@@ -238,7 +305,7 @@ public class Hub {
 	public long getRecordsInRangeSize(Session session, String collection, String key, String start, String end) {
 		IUserSession userSession = sessions.get(session);
 		if (userSession == null) {
-			System.err.println("got reqeust for non-loggedin session" + session);
+			System.err.println("got request for non-logged-in session" + session);
 			return 0; // XXX return empty array?
 		}
 		return userSession.getRecordsInRangeSize(collection, key, start, end);

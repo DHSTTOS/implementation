@@ -1,10 +1,10 @@
-import React, { Component } from "react";
-import styled from "@emotion/styled";
+import React, { Component } from 'react';
+import styled from '@emotion/styled';
 
-import GlobalFilters from "./GlobalFilters";
-import UserControl from "./UserControl";
+import GlobalFilters from './GlobalFilters';
+import UserControl from './UserControl';
 
-import { Logo, Column } from "@components";
+import { Logo, Column } from '@components';
 
 const Row = styled.div`
   display: flex;

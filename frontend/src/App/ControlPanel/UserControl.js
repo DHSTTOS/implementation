@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import styled from "@emotion/styled";
-import Button from "@material-ui/core/Button";
-import ExitIcon from "@material-ui/icons/ExitToApp";
+import React, { Component } from 'react';
+import styled from '@emotion/styled';
+import Button from '@material-ui/core/Button';
+import ExitIcon from '@material-ui/icons/ExitToApp';
 
 const Container = styled.div`
   margin-top: 0.5rem;

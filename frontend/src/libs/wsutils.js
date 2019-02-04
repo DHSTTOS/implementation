@@ -1,156 +1,297 @@
-import { appStore, dataStore } from "@stores";
+import { userStore, dataStore } from '@stores';
 
-const socket = new WebSocket("wss://echo.websocket.org/");
 let msgIdCounter = 0;
+let msgRegister = [];
+
+const createConnection = () => {
+  // XXX should we check for an existing connection, and if so, close it?
+  // Or maybe in the future we might have multiple connections to multiple servers?
+  //
+  let newSocket = new WebSocket(userStore.wsEndpointURL);
+  initHandlers(newSocket);
+
+  msgIdCounter = 0;
+  msgRegister = [];
+  return newSocket;
+};
 
 // as long as we keep these socket.something listener assignments within the same scope
 // as the socket construction, we won't miss the 'open' event etc.
 
-const login_token = (name, token) => {
-  const tokenMsg = {
-    cmd: "LOGIN_TOKEN",
-    user: name,
-    token: token,
-    id: msgIdCounter++,
+const initHandlers = socket => {
+  socket.onopen = message => {
+    console.log('WebSocket onopen: ', message);
+    console.dir(message);
+    // authenticate again when opening socket
+    // XXX i.e. this should call auth()
+    // XXX but for now (debugging the main page alone) use login
+    login(
+      socket,
+      userStore.userDetails.userName,
+      userStore.userDetails.password
+    );
   };
-  socket.send(JSON.stringify(tokenMsg));
+
+  socket.onerror = message => {
+    console.log('WebSocket onerror: ', message);
+    console.dir(message);
+  };
+
+  socket.onclose = message => {
+    console.log('WebSocket onclose:');
+    console.dir(message);
+    let echoText = 'Disconnect: ' + message;
+    echoText += ', ' + message.code;
+    echoText += ', ' + message.reason;
+    echoText += ', ' + message.wasClean;
+    echoText += ', ' + message.isTrusted;
+    echoText += '\n';
+    console.log(echoText);
+
+    // TODO XXX: if logout was called (intentional) then do nothing (stay logged out),
+    // else try to open the connection again and login again, with token
+  };
+
+  socket.onmessage = message => {
+    console.log('WebSocket onmessage: ');
+    console.dir(message);
+    handleMessage(JSON.parse(message.data));
+  };
 };
 
-socket.onopen = _ => {
-  // authenticate again when opening socket
-  login_token(appStore.username, appStore.authToken);
-};
+/*
+ * Take the JSON-formatted message and handle it according to the protocol.
+ */
+const handleMessage = msg => {
+  console.log(msg);
+  if (!msgRegister[msg.id]) {
+    console.log('Protocol: bug: this message was unrequested');
+  }
 
-socket.onerror = err => {
-  console.log("WebSocket Error: ", err);
-};
-
-socket.onclose = _ => {
-  console.log("WebSocket connection closed.");
+  switch (msg.cmd) {
+    case 'SESSION':
+      handleSession(msg);
+      break;
+    case 'LIST_COLL':
+      // msg.par will be array
+      dataStore.availableCollections = msg.par;
+      break;
+    case 'COLL_SIZE':
+      break;
+    case 'DATA_ENDPOINTS':
+      handleDataEndpoints(msg);
+      break;
+    case 'DATA':
+      handleData(msg);
+      break;
+    default:
+      console.log('error: unknown request from server: ' + msg.cmd);
+      break;
+  }
+  // Now that msg has been handled, delete its request:
+  delete msgRegister[msg.id];
 };
 
 // Handle data below
-const handleData = data => {
-  console.log("Received message");
-  console.log(data);
-
-  dataStore.data = data;
-  console.log("Updated data store");
-  console.log(dataStore.data);
-};
-
-const handleSession = msg => {
-  if (appStore.wsLoggedIn) {
-    switch (msg.status) {
-      case "OK":
-        // can't really happen
-        console.log(
-          "websocket connection: got unexpected SESSION message: " +
-            msg.status +
-            ", " +
-            msg.par
-        );
-        break;
-      case "FAIL":
-        // user has logged out
-        appStore.wsLoggedIn = false;
-        // TODO close the connection
-        // TODO: present the login screen again
-        break;
-    }
+const handleDataEndpoints = msg => {
+  dataStore.availableCollections = msg.par;
+  if (collName.indexOf('_') > -1) {
+    dataStore.alarms[collName].endpoints = msg.data;
   } else {
-    //not logged in
-    switch (msg.status) {
-      case "OK":
-        // successful login to ws connection
-        appStore.wsLoggedIn = true;
-        break;
-      case "FAIL":
-        // login failed
-        console.log("login to websocket connection failed: " + msg.par);
-        // TODO: present the login screen again
-        break;
-    }
+    dataStore.endpoints = msg.data;
   }
 };
 
-socket.onmessage = message => {
-  const msg = JSON.parse(message);
-  switch (msg.cmd) {
-    case "SESSION":
-      handleSession(msg);
+const handleData = msg => {
+  console.log('Received data message: ' + msg.data.length + ' ' + msg.data[0]);
+  if (!msgRegister[msg.id]) {
+    console.log(
+      'Protocol: bug: received unrequested message, dropping it: ' + msg
+    );
+    return;
+  }
+  let context = msgRegister[msg.id]; // the request that triggered this msg
+  let collName = context.par;
+  if (collName.indexOf('_') > -1) {
+    dataStore.alarms[collName].data = {
+      name: collName,
+      keys: Object.keys(msg.data[0]), // XXX: if data empty and this existed already, should we copy the old keys instead of overwriting with []?
+      data: msg.data,
+    };
+  } else {
+    dataStore.rawData = msg.data;
+    dataStore.availableKeys = Object.keys(msg.data[0]);
+  }
+  // TODO: remove msgRegister[msg.id]
+
+  console.log('Updated data store:');
+  console.log(dataStore.data.length + ' ' + dataStore.data[0]);
+};
+
+const handleSession = async msg => {
+  switch (msg.par) {
+    case 'LOGIN':
+      if (msg.status === 'OK') {
+        await localStorage.setItem('token', msg.token);
+        // TODO: present the main page
+      } else {
+        // TODO: present the login screen again, with a "Username or password wrong" notice
+      }
       break;
-    case "LIST_COL":
-      // msg.par will be array
-      dataStore.available_collections = msg.par;
+    case 'AUTH':
+      if (msg.status !== 'OK') {
+        console.log('websocket connection: AUTHentication failed:');
+        console.dir(msg);
+        // TODO: present the login screen again, with a "Login failed, maybe technical problems" notice
+      }
       break;
-    case "COLL_SIZE":
-      break;
-    case "DATA":
-      handleData(msg.par);
+    case 'LOGOUT':
+      await localStorage.removeItem('token');
+      // TODO: present the login screen again
       break;
     default:
-      console.log("illegal message from server: " + msg.cmd);
+      console.log('Protocol error: got unknown SESSION message:');
+      console.dir(msg);
       break;
   }
 };
 
-const getAvailableCollections = _ => {
-  const message = {
-    cmd: "GET_AV_COLL",
-    id: msgIdCounter++,
-  };
+/***
+ * Takes a message object, adds the id, registers it, and sends it.
+ * @param {any} message
+ * @param {WebSocket} socket
+ * @returns {undefined}
+ */
+const sendRequest = (socket, message) => {
+  message.id = msgIdCounter++;
+  msgRegister[message.id] = message;
   socket.send(JSON.stringify(message));
 };
 
-const getCollection = name => {
+const login = (socket, name, password) => {
   const message = {
-    cmd: "GET_COLL",
+    cmd: 'LOGIN',
+    user: name,
+    pwd: password,
+  };
+  sendRequest(socket, message);
+};
+
+const auth = (socket, name, token) => {
+  const message = {
+    cmd: 'AUTH',
+    user: name,
+    token: token,
+  };
+  sendRequest(socket, message);
+};
+
+const logout = socket => {
+  const message = {
+    cmd: 'LOGOUT',
+  };
+  sendRequest(socket, message);
+};
+
+const getAvailableCollections = socket => {
+  const message = {
+    cmd: 'GET_AV_COLL',
+  };
+  sendRequest(socket, message);
+};
+
+const getCollection = (socket, name) => {
+  const message = {
+    cmd: 'GET_COLL',
     par: name,
-    id: msgIdCounter++,
   };
-  socket.send(JSON.stringify(message));
+  sendRequest(socket, message);
 };
 
-const getCollectionSize = name => {
+const getCollectionSize = (socket, name) => {
   const message = {
-    cmd: "GET_COLL_SIZE",
+    cmd: 'GET_COLL_SIZE',
     par: name,
-    id: msgIdCounter++,
   };
-  socket.send(JSON.stringify(message));
+  sendRequest(socket, message);
 };
 
-const getRecordsInRange = (name, key, startValue, endValue) => {
+const getEndpoints = (socket, name) => {
   const message = {
-    cmd: "GET_RECORDS_RANGE",
+    cmd: 'GET_ENDPOINTS',
+    par: name,
+  };
+  sendRequest(socket, message);
+};
+
+const getRecordsInRange = (socket, name, key, startValue, endValue) => {
+  const message = {
+    cmd: 'GET_RECORDS_RANGE',
     par: name,
     key: key,
     start: startValue,
     end: endValue,
-    id: msgIdCounter++,
   };
-  socket.send(JSON.stringify(message));
+  sendRequest(socket, message);
 };
 
-const getRecordsInRangeSize = (name, key, startValue, endValue) => {
+const getRecordsInRangeSize = (socket, name, key, startValue, endValue) => {
   const message = {
-    cmd: "GET_RECORDS_RANGE_SIZE",
+    cmd: 'GET_RECORDS_RANGE_SIZE',
     par: name,
     key: key,
     start: startValue,
     end: endValue,
-    id: msgIdCounter++,
   };
-  socket.send(JSON.stringify(message));
+  sendRequest(socket, message);
 };
 
-export default {
-  socket,
-  login_token,
+// Get a collection from local storage. If no name given, return the raw data as a pseudo collection.
+const getLocalCollection = collName => {
+  if (collName === '') {
+    return {
+      name: '',
+      keys: [
+        'L2Protocol',
+        'SourceMACAddress',
+        'L4Protocol',
+        'SourceIPAddress',
+        'PacketSummary',
+        'PacketID',
+        'DestinationIPAddress',
+        'Timestamp',
+        'DestinationPort',
+        'SourcePort',
+        'L3Protocol',
+        'DestinationMACAddress',
+      ],
+      data: dataStore.rawData,
+    };
+  } else {
+    return dataStore.alarms[collName];
+  }
+};
+
+// Get the data of the specified collection from local storage. Returns an array of JSON strings representing the datapoints.
+const getLocalCollectionData = collName => {
+  if (collName === '') {
+    return dataStore.rawData;
+  } else {
+    return dataStore.alarms[collName].data;
+  }
+};
+
+export {
+  createConnection,
+  login,
+  auth,
+  logout,
   getAvailableCollections,
   getCollection,
   getCollectionSize,
+  getEndpoints,
   getRecordsInRange,
   getRecordsInRangeSize,
+  getLocalCollection,
+  getLocalCollectionData,
 };

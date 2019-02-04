@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-15">
+<title>Websocketserverexample02</title>
+</head>
+<body>
+	<form>
+		<input id="message" type="text">
+		<input onclick="wsSendMessage();" value="Echo" type="button">
+		<input onclick="wsCloseConnection();" value="Disconnect" type="button">
+	</form>
+	<br>
+	<textarea id="echoText" rows="5" cols="30"></textarea>
+
+
+	<script src="../../frontend/src/libs/wsutils.js"></script>
+
+	<script type="text/javascript">
+		// source:
+		// https://examples.javacodegeeks.com/enterprise-java/tomcat/apache-tomcat-websocket-tutorial/#toc630
+
+			// dataStore
+			//import {appStore} from "_stores";
+
+
+		var echoText = document.getElementById("echoText");
+		echoText.value = "";
+		var message = document.getElementById("message");
+
+		var webSocket = new WebSocket(
+				"ws://localhost:8080/WebsocketServerExample/adinhubsoc");
+
+		webSocket.onopen = function(message) {
+			wsOpen(message);
+		};
+		
+		
+		webSocket.onmessage = function(message) {
+			wsGetMessage(message);
+		};
+		
+		
+		webSocket.onclose = function(message) {
+			wsClose(message);
+		};
+		webSocket.onerror = function(message) {
+			wsError(message);
+		};
+		function wsOpen(message) {
+			echoText.value += "Connected: " + message + ", " + message.isTrusted + "\n";
+		}
+		function wsSendMessage() {
+			webSocket.send(message.value);
+			echoText.value += "Message sent to the server : " + message.value
+					+ "\n";
+			message.value = "";
+		}
+		function wsCloseConnection() {
+			webSocket.close();
+		}
+		function wsGetMessage(message) {
+			msg = JSON.parse(message);
+			echoText.value += "Message received from the server : "
+					+ msg.id + "\n";
+		}
+		function wsClose(message) {
+			echoText.value += "Disconnect: " + message + ", " + message.isTrusted + "\n";
+		}
+
+		function wserror(message) {
+			echoText.value += "Error: " + message + "\n";
+		}
+	</script>
+
+</body>
+</html>
