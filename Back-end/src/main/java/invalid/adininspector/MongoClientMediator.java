@@ -72,7 +72,7 @@ public class MongoClientMediator {
             throw new LoginFailureException(e.getMessage());
         }
 
-        System.out.println(getStartRecord("lemgo"));
+       // System.out.println(getStartRecord("lemgo"));
     }
 
     public MongoClientMediator(String udid, String password) throws LoginFailureException {
@@ -184,7 +184,7 @@ public class MongoClientMediator {
         if(key == "Timestamp")
         {
             System.out.println("OMG TIMESTAMP!");
-            query.put(key, new BasicDBObject("$gte", new Date(Long.valueOf((String)start)).append("$lt", new Date(Long.valueOf((String)end)) ));
+            query.put(key, new BasicDBObject("$gte", new Date(Long.valueOf((String)start))).append("$lt", new Date(Long.valueOf((String)end)) ));
 
         }
         else
