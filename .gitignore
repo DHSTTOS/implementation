@@ -20,3 +20,5 @@ Back-end/\.settings/
 
 # vim recovery files:
 .*.swp
+
+\.vscode/launch\.json

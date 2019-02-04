@@ -100,7 +100,7 @@ public class MongoClientMediator {
         } catch (MongoWriteException ex) {
             // TODO: how to handle this, skip?, overwrite? or compare and decide which one
             // to keep?
-            System.out.println("an entry with this offset already exists ");
+           // System.out.println("an entry with this offset already exists ");
         } catch (Exception e) {
             e.printStackTrace();
         }
