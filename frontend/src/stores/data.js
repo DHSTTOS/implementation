@@ -27,6 +27,8 @@ class DataStore {
   currentlySelectedSource = '';
   @action
   selectSource = source => {
+    if (this.currentlySelectedSource === source) return;
+    
     appStore.resetDiagramConfigs();
     this.resetData();
     this.currentlySelectedSource = source;
