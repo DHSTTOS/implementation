@@ -23,23 +23,25 @@ public class Initializer {
 
         // TODO: fix me!
         // load the properties file
-        String rootPath = Thread.currentThread().getContextClassLoader().getResource("").getPath();
-        URL testPath = Initializer.class.getClassLoader().getResource("");
 
-        System.out.println(rootPath);
-        System.out.println(testPath);
+       
+            String rootPath = "";//Thread.currentThread().getContextClassLoader().getResource("").getPath();
+           // URL testPath = "";//Initializer.class.getClassLoader().getResource("");
 
-        String appConfigPath = rootPath + "config.properties";
+            System.out.println(rootPath);
+            //System.out.println(testPath);
 
-        Properties appProps = new Properties();
+            String appConfigPath = rootPath + "config.properties";
 
-        try {
-            appProps.load(new FileInputStream(appConfigPath));
-            installPath = appProps.getProperty("kafka_install_path");
+            Properties appProps = new Properties();
+        
+        // try {
+        //     //appProps.load(new FileInputStream(appConfigPath));
+        //     //installPath = appProps.getProperty("kafka_install_path");
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        // } catch (IOException e) {
+        //     e.printStackTrace();
+        // }
 
         String[] cStartZookeeper = { "xterm", "-hold", "-e", "sudo " + installPath + "bin/zookeeper-server-start.sh "
                 + installPath + "config/zookeeper.properties" };
@@ -56,8 +58,11 @@ public class Initializer {
 
         System.out.println("Starting consumer");
         try {
-            MongoConsumer m = new MongoConsumer(appProps.getProperty("mongo_admin_user"),
-                    appProps.getProperty("mongo_admin_pass"), appProps.getProperty("mongo_database_name"));
+            // MongoConsumer m = new MongoConsumer(appProps.getProperty("mongo_admin_user"),
+            //         appProps.getProperty("mongo_admin_pass"), appProps.getProperty("mongo_database_name"));
+            MongoConsumer m = new MongoConsumer("admin", "admin", "AdinInspector");
+
+
         } catch (LoginFailureException e1) {
             // TODO Auto-generated catch block
             e1.printStackTrace();
