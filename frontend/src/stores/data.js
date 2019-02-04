@@ -20,7 +20,14 @@ class DataStore {
   // The slice of raw data that is currently selected by the slider:
   currentlySelectedData = [];
 
-
+  @observable
+  sourceOptions = ['Source 1', 'Live'];
+  @observable
+  currentlySelectedSource = '';
+  @action
+  selectSource = source => {
+    this.currentlySelectedSource = source;
+  };
 
   // Array of notification/alarm data sets:
   @observable

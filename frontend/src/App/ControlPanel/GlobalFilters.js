@@ -20,7 +20,7 @@ const PaperContent = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  height: 10rem;
+  height: 8rem;
   padding: 0 1rem;
 `;
 
@@ -34,7 +34,7 @@ const StyledFormControl = styled(FormControl)`
 `;
 
 const StyledFormGroup = styled(FormGroup)`
-  height: 7rem;
+  height: 4rem;
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
