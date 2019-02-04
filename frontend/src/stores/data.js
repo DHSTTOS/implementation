@@ -1,6 +1,10 @@
 import { observable, action } from 'mobx';
 import { DEFAULT_SOURCE_NAME } from '@libs';
-import { jsonstreams } from '../../mockdata';
+import {
+  lmf,
+  lmf_FlowRatePerSecond,
+  lmf_NumberOfConnectionsPerNode,
+} from '../../mockdata';
 import appStore from './app';
 
 class DataStore {
@@ -12,7 +16,16 @@ class DataStore {
 
   // Raw network data
   @observable.shallow
-  rawData = jsonstreams;
+  rawData = lmf;
+
+  @observable.shallow
+  flowrateData = lmf_FlowRatePerSecond;
+
+  @observable.shallow
+  connectionNumberData = lmf_NumberOfConnectionsPerNode;
+
+  @observable.shallow
+  addressLinkData = [];
 
   @observable
   endpoints = []; // The start and end indices for the x-axis
