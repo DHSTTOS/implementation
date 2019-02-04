@@ -21,7 +21,7 @@ class DataStore {
 
 
   // The slice of raw data that is currently selected by the slider:
-  currentlySelectedData = [];
+  currentlySelectedData = ['1', '2'];
 
   @observable
   sourceOptions = ['Source 1', 'Live'];

@@ -102,15 +102,15 @@ class Diagram extends Component {
       symbolSize,
     } = this.props.config.specConfig;
 
+    const tmp = dataStore.currentlySelectedData;
+    console.log(tmp);
+
     const data = formatData({
       groupName,
       x,
       y,
-      rawData: jsonstreams,
+      rawData: dataStore.currentlySelectedData,
     });
-    console.log(data);
-    const tmp = dataStore.currentlySelectedData;
-    console.log(tmp);
 
     const { width, height } = appStore.diagramDimension;
 
