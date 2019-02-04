@@ -1,4 +1,4 @@
-export const DEFAULT_SOURCE_NAME = "__default_empty__";
+export const DEFAULT_SOURCE_NAME = '__default_empty__';
 
 export const DEFAULT_GLOBAL_FILTERS = {
   ether: false,
@@ -10,14 +10,14 @@ export const DEFAULT_GLOBAL_FILTERS = {
   l4other: false,
 };
 
-export const SCATTER_PLOT = "Scatter Plot";
-export const LINE_CHART = "Line Chart";
+export const SCATTER_PLOT = 'Scatter Plot';
+export const LINE_CHART = 'Line Chart';
 
 export const NIVO_COLOR_SCHEMES = [
-  "nivo",
-  "category10",
-  "red_grey",
-  "set1",
-  "set2",
-  "set3",
+  'nivo',
+  'category10',
+  'red_grey',
+  'set1',
+  'set2',
+  'set3',
 ];

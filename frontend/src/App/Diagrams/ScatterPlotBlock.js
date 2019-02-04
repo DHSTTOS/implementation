@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import { observer } from "mobx-react";
-import { ScatterPlot } from "@nivo/scatterplot";
+import React, { Component } from 'react';
+import { observer } from 'mobx-react';
+import { ScatterPlot } from '@nivo/scatterplot';
 
 /**
  * @typedef {object} Props
@@ -32,46 +32,46 @@ class ScatterPlotBlock extends Component {
         colors={colors}
         symbolSize={symbolSize}
         xScale={{
-          type: "point",
+          type: 'point',
         }}
         yScale={{
-          type: "point",
+          type: 'point',
         }}
         axisBottom={{
-          orient: "bottom",
+          orient: 'bottom',
           tickSize: 5,
           tickPadding: 5,
           tickRotation: 0,
           legend: x,
-          legendPosition: "middle",
+          legendPosition: 'middle',
           legendOffset: 46,
         }}
         axisLeft={{
-          orient: "left",
+          orient: 'left',
           tickSize: 5,
           tickPadding: 5,
           tickRotation: 0,
           legend: y,
-          legendPosition: "middle",
+          legendPosition: 'middle',
           legendOffset: -120,
         }}
         animate={false}
         legends={[
           {
-            anchor: "bottom-right",
-            direction: "column",
+            anchor: 'bottom-right',
+            direction: 'column',
             translateX: 130,
             itemWidth: 100,
             itemHeight: 12,
             itemsSpacing: 5,
-            itemTextColor: "#999",
+            itemTextColor: '#999',
             symbolSize: 12,
-            symbolShape: "circle",
+            symbolShape: 'circle',
             effects: [
               {
-                on: "hover",
+                on: 'hover',
                 style: {
-                  itemTextColor: "#000",
+                  itemTextColor: '#000',
                 },
               },
             ],

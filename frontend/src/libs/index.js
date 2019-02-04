@@ -4,17 +4,22 @@ import {
   SCATTER_PLOT,
   LINE_CHART,
   NIVO_COLOR_SCHEMES,
-} from "./consts";
+} from './consts';
 
 import {
-  socket,
-  loginToken,
+  createConnection,
+  login,
+  auth,
+  logout,
   getAvailableCollections,
   getCollection,
   getCollectionSize,
+  getEndpoints,
   getRecordsInRange,
   getRecordsInRangeSize,
-} from "./wsutils";
+  getLocalCollection,
+  getLocalCollectionData,
+} from './wsutils';
 
 import {
   removeL2,
@@ -23,7 +28,7 @@ import {
   removeEther,
   removeProfinet,
   removeUDP,
-} from "./dataFilters";
+} from './dataFilters';
 
 /**
  * Formats raw data to nivo's format.
@@ -40,7 +45,7 @@ const formatData = ({ groupName, x, y, rawData = [] }) => {
   // normalize the timestamp
   const normalizedRawData = rawData.map(x => ({
     ...x,
-    Timestamp: x["Timestamp"]["$date"],
+    Timestamp: x['Timestamp']['$date'],
   }));
 
   // get all the names of groups of data by groupID
@@ -64,13 +69,18 @@ export {
   SCATTER_PLOT,
   LINE_CHART,
   NIVO_COLOR_SCHEMES,
-  socket,
-  loginToken,
+  createConnection,
+  login,
+  auth,
+  logout,
   getAvailableCollections,
   getCollection,
   getCollectionSize,
+  getEndpoints,
   getRecordsInRange,
   getRecordsInRangeSize,
+  getLocalCollection,
+  getLocalCollectionData,
   formatData,
   removeL2,
   removeL3,

@@ -3,7 +3,10 @@ package invalid.adininspector.adinhub;
 import javax.websocket.OnOpen;
 import javax.websocket.server.ServerEndpoint;
 
+import invalid.adininspector.exceptions.LoginFailureException;
+
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Random;
 
@@ -20,7 +23,7 @@ public class Hub {
 	/**
 	 * The database to use
 	 */
-	IUserSession database;
+	IUserSession database = null;
 	
 	/**
 	 * The strategy object we call for the actual parsing of the client requests.
@@ -40,7 +43,12 @@ public class Hub {
 	private static Map<Session, IUserSession> sessions;
 	
 	public Hub() {
-		database = new MockMongoDBUserSession();
+		try {
+			database = new MongoDBUserSession();
+		} catch (LoginFailureException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		requestHandler = new ClientProtocolHandler();
 		loginTokens = new HashMap<String, IUserSession>();
 		sessions = new HashMap<Session, IUserSession>();
@@ -138,7 +146,7 @@ public class Hub {
 		return dbUserSession;
 	}
 
-    boolean loginWithToken(Session session, String username, String token) {
+    boolean loginWithToken(Session session, String token) {
     	System.out.println("lWT: this " + this);
     	System.out.println("lWT #registered keys: "  + loginTokens.keySet().size());
     	for (String key : loginTokens.keySet()) {
@@ -168,13 +176,19 @@ public class Hub {
 			return;
 		}
 
-		// TODO: close the dbUserSession
 		sessions.remove(session);
     	// remove the token entry for this session:
-    	for (String token : loginTokens.keySet()) {
-			if (loginTokens.get(token).equals(dbUserSession))
-				loginTokens.remove(token);
+		Iterator<String> tokenSet = loginTokens.keySet().iterator();
+		for(; tokenSet.hasNext();) {
+			String token = tokenSet.next();
+			if (loginTokens.get(token).equals(dbUserSession)) {
+				tokenSet.remove();
+			}
 		}
+
+		// The session will ultimately be closed when the garbage collection
+		// removes it:
+		dbUserSession = null;
     }
 
     /**

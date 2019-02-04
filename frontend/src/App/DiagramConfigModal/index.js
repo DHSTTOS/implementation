@@ -1,17 +1,17 @@
-import React, { Component } from "react";
-import { observer } from "mobx-react";
-import { action } from "mobx";
-import styled from "@emotion/styled";
-import Paper from "@material-ui/core/Paper";
-import Typography from "@material-ui/core/Typography";
-import Modal from "@material-ui/core/Modal";
-import Button from "@material-ui/core/Button";
+import React, { Component } from 'react';
+import { observer } from 'mobx-react';
+import { action } from 'mobx';
+import styled from '@emotion/styled';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+import Modal from '@material-ui/core/Modal';
+import Button from '@material-ui/core/Button';
 
-import { appStore } from "@stores";
+import { appStore } from '@stores';
 
-import PlotTypeBar from "./PlotTypeBar";
-import DiagramSpecBlock from "./DiagramSpecBlock";
-import DiagramFiltersBlock from "./DiagramFiltersBlock";
+import PlotTypeBar from './PlotTypeBar';
+import DiagramSpecBlock from './DiagramSpecBlock';
+import DiagramFiltersBlock from './DiagramFiltersBlock';
 
 const Container = styled(Paper)`
   position: absolute;
@@ -58,9 +58,9 @@ class DiagramConfigModal extends Component {
   @action
   handleCancel = () => {
     console.log(
-      "Config modal #" +
+      'Config modal #' +
         appStore.configModal.diagramConfig.diagramID +
-        " is canceled."
+        ' is canceled.'
     );
     appStore.closeConfigModal();
   };
@@ -74,16 +74,16 @@ class DiagramConfigModal extends Component {
   render() {
     appStore.configModal.isOpen &&
       console.log(
-        "Diagram ID #" +
+        'Diagram ID #' +
           appStore.configModal.diagramConfig.diagramID +
-          " is being configured."
+          ' is being configured.'
       );
 
     return (
       <Modal open={appStore.configModal.isOpen} onClose={this.handleCancel}>
         <Container>
           <ModalHeader>
-            <Typography variant="h6" align={"center"}>
+            <Typography variant="h6" align={'center'}>
               Configure Diagram
             </Typography>
           </ModalHeader>

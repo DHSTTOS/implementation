@@ -1,9 +1,16 @@
+
+/* Copyright (C) 2018,2019 Mario A. Gonzalez Ordiano - All Rights Reserved
+ * For any questions please contact me at: mario,ordiano@gmail.com
+ */
 package invalid.adininspector;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Properties;
+
+import invalid.adininspector.exceptions.LoginFailureException;
+
 //TODO: we need to handle the service init properly 
 //TODO: wait for services to start and then start the consumer
 public class Initializer {
@@ -14,25 +21,27 @@ public class Initializer {
 
     public static void main(String[] args) {
 
-        // TODO: use first arg ,the install path
-
+        // TODO: fix me!
         // load the properties file
-        String rootPath = Thread.currentThread().getContextClassLoader().getResource("").getPath();
-        URL testPath = Initializer.class.getClassLoader().getResource("");// ClassLoader.getSystemClassLoader().getResource(name)
-        System.out.println(rootPath);
-        System.out.println(testPath);
 
-        String appConfigPath = rootPath + "config.properties";
+       
+            String rootPath = "";//Thread.currentThread().getContextClassLoader().getResource("").getPath();
+           // URL testPath = "";//Initializer.class.getClassLoader().getResource("");
 
-        Properties appProps = new Properties();
+            System.out.println(rootPath);
+            //System.out.println(testPath);
 
-        try {
-            appProps.load(new FileInputStream(appConfigPath));
-            installPath = appProps.getProperty("kafka_install_path");
+            String appConfigPath = rootPath + "config.properties";
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+            Properties appProps = new Properties();
+        
+        // try {
+        //     //appProps.load(new FileInputStream(appConfigPath));
+        //     //installPath = appProps.getProperty("kafka_install_path");
+
+        // } catch (IOException e) {
+        //     e.printStackTrace();
+        // }
 
         String[] cStartZookeeper = { "xterm", "-hold", "-e", "sudo " + installPath + "bin/zookeeper-server-start.sh "
                 + installPath + "config/zookeeper.properties" };
@@ -48,9 +57,16 @@ public class Initializer {
         String[] cStopMongo = { "xterm", "-hold", "-e", "service mongod start" };
 
         System.out.println("Starting consumer");
-            MongoConsumer m = new MongoConsumer(appProps.getProperty("mongo_admin_user"),
-            appProps.getProperty("mongo_admin_pass"),
-            appProps.getProperty("mongo_database_name") );
+        try {
+            // MongoConsumer m = new MongoConsumer(appProps.getProperty("mongo_admin_user"),
+            //         appProps.getProperty("mongo_admin_pass"), appProps.getProperty("mongo_database_name"));
+            MongoConsumer m = new MongoConsumer("admin", "admin", "AdinInspector");
+
+
+        } catch (LoginFailureException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
         
         try {
              System.in.read();

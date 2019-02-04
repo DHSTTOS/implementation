@@ -16,6 +16,7 @@ Back-end/\.vscode/
 Back-end/\.settings/
 
 \.directory
+/login-frontend/nbproject/
 
 ### Linux ###
 *~
@@ -176,3 +177,8 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+# vim recovery files:
+.*.swp
+
+\.vscode/launch\.json

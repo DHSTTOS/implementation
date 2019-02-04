@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import Icon from "@material-ui/core/Icon";
-import IconButton from "@material-ui/core/IconButton";
+import React, { Component } from 'react';
+import Icon from '@material-ui/core/Icon';
+import IconButton from '@material-ui/core/IconButton';
 
-import styled from "@emotion/styled";
-import { appStore } from "@stores";
+import styled from '@emotion/styled';
+import { appStore } from '@stores';
 
 const Container = styled.div`
   display: flex;
@@ -28,11 +28,8 @@ export default class DiagramControl extends Component {
   handleSettings = () => {
     appStore.openConfigModal(this.props.diagramID);
   };
-  handleFullscreen = () => {
-    //TODO: opens another modal for fullscreen? (non-trivial)
-  };
-  handleClose = () => {
-    appStore.closeDiagram(this.props.diagramID);
+  handleExitFullscreen = () => {
+    appStore.resetFullscreenDiagram();
   };
 
   render() {
@@ -42,11 +39,8 @@ export default class DiagramControl extends Component {
           <IconButton onClick={this.handleSettings}>
             <Icon>settings</Icon>
           </IconButton>
-          <IconButton onClick={this.handleFullscreen}>
-            <Icon>fullscreen</Icon>
-          </IconButton>
-          <IconButton onClick={this.handleClose}>
-            <Icon>close</Icon>
+          <IconButton onClick={this.handleExitFullscreen}>
+            <Icon>fullscreen_exit</Icon>
           </IconButton>
         </ControlWrapper>
       </Container>
