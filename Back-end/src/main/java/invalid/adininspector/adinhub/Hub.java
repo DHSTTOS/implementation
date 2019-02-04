@@ -49,6 +49,7 @@ public class Hub {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		System.out.println("Hub, database: " + database);
 		requestHandler = new ClientProtocolHandler();
 		loginTokens = new HashMap<String, IUserSession>();
 		sessions = new HashMap<Session, IUserSession>();
