@@ -1,16 +1,36 @@
 import React, { Component } from 'react';
 import styled from '@emotion/styled';
+import { observer } from 'mobx-react';
+
+import { Logo, Column, Selector } from '@components';
+import { dataStore } from '@stores';
 
 import GlobalFilters from './GlobalFilters';
 import UserControl from './UserControl';
 
-import { Logo, Column } from '@components';
-
 const Row = styled.div`
   display: flex;
   margin: 0 1rem;
-  align-items: center;
+  align-items: flex-start;
 `;
+
+@observer
+class SourceSelector extends Component {
+  selectSource = source => {
+    dataStore.selectSource(source);
+  };
+
+  render() {
+    return (
+      <Selector
+        options={dataStore.sourceOptions}
+        name={'Source'}
+        onSelect={this.selectSource}
+        currentSelection={dataStore.currentlySelectedSource}
+      />
+    );
+  }
+}
 
 export default class ControlPanel extends Component {
   render() {
@@ -18,6 +38,7 @@ export default class ControlPanel extends Component {
       <Row>
         <Column>
           <Logo />
+          <SourceSelector />
         </Column>
         <GlobalFilters />
         <UserControl />
