@@ -205,19 +205,6 @@ class AppStore {
     this.configModal.diagramConfig.groupName = groupName;
   };
 
-  /**
-   * Data source
-   */
-  @observable
-  sourceSelected = DEFAULT_SOURCE_NAME;
-  @observable
-  sourcesAvailable = [
-    {
-      name: DEFAULT_SOURCE_NAME,
-      stream: {}, // format TBD
-    },
-  ];
-
   @observable
   globalFilters = DEFAULT_GLOBAL_FILTERS;
 

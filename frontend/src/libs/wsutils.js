@@ -72,7 +72,7 @@ const handleMessage = msg => {
     case 'SESSION':
       handleSession(msg);
       break;
-    case 'LIST_COL':
+    case 'LIST_COLL':
       // msg.par will be array
       dataStore.availableCollections = msg.par;
       break;
@@ -134,9 +134,9 @@ const handleSession = async msg => {
       if (msg.status === 'OK') {
         await localStorage.setItem('token', msg.token);
         // TODO: present the main page
+      } else {
+        // TODO: present the login screen again, with a "Username or password wrong" notice
       }
-      // TODO: present the login screen again, with a "Username or password wrong" notice
-
       break;
     case 'AUTH':
       if (msg.status !== 'OK') {
@@ -146,7 +146,7 @@ const handleSession = async msg => {
       }
       break;
     case 'LOGOUT':
-      await localStorage.setItem('token', '');
+      await localStorage.removeItem('token');
       // TODO: present the login screen again
       break;
     default:
@@ -289,6 +289,7 @@ export {
   getAvailableCollections,
   getCollection,
   getCollectionSize,
+  getEndpoints,
   getRecordsInRange,
   getRecordsInRangeSize,
   getLocalCollection,

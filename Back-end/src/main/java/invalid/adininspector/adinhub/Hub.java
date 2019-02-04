@@ -3,6 +3,8 @@ package invalid.adininspector.adinhub;
 import javax.websocket.OnOpen;
 import javax.websocket.server.ServerEndpoint;
 
+import invalid.adininspector.exceptions.LoginFailureException;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -21,7 +23,7 @@ public class Hub {
 	/**
 	 * The database to use
 	 */
-	IUserSession database;
+	IUserSession database = null;
 	
 	/**
 	 * The strategy object we call for the actual parsing of the client requests.
@@ -41,7 +43,13 @@ public class Hub {
 	private static Map<Session, IUserSession> sessions;
 	
 	public Hub() {
-		database = new MockMongoDBUserSession();
+		try {
+			database = new MongoDBUserSession();
+		} catch (LoginFailureException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("Hub, database: " + database);
 		requestHandler = new ClientProtocolHandler();
 		loginTokens = new HashMap<String, IUserSession>();
 		sessions = new HashMap<Session, IUserSession>();

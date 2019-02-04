@@ -60,7 +60,7 @@ public class ClientProtocolHandler {
 		GET_AV_COLL("GET_AV_COLL") {
 			public Map<String, Object> execute(Hub hub, Session session, Map<String,Object> msgParsed) {
 				String[] collections = hub.getAvailableCollections(session);
-				msgParsed.put("cmd", "LIST_COL");
+				msgParsed.put("cmd", "LIST_COLL");
 				msgParsed.put("par", collections);
 				return msgParsed;
 			}

@@ -15,15 +15,20 @@ public class MongoDBUserSession implements IUserSession {
 	 * Creates a new MongoDB session.
 	 * @throws LoginFailureException 
 	 */
-	public MongoDBUserSession(String username, String password) throws LoginFailureException {
-		mongoClientMediator = new MongoClientMediator(username, password);
+	public MongoDBUserSession() throws LoginFailureException {
+		//mongoClientMediator = new MongoClientMediator(username, password);
 	}
 
+	private void setMongoClientMediator(MongoClientMediator m) {
+		mongoClientMediator = m;
+	}
+	
 	public IUserSession createUserSession(String username, String password) {
 		MongoDBUserSession m = null;
 		try {
-			m = new MongoDBUserSession(username, password);
-			m.getAvailableCollections();
+			m = new MongoDBUserSession();
+			m.setMongoClientMediator(new MongoClientMediator(username, password));
+			m.getAvailableCollections(); // check if login succeeded
 		} catch (LoginFailureException e) {
 			System.err.println("createUserSession: login failed; u: " + username + "pw: " + password);
 			m = null;

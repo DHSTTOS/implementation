@@ -1,3 +1,6 @@
+/* Copyright (C) 2018,2019 Mario A. Gonzalez Ordiano - All Rights Reserved
+ * For any questions please contact me at: mario,ordiano@gmail.com
+ */
 package invalid.adininspector;
 
 //for GSON
@@ -5,17 +8,20 @@ import java.lang.reflect.Type;
 //For polling
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.stream.Collectors;
 
-import invalid.adininspector.exceptions.LoginFailureException;
-import invalid.adininspector.records.*;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
+import com.mongodb.MongoSecurityException;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
@@ -23,32 +29,44 @@ import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.PartitionInfo;
 import org.apache.kafka.common.TopicPartition;
 
-//project hasn't even started and we're already doing hacky shit
+import invalid.adininspector.dataprocessing.DataProcessor;
+import invalid.adininspector.exceptions.LoginFailureException;
+import invalid.adininspector.records.AlarmRecord;
+import invalid.adininspector.records.PacketRecordDesFromKafka;
+import invalid.adininspector.records.Record;
 
+
+
+//project hasn't even started and we're already doing hacky shit
+//TODO: convert TImestampo date vaue into a mongoDB timestamp object
+//TODO: check if changing Timestamp into a number fixes the use
+//TODO: test ignoring timestamp object and add our own timestamp object
 public class MongoConsumer {
 
-    private MongoClientMediator mongoMediator;
+    private MongoClientMediator clientMediator;
 
     private KafkaConsumer<String, String> consumer;
-
-    private Duration pollingTimeOut = Duration.ofMillis(100);
 
     // private String[] topics;
     List<String> topics;
 
-    public MongoConsumer(String udid, String pass, String dbName) {
+    public MongoConsumer(String udid, String pass, String dbName) throws LoginFailureException {
 
-        
-        //TODO: this should not stay like this in prod
+
+        if(dbName.isEmpty()){
+            throw new LoginFailureException("dbName cannot be empty");
+        }
 
         try {
-            mongoMediator = new MongoClientMediator(udid, pass,dbName);
-        } catch (LoginFailureException e) {
-            //TODO: handle exception
-            System.out.println("wait...what? ");
-            e.printStackTrace();
-            return;
+            clientMediator = new MongoClientMediator(udid, pass, dbName);
+            
+        } catch (MongoSecurityException e) {
+
+            // force the caller to handle the exception
+            throw new LoginFailureException(e.getMessage());
         }
+
+        
 
         Properties props = new Properties();
         props.put("bootstrap.servers", "localhost:9092");
@@ -58,6 +76,7 @@ public class MongoConsumer {
         props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         props.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         props.put("auto.offset.reset", "earliest");
+      //  props.put("max.poll.records","-1");
 
         consumer = new KafkaConsumer<>(props);
 
@@ -69,7 +88,7 @@ public class MongoConsumer {
         // this will be done once, all missing entries from kafka are added to the
         // appropriate collection
 
-        Collection<TopicPartition> partitions = getAllTopics();
+        Collection<TopicPartition> partitions = getAllTopicsPartitions();
 
         // TopicPartition topicPartition = new TopicPartition("test", 0);
         // List partitions = Arrays.asList(topicPartition);
@@ -81,55 +100,90 @@ public class MongoConsumer {
         ListenForRecords();
     }
 
-    // TODO: should we check if records already exist?
+    // TODO: we SHOULD check if records already exist?
+    // TODO: put ALL stored data in mongo before processing it.
+    // TODO: differentiage between realm-time and stored data
     void ListenForRecords() {
 
-        Gson gson = new Gson();
+        GsonBuilder builder = new GsonBuilder(); 
+
+        // Register an adapter to manage the date types as long values 
+        builder.registerTypeAdapter(Date.class, new JsonDeserializer<Date>() { 
+           public Date deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+              return new Date(json.getAsJsonPrimitive().getAsLong()); 
+           } 
+        });
+        
+        
+
+        Gson gson = builder.create();
+
+        Boolean processRecords = true;
+        Boolean addedRecords = false;
+
+        Duration pollingTimeOut = Duration.ofMillis(1000);
 
         while (true) {
-
-            Boolean hasNewRecords = false;
-
+            
             ConsumerRecords<String, String> records = consumer.poll(pollingTimeOut);
 
-            for (ConsumerRecord<String, String> record : records) {
+            for (ConsumerRecord<String, String> record : records ) {
 
+                // System.out.printf("offset = %d, key = %s, value = %s, partition = %d%n",
+                // record.offset(), record.key(),record.value(), record.partition());
 
-                hasNewRecords = !hasNewRecords;
+                // System.out.println(record.value());
 
-                //System.out.printf("offset = %d, key = %s, value = %s, partition = %d%n", record.offset(), record.key(),record.value(), record.partition());
+                // TODO: fix this horrible hack // relegate it to the Mediator??? maybe?
+                Type type = null;
+                
+                if(record.value().contains("Alarm"))
+                {
+                    type = new TypeToken<AlarmRecord>() {}.getType();
+                }
+                else if (record.value().contains("L2"))
+                {
+                    type = new TypeToken<PacketRecordDesFromKafka>() {}.getType();
+                }
+                else
+                {
+                    System.out.println("Non recognized record type");
+                    continue;
+                }
+               
+                //TODO: Tell ankush to fix his messy timestamp handling becuase mongo does not work with special chars
+                String fixedRecord = record.value().replace("$","");
 
-                //System.out.println(record.value());
-
-                //TODO: fix this horrible hack
-                Type type = record.value().contains("Alarm") ? new TypeToken<AlarmRecord>(){}.getType() :new TypeToken<PacketRecord>() {}.getType();
+               // clientMediator.p(fixedRecord);
 
                 // convert it into a java object
-                    Record incomingRecord = gson.fromJson(record.value(), type);
-                    // set the offset as ID in the DB
+                Record incomingRecord = gson.fromJson(fixedRecord, type);
+                // set the offset as ID in the DB
 
-                    incomingRecord.set_id(Long.toString(record.offset()));
+                incomingRecord.set_id(Long.toString(record.offset()));
 
-                    mongoMediator.addRecordToCollection(incomingRecord,record.topic());
+                clientMediator.addRecordToCollection(incomingRecord, record.topic());
 
+                if(addedRecords)
+                    System.out.println(record.value());
 
             }
-            if(hasNewRecords)
-            {
-                 //TODO: notify the mediator that data needs to be processed
-                 System.out.println("New Records have been added, check if we need to preprocess something");
-                
-                for (ConsumerRecord<String, String> record : records) {
-                    //TODO: extract topics to update
-                }
 
-               
-                hasNewRecords = !hasNewRecords;
+            if (records.isEmpty() && processRecords) {
+                // TODO: notify the mediator that data needs to be processed
+               // System.out.println("Stored Records have been added, process them");
+                
+                DataProcessor.processData(getTopicsForProcessing(), clientMediator);
+
+                //stop processing records
+                processRecords = false;
+
+                //System.out.println("all stored records have been processed");
             }
         }
     }
 
-    Collection<TopicPartition> getAllTopics() {
+    Collection<TopicPartition> getAllTopicsPartitions() {
         Collection<TopicPartition> kafkaTopics = new ArrayList<>();
 
         Map<String, List<PartitionInfo>> topicsMap;
@@ -142,13 +196,35 @@ public class MongoConsumer {
         for (Map.Entry<String, List<PartitionInfo>> topic : topicsMap.entrySet()) {
 
             // __consumer_offsets is internal to kafka and should be ignored
-            if (!topic.getKey().contentEquals("__consumer_offsets")) {
+            // TODO: ignore real-time data
+            if (!topic.getKey().contentEquals("__consumer_offsets") && topic.getKey().contentEquals("motor")) {
                 kafkaTopics.add(new TopicPartition(topic.getKey(), 0));
                 System.out.println("Topic: " + topic.getKey());
             }
             //
             // System.out.println("Value: " + topic.getValue() + "\n");
 
+        }
+
+        return kafkaTopics;
+    }
+
+    //convinience method for geting all topics to be processed
+    ArrayList<String> getTopicsForProcessing() {
+        ArrayList<String> kafkaTopics = new ArrayList<>();
+
+        Map<String, List<PartitionInfo>> topicsMap;
+        topicsMap = consumer.listTopics();
+
+      
+        for (Map.Entry<String, List<PartitionInfo>> topic : topicsMap.entrySet()) {
+
+            // __consumer_offsets is internal to kafka and should be ignored we also need to ingore everything that isn't Packet Records
+            //--> that means ignore everything that contains an underscore
+            if (!topic.getKey().contentEquals("__consumer_offsets") ) {
+                kafkaTopics.add(topic.getKey());
+                        }
+            // System.out.println("Value: " + topic.getValue() + "\n");
         }
 
         return kafkaTopics;
