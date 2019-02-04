@@ -121,8 +121,8 @@ const RadialPlacement = function() {
 const Network = function() {
   // variables we want to access
   // in multiple places of Network
-  const width = 960;
-  const height = 960;
+  const width = 1260;
+  const height = 1260;
 
   // allData will store the unfiltered data
   let allData = [];
