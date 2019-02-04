@@ -91,7 +91,7 @@ export default class Brush extends PureComponent {
       .call(xAxis2);
 
 
-    svg.append("rect").attr("width",width).attr("height",height).style("fill","none").style("stroke","black");
+    svg.append("rect").attr("width",width).attr("height",height).style("fill","teal").style("stroke","black");
 
     let brushD = d3.brushX()
       .extent([[0, height/2], [width, height]])
@@ -104,8 +104,14 @@ export default class Brush extends PureComponent {
 
 
     let updateCurrentlySelectedData = (range) => {
-      dataStore.currentlySelectedData = dataStore.rawData.slice(
-          xTotalScale.invert(range[0]), xTotalScale.invert(range[1]));
+      let s = xTotalScale.invert(range[0]);
+      let e = xTotalScale.invert(range[1]);
+      console.log("setrange: " + s + " " + e);
+      //dataStore.currentlySelectedData = dataStore.rawData.slice(s, e);
+
+      let tmpData = dataStore.rawData.filter((x,i) => ((s <= i) && (i < e)));
+      console.log(tmpData);
+      dataStore.currentlySelectedData = tmpData;
     }
 
 

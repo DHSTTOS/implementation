@@ -1,9 +1,9 @@
 import { observable, action } from 'mobx';
 import { DEFAULT_SOURCE_NAME } from '@libs';
 import { jsonstreams } from '../../mockdata';
+import appStore from './app';
 
 class DataStore {
-  @observable
   // TODO: when ws binding is done, we'll make this flexible
   availableKeys = Object.keys(jsonstreams[0]);
 
@@ -12,15 +12,29 @@ class DataStore {
 
   // Raw network data
   @observable
-  rawData = [];
+  //rawData = [];
+  rawData = jsonstreams;
 
   @observable
   endpoints = []; // The start and end indices for the x-axis
 
+
+
   // The slice of raw data that is currently selected by the slider:
   currentlySelectedData = [];
 
-
+  @observable
+  sourceOptions = ['Source 1', 'Live'];
+  @observable
+  currentlySelectedSource = '';
+  @action
+  selectSource = source => {
+    if (this.currentlySelectedSource === source) return;
+    
+    appStore.resetDiagramConfigs();
+    this.resetData();
+    this.currentlySelectedSource = source;
+  };
 
   // Array of notification/alarm data sets:
   @observable
@@ -32,6 +46,15 @@ class DataStore {
       endpoints: [],
     },
   ];
+
+  @action
+  resetData = () => {
+    this.availableCollections = [];
+    this.rawData = [];
+    this.endpoints = [];
+    this.currentlySelectedData = [];
+    this.alarms = [];
+  };
 }
 
 const dataStore = new DataStore();
