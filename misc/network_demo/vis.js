@@ -129,6 +129,7 @@ const Network = function() {
   let curLinksData = [];
   let curNodesData = [];
   const linkedByIndex = {};
+
   // these will hold the svg groups for
   // accessing the nodes and links display
   let nodesG = null;
@@ -140,7 +141,6 @@ const Network = function() {
 
   // variables to refect the current settings
   // of the visualization
-  let layout = 'radial';
   let sort = 'data';
   // groupCenters will store our radial layout for
   // the group by id layout.
@@ -257,16 +257,18 @@ const Network = function() {
 
     // switch links to point to node objects instead of id's
     data.links.forEach(function(l) {
-      // if(l.target != "0.0.0.0" || l.source == "0.0.0.0"){
       l.source = nodesMap.get(l.source);
       l.target = nodesMap.get(l.target);
       //}
-      // console.log(l);
-      // console.log(l.source);
-      // console.log(l.target);
-      // linkedByIndex is used for link sorting
-      return (linkedByIndex[`${l.source.id},${l.target.id}`] = 1);
+      // allData.links.forEach(function(d) {
+      linkedByIndex[l.source.id + ',' + l.target.id] = 1;
     });
+    // console.log(l);
+    // console.log(l.source);
+    // console.log(l.target);
+    // linkedByIndex is used for link sorting
+    // return (linkedByIndex[`${l.source.id},${l.target.id}`] = 1);
+    //});
 
     return data;
   };
@@ -309,8 +311,9 @@ const Network = function() {
   // Given two nodes a and b, returns true if
   // there is a link between them.
   // Uses linkedByIndex initialized in setupData
-  const neighboring = (a, b) =>
+  function neighboring(a, b) {
     linkedByIndex[a.id + ',' + b.id] || linkedByIndex[b.id + ',' + a.id];
+  }
   // Removes nodes from input array
   // based on current filter setting.
   // Returns array of nodes
@@ -400,7 +403,11 @@ const Network = function() {
       .style('stroke', d => strokeFor(d))
       .style('stroke-width', 1.0);
 
-    node.on('mouseover', showDetails).on('mouseout', hideDetails);
+    node
+      .on('mouseover', (d, i) => {
+        showDetails(d, i);
+      })
+      .on('mouseout', hideDetails);
 
     return node.exit().remove();
   };
@@ -503,7 +510,8 @@ const Network = function() {
           if (l.source === d || l.target === d) {
             return '#007243';
           } else {
-            return '#ddd';
+            return fade(0.1)
+            // return "#ddd";
           }
         })
         .attr('stroke-opacity', function(l) {
@@ -529,7 +537,7 @@ const Network = function() {
         if (neighboring(d, n)) {
           return 2.0;
         } else {
-          return fade(0.1);
+          return fade(0.2);
         }
       });
 
