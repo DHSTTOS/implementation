@@ -42,13 +42,10 @@ import {
  */
 const formatData = ({ groupName, x, y, rawData = [] }) => {
   // normalize the timestamp
-
   const normalizedRawData = rawData.map(x => ({
     ...x,
-    //Timestamp: x['Timestamp']['$date'],
+    Timestamp: x['Timestamp']['$date'],
   }));
-
-  rawData.map(console.log);
 
   // get all the names of groups of data by groupID
   const groups = new Set();
