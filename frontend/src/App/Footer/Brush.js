@@ -102,10 +102,12 @@ export default class Brush extends PureComponent {
       .attr("class", "brush")
       .call(brushD);
 
+
     let updateCurrentlySelectedData = (range) => {
-      dataStore.currentlySelectedData = dataStore.rawData.slice(xTotalScale.invert(range[0]),
-                                                  xTotalScale.invert(range[1]));
+      dataStore.currentlySelectedData = dataStore.rawData.slice(
+          xTotalScale.invert(range[0]), xTotalScale.invert(range[1]));
     }
+
 
     function brushed() {
       // console.log( d3.event.selection );
@@ -120,14 +122,14 @@ export default class Brush extends PureComponent {
   
       console.log("("+x0+","+y0+")-("+x1+","+y1+")");
       */
-      console.log("selected: " + d3.event.selection[0] + " " + d3.event.selection[1]);
+      //console.log("selected: " + d3.event.selection[0] + " " + d3.event.selection[1]);
       updateCurrentlySelectedData(d3.event.selection);
       //console.log(brushD.extent().call());
       xCurScale.domain(d3.event.selection);
       xAxis2.scale(xCurScale);
       let t = d3.transition()
         .duration(50);	// XXX remove completely?
-      svg.select(".x")	// XXX was does this select?
+      svg.select(".axis2")	// XXX was does this select?
         .transition(t)
         .call(xAxis2);
 
