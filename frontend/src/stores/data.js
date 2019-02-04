@@ -23,7 +23,11 @@ class DataStore {
   @observable
   sourceOptions = ['Source 1', 'Live'];
   @observable
-  selectedSource = '';
+  currentlySelectedSource = '';
+  @action
+  selectSource = source => {
+    this.currentlySelectedSource = source;
+  };
 
   // Array of notification/alarm data sets:
   @observable

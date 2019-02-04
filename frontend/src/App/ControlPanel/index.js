@@ -17,7 +17,7 @@ const Row = styled.div`
 @observer
 class SourceSelector extends Component {
   selectSource = source => {
-    dataStore.selectedSource = source;
+    dataStore.selectSource(source);
   };
 
   render() {
@@ -26,7 +26,7 @@ class SourceSelector extends Component {
         options={dataStore.sourceOptions}
         name={'Source'}
         onSelect={this.selectSource}
-        currentSelection={dataStore.selectedSource}
+        currentSelection={dataStore.currentlySelectedSource}
       />
     );
   }
