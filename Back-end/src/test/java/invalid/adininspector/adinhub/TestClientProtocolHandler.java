@@ -65,7 +65,7 @@ public class TestClientProtocolHandler {
 				"{\"cmd\": \"LOGIN\", \"user\": \"foo\", \"pwd\": \"swordfish\", \"id\": \"12\"}");
 		response = cph.handleRequest(hub, session,
 				"{\"cmd\": \"GET_AV_COLL\", \"id\": \"12\"}");
-		assertEquals("{\"cmd\":\"LIST_COL\",\"id\":\"12\",\"par\":[\"mockdataset\"]}", response);
+		assertEquals("{\"cmd\":\"LIST_COLL\",\"id\":\"12\",\"par\":[\"mockdataset\"]}", response);
 	}
 
 }

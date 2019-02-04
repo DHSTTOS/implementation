@@ -289,6 +289,7 @@ export {
   getAvailableCollections,
   getCollection,
   getCollectionSize,
+  getEndpoints,
   getRecordsInRange,
   getRecordsInRangeSize,
   getLocalCollection,
