@@ -22,3 +22,5 @@ Back-end/\.settings/
 .*.swp
 
 \.vscode/launch\.json
+
+\.vscode/settings\.json
