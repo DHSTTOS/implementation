@@ -22,11 +22,11 @@ public class DataProcessor {
 
         for (IAggregator agg : aggregators) {
             
-            clientMediator.p("calculating : " + agg.getClass().getSimpleName() + " for: " + collectionName);
+            //clientMediator.p("calculating : " + agg.getClass().getSimpleName() + " for: " + collectionName);
 
             clientMediator.addRecordsToCollection(agg.processData(clientMediator.getCollectionAsRecordsArrayList(collectionName)), collectionName + "_" + agg.getClass().getSimpleName());
             
-            clientMediator.p("FINISHED");
+            //clientMediator.p("FINISHED");
             
         }
     }

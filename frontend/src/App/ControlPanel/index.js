@@ -27,6 +27,7 @@ class SourceSelector extends Component {
         name={'Source'}
         onSelect={this.selectSource}
         currentSelection={dataStore.currentlySelectedSource}
+        width={'15rem'}
       />
     );
   }
