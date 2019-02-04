@@ -180,7 +180,15 @@ public class MongoClientMediator {
 
     public String[] getRecordInRange(String collection, String key, Object start,Object end) {
         BasicDBObject query = new BasicDBObject();
-        query.put(key, new BasicDBObject("$gte", start).append("$lt", (end)));
+
+        if(key == "Timestamp")
+        {
+            System.out.println("OMG TIMESTAMP!");
+            query.put(key, new BasicDBObject("$gte", new Date(Long.valueOf((String)start)).append("$lt", new Date(Long.valueOf((String)end)) ));
+
+        }
+        else
+            query.put(key, new BasicDBObject("$gte", start).append("$lt", (end)));
 
         return mongoIteratorToStringArray(db.getCollection(collection).find(query));
     }
