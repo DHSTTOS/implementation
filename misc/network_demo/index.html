@@ -1,0 +1,77 @@
+<head>
+  <title>Node-Link Diagram</title>
+  <meta name="description" content="Node-Link Diagram.">
+  <meta name="author" content="Klevia Ulqinaku">
+  <style>
+    body {
+      font-family:"avenir next", Arial, sans-serif;
+      font-size: 12px;
+      color: #696969;
+    }
+
+    #play-button {
+      position: absolute;
+      top: 600px;
+      left: 500px;
+      background: #f08080;
+      padding-right: 26px;
+      border-radius: 3px;
+      border: none;
+      color: white;
+      margin: 0;
+      padding: 0 12px;
+      width: 60px;
+      cursor: pointer;
+      height: 30px;
+    }
+
+    #play-button:hover {
+      background-color: #696969;
+    }    
+  </style>
+
+  <link rel="stylesheet" href="css/reset.css" />
+  <link rel="stylesheet" href="css/bootstrap.min.css" />
+  <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
+  
+  <div id="container" class="container">
+    <header>
+    <h1>Node-Link Diagram</h1>
+    </header>
+
+      <div id="song_selection" class="control">
+        <h3>Source</h3>
+        <select id="song_select">
+          <option value="Source1.json">Source 1</option>
+          <option value="Source2.json">Source 2</option>
+          <option value="Source3.json">Source 3</option>
+          <option value="Source4.json">Source 4</option>
+          <option value="Source5.json">Source 5</option>
+          <option value="Source6.json">Source 6</option>
+        </select>
+
+      </div>
+      <div id="controls">        
+      <div id="main" role="main">
+        <div id="vis"></div>
+      </div>
+    </div> 
+   
+
+  <script>window.jQuery || document.write('<script src="js/libs/jquery-1.7.2.min.js"><\/script>')</script>
+
+  <script defer src="js/plugins.js"></script>
+  <script defer src="js/script.js"></script>
+  <script src="js/libs/d3.v2.js"></script>
+  
+  <script src="js/Tooltip.js"></script>
+  <script src="./vis.js"></script>
+  <script type="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.19.1/vis.min.js">
+  
+  </script>
+</body>
+</html>

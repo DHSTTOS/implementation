@@ -1,0 +1,608 @@
+{
+  "nodes": [
+    {
+      "id": "Mac1",
+      "type": "L2",
+      "playcount": 661020,
+      "protocol": "TCP"
+    },
+    {
+      "id": "Mac2",
+      "type": "L3",
+      "playcount": 61020,
+      "protocol": "TCP"
+    },
+    {
+      "id": "Mac3",
+      "type": "L4",
+      "playcount": 201020,
+      "protocol": "UDP"
+    },
+    {
+      "id": "Mac4",
+      "type": "L3",
+      "playcount": 101020,
+      "protocol": "UDP"
+    },
+    {
+      "id": "Mac5",
+      "type": "L2",
+      "playcount": 51020,
+      "protocol": "UDP"
+    },
+    {
+      "id": "Mac6",
+      "type": "L4",
+      "playcount": 401020,
+      "protocol": "TCP"
+    },
+    {
+      "id": "Mac7",
+      "type": "L2",
+      "playcount": 661020,
+      "protocol": "TCP"
+    },
+    {
+      "id": "Mac8",
+      "type": "L3",
+      "playcount": 61020,
+      "protocol": "TCP"
+    },
+    {
+      "id": "Mac9",
+      "type": "L4",
+      "playcount": 201020,
+      "protocol": "UDP"
+    },
+    {
+      "id": "Mac10",
+      "type": "L3",
+      "playcount": 101020,
+      "protocol": "UDP"
+    },
+    {
+      "id": "Mac11",
+      "type": "L2",
+      "playcount": 51020,
+      "protocol": "UDP"
+    },
+    {
+      "id": "Mac12",
+      "type": "L4",
+      "playcount": 401020,
+      "protocol": "TCP"
+    },
+    {
+      "id": "Mac13",
+      "type": "L2",
+      "playcount": 661020,
+      "protocol": "TCP"
+    },
+    {
+      "id": "Mac14",
+      "type": "L3",
+      "playcount": 61020,
+      "protocol": "TCP"
+    },
+    {
+      "id": "Mac15",
+      "type": "L4",
+      "playcount": 201020,
+      "protocol": "UDP"
+    },
+    {
+      "id": "Mac16",
+      "type": "L3",
+      "playcount": 101020,
+      "protocol": "UDP"
+    },
+    {
+      "id": "Mac17",
+      "type": "L2",
+      "playcount": 51020,
+      "protocol": "UDP"
+    },
+    {
+      "id": "Mac18",
+      "type": "L4",
+      "playcount": 666655,
+      "protocol": "TCP"
+    },
+    {
+      "id": "Mac19",
+      "type": "L2",
+      "playcount": 55456,
+      "protocol": "TCP"
+    },
+    {
+      "id": "Mac20",
+      "type": "L3",
+      "playcount": 554896,
+      "protocol": "TCP"
+    },
+    {
+      "id": "Mac21",
+      "type": "L4",
+      "playcount": 489,
+      "protocol": "UDP"
+    },
+    {
+      "id": "Mac22",
+      "type": "L3",
+      "playcount": 5525,
+      "protocol": "UDP"
+    },
+    {
+      "id": "Mac23",
+      "type": "L2",
+      "playcount": 45225,
+      "protocol": "UDP"
+    },
+    {
+      "id": "Mac24",
+      "type": "L4",
+      "playcount": 249554,
+      "protocol": "TCP"
+    },
+    {
+      "id": "Mac25",
+      "type": "L2",
+      "playcount": 45654,
+      "protocol": "TCP"
+    },
+    {
+      "id": "Mac26",
+      "type": "L3",
+      "playcount": 65455,
+      "protocol": "TCP"
+    },
+    {
+      "id": "Mac27",
+      "type": "L4",
+      "playcount": 24569,
+      "protocol": "UDP"
+    },
+    {
+      "id": "Mac28",
+      "type": "L3",
+      "playcount": 15478,
+      "protocol": "UDP"
+    },
+    {
+      "id": "Mac29",
+      "type": "L2",
+      "playcount": 791020,
+      "protocol": "UDP"
+    },
+    {
+      "id": "Mac30",
+      "type": "L4",
+      "playcount": 1020,
+      "protocol": "TCP"
+    },
+    {
+      "id": "Mac31",
+      "type": "L2",
+      "playcount": 121020,
+      "protocol": "TCP"
+    },
+    {
+      "id": "Mac32",
+      "type": "L4",
+      "playcount": 31020,
+      "protocol": "TCP"
+    },
+    {
+      "id": "Mac33",
+      "type": "L4",
+      "playcount": 221020,
+      "protocol": "UDP"
+    },
+    {
+      "id": "Mac34",
+      "type": "L3",
+      "playcount": 1001020,
+      "protocol": "UDP"
+    },
+    {
+      "id": "Mac35",
+      "type": "L2",
+      "playcount": 61020,
+      "protocol": "UDP"
+    },
+    {
+      "id": "Mac36",
+      "type": "L4",
+      "playcount": 401020,
+      "protocol": "TCP"
+    },
+    {
+      "id": "Mac37",
+      "type": "L2",
+      "playcount": 661020,
+      "protocol": "TCP"
+    },
+    {
+      "id": "Mac38",
+      "type": "L3",
+      "playcount": 61020,
+      "protocol": "TCP"
+    },
+    {
+      "id": "Mac39",
+      "type": "L2",
+      "playcount": 201020,
+      "protocol": "UDP"
+    },
+    {
+      "id": "Mac40",
+      "type": "L3",
+      "playcount": 101020,
+      "protocol": "UDP"
+    },
+    {
+      "id": "Mac41",
+      "type": "L2",
+      "playcount": 51020,
+      "protocol": "UDP"
+    },
+    {
+      "id": "Mac42",
+      "type": "L4",
+      "playcount": 401020,
+      "protocol": "TCP"
+    },
+    {
+      "id": "Mac43",
+      "type": "L2",
+      "playcount": 661020,
+      "protocol": "TCP"
+    },
+    {
+      "id": "Mac44",
+      "type": "L3",
+      "playcount": 61020,
+      "protocol": "TCP"
+    },
+    {
+      "id": "Mac45",
+      "type": "L4",
+      "playcount": 201020,
+      "protocol": "UDP"
+    },
+    {
+      "id": "Mac46",
+      "type": "L3",
+      "playcount": 101020,
+      "protocol": "UDP"
+    },
+    {
+      "id": "Mac47",
+      "type": "L2",
+      "playcount": 51020,
+      "protocol": "UDP"
+    },
+    {
+      "id": "Mac48",
+      "type": "L4",
+      "playcount": 401020,
+      "protocol": "TCP"
+    },
+    {
+      "id": "Mac49",
+      "type": "L2",
+      "playcount": 661020,
+      "protocol": "TCP"
+    },
+    {
+      "id": "Mac50",
+      "type": "L3",
+      "playcount": 61020,
+      "protocol": "TCP"
+    },
+    {
+      "id": "Mac51",
+      "type": "L4",
+      "playcount": 201020,
+      "protocol": "UDP"
+    },
+    {
+      "id": "Mac52",
+      "type": "L3",
+      "playcount": 101020,
+      "protocol": "UDP"
+    },
+    {
+      "id": "Mac53",
+      "type": "L2",
+      "playcount": 51020,
+      "protocol": "UDP"
+    },
+    {
+      "id": "Mac54",
+      "type": "L4",
+      "playcount": 666655,
+      "protocol": "TCP"
+    },
+    {
+      "id": "Mac55",
+      "type": "L2",
+      "playcount": 55456,
+      "protocol": "TCP"
+    },
+    {
+      "id": "Mac56",
+      "type": "L3",
+      "playcount": 554896,
+      "protocol": "TCP"
+    },
+    {
+      "id": "Mac57",
+      "type": "L4",
+      "playcount": 489,
+      "protocol": "UDP"
+    },
+    {
+      "id": "Mac58",
+      "type": "L3",
+      "playcount": 5525,
+      "protocol": "UDP"
+    },
+    {
+      "id": "Mac59",
+      "type": "L2",
+      "playcount": 45225,
+      "protocol": "UDP"
+    },
+    {
+      "id": "Mac60",
+      "type": "L4",
+      "playcount": 249554,
+      "protocol": "TCP"
+    },
+    {
+      "id": "Mac61",
+      "type": "L2",
+      "playcount": 45654,
+      "protocol": "TCP"
+    },
+    {
+      "id": "Mac62",
+      "type": "L3",
+      "playcount": 65455,
+      "protocol": "TCP"
+    },
+    {
+      "id": "Mac63",
+      "type": "L4",
+      "playcount": 24569,
+      "protocol": "UDP"
+    },
+    {
+      "id": "Mac64",
+      "type": "L3",
+      "playcount": 15478,
+      "protocol": "UDP"
+    },
+    {
+      "id": "Mac65",
+      "type": "L2",
+      "playcount": 791020,
+      "protocol": "UDP"
+    },
+    {
+      "id": "Mac66",
+      "type": "L4",
+      "playcount": 1020,
+      "protocol": "TCP"
+    },
+    {
+      "id": "Mac67",
+      "type": "L2",
+      "playcount": 121020,
+      "protocol": "TCP"
+    },
+    {
+      "id": "Mac68",
+      "type": "L4",
+      "playcount": 31020,
+      "protocol": "TCP"
+    },
+    {
+      "id": "Mac69",
+      "type": "L4",
+      "playcount": 221020,
+      "protocol": "UDP"
+    },
+    {
+      "id": "Mac70",
+      "type": "L3",
+      "playcount": 1001020,
+      "protocol": "UDP"
+    },
+    {
+      "id": "Mac71",
+      "type": "L2",
+      "playcount": 61020,
+      "protocol": "UDP"
+    },
+    {
+      "id": "Mac72",
+      "type": "L4",
+      "playcount": 401020,
+      "protocol": "TCP"
+    },
+    {
+      "id": "Mac73",
+      "type": "L3",
+      "playcount": 101020,
+      "protocol": "UDP"
+    },
+    {
+      "id": "Mac74",
+      "type": "L2",
+      "playcount": 51020,
+      "protocol": "UDP"
+    },
+    {
+      "id": "Mac75",
+      "type": "L4",
+      "playcount": 666655,
+      "protocol": "TCP"
+    },
+    {
+      "id": "Mac76",
+      "type": "L2",
+      "playcount": 55456,
+      "protocol": "TCP"
+    },
+    {
+      "id": "Mac77",
+      "type": "L3",
+      "playcount": 554896,
+      "protocol": "TCP"
+    },
+    {
+      "id": "Mac78",
+      "type": "L4",
+      "playcount": 489,
+      "protocol": "UDP"
+    },
+    {
+      "id": "Mac79",
+      "type": "L3",
+      "playcount": 5525,
+      "protocol": "UDP"
+    },
+    {
+      "id": "Mac80",
+      "type": "L2",
+      "playcount": 45225,
+      "protocol": "UDP"
+    },
+    {
+      "id": "Mac81",
+      "type": "L4",
+      "playcount": 249554,
+      "protocol": "TCP"
+    },
+    {
+      "id": "Mac82",
+      "type": "L2",
+      "playcount": 45654,
+      "protocol": "TCP"
+    },
+    {
+      "id": "Mac83",
+      "type": "L3",
+      "playcount": 65455,
+      "protocol": "TCP"
+    },
+    {
+      "id": "Mac84",
+      "type": "L4",
+      "playcount": 24569,
+      "protocol": "UDP"
+    },
+    {
+      "id": "Mac85",
+      "type": "L3",
+      "playcount": 15478,
+      "protocol": "UDP"
+    },
+    {
+      "id": "Mac86",
+      "type": "L2",
+      "playcount": 791020,
+      "protocol": "UDP"
+    },
+    {
+      "id": "Mac87",
+      "type": "L4",
+      "playcount": 1020,
+      "protocol": "TCP"
+    },
+    {
+      "id": "Mac88",
+      "type": "L2",
+      "playcount": 121020,
+      "protocol": "TCP"
+    },
+    {
+      "id": "Mac68",
+      "type": "L4",
+      "playcount": 31020,
+      "protocol": "TCP"
+    },
+    {
+      "id": "Mac69",
+      "type": "L4",
+      "playcount": 221020,
+      "protocol": "UDP"
+    },
+    {
+      "id": "Mac70",
+      "type": "L3",
+      "playcount": 1001020,
+      "protocol": "UDP"
+    },
+    {
+      "id": "Mac71",
+      "type": "L2",
+      "playcount": 61020,
+      "protocol": "UDP"
+    },
+    {
+      "id": "Mac72",
+      "type": "L4",
+      "playcount": 401020,
+      "protocol": "TCP"
+    }
+  ],
+  "links": [
+    {
+      "source": "Mac1",
+      "target": "Mac3"
+    },
+    {
+      "source": "Mac4",
+      "target": "Mac1"
+    },
+    {
+      "source": "Mac2",
+      "target": "Mac3"
+    },
+    {
+      "source": "Mac1",
+      "target": "Mac6"
+    },
+    {
+      "source": "Mac4",
+      "target": "Mac5"
+    },
+    {
+      "source": "Mac1",
+      "target": "Mac21"
+    },
+    {
+      "source": "Mac24",
+      "target": "Mac31"
+    },
+    {
+      "source": "Mac22",
+      "target": "Mac33"
+    },
+    {
+      "source": "Mac16",
+      "target": "Mac6"
+    },
+    {
+      "source": "Mac14",
+      "target": "Mac5"
+    },
+    {
+      "source": "Mac30",
+      "target": "Mac32"
+    }
+  ]
+}
