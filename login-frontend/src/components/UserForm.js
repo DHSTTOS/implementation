@@ -1,28 +1,28 @@
-import React from "react";
-import TextField from "@material-ui/core/TextField";
-import * as ws from "./wsutils.js"
+import React from 'react';
+import TextField from '@material-ui/core/TextField';
+import * as ws from './wsutils.js';
 // import Button from "@material-ui/core/Button";
-import styled from "@emotion/styled";
+import styled from '@emotion/styled';
 
-import "./UserForm.css";
-import { RaisedButton } from "material-ui";
-import { browserHistory } from "react-router";
-import { ContentSave } from "material-ui/svg-icons";
+import './UserForm.css';
+import { RaisedButton } from 'material-ui';
+import { browserHistory } from 'react-router';
+import { ContentSave } from 'material-ui/svg-icons';
 
-function save () {
+function save() {
   var fieldValue = document.getElementById('endpoint').value;
-  localStorage.setItem('text',fieldValue);
+  localStorage.setItem('text', fieldValue);
 }
 
-var tag = document.getElementById("Button");
+var tag = document.getElementById('Button');
 //document.getElementById("myButton");
 
 function mouseOver() {
-    tag.style.background="yellow";
-};
+  tag.style.background = 'yellow';
+}
 function mouseOut() {
-    tag.style.background="white";
-};
+  tag.style.background = 'white';
+}
 
 const MegaField = styled(TextField)`
   
@@ -37,34 +37,32 @@ const MegaField = styled(TextField)`
 `;
 
 const MyButton = styled(RaisedButton)`
-  
-background-color: transparent;
+  background-color: transparent;
   border: none;
   color: transparent;
   text-align: center;
   text-decoration: none;
   font-size: 16px;
- 
+
   cursor: pointer;
 `;
 
-
 class UserForm extends React.Component {
   handleClick = () => {
-    window.location.href = "https://www.google.de/";
+    window.location.href = 'https://www.google.de/';
   };
 
   state = {
-    username: "",
-    password: "",
-    endpoint: ""
+    username: '',
+    password: '',
+    endpoint: '',
   };
 
   change = e => {
     this.setState({
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
-    console.log("change2: " + e + " " + e.target + " " + e.target.name);
+    console.log('change2: ' + e + ' ' + e.target + ' ' + e.target.name);
   };
 
   onSubmit = e => {
@@ -74,12 +72,12 @@ class UserForm extends React.Component {
 
   login2 = async _ => {
     var fieldValue = document.getElementById('endpoint').value;
-    await localStorage.setItem('text',fieldValue);
+    await localStorage.setItem('text', fieldValue);
     let username = this.state.username;
     let password = this.state.password;
-    console.log("logging in; username: " + this.state.username);
+    console.log('logging in; username: ' + this.state.username);
     ws.login(username, password);
-  }
+  };
 
   render() {
     return (
@@ -107,7 +105,7 @@ class UserForm extends React.Component {
         />
         <br />
         <MegaField
-        id = "endpoint"
+          id="endpoint"
           name="endpoint"
           floatingLabelText="Endpoint"
           hintText="Endpoint"
@@ -118,15 +116,16 @@ class UserForm extends React.Component {
           margin="normal"
         />
         <br />
-        <br/>
+        <br />
         <MyButton
-         label="Login" 
-         //onClick={this.handleClick} 
-         //onClick = {save}
-         onClick = {this.login2}
-         id ="Button" onmouseover={mouseOver} 
-         onmouseout={mouseOut}/>
-       
+          label="Login"
+          //onClick={this.handleClick}
+          //onClick = {save}
+          onClick={this.login2}
+          id="Button"
+          onmouseover={mouseOver}
+          onmouseout={mouseOut}
+        />
       </form>
     );
   }
