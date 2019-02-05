@@ -1,25 +1,38 @@
 import { observable, action } from 'mobx';
 import { DEFAULT_SOURCE_NAME } from '@libs';
-import { jsonstreams } from '../../mockdata';
+import {
+  lmf,
+  lmf_FlowRatePerSecond,
+  lmf_NumberOfConnectionsPerNode,
+} from '../../mockdata';
 import appStore from './app';
 
 class DataStore {
   // TODO: when ws binding is done, we'll make this flexible
-  availableKeys = Object.keys(jsonstreams[0]);
+  availableKeys = Object.keys(lmf[0]);
 
   @observable
   availableCollections = []; //exampleCollection
 
   // Raw network data
   @observable.shallow
-  rawData = jsonstreams;
+  rawData = lmf;
+
+  @observable.shallow
+  flowrateData = lmf_FlowRatePerSecond;
+
+  @observable.shallow
+  connectionNumberData = lmf_NumberOfConnectionsPerNode;
+
+  @observable.shallow
+  addressLinkData = [];
 
   @observable
   endpoints = []; // The start and end indices for the x-axis
 
   // The slice of raw data that is currently selected by the slider:
   @observable.shallow
-  currentlySelectedData = jsonstreams;
+  currentlySelectedData = lmf;
 
   @observable
   sourceOptions = ['Source 1', 'Live'];
