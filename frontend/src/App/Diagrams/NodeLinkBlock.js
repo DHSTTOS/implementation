@@ -5,11 +5,6 @@ import React, { PureComponent } from 'react';
  * @typedef {object} Props
  * @prop {number} width
  * @prop {number} height
- * @prop {object[]} data
- * @prop {string} x
- * @prop {string} y
- * @prop {string} colors
- * @prop {number} symbolSize
  *
  * @extends {PureComponent<Props>}
  */
@@ -20,7 +15,7 @@ class NodeLinkBlock extends PureComponent {
   componentDidMount = () => {};
 
   render() {
-    // const { width, height, data, x, y, colors, symbolSize } = this.props;
+    // const { width, height } = this.props;
     return <div ref={this.nodeLinkGram} />;
   }
 }
