@@ -25,7 +25,7 @@ function mouseOut() {
 }
 
 // const MegaField = styled(TextField)`
-  
+
 //   /* font-family: "Roboto",sans-serif;
 //     outline:1
 //     width: 100%;
@@ -77,6 +77,7 @@ class UserForm extends React.Component {
     let password = this.state.password;
     console.log('logging in; username: ' + this.state.username);
     ws.login(username, password);
+    window.location.href = 'main';
   };
 
   render() {
