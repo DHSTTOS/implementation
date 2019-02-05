@@ -7,7 +7,6 @@ class NodeLinkBlock extends PureComponent {
 
   componentDidMount = () => {
     const myNetwork = Network();
-    // inits the diagram with empty data
     myNetwork(this.nodeLinkGram.current, dataStore.currentNodeLinkData);
 
     autorun(() => myNetwork.updateData(dataStore.currentNodeLinkData));
