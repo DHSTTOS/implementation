@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 // import { observer } from 'mobx-react';
+import { nodeLinkSample } from '../../../mockdata';
 
 /**
  * @typedef {object} Props
