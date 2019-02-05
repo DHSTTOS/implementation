@@ -4,6 +4,7 @@ import {
   lmf,
   lmf_FlowRatePerSecond,
   lmf_NumberOfConnectionsPerNode,
+  nodeLinkSample,
 } from '../../mockdata';
 import appStore from './app';
 
@@ -26,6 +27,9 @@ class DataStore {
 
   @observable.shallow
   addressLinkData = [];
+
+  @observable.shallow
+  currentNodeLinkData = nodeLinkSample;
 
   @observable
   endpoints = []; // The start and end indices for the x-axis

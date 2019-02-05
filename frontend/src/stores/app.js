@@ -5,6 +5,7 @@ import {
   SCATTER_PLOT,
   LINE_CHART,
   NIVO_COLOR_SCHEMES,
+  NODE_LINK,
 } from '@libs';
 
 // JS Doc type defs
@@ -128,6 +129,8 @@ class AppStore {
   @computed
   get canSaveConfig() {
     const config = this.configModal.diagramConfig;
+    if (config.plotType === NODE_LINK) return true;
+    
     return !!(config.plotType && config.x && config.y && config.groupName);
   }
 
