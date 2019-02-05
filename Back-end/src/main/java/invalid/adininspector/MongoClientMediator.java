@@ -72,7 +72,15 @@ public class MongoClientMediator {
             throw new LoginFailureException(e.getMessage());
         }
 
-       // System.out.println(getStartRecord("lemgo"));
+       String[] a = getRecordInRange("motor", "Timestamp","1548428021051", "1648428021051");
+
+        System.out.println("got " + a.length + " records");
+
+       for (String var : a) {
+           p(var);
+       }
+
+       
     }
 
     public MongoClientMediator(String udid, String password) throws LoginFailureException {
@@ -158,12 +166,12 @@ public class MongoClientMediator {
         return (int) db.getCollection(collection).countDocuments();
     }
 
-    public String[] getRecordInRange(String collection, String key, String start, String end) {
-        BasicDBObject query = new BasicDBObject();
-        query.put(key, new BasicDBObject("$gte", start).append("$lt", (end)));
+    // public String[] getRecordInRange(String collection, String key, String start, String end) {
+    //     BasicDBObject query = new BasicDBObject();
+    //     query.put(key, new BasicDBObject("$gte", start).append("$lt", (end)));
 
-        return mongoIteratorToStringArray(db.getCollection(collection).find(query));
-    }
+    //     return mongoIteratorToStringArray(db.getCollection(collection).find(query));
+    // }
 
     public long getRecordsInRangeSize(String collection, String key, String start, String end) {
         BasicDBObject query = new BasicDBObject();
@@ -177,7 +185,7 @@ public class MongoClientMediator {
 
 
 
-
+    //TODO: get type of field in mongo and cast start and end to this type
     public String[] getRecordInRange(String collection, String key, Object start,Object end) {
         BasicDBObject query = new BasicDBObject();
 
