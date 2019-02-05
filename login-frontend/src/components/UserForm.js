@@ -24,17 +24,17 @@ function mouseOut() {
   tag.style.background = 'white';
 }
 
-const MegaField = styled(TextField)`
+// const MegaField = styled(TextField)`
   
-  font-family: "Roboto",sans-serif;
-    outline:1
-    width: 100%;
-    border: 0;
-    margin: 0;
-    padding: 15px;
-    box-sizing: border-box;
-    font-size: 14px;
-`;
+//   /* font-family: "Roboto",sans-serif;
+//     outline:1
+//     width: 100%;
+//     border: 0;
+//     margin: 0;
+//     padding: 15px;
+//     box-sizing: border-box;
+//     font-size: 14px; */
+// `;
 
 const MyButton = styled(RaisedButton)`
   background-color: transparent;
@@ -82,7 +82,7 @@ class UserForm extends React.Component {
   render() {
     return (
       <form>
-        <MegaField
+        <TextField
           name="username"
           hintText="UserId"
           floatingLabelText="UserId"
@@ -93,7 +93,7 @@ class UserForm extends React.Component {
           text-align-center
         />
         <br />
-        <MegaField
+        <TextField
           name="password"
           hintText="Password"
           floatingLabelText="Password"
@@ -104,7 +104,7 @@ class UserForm extends React.Component {
           margin="normal"
         />
         <br />
-        <MegaField
+        <TextField
           id="endpoint"
           name="endpoint"
           floatingLabelText="Endpoint"
