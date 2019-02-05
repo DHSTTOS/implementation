@@ -29,7 +29,6 @@ class NodeLinkBlock extends PureComponent {
 function RadialPlacement() {
   // stores the key -> location values
   let values = d3.map();
-  var playButton = d3.select('#play-button');
   // how much to separate each location by
   let increment = 5;
   // how large to make the layout
@@ -39,9 +38,6 @@ function RadialPlacement() {
   // what angle to start at
   let start = -120;
   let current = start;
-  var l4 = document.getElementsByTagName('L4').length;
-  var l3 = document.getElementsByTagName('L3').length;
-  var l2 = document.getElementsByTagName('L2').length;
 
   // Given an center point, angle, and radius length,
   // return a radial position for that angle
@@ -203,7 +199,7 @@ function Network() {
 
     force.on('tick', radialTick);
     // .charge(charge);
-    setFilter('all');
+    // setFilter('all');
 
     // perform rendering and start force layout
     update();
@@ -346,18 +342,6 @@ function Network() {
   // Returns array of nodes
   var filterNodes = function(allNodes) {
     let filteredNodes = allNodes;
-    /*if (filter === "popular" || filter === "obscure") {
-      const playcounts = allNodes.map(d => d.playcount).sort(d3.ascending);
-      const cutoff = d3.quantile(playcounts, 0.5);
-      filteredNodes = allNodes.filter(function(n) {
-        if (filter === "popular") {
-          return n.playcount > cutoff;
-        } else if (filter === "obscure") {
-          return n.playcount <= cutoff;
-        }
-      });
-    }*/
-
     return filteredNodes;
   };
 
@@ -463,7 +447,7 @@ function Network() {
   function fade(opacity) {
     return function(d) {
       node.style('stroke-opacity', function(o) {
-        thisOpacity = neighboring(d, o) ? 1 : opacity;
+        const thisOpacity = neighboring(d, o) ? 1 : opacity;
         this.setAttribute('fill-opacity', thisOpacity);
         return thisOpacity;
       });
@@ -475,7 +459,7 @@ function Network() {
   }
 
   // switches filter option to new filter
-  var setFilter = newFilter => (filter = newFilter);
+  // var setFilter = newFilter => (filter = newFilter);
 
   // switches sort option to new sort
   // var setSort = newSort => (sort = newSort);
