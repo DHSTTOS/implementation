@@ -59,15 +59,15 @@ const RadialPlacement = function() {
     keys.forEach(k => {
       if (k.includes(':')) {
         //increment = 360;
-        radius = 200;
+        radius = 100;
         //increment = 360;
         place(k);
       } else if (k.includes('.')) {
-        radius = 500;
+        radius = 300;
         // increment = 360;
         place(k);
       } else {
-        radius = 800;
+        radius = 600;
         //increment = 360;
         place(k);
       }

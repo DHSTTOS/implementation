@@ -2,18 +2,10 @@ import React, { PureComponent } from 'react';
 import { autorun } from 'mobx';
 import { dataStore } from '@stores';
 
-/**
- * @typedef {object} Props
- * @prop {number} width
- * @prop {number} height
- *
- * @extends {PureComponent<Props>}
- */
 class NodeLinkBlock extends PureComponent {
   nodeLinkGram = React.createRef();
 
   componentDidMount = () => {
-    const { width, height } = this.props;
     const myNetwork = Network();
     // inits the diagram with empty data
     myNetwork(this.nodeLinkGram.current, dataStore.currentNodeLinkData);
@@ -79,19 +71,16 @@ function RadialPlacement() {
 
     increment = 25;
 
+    // Fullscreen size
     keys.forEach(k => {
       if (k.includes(':')) {
-        //increment = 360;
-        radius = 200;
-        //increment = 360;
+        radius = 100;
         place(k);
       } else if (k.includes('.')) {
-        radius = 500;
-        // increment = 360;
+        radius = 300;
         place(k);
       } else {
-        radius = 800;
-        //increment = 360;
+        radius = 600;
         place(k);
       }
     });
@@ -300,8 +289,8 @@ function Network() {
   // Returns d3.map of ids -> nodes
   var mapNodes = function(nodes) {
     const l2Map = d3.map();
-    const l3Map = d3.map();
-    const l4Map = d3.map();
+    // const l3Map = d3.map();
+    // const l4Map = d3.map();
 
     nodes.forEach(n => {
       //   if(n.type == "L2"){
@@ -457,23 +446,6 @@ function Network() {
       });
     };
   }
-
-  // switches filter option to new filter
-  // var setFilter = newFilter => (filter = newFilter);
-
-  // switches sort option to new sort
-  // var setSort = newSort => (sort = newSort);
-
-  // tick function for force directed layout
-  // var forceTick = function(e) {
-  //   node.attr('cx', d => d.x).attr('cy', d => d.y);
-
-  //   return link
-  //     .attr('x1', d => d.source.x)
-  //     .attr('y1', d => d.source.y)
-  //     .attr('x2', d => d.target.x)
-  //     .attr('y2', d => d.target.y);
-  // };
 
   // tick function for radial layout
   var radialTick = function(e) {
