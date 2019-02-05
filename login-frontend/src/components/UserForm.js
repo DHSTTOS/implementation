@@ -6,13 +6,13 @@ import styled from '@emotion/styled';
 
 import './UserForm.css';
 import { RaisedButton } from 'material-ui';
-import { browserHistory } from 'react-router';
-import { ContentSave } from 'material-ui/svg-icons';
+// import { browserHistory } from 'react-router';
+// import { ContentSave } from 'material-ui/svg-icons';
 
-function save() {
-  var fieldValue = document.getElementById('endpoint').value;
-  localStorage.setItem('text', fieldValue);
-}
+// function save() {
+//   var fieldValue = document.getElementById('endpoint').value;
+//   localStorage.setItem('text', fieldValue);
+// }
 
 var tag = document.getElementById('Button');
 //document.getElementById("myButton");
