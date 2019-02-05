@@ -3,11 +3,12 @@ import { observer } from 'mobx-react';
 import styled from '@emotion/styled';
 import Typography from '@material-ui/core/Typography';
 
-import { formatData, SCATTER_PLOT, LINE_CHART } from '@libs';
+import { formatData, SCATTER_PLOT, LINE_CHART, NODE_LINK } from '@libs';
 import { appStore, dataStore } from '@stores';
 
 import LineChartBlock from './LineChartBlock';
 import ScatterPlotBlock from './ScatterPlotBlock';
+import NodeLinkBlock from './NodeLinkBlock';
 
 const CenteredTypography = styled(Typography)`
   align-self: center;
@@ -91,6 +92,15 @@ class Diagram extends Component {
             lineWidth={lineWidth}
             areaOpacity={areaOpacity}
           />
+        );
+        break;
+      case NODE_LINK:
+        plot = !this.props.isFullscreen ? (
+          <CenteredTypography variant="subtitle1" color="error">
+            Please toggle full screen mode to see the node link diagram
+          </CenteredTypography>
+        ) : (
+          <NodeLinkBlock />
         );
         break;
     }

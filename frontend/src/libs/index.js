@@ -3,6 +3,7 @@ import {
   DEFAULT_GLOBAL_FILTERS,
   SCATTER_PLOT,
   LINE_CHART,
+  NODE_LINK,
   NIVO_COLOR_SCHEMES,
 } from './consts';
 
@@ -68,6 +69,7 @@ export {
   DEFAULT_GLOBAL_FILTERS,
   SCATTER_PLOT,
   LINE_CHART,
+  NODE_LINK,
   NIVO_COLOR_SCHEMES,
   createConnection,
   login,
