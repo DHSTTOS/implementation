@@ -9,10 +9,10 @@ class NodeLinkBlock extends PureComponent {
     const myNetwork = Network();
     myNetwork(this.nodeLinkGram.current, dataStore.currentNodeLinkData);
 
-    const disposer = autorun(_ => {
-      myNetwork.updateData(dataStore.currentNodeLinkData);
-    });
-    disposer();
+    // const disposer = autorun(_ => {
+    //   myNetwork.updateData(dataStore.currentNodeLinkData);
+    // });
+    // disposer();
   };
 
   render() {

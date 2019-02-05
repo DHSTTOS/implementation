@@ -2,6 +2,9 @@ window.Tooltip = function(tooltipId, width) {
   // var tooltipId = tooltipId;
   $('body').append("<div class='tooltip' id='" + tooltipId + "'></div>");
 
+  $('#' + tooltipId).css('position', 'relative');
+  $('#' + tooltipId).css('z-index', 1000);
+
   if (width) {
     $('#' + tooltipId).css('width', width);
   }
