@@ -485,55 +485,7 @@ d3.round = function(x, n) {
       ? Math.round(x * (n = Math.pow(10, n))) / n
       : Math.round(x);
 };
-d3.xhr = function(url, mime, callback) {
-  var req = new XMLHttpRequest;
-  if (arguments.length < 3) callback = mime, mime = null;
-  else if (mime && req.overrideMimeType) req.overrideMimeType(mime);
-  req.open("GET", url, true);
-  if (mime) req.setRequestHeader("Accept", mime);
-  req.onreadystatechange = function() {
-    if (req.readyState === 4) {
-      var s = req.status;
-      callback(s >= 200 && s < 300 || s === 304 ? req : null);
-    }
-  };
-  req.send(null);
-};
-d3.text = function(url, mime, callback) {
-  function ready(req) {
-    callback(req && req.responseText);
-  }
-  if (arguments.length < 3) {
-    callback = mime;
-    mime = null;
-  }
-  d3.xhr(url, mime, ready);
-};
-d3.json = function(url, callback) {
-  d3.text(url, "application/json", function(text) {
-    callback(text ? JSON.parse(text) : null);
-  });
-};
-d3.html = function(url, callback) {
-  d3.text(url, "text/html", function(text) {
-    if (text != null) { // Treat empty string as valid HTML.
-      var range = document.createRange();
-      range.selectNode(document.body);
-      text = range.createContextualFragment(text);
-    }
-    callback(text);
-  });
-};
-d3.xml = function(url, mime, callback) {
-  function ready(req) {
-    callback(req && req.responseXML);
-  }
-  if (arguments.length < 3) {
-    callback = mime;
-    mime = null;
-  }
-  d3.xhr(url, mime, ready);
-};
+
 var d3_nsPrefix = {
   svg: "http://www.w3.org/2000/svg",
   xhtml: "http://www.w3.org/1999/xhtml",
