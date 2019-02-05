@@ -33,6 +33,20 @@ const PlotContainer = styled.div`
 @observer
 class Diagram extends Component {
   render() {
+    if (this.props.config.plotType === NODE_LINK) {
+      return (
+        <PlotContainer>
+          {!this.props.isFullscreen ? (
+            <CenteredTypography variant="subtitle1" color="error">
+              Please toggle full screen mode to see the node link diagram
+            </CenteredTypography>
+          ) : (
+            <NodeLinkBlock />
+          )}
+        </PlotContainer>
+      );
+    }
+    
     const { plotType, groupName, x, y } = this.props.config;
     const {
       colors,
@@ -92,15 +106,6 @@ class Diagram extends Component {
             lineWidth={lineWidth}
             areaOpacity={areaOpacity}
           />
-        );
-        break;
-      case NODE_LINK:
-        plot = !this.props.isFullscreen ? (
-          <CenteredTypography variant="subtitle1" color="error">
-            Please toggle full screen mode to see the node link diagram
-          </CenteredTypography>
-        ) : (
-          <NodeLinkBlock />
         );
         break;
     }
