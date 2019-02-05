@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 import Typography from '@material-ui/core/Typography';
 
 import { formatData, SCATTER_PLOT, LINE_CHART } from '@libs';
-import { dataStore } from '@stores';
+import { appStore, dataStore } from '@stores';
 
 import LineChartBlock from './LineChartBlock';
 import ScatterPlotBlock from './ScatterPlotBlock';
