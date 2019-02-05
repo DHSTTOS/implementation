@@ -72,13 +72,13 @@ public class MongoClientMediator {
             throw new LoginFailureException(e.getMessage());
         }
 
-       String[] a = getRecordInRange("motor", "Timestamp","1548428021051", "1648428021051");
+    //    String[] a = getRecordInRange("motor", "Timestamp","1548428021051", "1648428021051");
 
-        System.out.println("got " + a.length + " records");
+    //     System.out.println("got " + a.length + " records");
 
-       for (String var : a) {
-           p(var);
-       }
+    //    for (String var : a) {
+    //        p(var);
+    //    }
 
        
     }
@@ -187,9 +187,11 @@ public class MongoClientMediator {
 
     //TODO: get type of field in mongo and cast start and end to this type
     public String[] getRecordInRange(String collection, String key, Object start,Object end) {
+
+
         BasicDBObject query = new BasicDBObject();
 
-        if(key == "Timestamp")
+        if(key.equals("Timestamp"))
         {
             System.out.println("OMG TIMESTAMP!");
             query.put(key, new BasicDBObject("$gte", new Date(Long.valueOf((String)start))).append("$lt", new Date(Long.valueOf((String)end)) ));
