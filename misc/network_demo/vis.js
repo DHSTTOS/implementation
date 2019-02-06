@@ -1,4 +1,9 @@
 // Help with the placement of nodes
+
+
+
+
+//try to integrate zoom in on the node u select or click
 const RadialPlacement = function() {
   // stores the key -> location values
   let values = d3.map();
@@ -12,10 +17,6 @@ const RadialPlacement = function() {
   // what angle to start at
   let start = -120;
   let current = start;
-  var l4 = document.getElementsByTagName('L4').length;
-  var l3 = document.getElementsByTagName('L3').length;
-  var l2 = document.getElementsByTagName('L2').length;
-
   // Given an center point, angle, and radius length,
   // return a radial position for that angle
   const radialLocation = function(center, angle, radius) {
@@ -35,7 +36,7 @@ const RadialPlacement = function() {
     return value;
   };
 
-  // Gets a new location for input key
+  // Gets a new location for input key and places them
   var place = function(key) {
     const value = radialLocation(center, current, radius);
     values.set(key, value);
@@ -149,12 +150,12 @@ const Network = function() {
   // our force directed layout
   const force = d3.layout.force();
   // color function used to color nodes
-  const nodeColors = d3.scale.category20();
+ // const nodeColors = d3.scale.category20();
   // tooltip used to display details
   const tooltip = Tooltip('vis-tooltip', 230);
 
   // // charge used in id layout
-  // const charge = node => -Math.pow(node.radius, 2.0) / 2;
+  const charge = node => -Math.pow(node.radius, 2.0) / 2;
 
   // Starting point for network visualization
   // Initializes visualization and starts force layout
@@ -399,7 +400,17 @@ const Network = function() {
       .attr('cx', d => d.x)
       .attr('cy', d => d.y)
       .attr('r', d => d.radius)
-      .style('fill', d => nodeColors(d.id))
+      .style('fill', function(d){
+        if(d.Protocol == "IP"){
+          return d3.rgb(12, 67, 199);}
+        else if(d.Protocol == "Ether"){
+         return d3.rgb(255, 224, 25);
+        }else if (d.Protocol == "UDP"){
+          return d3.rgb(255, 24, 166)
+        }else{
+          return d3.rgb(24, 255, 177);
+        }
+                }) 
       .style('stroke', d => strokeFor(d))
       .style('stroke-width', 1.0);
 
@@ -492,7 +503,7 @@ const Network = function() {
   // particular node.
   var strokeFor = d =>
     d3
-      .rgb(nodeColors(d.id))
+      .rgb(24, 255, 139)//(nodeColors(d.id))
       .darker()
       .toString();
 
@@ -501,7 +512,12 @@ const Network = function() {
     let content = `<p class="main">id:  ${d.id}</span></p>`;
     content += '<hr class="tooltip-hr">';
     content += `<p class="main">Protocol:  ${d.Protocol}</span></p>`;
-    tooltip.showTooltip(content, d3.event);
+     d3.select("body")
+    .style("visibility", "visible")
+    .style("opacity", 0.9)
+    .text(content);
+    
+    //tooltip.showTooltip(content, d3.event);
 
     // higlight connected links
     if (link) {
@@ -510,7 +526,7 @@ const Network = function() {
           if (l.source === d || l.target === d) {
             return '#007243';
           } else {
-            return fade(0.1)
+            return fade(0.1);
             // return "#ddd";
           }
         })
@@ -528,7 +544,8 @@ const Network = function() {
     node
       .style('stroke', function(n) {
         if (neighboring(d, n)) {
-          return '#007243';
+          alert('There is a connection');
+          //return '#007243';
         } else {
           return strokeFor(n);
         }
@@ -545,7 +562,7 @@ const Network = function() {
     return d3
       .select(this)
       .style('stroke', 'black')
-      .style('stroke-width', 2.0);
+      .style('stroke-width', 5.0);
   };
 
   var showLinkDetails = function(d, i) {
@@ -553,15 +570,29 @@ const Network = function() {
     <hr class="tooltip-hr">
     <p class="main">Target:  ${d.target.id}</span></p>`;
     // console.log(d.source.id);
-    tooltip.showTooltip(content, d3.event);
+    d3.select("body")
+    .append()
+    .attr("class", "tooltip")	
+    .transition()
+    .duration(500)
+    .style("opacity", 0.9)
+    .html(content);
+    console.log(d3.select("body").html(content));
+    
   };
 
   var hideLinkDetails = function(d, i) {
-    tooltip.hideTooltip();
+    d3.select("body")
+    .style("opacity", 0);
   };
   // Mouseout function
   var hideDetails = function(d, i) {
-    tooltip.hideTooltip();
+    d3.select("body")
+    .transition()
+    .duration(500)
+    .style("opacity", 0);
+    
+    //tooltip.hideTooltip();
     // watch out - don't mess with node if search is currently matching
     node
       .style('stroke', function(n) {
