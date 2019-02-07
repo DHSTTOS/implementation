@@ -22,29 +22,36 @@ export default class Brush extends PureComponent {
     // use `this.brush.current` as the reference to the root node and that's it
     // reference dataStore or appStore as needed, there shouldn't be any problems
 
-    // Mock-up:
-    // dataStore.
     //wsutils.getStartEnd(appStore.sourceSelected);
 
-    //let main = d3.select(this.brush.current)
-    //  .append('span')
-    //  .text('Hole punched, D3 plugged in. :)');
+
+    
+    /* Main Brush Code */
 
     let main = d3.select(this.brush.current);
 
-    console.log('main:');
-    console.dir(main);
-
     let width = 700;
     let height = 100;
-
-    let dataEndpoints = dataStore.endPoints; // the range of the whole datastream
-    if (!dataEndpoints) {
-      dataEndpoints = [0, 1000];
+    let maxDisplayable = 2000;
+    
+    console.log("start brush : " + dataStore.rawData.length);
+    console.log(dataStore.endpoints);
+    console.log(dataStore.endpoints.length);
+    if (dataStore.endpoints.length === 0) {  // TODO does dataStore.endpoints have to be shallow?
+      console.log("foo");
+      dataStore.endpoints = [0, dataStore.rawData.length];
     }
-    let curRange = [0, 100]; // the current range of the brush/slider
-
-    let xCurScale = d3
+    console.log("bar");
+    let dataEndpoints = dataStore.endpoints; // the range of the whole datastream
+    console.log(dataEndpoints);
+ 
+    let curRangeWidth = dataEndpoints[1] - dataEndpoints[0];
+    if (curRangeWidth > maxDisplayable) {
+      curRangeWidth = maxDisplayable;
+    }
+    let curRange = [0, curRangeWidth]; // the current range of the brush/slider; start with a small range
+    
+    let xCurrentScale = d3
       .scaleLinear()
       .domain([curRange[0], curRange[1]])
       .range([0, width]);
@@ -53,15 +60,64 @@ export default class Brush extends PureComponent {
       .domain([dataEndpoints[0], dataEndpoints[1]])
       .range([0, width]);
 
+
+    let updateCurrentlySelectedData = range => {
+      //console.log('setrange: ' + s + ' ' + e);
+      //dataStore.currentlySelectedData = dataStore.rawData.slice(s, e);
+      let start = range[0]; // TODO: instead of filtering, can we use slice()?
+      let end = range[1];
+      console.log("updateCSD: " + start + ", " + end);
+      let tmpData = dataStore.rawData.filter((x, i) => start <= i && i < end); // TODO: or <= end?
+      //console.log(tmpData)
+      dataStore.currentlySelectedData = tmpData;
+    };
+
+    let updateCurrentRange = range => {
+      //console.log('setrange: ' + s + ' ' + e);
+      //dataStore.currentlySelectedData = dataStore.rawData.slice(s, e);
+      xCurrentScale.domain(range);
+      xAxisCurrent.scale(xCurrentScale);
+      //console.log(brushD.extent().call());
+      updateCurrentlySelectedData(range);
+      let t = d3.transition().duration(50); // XXX remove completely?
+      svg
+        .select('.axisCurrent') // XXX was does this select?
+        .transition(t)
+        .call(xAxisCurrent);
+    };
+
+    let updateCurrentRangeFromTotal = range => {
+      updateCurrentRange([xTotalScale.invert(range[0]),
+                          xTotalScale.invert(range[1])]);
+    };
+
+
+    console.log("curRange: " + curRange[0] + " " + curRange[1]);
+    updateCurrentlySelectedData(curRange);
+    console.log("csd length" + dataStore.currentlySelectedData.length);
+    console.log("rawData length" + dataStore.rawData.length);
+  
+    let tickFormatTimeStamp = d => {
+      //console.log("tickF: " + d + ": " + dataStore.currentlySelectedData[d]);
+      let date = new Date(dataStore.currentlySelectedData[d].Timestamp.$date);
+      let lh = ('' + date.getHours()).padStart(2, '0');
+      let lm = ('' + date.getMinutes()).padStart(2, '0');
+      let ls = ('' + date.getSeconds()).padStart(2, '0');
+      let lms = ('' + date.getMilliseconds()).padStart(3, '0');
+      
+      let label = '' + d + '_' + lh + ':' + lm + ':' + ls + '.' + lms;
+      return label;
+    }
+    
     //let xAxis = d3.axisBottom().scale(xTotalScale).orient("bottom");
-    let xAxis = d3
-      .axisBottom(xTotalScale)
-      //.ticks(100)
-      .tickSize(5);
-    //.tickFormat(function(d){ return d.x;})
+    let xAxisCurrent = d3
+      .axisBottom(xCurrentScale)
+      .ticks(5)
+      .tickSize(5)
+      .tickFormat(tickFormatTimeStamp);
     //.tickFormat('f')
-    let xAxis2 = d3
-      .axisTop(xCurScale)
+    let xAxisTotal = d3
+      .axisBottom(xTotalScale)
       //.ticks(100)
       .tickSize(10);
     //.tickFormat(function(d){ return d.x;})
@@ -83,16 +139,16 @@ export default class Brush extends PureComponent {
 
     focus
       .append('g')
-      .attr('class', 'x axis')
-      .attr('transform', 'translate(0,' + 50 + ')')
-      .call(xAxis);
+      .attr('class', 'x axisCurrent')
+      .attr('transform', 'translate(0,' + 10 + ')')
+      .call(xAxisCurrent);
 
     // XXX should we append/use another "g"?
     focus
       .append('g')
-      .attr('class', 'x axis2')
-      .attr('transform', 'translate(0,' + 15 + ')')
-      .call(xAxis2);
+      .attr('class', 'x axisTotal')
+      .attr('transform', 'translate(0,' + 50 + ')')
+      .call(xAxisTotal);
 
     svg
       .append('rect')
@@ -101,7 +157,10 @@ export default class Brush extends PureComponent {
       .style('fill', 'none')
       .style('stroke', 'black');
 
-    let brushD = d3
+
+    // TODO initialize brush pos+width to curRange
+
+      let brushD = d3
       .brushX()
       .extent([[0, height / 2], [width, height]])
       .on('start brush', brushed)
@@ -112,40 +171,9 @@ export default class Brush extends PureComponent {
       .attr('class', 'brush')
       .call(brushD);
 
-    let updateCurrentlySelectedData = range => {
-      let s = xTotalScale.invert(range[0]);
-      let e = xTotalScale.invert(range[1]);
-      console.log('setrange: ' + s + ' ' + e);
-      //dataStore.currentlySelectedData = dataStore.rawData.slice(s, e);
-
-      let tmpData = dataStore.rawData.filter((x, i) => s <= i && i < e);
-      console.log(tmpData);
-      dataStore.currentlySelectedData = tmpData;
-    };
-
     function brushed() {
       // console.log( d3.event.selection );
-      /*
-      let s = d3.event.selection,
-          x0 = s[0][0],
-          y0 = s[0][1],
-          x1 = s[1][0],
-          y1 = s[1][1],
-          dx = s[1][0] - x0,
-          dy = s[1][1] - y0;
-  
-      console.log("("+x0+","+y0+")-("+x1+","+y1+")");
-      */
-      //console.log("selected: " + d3.event.selection[0] + " " + d3.event.selection[1]);
-      updateCurrentlySelectedData(d3.event.selection);
-      //console.log(brushD.extent().call());
-      xCurScale.domain(d3.event.selection);
-      xAxis2.scale(xCurScale);
-      let t = d3.transition().duration(50); // XXX remove completely?
-      svg
-        .select('.axis2') // XXX was does this select?
-        .transition(t)
-        .call(xAxis2);
+      updateCurrentRangeFromTotal(d3.event.selection);
     }
 
     function brushended() {
@@ -153,11 +181,8 @@ export default class Brush extends PureComponent {
         'brushing ended: ' + d3.event.selection[0] + ' ' + d3.event.selection[1]
       );
       //getAvailableCollections(userStore.socket);
-      updateCurrentlySelectedData(d3.event.selection);
+      updateCurrentRangeFromTotal(d3.event.selection);
       //xTotalScale.domain(dataEndpoints).range([0, width]);
-      xCurScale.domain(d3.event.selection);
-      xAxis2.scale(xCurScale);
-
       if (!d3.event.selection) {
         console.log('There is no selection');
       }
