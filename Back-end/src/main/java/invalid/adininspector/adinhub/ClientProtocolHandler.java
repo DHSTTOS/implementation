@@ -16,7 +16,7 @@ import com.google.gson.JsonSyntaxException;
  */
 public class ClientProtocolHandler {
 
-	public enum Command {
+	enum Command {
 		LOGIN("LOGIN") {
 			public Map<String, Object> execute(Hub hub, Session session, Map<String,Object> msgParsed) {
 				Map<String, Object> m = new HashMap<String, Object>();
@@ -39,7 +39,7 @@ public class ClientProtocolHandler {
 		AUTH("AUTH") {
 			public Map<String, Object> execute(Hub hub, Session session, Map<String,Object> msgParsed) {
 				String token = (String)msgParsed.get("token");
-				boolean loggedIn = hub.loginWithToken(session, token);
+				boolean loggedIn = hub.authenticate(session, token);
 				Map<String, Object> m = new HashMap<String, Object>();
 				m.put("cmd", "SESSION");
 				m.put("par", "AUTH");

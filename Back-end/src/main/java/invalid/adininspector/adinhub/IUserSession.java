@@ -15,7 +15,9 @@ public interface IUserSession {
 	 * @param udid the user id to login with
 	 * @param password the password
 	 */
-	public IUserSession createUserSession(String username, String password);
+	public static IUserSession createUserSession(String username, String password) {
+		return null;
+	}
 	
 	/**
 	 * Returns an array with the names of the collections available to the current user.

@@ -15,7 +15,7 @@ public class MongoDBUserSession implements IUserSession {
 	 * Creates a new MongoDB session.
 	 * @throws LoginFailureException 
 	 */
-	public MongoDBUserSession() throws LoginFailureException {
+	private MongoDBUserSession() {
 		//mongoClientMediator = new MongoClientMediator(username, password);
 	}
 
@@ -23,18 +23,17 @@ public class MongoDBUserSession implements IUserSession {
 		mongoClientMediator = m;
 	}
 	
-	public IUserSession createUserSession(String username, String password) {
-		MongoDBUserSession m = null;
+	public static IUserSession createUserSession(String username, String password) {
+		MongoDBUserSession m = new MongoDBUserSession();
 		try {
-			m = new MongoDBUserSession();
 			m.setMongoClientMediator(new MongoClientMediator(username, password));
 			m.getAvailableCollections(); // check if login succeeded
+			return m;
 		} catch (LoginFailureException e) {
 			System.err.println("createUserSession: login failed; u: " + username + "pw: " + password);
 			m = null;
 			return null;
 		}
-		return m;
 	}
 
 	public String[] getAvailableCollections() {

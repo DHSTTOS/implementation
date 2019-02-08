@@ -42,7 +42,7 @@ public class TestHub {
 	public void testLoginTokenSuccess() {
 		String token = hub.login(session, "foo", "bar");
 		assertNotNull(token);
-		boolean loggedIn = hub.loginWithToken(session, token);
+		boolean loggedIn = hub.authenticate(session, token);
 		assertTrue(loggedIn);
 	}
 	
@@ -50,7 +50,7 @@ public class TestHub {
 	public void testLoginTokenFail() {
 		String token = hub.login(session, "foo", "bar");
 		assertNotNull(token);
-		boolean loggedIn = hub.loginWithToken(session, "invalid_token");
+		boolean loggedIn = hub.authenticate(session, "invalid_token");
 		assertFalse(loggedIn);
 	}
 

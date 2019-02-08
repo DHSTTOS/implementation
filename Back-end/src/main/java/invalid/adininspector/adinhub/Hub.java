@@ -3,8 +3,6 @@ package invalid.adininspector.adinhub;
 import javax.websocket.OnOpen;
 import javax.websocket.server.ServerEndpoint;
 
-import invalid.adininspector.exceptions.LoginFailureException;
-
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -18,13 +16,6 @@ import javax.websocket.*;
  */
 @ServerEndpoint("/adinhubsoc2")
 public class Hub {
-	
-	
-	/**
-	 * The database to use
-	 */
-	IUserSession database = null;
-	
 	/**
 	 * The strategy object we call for the actual parsing of the client requests.
 	 */
@@ -36,20 +27,12 @@ public class Hub {
 	 */
 	private static Map<String, IUserSession> loginTokens;
 	
-
 	/**
 	 * Map a websocket connection to a IUserSession (i.e. a database connection).
 	 */
 	private static Map<Session, IUserSession> sessions;
 	
 	public Hub() {
-		try {
-			database = new MongoDBUserSession();
-		} catch (LoginFailureException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		System.out.println("Hub, database: " + database);
 		requestHandler = new ClientProtocolHandler();
 		loginTokens = new HashMap<String, IUserSession>();
 		sessions = new HashMap<Session, IUserSession>();
@@ -136,18 +119,30 @@ public class Hub {
     }
     
 	/**
-	 * Instantiate a new UserSession and log in into the database 
+	 * Instantiate a new IUserSession and log in into the database 
 	 * using the given credentials.
+	 * If the login was successful it returns an IUserSession object for a logged
+	 * in database session, otherwise null.
 	 * 
-	 * @param udid - the user id to login with
-	 * @param password the password
+	 * This method is currently hardcoded to instantiate a MongoDBUserSession
+	 * object; it could be made more flexible by using the factory or abstract
+	 * factory design pattern.
+	 * 
 	 */
 	public IUserSession createUserSession(Session session, String username, String password) {
-		IUserSession dbUserSession = database.createUserSession(username, password);
+		IUserSession dbUserSession = MongoDBUserSession.createUserSession(username, password);
 		return dbUserSession;
 	}
 
-    boolean loginWithToken(Session session, String token) {
+    /**
+     * Login with the given authentication token.
+     * 
+     * @param session the current, "main" websocket session
+     * @param token the token to authenticate this session with
+     *
+     * @return true if login/authentication successful
+     */
+    boolean authenticate(Session session, String token) {
     	System.out.println("lWT: this " + this);
     	System.out.println("lWT #registered keys: "  + loginTokens.keySet().size());
     	for (String key : loginTokens.keySet()) {
@@ -211,7 +206,7 @@ public class Hub {
 	 * Returns an array containing all records of this collection in the order
 	 * they have in the collection.
 	 * 
-	 * @param coll the collection to query
+	 * @param collection the collection to query
 	 * @return an array of the records of the specified collection
 	 */
 	public String[] getCollection(Session session, String collection){
@@ -226,7 +221,7 @@ public class Hub {
 	/**
 	 * Returns a JSON string representation of the first record of the specified collection. 
 	 * 
-	 * @param coll the collection to query
+	 * @param collection the collection to query
 	 * @return the first record of the collection as a JSON string
 	 */
 	public String getStartRecord(Session session, String collection){
@@ -241,7 +236,7 @@ public class Hub {
 	/**
 	 * Returns a JSON string representation of the first record of the specified collection. 
 	 * 
-	 * @param coll the collection to query
+	 * @param collection the collection to query
 	 * @return the last record of the collection as a JSON string
 	 */
 	public String getEndRecord(Session session, String collection){
@@ -287,6 +282,7 @@ public class Hub {
 	 * value of the specified key is in the range [start, end). The records will
 	 * be in the same order as they are in the collection.
 	 * 
+	 * @param collection the collection to query
 	 * @param key the record key by which the records are filtered
 	 * @param start the start of the range of key values
 	 * @param end the exclusive end of the range of key values
@@ -305,6 +301,7 @@ public class Hub {
 	 * Returns the number of records in the specified collection for which the value
 	 * of the specified key is within the range [start, end).
 	 * 
+	 * @param collection the collection to query
 	 * @param key the record key by which the records are filtered
 	 * @param start the start of the range of key values
 	 * @param end the exclusive end of the range of key values
