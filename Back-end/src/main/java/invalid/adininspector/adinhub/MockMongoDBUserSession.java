@@ -12,8 +12,7 @@ import java.util.Vector;
 import com.google.gson.Gson;
 
 /**
- * Encapsulates a user session for a connection to a MongoDB database.
- *
+ * Encapsulates a user session to a simulated database, for testing.
  */
 public class MockMongoDBUserSession implements IUserSession {
 
