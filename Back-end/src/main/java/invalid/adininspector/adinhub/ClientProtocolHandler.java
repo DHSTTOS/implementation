@@ -10,9 +10,11 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonSyntaxException;
 
 /**
- * This class handles client requests by parsing them, executing
- * the requested action and producing responses.
- * The requested actions are executed by calls to the Hub object.
+ * This class handles client requests by parsing them, executing the requested
+ * action and producing a response. The requested actions are typically executed
+ * by calls to the appropriate methods in the Hub object. The relation between
+ * the Hub class and this class is basically the strategy design pattern with a
+ * single strategy.
  */
 public class ClientProtocolHandler {
 
@@ -69,7 +71,7 @@ public class ClientProtocolHandler {
 				return msgParsed;
 			}
 		},
-		
+
 		GET_COLL("GET_COLL") {
 			public Map<String, Object> execute(Hub hub, Session session, Map<String,Object> msgParsed) {
 				String collectionName = (String)msgParsed.get("par");
@@ -82,7 +84,7 @@ public class ClientProtocolHandler {
 				return m;
 			}
 		},
-		
+
 		GET_START("GET_START") {
 			public Map<String, Object> execute(Hub hub, Session session, Map<String,Object> msgParsed) {
 				String collectionName = (String)msgParsed.get("par");
@@ -121,7 +123,7 @@ public class ClientProtocolHandler {
 				return msgParsed;
 			}
 		},
-		
+
 		GET_COLL_SIZE("GET_COLL_SIZE") {
 			public Map<String, Object> execute(Hub hub, Session session, Map<String,Object> msgParsed) {
 				String collectionName = (String)msgParsed.get("par");
@@ -165,9 +167,9 @@ public class ClientProtocolHandler {
 				return msgParsed;
 			}
 		};
-		
+
 		public final String command;
-		
+
 		Command(String command) {
 			this.command = command;
 		}
@@ -182,7 +184,7 @@ public class ClientProtocolHandler {
 		 */
 		abstract Map<String, Object> execute(Hub hub, Session session, Map<String,Object> msgParsed);
 	}
-	
+
 	private String cleanString(String message) {
 		final int MAXLEN = 800;
 		if (message.length() > MAXLEN) {
@@ -191,10 +193,10 @@ public class ClientProtocolHandler {
 			return message;
 		}
 	}
-	
+
 	/**
-	 * Parse the message from the client, call the specific request handling 
-	 * method and construct the response message which is then send via the hub
+	 * Parse the message from the client, call the specific method to handle this
+	 * request and construct the response message which is then send via the hub
 	 * to the client.
 	 * 
 	 * @param hub the hub for database access
@@ -206,7 +208,7 @@ public class ClientProtocolHandler {
 		Map<String,Object> msgParsed = null;
 		try {
 			msgParsed = new Gson().fromJson(message, Map.class);
-			
+
 		} catch (JsonSyntaxException e) {
 			System.err.println("handleRequest() got non-JSON message: " + cleanString(message));
 			return "";
