@@ -46,7 +46,7 @@ public interface IUserSession {
 	public String getStartRecord(String coll);
 
 	/**
-	 * Return the first record of the specified collection as json string.
+	 * Return the last record of the specified collection as json string.
 	 * 
 	 * @param coll the collection to query
 	 * @return the first record of the specified collection as json string
@@ -58,7 +58,6 @@ public interface IUserSession {
 	 * Returns the number of records in the specified collection.
 	 * 
 	 * @param collection the collection to query
-	 * 
 	 * @return the number of records
 	 */
 	public long getCollectionSize(String collection);

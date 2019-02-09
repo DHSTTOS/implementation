@@ -38,281 +38,313 @@ import org.bson.Document;
 import invalid.adininspector.exceptions.LoginFailureException;
 import invalid.adininspector.records.*;
 
+/**
+ * This class serves as a nexus between the users who want to get data out of the
+ * database and the consumer and dataProcessor who want to add data into the
+ * database. This class encapsulates the mongo client from the mongo API. This
+ * means that any user wanting to sign in has to have valid credentials in the
+ * database, effectively relegating UAC to mongoDB.
+ */
 public class MongoClientMediator {
 
-    private MongoClient client;
-    private MongoDatabase db;
-
-    public MongoClientMediator(String udid, String password, String dbName) throws LoginFailureException {
-       
-        if(dbName.isEmpty())
-            throw new LoginFailureException("dbName cannot be empty");
-
-        //TODO: might not be the localhost
-        ServerAddress serverAddr = new ServerAddress("localhost");
-
-        //TODO: bad practice to use magic var for the database name
-        // ScramSha1 is the default auth method from Mongo
-        // we always use the admin database to check users. so mongoCredential is tied to admin
-        MongoCredential cred = MongoCredential.createScramSha1Credential(udid, "admin", password.toCharArray());
-
-        try {
-            client = new MongoClient(serverAddr, Collections.singletonList(cred));
-
-            // get access to the database. I still don't know if doing it like this is
-            // ideal.
-            db = client.getDatabase(dbName);
-
-            BasicDBObject ping = new BasicDBObject("ping", "1");
-            db.runCommand(ping);
-
-        } catch (MongoSecurityException e) {
-
-            // force the caller to handle the exception
-            throw new LoginFailureException(e.getMessage());
-        }
-
-    //    String[] a = getRecordInRange("motor", "Timestamp","1548428021051", "1648428021051");
-
-    //     System.out.println("got " + a.length + " records");
-
-    //    for (String var : a) {
-    //        p(var);
-    //    }
-
-       
-    }
-
-    public MongoClientMediator(String udid, String password) throws LoginFailureException {
-        this(udid, password, "AdinInspector");
-    }
+	/**
+	 * An instance of the Mongo Client from the official java API.
+	 */
+	private MongoClient client;
+	private MongoDatabase db;
+
+	/**
+	 * Initializes the client variable, throws an error if the user is not found.
+	 *
+	 * @param udid the user name to login with
+	 * @param password the password to login with
+	 * @param dbName the database to login into
+	 * @throws LoginFailureException - if login failed, e.g. wrong username or password
+	 */
+	public MongoClientMediator(String udid, String password, String dbName) throws LoginFailureException {
+
+		if(dbName.isEmpty())
+			throw new LoginFailureException("dbName cannot be empty");
+
+		//TODO: might not be the localhost
+		ServerAddress serverAddr = new ServerAddress("localhost");
+
+		//TODO: bad practice to use magic var for the database name
+		// ScramSha1 is the default auth method from Mongo
+		// we always use the admin database to check users. so mongoCredential is tied to admin
+		MongoCredential cred = MongoCredential.createScramSha1Credential(udid, "admin", password.toCharArray());
+
+		try {
+			client = new MongoClient(serverAddr, Collections.singletonList(cred));
+
+			// get access to the database. I still don't know if doing it like this is
+			// ideal.
+			db = client.getDatabase(dbName);
+
+			BasicDBObject ping = new BasicDBObject("ping", "1");
+			db.runCommand(ping);
+
+		} catch (MongoSecurityException e) {
+
+			// force the caller to handle the exception
+			throw new LoginFailureException(e.getMessage());
+		}
+
+		//    String[] a = getRecordInRange("motor", "Timestamp","1548428021051", "1648428021051");
+
+		//     System.out.println("got " + a.length + " records");
+
+		//    for (String var : a) {
+		//        p(var);
+		//    }
+
+
+	}
+
+	/**
+	 * Login into the "AdinInspector" database. Throws an error if the user is not found.
+	 *
+	 * @param udid user name to login with
+	 * @param password password to login with
+	 * @throws LoginFailureException - if login failed, e.g. wrong username or password
+	 */
+	public MongoClientMediator(String udid, String password) throws LoginFailureException {
+		this(udid, password, "AdinInspector");
+	}
+
+	/**
+	 * Converts the record to a bson document and uses the mongoAPI to insert it
+	 * into the database.
+	 * 
+	 * @param record the record to add to the collection
+	 * @param collection the name of the collection it should be added to.
+	 */
+	public void addRecordToCollection(Record record, String collection) {
+
+		try {
+			// p(record.getAsDocument());
+			db.getCollection(collection).insertOne(record.getAsDocument());
+			//p("inserting to: " + collection + " at offset: " + record.get_id());
+		} catch (MongoWriteException ex) {
+			// TODO: how to handle this, skip?, overwrite? or compare and decide which one
+			// to keep?
+			//System.out.println("an entry with this offset already exists at offset: " + record.get_id());
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	// we do not necessarly need a record for aggregated records.
+	public void addRecordToCollection(Document record, String collection) {
+		try {
+			// p(record.getAsDocument());
+			db.getCollection(collection).insertOne(record);
+			//  p("inserting to: " + collection);
+		} catch (MongoWriteException ex) {
+			// TODO: how to handle this, skip?, overwrite? or compare and decide which one
+			// to keep?
+			// System.out.println("an entry with this offset already exists ");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
-    public void addRecordToCollection(Record record, String collection) {
+	// we do not necessarly need a record for aggregated records. we can pass documents along
+	public void addRecordsToCollection(ArrayList<Document> records, String collection) {
 
-        try {
-            // p(record.getAsDocument());
-            db.getCollection(collection).insertOne(record.getAsDocument());
-            //p("inserting to: " + collection + " at offset: " + record.get_id());
-        } catch (MongoWriteException ex) {
-            // TODO: how to handle this, skip?, overwrite? or compare and decide which one
-            // to keep?
-            //System.out.println("an entry with this offset already exists at offset: " + record.get_id());
-        } 
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+		if(records == null) return;
 
-    // we do not necessarly need a record for aggregated records.
-    public void addRecordToCollection(Document record, String collection) {
-        try {
-            // p(record.getAsDocument());
-            db.getCollection(collection).insertOne(record);
-          //  p("inserting to: " + collection);
-        } catch (MongoWriteException ex) {
-            // TODO: how to handle this, skip?, overwrite? or compare and decide which one
-            // to keep?
-           // System.out.println("an entry with this offset already exists ");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+		for(Document doc: records)
+		{
+			addRecordToCollection(doc, collection);
+		}
+	}
 
-    // we do not necessarly need a record for aggregated records. we can pass documents along
-    public void addRecordsToCollection(ArrayList<Document> records, String collection) {
+	public void addRecordsToCollection(Record[] records, String collection) {
+		for (Record r : records) {
+			addRecordToCollection(r, collection);
+		}
+	}
 
-        if(records == null) return;
+	public void ProcessCollection(String collection) {
+		// DataProcessor
+		// DataProcessor.processData(,this);
+	}
 
-        for(Document doc: records)
-        {
-            addRecordToCollection(doc, collection);
-        }
-    }
+	// do we need this ? potentially not
+	public String[] getCollection(String collection) {
+		return mongoIteratorToStringArray(db.getCollection(collection).find());
+	}
 
-    public void addRecordsToCollection(Record[] records, String collection) {
-        for (Record r : records) {
-            addRecordToCollection(r, collection);
-        }
-    }
+	// find returns a cursor to the first object so we simple return that one
+	public String getStartRecord(String collection) {
+		//TODO: check if collection is null
 
-    public void ProcessCollection(String collection) {
-        // DataProcessor
-        // DataProcessor.processData(,this);
-    }
+		MongoCollection<Document> coll = db.getCollection(collection);
 
-    // do we need this ? potentially not
-    public String[] getCollection(String collection) {
-        return mongoIteratorToStringArray(db.getCollection(collection).find());
-    }
+		return db.getCollection(collection).find().first().toJson();
+	}
 
-    // find returns a cursor to the first object so we simple return that one
-    public String getStartRecord(String collection) {
-        //TODO: check if collection is null
+	// we sort descending by id and then get the first (last object)
+	public String getEndRecord(String collection) {
+		return db.getCollection(collection).find().sort(new Document("_id", -1)).first().toJson();
+	}
 
-        MongoCollection<Document> coll = db.getCollection(collection);
+	// an int *should* suffice for now at least
+	public int CollectionSize(String collection) {
+		// count is deprecated, there's an estimation which should work fine but it's
+		// not gonna be accurate
+		return (int) db.getCollection(collection).countDocuments();
+	}
 
-        return db.getCollection(collection).find().first().toJson();
-    }
+	// public String[] getRecordInRange(String collection, String key, String start, String end) {
+	//     BasicDBObject query = new BasicDBObject();
+	//     query.put(key, new BasicDBObject("$gte", start).append("$lt", (end)));
 
-    // we sort descending by id and then get the first (last object)
-    public String getEndRecord(String collection) {
-        return db.getCollection(collection).find().sort(new Document("_id", -1)).first().toJson();
-    }
+	//     return mongoIteratorToStringArray(db.getCollection(collection).find(query));
+	// }
 
-    // an int *should* suffice for now at least
-    public int CollectionSize(String collection) {
-        // count is deprecated, there's an estimation which should work fine but it's
-        // not gonna be accurate
-        return (int) db.getCollection(collection).countDocuments();
-    }
+	public long getRecordsInRangeSize(String collection, String key, String start, String end) {
+		BasicDBObject query = new BasicDBObject();
+		query.put(key, new BasicDBObject("$gte", start).append("$lt", (end)));
 
-    // public String[] getRecordInRange(String collection, String key, String start, String end) {
-    //     BasicDBObject query = new BasicDBObject();
-    //     query.put(key, new BasicDBObject("$gte", start).append("$lt", (end)));
+		return (int) db.getCollection(collection).countDocuments(query);
+	}
 
-    //     return mongoIteratorToStringArray(db.getCollection(collection).find(query));
-    // }
 
-    public long getRecordsInRangeSize(String collection, String key, String start, String end) {
-        BasicDBObject query = new BasicDBObject();
-        query.put(key, new BasicDBObject("$gte", start).append("$lt", (end)));
 
-        return (int) db.getCollection(collection).countDocuments(query);
-    }
 
 
 
+	//TODO: get type of field in mongo and cast start and end to this type
+	public String[] getRecordInRange(String collection, String key, Object start,Object end) {
 
 
+		BasicDBObject query = new BasicDBObject();
 
-    //TODO: get type of field in mongo and cast start and end to this type
-    public String[] getRecordInRange(String collection, String key, Object start,Object end) {
+		if(key.equals("Timestamp"))
+		{
+			System.out.println("OMG TIMESTAMP!");
+			query.put(key, new BasicDBObject("$gte", new Date(Long.valueOf((String)start))).append("$lt", new Date(Long.valueOf((String)end)) ));
 
+		}
+		else
+			query.put(key, new BasicDBObject("$gte", start).append("$lt", (end)));
 
-        BasicDBObject query = new BasicDBObject();
+		return mongoIteratorToStringArray(db.getCollection(collection).find(query));
+	}
 
-        if(key.equals("Timestamp"))
-        {
-            System.out.println("OMG TIMESTAMP!");
-            query.put(key, new BasicDBObject("$gte", new Date(Long.valueOf((String)start))).append("$lt", new Date(Long.valueOf((String)end)) ));
+	public long getRecordsInRangeSize(String collection, String key, Object start, Object end) {
+		BasicDBObject query = new BasicDBObject();
+		query.put(key, new BasicDBObject("$gte", start).append("$lt", (end)));
 
-        }
-        else
-            query.put(key, new BasicDBObject("$gte", start).append("$lt", (end)));
+		return (int) db.getCollection(collection).countDocuments(query);
+	}
 
-        return mongoIteratorToStringArray(db.getCollection(collection).find(query));
-    }
 
-    public long getRecordsInRangeSize(String collection, String key, Object start, Object end) {
-        BasicDBObject query = new BasicDBObject();
-        query.put(key, new BasicDBObject("$gte", start).append("$lt", (end)));
 
-        return (int) db.getCollection(collection).countDocuments(query);
-    }
 
 
 
-    
 
+	// get all names of all collections and put em in an Array.
+	public String[] getAvailableCollections() {
+		List<String> colls = new ArrayList<>();
 
-    
-    // get all names of all collections and put em in an Array.
-    public String[] getAvailableCollections() {
-        List<String> colls = new ArrayList<>();
+		db.listCollectionNames().forEach((Consumer<String>) colls::add);
 
-        db.listCollectionNames().forEach((Consumer<String>) colls::add);
+		for (int i = 0; i < colls.size(); i++) {
+			//System.out.println(colls.get(i));
+		}
+		return colls.toArray(new String[colls.size()]); //mongoIteratorToStringArray(db.listCollectionNames());
+	}
 
-        for (int i = 0; i < colls.size(); i++) {
-            //System.out.println(colls.get(i));
-        }
-        return colls.toArray(new String[colls.size()]); //mongoIteratorToStringArray(db.listCollectionNames());
-    }
+	// HELPER FUNCTIONS
+	private String[] mongoIteratorToStringArray(MongoIterable iterable) {
+		List<String> colls = new ArrayList<>();
 
-    // HELPER FUNCTIONS
-    private String[] mongoIteratorToStringArray(MongoIterable iterable) {
-        List<String> colls = new ArrayList<>();
+		iterable.forEach((Block<Document>) document -> colls.add(document.toJson()));
 
-        iterable.forEach((Block<Document>) document -> colls.add(document.toJson()));
+		return colls.toArray(new String[colls.size()]);
+	}
 
-        return colls.toArray(new String[colls.size()]);
-    }
+	// TODO: figure out a way to make this less wasteful
+	public ArrayList<Record> getCollectionAsRecordsArrayList(String collectionName) {
 
-    // TODO: figure out a way to make this less wasteful
-    public ArrayList<Record> getCollectionAsRecordsArrayList(String collectionName) {
 
+		JsonSerializer<Date> ser = new JsonSerializer<Date>() {
+			@Override
+			public JsonElement serialize(Date src, Type typeOfSrc, JsonSerializationContext 
+					context) {
+				return src == null ? null : new JsonPrimitive(src.getTime());
+			}
+		};
 
-        JsonSerializer<Date> ser = new JsonSerializer<Date>() {
-            @Override
-            public JsonElement serialize(Date src, Type typeOfSrc, JsonSerializationContext 
-                       context) {
-              return src == null ? null : new JsonPrimitive(src.getTime());
-            }
-          };
-          
-          JsonDeserializer<Date> deser = new JsonDeserializer<Date>() {
-            @Override
-            public Date deserialize(JsonElement json, Type typeOfT,
-                 JsonDeserializationContext context) throws JsonParseException {
-                    long time = json.getAsJsonObject().getAsJsonPrimitive("$date").getAsLong();
-                    Date d = new Date(time);
-                    return d;
-            }
-          };
-          
-          Gson gson = new GsonBuilder()
-             .registerTypeAdapter(Date.class, ser)
-             .registerTypeAdapter(Date.class, deser).create();
+		JsonDeserializer<Date> deser = new JsonDeserializer<Date>() {
+			@Override
+			public Date deserialize(JsonElement json, Type typeOfT,
+					JsonDeserializationContext context) throws JsonParseException {
+				long time = json.getAsJsonObject().getAsJsonPrimitive("$date").getAsLong();
+				Date d = new Date(time);
+				return d;
+			}
+		};
 
+		Gson gson = new GsonBuilder()
+				.registerTypeAdapter(Date.class, ser)
+				.registerTypeAdapter(Date.class, deser).create();
 
-        // GsonBuilder builder = new GsonBuilder(); 
 
-        // builder.registerTypeAdapter(Date.class, new JsonDeserializer<Date>() { 
-        //     public Date deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-        //        return new Date(json.getAsJsonPrimitive().getAsLong()); 
-        //     } 
-        //  });
-        
-        // Gson gson = builder.create();
+		// GsonBuilder builder = new GsonBuilder(); 
 
-        ArrayList<Record> records = new ArrayList<>();
+		// builder.registerTypeAdapter(Date.class, new JsonDeserializer<Date>() { 
+		//     public Date deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+		//        return new Date(json.getAsJsonPrimitive().getAsLong()); 
+		//     } 
+		//  });
 
-        Type collType = getCollectionType(collectionName);
+		// Gson gson = builder.create();
 
-        String[] recordsToConvert = getCollection(collectionName);
+		ArrayList<Record> records = new ArrayList<>();
 
-        if (recordsToConvert.length == 0)
-            return new ArrayList<>();
+		Type collType = getCollectionType(collectionName);
 
-        for (int i = 0; i < recordsToConvert.length; i++) {
+		String[] recordsToConvert = getCollection(collectionName);
 
-            // p(recordsToConvert[i] + " of Type : " + collType.getTypeName());
+		if (recordsToConvert.length == 0)
+			return new ArrayList<>();
 
-            records.add(gson.fromJson(recordsToConvert[i], collType));
-        }
+		for (int i = 0; i < recordsToConvert.length; i++) {
 
-        return records;
-    }
+			// p(recordsToConvert[i] + " of Type : " + collType.getTypeName());
 
-    // Might be useful for the upper layers
-    public Type getCollectionType(String collectionName) {
-        Type type = null;
+			records.add(gson.fromJson(recordsToConvert[i], collType));
+		}
 
-        if (collectionName.contains("Alarm"))
-            type = new TypeToken<AlarmRecord>() {
-            }.getType();
-        else
-            type = new TypeToken<PacketRecordDesFromMongo>() {
-            }.getType();
+		return records;
+	}
 
-        return type;
-    }
+	// Might be useful for the upper layers
+	public Type getCollectionType(String collectionName) {
+		Type type = null;
 
-    // TODO: implement me
-    private Record[] mongoIteratorToRecordArray(MongoIterable it) {
-        return null;
-    }
+		if (collectionName.contains("Alarm"))
+			type = new TypeToken<AlarmRecord>() {
+		}.getType();
+		else
+			type = new TypeToken<PacketRecordDesFromMongo>() {
+		}.getType();
 
-    public void p(Object line) {
-        System.out.println(line);
-    }
+		return type;
+	}
+
+	// TODO: implement me
+	private Record[] mongoIteratorToRecordArray(MongoIterable it) {
+		return null;
+	}
+
+	public void p(Object line) {
+		System.out.println(line);
+	}
 }
