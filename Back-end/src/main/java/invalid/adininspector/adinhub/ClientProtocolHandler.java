@@ -12,10 +12,14 @@ import com.google.gson.JsonSyntaxException;
 /**
  * This class handles client requests by parsing them, executing
  * the requested action and producing responses.
- * The requested action are executed by calls to the Hub object.
+ * The requested actions are executed by calls to the Hub object.
  */
 public class ClientProtocolHandler {
 
+	/**
+	 * A Command object holds a client command and a method that implements the response to it.
+	 *
+	 */
 	enum Command {
 		LOGIN("LOGIN") {
 			public Map<String, Object> execute(Hub hub, Session session, Map<String,Object> msgParsed) {
@@ -167,22 +171,34 @@ public class ClientProtocolHandler {
 		Command(String command) {
 			this.command = command;
 		}
+		/**
+		 * Take a request (parsed into a string) and construct the response by
+		 * calling the appropriate hub method(s).
+		 * 
+		 * @param hub the hub object holding the database connection
+		 * @param session the websocket session
+		 * @param msgParsed the request as key-value map
+		 * @return the response as key-value map
+		 */
 		abstract Map<String, Object> execute(Hub hub, Session session, Map<String,Object> msgParsed);
 	}
 	
 	private String cleanString(String message) {
-		int len = message.length();
-		if (len > 1000) len = 1000;
-		return message.substring(0, len);
+		final int MAXLEN = 800;
+		if (message.length() > MAXLEN) {
+			return message.substring(0, MAXLEN);
+		} else {
+			return message;
+		}
 	}
 	
 	/**
-	 * Parse the message from the client, call the corresponding method of the hub
-	 * and construct the response message which is then send via the hub
+	 * Parse the message from the client, call the specific request handling 
+	 * method and construct the response message which is then send via the hub
 	 * to the client.
 	 * 
 	 * @param hub the hub for database access
-	 * @param session the current session
+	 * @param session the current websocket session
 	 * @param message the client request to handle
 	 */
 	String handleRequest(Hub hub, Session session, String message) {
