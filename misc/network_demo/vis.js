@@ -176,6 +176,7 @@ const Network = function() {
   // update() is called everytime a parameter changes
   // and the network needs to be reset.
   var update = function() {
+    console.log(allData.links)
     // filter data to show based on current filter settings.
     curNodesData = filterNodes(allData.nodes);
     // console.log(allData.node);
@@ -380,6 +381,7 @@ const Network = function() {
 
   // enter/exit display for links
   var updateLinks = function() {
+    // console.log(curLinksData);
     link = linksG
       .selectAll('line.link')
       .data(curLinksData, d => `${d.source.id}_${d.target.id}`);

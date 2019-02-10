@@ -342,6 +342,7 @@ class Network {
         target: nodesMap.get(l.target),
       };
       this.linkedByIndex[l.source.id + ',' + l.target.id] = 1;
+      console.log(newL);
       return newL;
     });
 
@@ -437,9 +438,9 @@ class Network {
   // source or target is not present in curNodes
   // Returns array of links
   filterLinks = (allLinks, curNodes) => {
-    curNodes = this.mapNodes(curNodes);
+    const mappedNodes = this.mapNodes(curNodes);
     return allLinks.filter(
-      l => curNodes.get(l.source.id) && curNodes.get(l.target.id)
+      l => mappedNodes.get(l.source.id) && mappedNodes.get(l.target.id)
     );
   };
 
@@ -482,6 +483,7 @@ class Network {
 
   // enter/exit display for links
   updateLinks = () => {
+    console.log(this.allData.links);
     this.link = this.linksG
       .selectAll('line.link')
       .data(this.curLinksData, d => `${d.source.id}_${d.target.id}`);
@@ -595,8 +597,7 @@ class Network {
       });
 
     // highlight the node being moused over
-    return d3
-      .select(this)
+    d3.select(this)
       .style('stroke', 'black')
       .style('stroke-width', 5.0);
   };
