@@ -81,117 +81,116 @@ class NodeLinkBlock extends PureComponent {
 
 // Be extra cautious making changes to the code below.
 
-class RadialPlacement {
+function RadialPlacement() {
   // stores the key -> location values
-  values = d3.map();
+  let values = d3.map();
   // how much to separate each location by
-  increment = 5;
+  let increment = 5;
   // how large to make the layout
-  radius = 100;
+  let radius = 100;
   // where the center of the layout should be
-  center = { x: 0, y: 0 };
+  let center = { x: 0, y: 0 };
   // what angle to start at
-  start = -120;
-  current = this.start;
+  let start = -120;
+  let current = start;
 
   // Given an center point, angle, and radius length,
   // return a radial position for that angle
-  radialLocation = function(center, angle, radius) {
+  const radialLocation = function(center, angle, radius) {
     const x = center.x + radius * Math.cos((angle * Math.PI) / 180);
     const y = center.y + radius * Math.sin((angle * Math.PI) / 180);
     return { x: x, y: y };
   };
 
-  // Gets a new location for input key
-  place = function(key) {
-    const value = this.radialLocation(this.center, this.current, this.radius);
-    this.values.set(key, value);
-    this.current += this.increment;
-    return value;
-  };
-
   // Main entry point for RadialPlacement
   // Returns location for a particular key,
   // creating a new location if necessary.
+  const placement = function(key) {
+    let value = values.get(key);
+    if (!values.has(key)) {
+      value = place(key);
+    }
+    return value;
+  };
 
-  constructor(key) {
-    this.placement = function() {
-      let value = this.values.get(key);
-      if (!this.values.has(key)) {
-        value = this.place(key);
-      }
-      return value;
-    };
-
-    this.placement.keys = function(_) {
-      if (!arguments.length) {
-        return d3.keys(this.values);
-      }
-      this.setKeys(_);
-      return this.placement;
-    };
-
-    this.placement.center = function(_) {
-      if (!arguments.length) {
-        return this.center;
-      }
-      this.center = _;
-      return this.placement;
-    };
-
-    this.placement.radius = function(_) {
-      if (!arguments.length) {
-        return this.radius;
-      }
-      this.radius = _;
-      return this.placement;
-    };
-
-    this.placement.start = function(_) {
-      if (!arguments.length) {
-        return this.start;
-      }
-      this.start = _;
-      this.current = this.start;
-      return this.placement;
-    };
-
-    this.placement.increment = function(_) {
-      if (!arguments.length) {
-        return this.increment;
-      }
-      this.increment = _;
-      return this.placement;
-    };
-  }
+  // Gets a new location for input key
+  var place = function(key) {
+    const value = radialLocation(center, current, radius);
+    values.set(key, value);
+    current += increment;
+    return value;
+  };
 
   // Given a set of keys, perform some
   // magic to create a two ringed radial layout.
   // Expects radius, increment, and center to be set.
   // If there are a small number of keys, just make
   // one circle.
-  setKeys = keys => {
+  const setKeys = keys => {
     // start with an empty values
-    this.values = d3.map();
+    values = d3.map();
 
     // keys.forEach(k => console.log(k));
 
-    this.increment = 25;
+    increment = 25;
 
     // Fullscreen size
     keys.forEach(k => {
       if (k.includes(':')) {
-        this.radius = 100;
-        this.place(k);
+        radius = 100;
+        place(k);
       } else if (k.includes('.')) {
-        this.radius = 300;
-        this.place(k);
+        radius = 300;
+        place(k);
       } else {
-        this.radius = 600;
-        this.place(k);
+        radius = 600;
+        place(k);
       }
     });
   };
+
+  placement.keys = function(_) {
+    if (!arguments.length) {
+      return d3.keys(values);
+    }
+    setKeys(_);
+    return placement;
+  };
+
+  placement.center = function(_) {
+    if (!arguments.length) {
+      return center;
+    }
+    center = _;
+    return placement;
+  };
+
+  placement.radius = function(_) {
+    if (!arguments.length) {
+      return radius;
+    }
+    radius = _;
+    return placement;
+  };
+
+  placement.start = function(_) {
+    if (!arguments.length) {
+      return start;
+    }
+    start = _;
+    current = start;
+    return placement;
+  };
+
+  placement.increment = function(_) {
+    if (!arguments.length) {
+      return increment;
+    }
+    increment = _;
+    return placement;
+  };
+
+  return placement;
 }
 
 class Network {
@@ -421,8 +420,8 @@ class Network {
   };
 
   updateCenters = function(id) {
-    this.groupCenters = new RadialPlacement().placement
-      .center({ x: this.width / 2, y: height / 2 - 100 })
+    this.groupCenters = RadialPlacement()
+      .center({ x: this.width / 2, y: this.height / 2 - 100 })
       .radius(300)
       //.increment(18)
       .keys(id);
