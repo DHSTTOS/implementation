@@ -96,7 +96,7 @@ function RadialPlacement() {
 
   // Given an center point, angle, and radius length,
   // return a radial position for that angle
-  const radialLocation = function(center, angle, radius) {
+  const radialLocation = (center, angle, radius) => {
     const x = center.x + radius * Math.cos((angle * Math.PI) / 180);
     const y = center.y + radius * Math.sin((angle * Math.PI) / 180);
     return { x: x, y: y };
@@ -105,7 +105,7 @@ function RadialPlacement() {
   // Main entry point for RadialPlacement
   // Returns location for a particular key,
   // creating a new location if necessary.
-  const placement = function(key) {
+  const placement = key => {
     let value = values.get(key);
     if (!values.has(key)) {
       value = place(key);
@@ -114,7 +114,7 @@ function RadialPlacement() {
   };
 
   // Gets a new location for input key
-  var place = function(key) {
+  var place = key => {
     const value = radialLocation(center, current, radius);
     values.set(key, value);
     current += increment;
@@ -149,7 +149,7 @@ function RadialPlacement() {
     });
   };
 
-  placement.keys = function(_) {
+  placement.keys = _ => {
     if (!arguments.length) {
       return d3.keys(values);
     }
@@ -157,7 +157,7 @@ function RadialPlacement() {
     return placement;
   };
 
-  placement.center = function(_) {
+  placement.center = _ => {
     if (!arguments.length) {
       return center;
     }
@@ -165,7 +165,7 @@ function RadialPlacement() {
     return placement;
   };
 
-  placement.radius = function(_) {
+  placement.radius = _ => {
     if (!arguments.length) {
       return radius;
     }
@@ -173,7 +173,7 @@ function RadialPlacement() {
     return placement;
   };
 
-  placement.start = function(_) {
+  placement.start = _ => {
     if (!arguments.length) {
       return start;
     }
@@ -182,7 +182,7 @@ function RadialPlacement() {
     return placement;
   };
 
-  placement.increment = function(_) {
+  placement.increment = _ => {
     if (!arguments.length) {
       return increment;
     }
@@ -258,7 +258,7 @@ class Network {
     this.update();
   }
 
-  updateData = function(newData) {
+  updateData = newData => {
     this.allData = this.setupData(newData);
     this.link && this.link.remove();
     this.node && this.node.remove();
@@ -271,7 +271,7 @@ class Network {
   //
   // update() is called everytime a parameter changes
   // and the network needs to be reset.
-  update = function() {
+  update = () => {
     // filter data to show based on current filter settings.
     this.curNodesData = this.filterNodes(this.allData.nodes);
     // console.log(allData.node);
@@ -312,7 +312,7 @@ class Network {
   // called once to clean up raw data and switch links to
   // point to node instances
   // Returns modified data
-  setupData = function(data) {
+  setupData = data => {
     // initialize circle radius scale
     const countExtent = d3.extent(data.nodes, d => 12);
     const circleRadius = d3.scale
@@ -320,7 +320,7 @@ class Network {
       .range([3, 12])
       .domain(countExtent);
 
-    data.nodes.forEach(function(n) {
+    data.nodes.forEach(n => {
       // set initial x/y to values within the width/height
       // of the visualization
 
@@ -343,7 +343,7 @@ class Network {
 
   // Helper function to map node id's to node objects.
   // Returns d3.map of ids -> nodes
-  mapNodes = function(nodes) {
+  mapNodes = nodes => {
     const l2Map = d3.map();
 
     nodes.forEach(n => {
@@ -356,9 +356,9 @@ class Network {
   // Helper function that returns an associative array
   // with counts of unique attr in nodes
   // attr is value stored in node, like 'id'
-  nodeCounts = function(nodes, attr) {
+  nodeCounts = (nodes, attr) => {
     const counts = {};
-    nodes.forEach(function(d) {
+    nodes.forEach(d => {
       if (counts[d[attr]] == null) {
         counts[d[attr]] = 0;
       }
@@ -377,19 +377,19 @@ class Network {
   // Removes nodes from input array
   // based on current filter setting.
   // Returns array of nodes
-  filterNodes = function(allNodes) {
+  filterNodes = allNodes => {
     let filteredNodes = allNodes;
     return filteredNodes;
   };
 
   // Returns array of id sorted based on
   // current sorting method.
-  sortedId = function(nodes, links) {
+  sortedId = (nodes, links) => {
     let counts;
     let id = [];
     if (this.sort === 'links') {
       counts = {};
-      links.forEach(function(l) {
+      links.forEach(l => {
         if (counts[l.source.id] == null) {
           counts[l.source.id] = 0;
         }
@@ -418,7 +418,7 @@ class Network {
     return id;
   };
 
-  updateCenters = function(id) {
+  updateCenters = id => {
     this.groupCenters = RadialPlacement()
       .center({ x: this.width / 2, y: this.height / 2 - 100 })
       .radius(300)
@@ -429,7 +429,7 @@ class Network {
   // Removes links from allLinks whose
   // source or target is not present in curNodes
   // Returns array of links
-  filterLinks = function(allLinks, curNodes) {
+  filterLinks = (allLinks, curNodes) => {
     curNodes = this.mapNodes(curNodes);
     return allLinks.filter(
       l => curNodes.get(l.source.id) && curNodes.get(l.target.id)
@@ -437,7 +437,7 @@ class Network {
   };
 
   // enter/exit display for nodes
-  updateNodes = function() {
+  updateNodes = () => {
     this.node = this.nodesG
       .selectAll('circle.node')
       .data(this.curNodesData, d => d.id);
@@ -450,7 +450,7 @@ class Network {
       .attr('cy', d => d.y)
       .attr('r', d => d.radius)
       // .style('fill', d => nodeColors(d.id))
-      .style('fill', function(d) {
+      .style('fill', d => {
         if (d.Protocol == 'IP') {
           return d3.rgb(12, 67, 199);
         } else if (d.Protocol == 'Ether') {
@@ -474,7 +474,7 @@ class Network {
   };
 
   // enter/exit display for links
-  updateLinks = function() {
+  updateLinks = () => {
     this.link = this.linksG
       .selectAll('line.link')
       .data(this.curLinksData, d => `${d.source.id}_${d.target.id}`);
@@ -496,22 +496,22 @@ class Network {
     return this.link.exit().remove();
   };
 
-  fade(opacity) {
-    return function(d) {
-      this.node.style('stroke-opacity', function(o) {
+  fade = opacity => {
+    return d => {
+      this.node.style('stroke-opacity', o => {
         const thisOpacity = this.neighboring(d, o) ? 1 : opacity;
         this.setAttribute('fill-opacity', thisOpacity);
         return thisOpacity;
       });
 
-      this.link.style('stroke-opacity', function(o) {
+      this.link.style('stroke-opacity', o => {
         return o.source === d || o.target === d ? 1 : opacity;
       });
     };
-  }
+  };
 
   // tick function for radial layout
-  radialTick = function(e) {
+  radialTick = e => {
     this.node.each(this.moveToRadialLayout(e.alpha));
 
     this.node.attr('cx', d => d.x).attr('cy', d => d.y);
@@ -525,9 +525,9 @@ class Network {
   // Adjusts x/y for each node to
   // push them towards appropriate location.
   // Uses alpha to dampen effect over time.
-  moveToRadialLayout = function(alpha) {
+  moveToRadialLayout = alpha => {
     const k = alpha * 0.1;
-    return function(d) {
+    return d => {
       const centerNode = this.groupCenters(d.id);
       d.x += (centerNode.x - d.x) * k;
       return (d.y += (centerNode.y - d.y) * k);
@@ -543,7 +543,7 @@ class Network {
       .toString();
 
   // Mouseover tooltip function
-  showDetails = function(d, i) {
+  showDetails = (d, i) => {
     let content = `<p class="main">id:  ${d.id}</span></p>`;
     content += '<hr class="tooltip-hr">';
     content += `<p class="main">Protocol:  ${d.Protocol}</span></p>`;
@@ -552,7 +552,7 @@ class Network {
     // highlight connected links
     if (this.link) {
       this.link
-        .attr('stroke', function(l) {
+        .attr('stroke', l => {
           if (l.source === d || l.target === d) {
             return '#007243';
           } else {
@@ -560,7 +560,7 @@ class Network {
             // return "#ddd";
           }
         })
-        .attr('stroke-opacity', function(l) {
+        .attr('stroke-opacity', l => {
           if (l.source === d || l.target === d) {
             return 10.0;
           } else {
@@ -572,14 +572,14 @@ class Network {
     // highlight neighboring nodes
     // watch out - don't mess with node if search is currently matching
     this.node
-      .style('stroke', function(n) {
+      .style('stroke', n => {
         if (this.neighboring(d, n)) {
           return '#007243';
         } else {
           return this.strokeFor(n);
         }
       })
-      .style('stroke-width', function(n) {
+      .style('stroke-width', n => {
         if (this.neighboring(d, n)) {
           return 2.0;
         } else {
@@ -594,7 +594,7 @@ class Network {
       .style('stroke-width', 5.0);
   };
 
-  showLinkDetails = function(d, i) {
+  showLinkDetails = (d, i) => {
     let content = `<p class="main">Source: ${d.source.id}</span></p>
     <hr class="tooltip-hr">
     <p class="main">Target:  ${d.target.id}</span></p>`;
@@ -602,22 +602,22 @@ class Network {
     this.tooltip.showTooltip(content, d3.event);
   };
 
-  hideLinkDetails = function(d, i) {
+  hideLinkDetails = (d, i) => {
     this.tooltip.hideTooltip();
   };
   // Mouseout function
-  hideDetails = function(d, i) {
+  hideDetails = (d, i) => {
     this.tooltip.hideTooltip();
     // watch out - don't mess with node if search is currently matching
     this.node
-      .style('stroke', function(n) {
+      .style('stroke', n => {
         if (!n.searched) {
           return this.strokeFor(n);
         } else {
           return '#555';
         }
       })
-      .style('stroke-width', function(n) {
+      .style('stroke-width', n => {
         if (!n.searched) {
           return 1.0;
         } else {
