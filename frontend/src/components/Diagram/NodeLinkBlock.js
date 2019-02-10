@@ -75,7 +75,24 @@ class NodeLinkBlock extends PureComponent {
   }
 }
 
-// Be extra cautious making changes to the code below.
+//
+// ** WARNING **
+//
+// I have tried to refactor this stuff into modern ES6 class syntax and to make things nice
+// and immutable 3 times already, and have failed every single time.
+//
+// Mutable variable land mines everywhere, there's also no such thing called scope down there.
+//
+// Total time spent to refactor/debug/modernize this code - about 22 hours on my side alone.
+//
+// Long live all those TC39 folks who made JS usable again. My utmost respect to all JS
+// developers who worked with the pre-ES6 version of JS.
+//
+// It would be more efficient to rewrite the viz TBH but our team don't have enough time/energy
+// to do that.
+//
+// Proceed with great caution please.
+//
 
 function RadialPlacement() {
   // stores the key -> location values
