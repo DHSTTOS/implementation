@@ -31,12 +31,12 @@ class NodeLinkBlock extends PureComponent {
 
   componentDidMount = () => {
     const myNetwork = Network();
-    myNetwork(this.nodeLinkGram.current, dataStore.currentNodeLinkData);
+    myNetwork(this.nodeLinkGram.current, { nodes: [], links: [] });
 
-    // const disposer = autorun(_ => {
-    //   myNetwork.updateData(dataStore.currentNodeLinkData);
-    // });
-    // disposer();
+    const disposer = autorun(_ => {
+      myNetwork.updateData(dataStore.currentNodeLinkData);
+    });
+    disposer();
   };
 
   render() {
@@ -285,9 +285,9 @@ function Network() {
 
   network.updateData = function(newData) {
     allData = setupData(newData);
-    link.remove();
-    node.remove();
-    return update();
+    link && link.remove();
+    node && node.remove();
+    update();
   };
 
   // network.setOptions(options);
