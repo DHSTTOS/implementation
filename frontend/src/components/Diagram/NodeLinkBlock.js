@@ -320,25 +320,32 @@ class Network {
       .range([3, 12])
       .domain(countExtent);
 
-    data.nodes.forEach(n => {
-      // set initial x/y to values within the width/height
-      // of the visualization
+    let modifiedData = { nodes: [], links: [] };
 
-      // add radius to the node so we can use it later
-      n.radius = circleRadius(12);
-    });
+    // set initial x/y to values within the width/height
+    // of the visualization
+
+    // add radius to the node so we can use it later
+    modifiedData.nodes = data.nodes.map(n => ({
+      ...n,
+      radius: circleRadius(12),
+    }));
 
     // id's -> node objects
     const nodesMap = this.mapNodes(data.nodes);
 
     // switch links to point to node objects instead of id's
-    data.links.forEach(l => {
-      l.source = nodesMap.get(l.source);
-      l.target = nodesMap.get(l.target);
+    modifiedData.links = data.links.map(l => {
+      const newL = {
+        ...l,
+        source: nodesMap.get(l.source),
+        target: nodesMap.get(l.target),
+      };
       this.linkedByIndex[l.source.id + ',' + l.target.id] = 1;
+      return newL;
     });
 
-    return data;
+    return modifiedData;
   };
 
   // Helper function to map node id's to node objects.
