@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { autorun } from 'mobx';
+import { autorun, toJS } from 'mobx';
 import { dataStore } from '@stores';
 import styled from '@emotion/styled';
 
@@ -38,11 +38,10 @@ class NodeLinkBlock extends PureComponent {
     });
 
     this.disposeAutorun = autorun(_ => {
-      console.warn('In');
-      network.updateData(dataStore.currentNodeLinkData);
-      console.warn('Out');
+      network.updateData(
+        JSON.parse(JSON.stringify(toJS(dataStore.currentNodeLinkData)))
+      );
     });
-    console.warn('Last step done');
   };
 
   componentWillUnmount = () => {
