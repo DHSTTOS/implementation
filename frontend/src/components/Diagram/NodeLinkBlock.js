@@ -1,6 +1,30 @@
 import React, { PureComponent } from 'react';
 import { autorun } from 'mobx';
 import { dataStore } from '@stores';
+import styled from '@emotion/styled';
+
+const LegendContainer = styled.div`
+  position: absolute;
+  z-index: 10000;
+  list-style: none;
+  top: 6rem;
+  /* background-color: red; */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+`;
+
+const Row = styled.div`
+  display: flex;
+`;
+
+const LegendBox = styled.div`
+  width: 2rem;
+  height: 1rem;
+  background-color: ${props => props.color};
+  margin: 1px 5px;
+  border: 1px solid #ddd;
+`;
 
 class NodeLinkBlock extends PureComponent {
   nodeLinkGram = React.createRef();
@@ -16,7 +40,25 @@ class NodeLinkBlock extends PureComponent {
   };
 
   render() {
-    return <div ref={this.nodeLinkGram} />;
+    return (
+      <div>
+        <div ref={this.nodeLinkGram} />
+        <LegendContainer>
+          <Row>
+            <LegendBox color="rgb(12, 67, 199)" /> MAC Address
+          </Row>
+          <Row>
+            <LegendBox color="rgb(255, 224, 25)" /> IP Address
+          </Row>
+          <Row>
+            <LegendBox color="rgb(255, 24, 166)" /> UDP
+          </Row>
+          <Row>
+            <LegendBox color="rgb(24, 255, 177)" /> TCP
+          </Row>
+        </LegendContainer>
+      </div>
+    );
   }
 }
 
