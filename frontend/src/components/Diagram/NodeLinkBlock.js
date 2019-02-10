@@ -234,29 +234,28 @@ class Network {
   constructor(domNode, data) {
     // Starting point for network visualization
     // Initializes visualization and starts force layout
-    this.network = function() {
-      // format our data
-      this.allData = this.setupData(data);
-      //network.setOptions(options);
-      // create our svg and groups
-      const vis = d3
-        .select(domNode)
-        .append('svg')
-        .attr('width', this.width)
-        .attr('height', height);
-      this.linksG = vis.append('g').attr('id', 'links');
-      this.nodesG = vis.append('g').attr('id', 'nodes');
 
-      // setup the size of the force environment
-      this.force.size([this.width, height]);
+    // format our data
+    this.allData = this.setupData(data);
+    //network.setOptions(options);
+    // create our svg and groups
+    const vis = d3
+      .select(domNode)
+      .append('svg')
+      .attr('width', this.width)
+      .attr('height', this.height);
+    this.linksG = vis.append('g').attr('id', 'links');
+    this.nodesG = vis.append('g').attr('id', 'nodes');
 
-      this.force.on('tick', this.radialTick);
-      // .charge(charge);
-      // setFilter('all');
+    // setup the size of the force environment
+    this.force.size([this.width, this.height]);
 
-      // perform rendering and start force layout
-      this.update();
-    };
+    this.force.on('tick', this.radialTick);
+    // .charge(charge);
+    // setFilter('all');
+
+    // perform rendering and start force layout
+    this.update();
   }
 
   updateData = function(newData) {
