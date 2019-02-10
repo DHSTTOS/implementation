@@ -7,7 +7,6 @@
 const RadialPlacement = function() {
   // stores the key -> location values
   let values = d3.map();
-  var playButton = d3.select('#play-button');
   // how much to separate each location by
   let increment = 5;
   // how large to make the layout
@@ -177,7 +176,7 @@ const Network = function() {
 
     force.on('tick', radialTick);
     // .charge(charge);
-    setFilter('all');
+    // setFilter('all');
 
     // perform rendering and start force layout
     update();
@@ -447,7 +446,7 @@ const Network = function() {
   function fade(opacity) {
     return function(d) {
       node.style('stroke-opacity', function(o) {
-        thisOpacity = neighboring(d, o) ? 1 : opacity;
+        const thisOpacity = neighboring(d, o) ? 1 : opacity;
         this.setAttribute('fill-opacity', thisOpacity);
         return thisOpacity;
       });
@@ -459,7 +458,7 @@ const Network = function() {
   }
 
   // switches filter option to new filter
-  var setFilter = newFilter => (filter = newFilter);
+  // var setFilter = newFilter => {filter = newFilter};
 
   // switches sort option to new sort
   // var setSort = newSort => (sort = newSort);
