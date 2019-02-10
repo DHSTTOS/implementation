@@ -31,9 +31,13 @@ class NodeLinkBlock extends PureComponent {
   disposeAutorun = () => {};
 
   componentDidMount = () => {
-    const network = Network();
+    const network = new Network(this.nodeLinkGram.current, {
+      nodes: [],
+      links: [],
+    });
     console.log(this.nodeLinkGram.current);
-    network(this.nodeLinkGram.current, { nodes: [], links: [] });
+
+    // network.updateData
     console.warn('First step done');
 
     this.disposeAutorun = autorun(_ => {
@@ -98,17 +102,6 @@ class RadialPlacement {
     return { x: x, y: y };
   };
 
-  // Main entry point for RadialPlacement
-  // Returns location for a particular key,
-  // creating a new location if necessary.
-  placement = function(key) {
-    let value = this.values.get(key);
-    if (!this.values.has(key)) {
-      value = this.place(key);
-    }
-    return value;
-  };
-
   // Gets a new location for input key
   place = function(key) {
     const value = this.radialLocation(this.center, this.current, this.radius);
@@ -116,6 +109,61 @@ class RadialPlacement {
     this.current += this.increment;
     return value;
   };
+
+  // Main entry point for RadialPlacement
+  // Returns location for a particular key,
+  // creating a new location if necessary.
+
+  constructor(key) {
+    this.placement = function() {
+      let value = this.values.get(key);
+      if (!this.values.has(key)) {
+        value = this.place(key);
+      }
+      return value;
+    };
+
+    this.placement.keys = function(_) {
+      if (!arguments.length) {
+        return d3.keys(this.values);
+      }
+      this.setKeys(_);
+      return this.placement;
+    };
+
+    this.placement.center = function(_) {
+      if (!arguments.length) {
+        return this.center;
+      }
+      this.center = _;
+      return this.placement;
+    };
+
+    this.placement.radius = function(_) {
+      if (!arguments.length) {
+        return this.radius;
+      }
+      this.radius = _;
+      return this.placement;
+    };
+
+    this.placement.start = function(_) {
+      if (!arguments.length) {
+        return this.start;
+      }
+      this.start = _;
+      this.current = this.start;
+      return this.placement;
+    };
+
+    this.placement.increment = function(_) {
+      if (!arguments.length) {
+        return this.increment;
+      }
+      this.increment = _;
+      return this.placement;
+    };
+  }
 
   // Given a set of keys, perform some
   // magic to create a two ringed radial layout.
@@ -144,49 +192,6 @@ class RadialPlacement {
       }
     });
   };
-
-  this.placement.keys = function(_) {
-    if (!arguments.length) {
-      return d3.keys(this.values);
-    }
-    this.setKeys(_);
-    return this.placement;
-  };
-
-  this.placement.center = function(_) {
-    if (!arguments.length) {
-      return this.center;
-    }
-    this.center = _;
-    return this.placement;
-  };
-
-  this.placement.radius = function(_) {
-    if (!arguments.length) {
-      return this.radius;
-    }
-    this.radius = _;
-    return this.placement;
-  };
-
-  this.placement.start = function(_) {
-    if (!arguments.length) {
-      return this.start;
-    }
-    this.start = _;
-    this.current = this.start;
-    return this.placement;
-  };
-
-  this.placement.increment = function(_) {
-    if (!arguments.length) {
-      return this.increment;
-    }
-    this.increment = _;
-    return this.placement;
-  };
-
-  // return this.placement;
 }
 
 class Network {
@@ -227,29 +232,38 @@ class Network {
   // // charge used in id layout
   // const charge = node => -Math.pow(node.radius, 2.0) / 2;
 
-  // Starting point for network visualization
-  // Initializes visualization and starts force layout
-  network = function(selection, data) {
-    // format our data
-    this.allData = this.setupData(data);
-    //network.setOptions(options);
-    // create our svg and groups
-    const vis = d3
-      .select(selection)
-      .append('svg')
-      .attr('width', this.width)
-      .attr('height', height);
-    this.linksG = vis.append('g').attr('id', 'links');
-    this.nodesG = vis.append('g').attr('id', 'nodes');
+  constructor(domNode, data) {
+    // Starting point for network visualization
+    // Initializes visualization and starts force layout
+    this.network = function() {
+      // format our data
+      this.allData = this.setupData(data);
+      //network.setOptions(options);
+      // create our svg and groups
+      const vis = d3
+        .select(domNode)
+        .append('svg')
+        .attr('width', this.width)
+        .attr('height', height);
+      this.linksG = vis.append('g').attr('id', 'links');
+      this.nodesG = vis.append('g').attr('id', 'nodes');
 
-    // setup the size of the force environment
-    this.force.size([this.width, height]);
+      // setup the size of the force environment
+      this.force.size([this.width, height]);
 
-    this.force.on('tick', this.radialTick);
-    // .charge(charge);
-    // setFilter('all');
+      this.force.on('tick', this.radialTick);
+      // .charge(charge);
+      // setFilter('all');
 
-    // perform rendering and start force layout
+      // perform rendering and start force layout
+      this.update();
+    };
+  }
+
+  updateData = function(newData) {
+    this.allData = this.setupData(newData);
+    this.link && this.link.remove();
+    this.node && this.node.remove();
     this.update();
   };
 
@@ -296,13 +310,6 @@ class Network {
     this.force.start();
   };
 
-  network.updateData = function(newData) {
-    this.allData = this.setupData(newData);
-    this.link && this.link.remove();
-    this.node && this.node.remove();
-    this.update();
-  };
-
   // network.setOptions(options);
   // called once to clean up raw data and switch links to
   // point to node instances
@@ -327,7 +334,7 @@ class Network {
     const nodesMap = this.mapNodes(data.nodes);
 
     // switch links to point to node objects instead of id's
-    data.links.forEach(function(l) {
+    data.links.forEach(l => {
       l.source = nodesMap.get(l.source);
       l.target = nodesMap.get(l.target);
       this.linkedByIndex[l.source.id + ',' + l.target.id] = 1;
@@ -366,7 +373,8 @@ class Network {
   // there is a link between them.
   // Uses linkedByIndex initialized in setupData
   neighboring(a, b) {
-    this.linkedByIndex[a.id + ',' + b.id] || this.linkedByIndex[b.id + ',' + a.id];
+    this.linkedByIndex[a.id + ',' + b.id] ||
+      this.linkedByIndex[b.id + ',' + a.id];
   }
   // Removes nodes from input array
   // based on current filter setting.
@@ -413,7 +421,7 @@ class Network {
   };
 
   updateCenters = function(id) {
-    this.groupCenters = new RadialPlacement()
+    this.groupCenters = new RadialPlacement().placement
       .center({ x: this.width / 2, y: height / 2 - 100 })
       .radius(300)
       //.increment(18)
@@ -432,7 +440,9 @@ class Network {
 
   // enter/exit display for nodes
   updateNodes = function() {
-    this.node = this.nodesG.selectAll('circle.node').data(this.curNodesData, d => d.id);
+    this.node = this.nodesG
+      .selectAll('circle.node')
+      .data(this.curNodesData, d => d.id);
 
     this.node
       .enter()
@@ -481,7 +491,9 @@ class Network {
       .attr('x2', d => d.target.x)
       .attr('y2', d => d.target.y);
 
-    this.link.on('mouseover', this.showLinkDetails).on('mouseout', this.hideLinkDetails);
+    this.link
+      .on('mouseover', this.showLinkDetails)
+      .on('mouseout', this.hideLinkDetails);
 
     return this.link.exit().remove();
   };
