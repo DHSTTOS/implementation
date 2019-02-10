@@ -488,7 +488,7 @@ function Network() {
     content += `<p class="main">Protocol:  ${d.Protocol}</span></p>`;
     tooltip.showTooltip(content, d3.event);
 
-    // higlight connected links
+    // highlight connected links
     if (link) {
       link
         .attr('stroke', function(l) {
