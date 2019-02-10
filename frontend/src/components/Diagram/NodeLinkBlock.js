@@ -1,24 +1,98 @@
 import React, { PureComponent } from 'react';
-import { autorun } from 'mobx';
+import { autorun, toJS } from 'mobx';
 import { dataStore } from '@stores';
+import styled from '@emotion/styled';
+
+const LegendContainer = styled.div`
+  position: absolute;
+  z-index: 10000;
+  list-style: none;
+  top: 6rem;
+  /* background-color: red; */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+`;
+
+const Row = styled.div`
+  display: flex;
+`;
+
+const LegendBox = styled.div`
+  width: 2rem;
+  height: 1rem;
+  background-color: ${props => props.color};
+  margin: 1px 5px;
+  border: 1px solid #ddd;
+`;
 
 class NodeLinkBlock extends PureComponent {
   nodeLinkGram = React.createRef();
+  disposeAutorun = () => {};
 
   componentDidMount = () => {
-    const myNetwork = Network();
-    myNetwork(this.nodeLinkGram.current, dataStore.currentNodeLinkData);
+    const network = Network();
+    network(this.nodeLinkGram.current, {
+      nodes: [],
+      links: [],
+    });
 
-    // const disposer = autorun(_ => {
-    //   myNetwork.updateData(dataStore.currentNodeLinkData);
-    // });
-    // disposer();
+    this.disposeAutorun = autorun(_ => {
+      network.updateData(
+        JSON.parse(JSON.stringify(toJS(dataStore.currentNodeLinkData)))
+      );
+    });
+  };
+
+  componentWillUnmount = () => {
+    this.disposeAutorun();
+    // this.nodeLinkGram.current.remove();
+    this.nodeLinkGram.current.remove();
+    console.warn('Removed dom node');
+    document.getElementById('vis-tooltip').remove();
   };
 
   render() {
-    return <div ref={this.nodeLinkGram} />;
+    return (
+      <div>
+        <div ref={this.nodeLinkGram} />
+        <LegendContainer>
+          <Row>
+            <LegendBox color="rgb(12, 67, 199)" /> MAC Address
+          </Row>
+          <Row>
+            <LegendBox color="rgb(255, 224, 25)" /> IP Address
+          </Row>
+          <Row>
+            <LegendBox color="rgb(255, 24, 166)" /> UDP
+          </Row>
+          <Row>
+            <LegendBox color="rgb(24, 255, 177)" /> TCP
+          </Row>
+        </LegendContainer>
+      </div>
+    );
   }
 }
+
+//
+// ** WARNING **
+//
+// I have tried to refactor this stuff into modern ES6 class syntax and to make things nice
+// and immutable 3 times already, and have failed every single time.
+//
+// Mutable variable land mines everywhere, there's also no such thing called scope down there.
+//
+// Total time spent to refactor/debug/modernize this code - about 22 hours on my side alone.
+//
+// Long live all those TC39 folks who made JS usable again. My utmost respect to all JS
+// developers who worked with the pre-ES6 version of JS.
+//
+// It would be more efficient to rewrite the viz TBH but our team don't have enough time/energy
+// to do that.
+//
+// Proceed with great caution please.
+//
 
 function RadialPlacement() {
   // stores the key -> location values
@@ -163,7 +237,7 @@ function Network() {
   // our force directed layout
   const force = d3.layout.force();
   // color function used to color nodes
-  const nodeColors = d3.scale.category20();
+  // const nodeColors = d3.scale.category20();
   // tooltip used to display details
   const tooltip = Tooltip('vis-tooltip', 230);
 
@@ -241,9 +315,9 @@ function Network() {
 
   network.updateData = function(newData) {
     allData = setupData(newData);
-    link.remove();
-    node.remove();
-    return update();
+    link && link.remove();
+    node && node.remove();
+    update();
   };
 
   // network.setOptions(options);
@@ -273,16 +347,8 @@ function Network() {
     data.links.forEach(function(l) {
       l.source = nodesMap.get(l.source);
       l.target = nodesMap.get(l.target);
-      //}
-      // allData.links.forEach(function(d) {
       linkedByIndex[l.source.id + ',' + l.target.id] = 1;
     });
-    // console.log(l);
-    // console.log(l.source);
-    // console.log(l.target);
-    // linkedByIndex is used for link sorting
-    // return (linkedByIndex[`${l.source.id},${l.target.id}`] = 1);
-    //});
 
     return data;
   };
@@ -291,21 +357,12 @@ function Network() {
   // Returns d3.map of ids -> nodes
   var mapNodes = function(nodes) {
     const l2Map = d3.map();
-    // const l3Map = d3.map();
-    // const l4Map = d3.map();
 
     nodes.forEach(n => {
-      //   if(n.type == "L2"){
       l2Map.set(n.id, n);
-      // }else if (n.type == "L3"){
-      // l3Map.set(n.id, n);
-      // }else{
-      // l4Map.set(n.id,n);
-      // }
     });
 
     return l2Map;
-    // return new Map([l2Map,l3Map,l4Map]);
   };
 
   // Helper function that returns an associative array
@@ -401,7 +458,18 @@ function Network() {
       .attr('cx', d => d.x)
       .attr('cy', d => d.y)
       .attr('r', d => d.radius)
-      .style('fill', d => nodeColors(d.id))
+      // .style('fill', d => nodeColors(d.id))
+      .style('fill', function(d) {
+        if (d.Protocol == 'IP') {
+          return d3.rgb(12, 67, 199);
+        } else if (d.Protocol == 'Ether') {
+          return d3.rgb(255, 224, 25);
+        } else if (d.Protocol == 'UDP') {
+          return d3.rgb(255, 24, 166);
+        } else {
+          return d3.rgb(24, 255, 177);
+        }
+      })
       .style('stroke', d => strokeFor(d))
       .style('stroke-width', 1.0);
 
@@ -477,7 +545,7 @@ function Network() {
   // particular node.
   var strokeFor = d =>
     d3
-      .rgb(nodeColors(d.id))
+      .rgb(24, 255, 139) //(nodeColors(d.id))
       .darker()
       .toString();
 
@@ -488,7 +556,7 @@ function Network() {
     content += `<p class="main">Protocol:  ${d.Protocol}</span></p>`;
     tooltip.showTooltip(content, d3.event);
 
-    // higlight connected links
+    // highlight connected links
     if (link) {
       link
         .attr('stroke', function(l) {
@@ -530,7 +598,7 @@ function Network() {
     return d3
       .select(this)
       .style('stroke', 'black')
-      .style('stroke-width', 2.0);
+      .style('stroke-width', 5.0);
   };
 
   var showLinkDetails = function(d, i) {

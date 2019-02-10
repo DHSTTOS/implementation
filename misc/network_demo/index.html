@@ -1,47 +1,25 @@
-<head>
-  <title>Node-Link Diagram</title>
-  <meta name="description" content="Node-Link Diagram.">
-  <meta name="author" content="Klevia Ulqinaku">
-  <style>
-    body {
-      font-family:"avenir next", Arial, sans-serif;
-      font-size: 12px;
-      color: #696969;
-    }
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Node-Link Diagram</title>
+    <meta name="description" content="Node-Link Diagram." />
+    <meta name="author" content="Klevia Ulqinaku" />
+    <style>
+      body {
+        font-family: 'avenir next', Arial, sans-serif;
+        font-size: 12px;
+        color: #696969;
+      }
+    </style>
 
-    #play-button {
-      position: absolute;
-      top: 600px;
-      left: 500px;
-      background: #f08080;
-      padding-right: 26px;
-      border-radius: 3px;
-      border: none;
-      color: white;
-      margin: 0;
-      padding: 0 12px;
-      width: 60px;
-      cursor: pointer;
-      height: 30px;
-    }
+    <link rel="stylesheet" href="css/reset.css" />
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
 
-    #play-button:hover {
-      background-color: #696969;
-    }    
-  </style>
-
-  <link rel="stylesheet" href="css/reset.css" />
-  <link rel="stylesheet" href="css/bootstrap.min.css" />
-  <link rel="stylesheet" href="css/style.css">
-
-</head>
-
-<body>
-  
-  <div id="container" class="container">
-    <header>
-    <h1>Node-Link Diagram</h1>
-    </header>
+  <body>
+    <div id="container" class="container">
+      <h1>Node-Link Diagram</h1>
 
       <div id="song_selection" class="control">
         <h3>Source</h3>
@@ -54,24 +32,78 @@
           <option value="Source6.json">Source 6</option>
         </select>
 
+        <div class="my-legend">
+          <div class="legend-scale">
+            <ul class="legend-labels">
+              <li>
+                <span style="background:rgb(12, 67, 199);"></span>Mac Adresses
+              </li>
+              <li><span style="background:rgb(255, 224, 25);"></span>Ip</li>
+              <li><span style="background:rgb(255, 24, 166);"></span>UDP</li>
+              <li><span style="background:rgb(24, 255, 177);"></span>TCP</li>
+            </ul>
+          </div>
+        </div>
       </div>
-      <div id="controls">        
-      <div id="main" role="main">
-        <div id="vis"></div>
+      <div id="controls">
+        <div id="main" role="main">
+          <div id="vis"></div>
+        </div>
       </div>
-    </div> 
-   
+    </div>
 
-  <script>window.jQuery || document.write('<script src="js/libs/jquery-1.7.2.min.js"><\/script>')</script>
+    <style type="text/css">
+      .my-legend .legend-title {
+        text-align: top;
+        margin-top: 100px;
+        font-weight: bold;
+        font-size: 90%;
+      }
+      .my-legend .legend-scale ul {
+        margin: 20;
+        margin-top: 5px;
+        padding: 0;
+        float: left;
+        list-style: none;
+      }
+      .my-legend .legend-scale ul li {
+        font-size: 80%;
+        list-style: none;
+        margin-left: 0;
+        line-height: 18px;
+        margin-top: 10px;
+      }
+      .my-legend ul.legend-labels li span {
+        display: block;
+        float: left;
+        height: 16px;
+        width: 30px;
+        margin-right: 5px;
+        margin-left: 0;
+        border: 1px solid #999;
+      }
+      .my-legend .legend-source {
+        font-size: 70%;
+        color: #999;
+        clear: both;
+      }
+      .my-legend a {
+        color: #777;
+      }
+    </style>
 
-  <script defer src="js/plugins.js"></script>
-  <script defer src="js/script.js"></script>
-  <script src="js/libs/d3.v2.min.js"></script>
-  
-  <script src="js/Tooltip.js"></script>
-  <script src="./vis.js"></script>
-  <script type="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.19.1/vis.min.js">
-  
-  </script>
-</body>
+    <script>
+      window.jQuery ||
+        document.write('<script src="js/libs/jquery-1.7.2.min.js"><\/script>');
+    </script>
+
+    <script defer src="js/plugins.js"></script>
+    <script src="js/libs/d3.v2.js"></script>
+    <script src="js/Tooltip.js"></script>
+    <script src="./vis.js"></script>
+    <script
+      type="javascript"
+      src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.19.1/vis.min.js"
+    ></script>
+  </body>
 </html>
