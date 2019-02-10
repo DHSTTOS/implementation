@@ -88,7 +88,7 @@ class RadialPlacement {
   center = { x: 0, y: 0 };
   // what angle to start at
   start = -120;
-  current = this_start;
+  current = this.start;
 
   // Given an center point, angle, and radius length,
   // return a radial position for that angle
@@ -102,18 +102,18 @@ class RadialPlacement {
   // Returns location for a particular key,
   // creating a new location if necessary.
   placement = function(key) {
-    let value = this_values.get(key);
-    if (!this_values.has(key)) {
-      value = this_place(key);
+    let value = this.values.get(key);
+    if (!this.values.has(key)) {
+      value = this.place(key);
     }
     return value;
   };
 
   // Gets a new location for input key
   place = function(key) {
-    const value = this_radialLocation(this_center, this_current, this_radius);
-    this_values.set(key, value);
-    this_current += this_increment;
+    const value = this.radialLocation(this.center, this.current, this.radius);
+    this.values.set(key, value);
+    this.current += this.increment;
     return value;
   };
 
@@ -124,133 +124,133 @@ class RadialPlacement {
   // one circle.
   setKeys = keys => {
     // start with an empty values
-    this_values = d3.map();
+    this.values = d3.map();
 
     // keys.forEach(k => console.log(k));
 
-    this_increment = 25;
+    this.increment = 25;
 
     // Fullscreen size
     keys.forEach(k => {
       if (k.includes(':')) {
-        this_radius = 100;
-        this_place(k);
+        this.radius = 100;
+        this.place(k);
       } else if (k.includes('.')) {
-        this_radius = 300;
-        this_place(k);
+        this.radius = 300;
+        this.place(k);
       } else {
-        this_radius = 600;
-        this_place(k);
+        this.radius = 600;
+        this.place(k);
       }
     });
   };
 
-  this_placement.keys = function(_) {
+  this.placement.keys = function(_) {
     if (!arguments.length) {
-      return d3.keys(this_values);
+      return d3.keys(this.values);
     }
-    this_setKeys(_);
-    return this_placement;
+    this.setKeys(_);
+    return this.placement;
   };
 
-  this_placement.center = function(_) {
+  this.placement.center = function(_) {
     if (!arguments.length) {
-      return this_center;
+      return this.center;
     }
-    this_center = _;
-    return this_placement;
+    this.center = _;
+    return this.placement;
   };
 
-  this_placement.radius = function(_) {
+  this.placement.radius = function(_) {
     if (!arguments.length) {
-      return this_radius;
+      return this.radius;
     }
-    this_radius = _;
-    return this_placement;
+    this.radius = _;
+    return this.placement;
   };
 
-  this_placement.start = function(_) {
+  this.placement.start = function(_) {
     if (!arguments.length) {
-      return this_start;
+      return this.start;
     }
-    this_start = _;
-    this_current = this_start;
-    return this_placement;
+    this.start = _;
+    this.current = this.start;
+    return this.placement;
   };
 
-  this_placement.increment = function(_) {
+  this.placement.increment = function(_) {
     if (!arguments.length) {
-      return this_increment;
+      return this.increment;
     }
-    this_increment = _;
-    return this_placement;
+    this.increment = _;
+    return this.placement;
   };
 
-  // return this_placement;
+  // return this.placement;
 }
 
 class Network {
   // variables we want to access
   // in multiple places of Network
-  this_width = 1260;
+  width = 1260;
   height = 1260;
 
   // allData will store the unfiltered data
-  this_allData = [];
-  this_curLinksData = [];
-  this_curNodesData = [];
-  this_linkedByIndex = {};
+  allData = [];
+  curLinksData = [];
+  curNodesData = [];
+  linkedByIndex = {};
 
   // these will hold the svg groups for
   // accessing the nodes and links display
-  this_nodesG = null;
-  this_linksG = null;
+  nodesG = null;
+  linksG = null;
   // these will point to the circles and lines
   // of the nodes and links
-  this_node = null;
-  this_link = null;
+  node = null;
+  link = null;
 
   // variables to refect the current settings
   // of the visualization
-  this_sort = 'data';
+  sort = 'data';
   // groupCenters will store our radial layout for
   // the group by id layout.
-  this_groupCenters = null;
+  groupCenters = null;
 
   // our force directed layout
-  this_force = d3.layout.force();
+  force = d3.layout.force();
   // color function used to color nodes
   // const nodeColors = d3.scale.category20();
   // tooltip used to display details
-  this_tooltip = Tooltip('vis-tooltip', 230);
+  tooltip = Tooltip('vis-tooltip', 230);
 
   // // charge used in id layout
   // const charge = node => -Math.pow(node.radius, 2.0) / 2;
 
   // Starting point for network visualization
   // Initializes visualization and starts force layout
-  this_network = function(selection, data) {
+  network = function(selection, data) {
     // format our data
-    this_allData = this_setupData(data);
+    this.allData = this.setupData(data);
     //network.setOptions(options);
     // create our svg and groups
     const vis = d3
       .select(selection)
       .append('svg')
-      .attr('width', this_width)
+      .attr('width', this.width)
       .attr('height', height);
-    this_linksG = vis.append('g').attr('id', 'links');
-    this_nodesG = vis.append('g').attr('id', 'nodes');
+    this.linksG = vis.append('g').attr('id', 'links');
+    this.nodesG = vis.append('g').attr('id', 'nodes');
 
     // setup the size of the force environment
-    this_force.size([this_width, height]);
+    this.force.size([this.width, height]);
 
-    this_force.on('tick', this_radialTick);
+    this.force.on('tick', this.radialTick);
     // .charge(charge);
     // setFilter('all');
 
     // perform rendering and start force layout
-    this_update();
+    this.update();
   };
 
   // The update() function performs the bulk of the
@@ -259,55 +259,55 @@ class Network {
   //
   // update() is called everytime a parameter changes
   // and the network needs to be reset.
-  this_update = function() {
+  update = function() {
     // filter data to show based on current filter settings.
-    this_curNodesData = this_filterNodes(this_allData.nodes);
+    this.curNodesData = this.filterNodes(this.allData.nodes);
     // console.log(allData.node);
-    this_curLinksData = this_filterLinks(this_allData.links, this_curNodesData);
+    this.curLinksData = this.filterLinks(this.allData.links, this.curNodesData);
 
     // sort nodes based on current sort and update centers for
     // radial layout
 
-    const id = this_sortedId(this_curNodesData, this_curLinksData);
-    this_updateCenters(id);
+    const id = this.sortedId(this.curNodesData, this.curLinksData);
+    this.updateCenters(id);
 
     // reset nodes in force layout
-    this_force.nodes(this_curNodesData);
+    this.force.nodes(this.curNodesData);
 
     // enter / exit for nodes
-    this_updateNodes();
+    this.updateNodes();
 
     // reset links so they do not interfere with
     // other layouts. updateLinks() will be called when
     // force is done animating.
-    this_force.links([]);
+    this.force.links([]);
     // if present, remove them from svg
-    if (this_link) {
+    if (this.link) {
       // console.log(link)
-      this_link
+      this.link
         .data([])
         .exit()
         .remove();
-      this_link = null;
+      this.link = null;
     }
     // }
 
     // start me up!
-    this_force.start();
+    this.force.start();
   };
 
-  this_network.updateData = function(newData) {
-    this_allData = this_setupData(newData);
-    this_link && this_link.remove();
-    this_node && this_node.remove();
-    this_update();
+  network.updateData = function(newData) {
+    this.allData = this.setupData(newData);
+    this.link && this.link.remove();
+    this.node && this.node.remove();
+    this.update();
   };
 
   // network.setOptions(options);
   // called once to clean up raw data and switch links to
   // point to node instances
   // Returns modified data
-  this_setupData = function(data) {
+  setupData = function(data) {
     // initialize circle radius scale
     const countExtent = d3.extent(data.nodes, d => 12);
     const circleRadius = d3.scale
@@ -324,13 +324,13 @@ class Network {
     });
 
     // id's -> node objects
-    const nodesMap = this_mapNodes(data.nodes);
+    const nodesMap = this.mapNodes(data.nodes);
 
     // switch links to point to node objects instead of id's
     data.links.forEach(function(l) {
       l.source = nodesMap.get(l.source);
       l.target = nodesMap.get(l.target);
-      this_linkedByIndex[l.source.id + ',' + l.target.id] = 1;
+      this.linkedByIndex[l.source.id + ',' + l.target.id] = 1;
     });
 
     return data;
@@ -338,7 +338,7 @@ class Network {
 
   // Helper function to map node id's to node objects.
   // Returns d3.map of ids -> nodes
-  this_mapNodes = function(nodes) {
+  mapNodes = function(nodes) {
     const l2Map = d3.map();
 
     nodes.forEach(n => {
@@ -351,7 +351,7 @@ class Network {
   // Helper function that returns an associative array
   // with counts of unique attr in nodes
   // attr is value stored in node, like 'id'
-  this_nodeCounts = function(nodes, attr) {
+  nodeCounts = function(nodes, attr) {
     const counts = {};
     nodes.forEach(function(d) {
       if (counts[d[attr]] == null) {
@@ -365,23 +365,23 @@ class Network {
   // Given two nodes a and b, returns true if
   // there is a link between them.
   // Uses linkedByIndex initialized in setupData
-  this_neighboring(a, b) {
-    this_linkedByIndex[a.id + ',' + b.id] || this_linkedByIndex[b.id + ',' + a.id];
+  neighboring(a, b) {
+    this.linkedByIndex[a.id + ',' + b.id] || this.linkedByIndex[b.id + ',' + a.id];
   }
   // Removes nodes from input array
   // based on current filter setting.
   // Returns array of nodes
-  this_filterNodes = function(allNodes) {
+  filterNodes = function(allNodes) {
     let filteredNodes = allNodes;
     return filteredNodes;
   };
 
   // Returns array of id sorted based on
   // current sorting method.
-  this_sortedId = function(nodes, links) {
+  sortedId = function(nodes, links) {
     let counts;
     let id = [];
-    if (this_sort === 'links') {
+    if (this.sort === 'links') {
       counts = {};
       links.forEach(function(l) {
         if (counts[l.source.id] == null) {
@@ -404,7 +404,7 @@ class Network {
       id = id.map(v => v.key);
     } else {
       // sort id by song count
-      counts = this_nodeCounts(nodes, 'id');
+      counts = this.nodeCounts(nodes, 'id');
       id = d3.entries(counts).sort((a, b) => b.value - a.value);
       id = id.map(v => v.key);
     }
@@ -412,9 +412,9 @@ class Network {
     return id;
   };
 
-  this_updateCenters = function(id) {
-    this_groupCenters = RadialPlacement()
-      .center({ x: this_width / 2, y: height / 2 - 100 })
+  updateCenters = function(id) {
+    this.groupCenters = new RadialPlacement()
+      .center({ x: this.width / 2, y: height / 2 - 100 })
       .radius(300)
       //.increment(18)
       .keys(id);
@@ -423,18 +423,18 @@ class Network {
   // Removes links from allLinks whose
   // source or target is not present in curNodes
   // Returns array of links
-  this_filterLinks = function(allLinks, curNodes) {
-    curNodes = this_mapNodes(curNodes);
+  filterLinks = function(allLinks, curNodes) {
+    curNodes = this.mapNodes(curNodes);
     return allLinks.filter(
       l => curNodes.get(l.source.id) && curNodes.get(l.target.id)
     );
   };
 
   // enter/exit display for nodes
-  this_updateNodes = function() {
-    this_node = this_nodesG.selectAll('circle.node').data(this_curNodesData, d => d.id);
+  updateNodes = function() {
+    this.node = this.nodesG.selectAll('circle.node').data(this.curNodesData, d => d.id);
 
-    this_node
+    this.node
       .enter()
       .append('circle')
       .attr('class', 'node')
@@ -453,24 +453,24 @@ class Network {
           return d3.rgb(24, 255, 177);
         }
       })
-      .style('stroke', d => this_strokeFor(d))
+      .style('stroke', d => this.strokeFor(d))
       .style('stroke-width', 1.0);
 
-    this_node
+    this.node
       .on('mouseover', (d, i) => {
-        this_showDetails(d, i);
+        this.showDetails(d, i);
       })
-      .on('mouseout', this_hideDetails);
+      .on('mouseout', this.hideDetails);
 
-    return this_node.exit().remove();
+    return this.node.exit().remove();
   };
 
   // enter/exit display for links
-  this_updateLinks = function() {
-    this_link = this_linksG
+  updateLinks = function() {
+    this.link = this.linksG
       .selectAll('line.link')
-      .data(this_curLinksData, d => `${d.source.id}_${d.target.id}`);
-    this_link
+      .data(this.curLinksData, d => `${d.source.id}_${d.target.id}`);
+    this.link
       .enter()
       .append('line')
       .attr('class', 'link')
@@ -481,44 +481,44 @@ class Network {
       .attr('x2', d => d.target.x)
       .attr('y2', d => d.target.y);
 
-    this_link.on('mouseover', this_showLinkDetails).on('mouseout', this_hideLinkDetails);
+    this.link.on('mouseover', this.showLinkDetails).on('mouseout', this.hideLinkDetails);
 
-    return this_link.exit().remove();
+    return this.link.exit().remove();
   };
 
-  this_fade(opacity) {
+  fade(opacity) {
     return function(d) {
-      this_node.style('stroke-opacity', function(o) {
-        const thisOpacity = this_neighboring(d, o) ? 1 : opacity;
+      this.node.style('stroke-opacity', function(o) {
+        const thisOpacity = this.neighboring(d, o) ? 1 : opacity;
         this.setAttribute('fill-opacity', thisOpacity);
         return thisOpacity;
       });
 
-      this_link.style('stroke-opacity', function(o) {
+      this.link.style('stroke-opacity', function(o) {
         return o.source === d || o.target === d ? 1 : opacity;
       });
     };
   }
 
   // tick function for radial layout
-  this_radialTick = function(e) {
-    this_node.each(this_moveToRadialLayout(e.alpha));
+  radialTick = function(e) {
+    this.node.each(this.moveToRadialLayout(e.alpha));
 
-    this_node.attr('cx', d => d.x).attr('cy', d => d.y);
+    this.node.attr('cx', d => d.x).attr('cy', d => d.y);
 
     if (e.alpha < 0.03) {
-      this_updateLinks();
-      this_force.stop();
+      this.updateLinks();
+      this.force.stop();
     }
   };
 
   // Adjusts x/y for each node to
   // push them towards appropriate location.
   // Uses alpha to dampen effect over time.
-  this_moveToRadialLayout = function(alpha) {
+  moveToRadialLayout = function(alpha) {
     const k = alpha * 0.1;
     return function(d) {
-      const centerNode = this_groupCenters(d.id);
+      const centerNode = this.groupCenters(d.id);
       d.x += (centerNode.x - d.x) * k;
       return (d.y += (centerNode.y - d.y) * k);
     };
@@ -526,27 +526,27 @@ class Network {
 
   // Helper function that returns stroke color for
   // particular node.
-  this_strokeFor = d =>
+  strokeFor = d =>
     d3
       .rgb(24, 255, 139) //(nodeColors(d.id))
       .darker()
       .toString();
 
   // Mouseover tooltip function
-  this_showDetails = function(d, i) {
+  showDetails = function(d, i) {
     let content = `<p class="main">id:  ${d.id}</span></p>`;
     content += '<hr class="tooltip-hr">';
     content += `<p class="main">Protocol:  ${d.Protocol}</span></p>`;
-    this_tooltip.showTooltip(content, d3.event);
+    this.tooltip.showTooltip(content, d3.event);
 
     // highlight connected links
-    if (this_link) {
-      this_link
+    if (this.link) {
+      this.link
         .attr('stroke', function(l) {
           if (l.source === d || l.target === d) {
             return '#007243';
           } else {
-            return this_fade(0.1);
+            return this.fade(0.1);
             // return "#ddd";
           }
         })
@@ -561,19 +561,19 @@ class Network {
 
     // highlight neighboring nodes
     // watch out - don't mess with node if search is currently matching
-    this_node
+    this.node
       .style('stroke', function(n) {
-        if (this_neighboring(d, n)) {
+        if (this.neighboring(d, n)) {
           return '#007243';
         } else {
-          return this_strokeFor(n);
+          return this.strokeFor(n);
         }
       })
       .style('stroke-width', function(n) {
-        if (this_neighboring(d, n)) {
+        if (this.neighboring(d, n)) {
           return 2.0;
         } else {
-          return this_fade(0.2);
+          return this.fade(0.2);
         }
       });
 
@@ -584,25 +584,25 @@ class Network {
       .style('stroke-width', 5.0);
   };
 
-  this_showLinkDetails = function(d, i) {
+  showLinkDetails = function(d, i) {
     let content = `<p class="main">Source: ${d.source.id}</span></p>
     <hr class="tooltip-hr">
     <p class="main">Target:  ${d.target.id}</span></p>`;
     // console.log(d.source.id);
-    this_tooltip.showTooltip(content, d3.event);
+    this.tooltip.showTooltip(content, d3.event);
   };
 
-  this_hideLinkDetails = function(d, i) {
-    this_tooltip.hideTooltip();
+  hideLinkDetails = function(d, i) {
+    this.tooltip.hideTooltip();
   };
   // Mouseout function
-  this_hideDetails = function(d, i) {
-    this_tooltip.hideTooltip();
+  hideDetails = function(d, i) {
+    this.tooltip.hideTooltip();
     // watch out - don't mess with node if search is currently matching
-    this_node
+    this.node
       .style('stroke', function(n) {
         if (!n.searched) {
-          return this_strokeFor(n);
+          return this.strokeFor(n);
         } else {
           return '#555';
         }
@@ -614,13 +614,13 @@ class Network {
           return 2.0;
         }
       });
-    if (this_link) {
-      return this_link.attr('stroke', '#ddd').attr('stroke-opacity', 0.8);
+    if (this.link) {
+      return this.link.attr('stroke', '#ddd').attr('stroke-opacity', 0.8);
     }
   };
 
   // Final act of Network() function is to return the inner 'network()' function.
-  // return this_network;
+  // return this.network;
 }
 
 export default NodeLinkBlock;
