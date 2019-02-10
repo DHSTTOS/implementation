@@ -20,6 +20,8 @@ class NodeLinkBlock extends PureComponent {
   }
 }
 
+// Be extra cautious making changes to the code below.
+
 function RadialPlacement() {
   // stores the key -> location values
   let values = d3.map();
@@ -163,7 +165,7 @@ function Network() {
   // our force directed layout
   const force = d3.layout.force();
   // color function used to color nodes
-  const nodeColors = d3.scale.category20();
+  // const nodeColors = d3.scale.category20();
   // tooltip used to display details
   const tooltip = Tooltip('vis-tooltip', 230);
 
@@ -273,16 +275,8 @@ function Network() {
     data.links.forEach(function(l) {
       l.source = nodesMap.get(l.source);
       l.target = nodesMap.get(l.target);
-      //}
-      // allData.links.forEach(function(d) {
       linkedByIndex[l.source.id + ',' + l.target.id] = 1;
     });
-    // console.log(l);
-    // console.log(l.source);
-    // console.log(l.target);
-    // linkedByIndex is used for link sorting
-    // return (linkedByIndex[`${l.source.id},${l.target.id}`] = 1);
-    //});
 
     return data;
   };
@@ -291,21 +285,12 @@ function Network() {
   // Returns d3.map of ids -> nodes
   var mapNodes = function(nodes) {
     const l2Map = d3.map();
-    // const l3Map = d3.map();
-    // const l4Map = d3.map();
 
     nodes.forEach(n => {
-      //   if(n.type == "L2"){
       l2Map.set(n.id, n);
-      // }else if (n.type == "L3"){
-      // l3Map.set(n.id, n);
-      // }else{
-      // l4Map.set(n.id,n);
-      // }
     });
 
     return l2Map;
-    // return new Map([l2Map,l3Map,l4Map]);
   };
 
   // Helper function that returns an associative array
@@ -401,7 +386,18 @@ function Network() {
       .attr('cx', d => d.x)
       .attr('cy', d => d.y)
       .attr('r', d => d.radius)
-      .style('fill', d => nodeColors(d.id))
+      // .style('fill', d => nodeColors(d.id))
+      .style('fill', function(d) {
+        if (d.Protocol == 'IP') {
+          return d3.rgb(12, 67, 199);
+        } else if (d.Protocol == 'Ether') {
+          return d3.rgb(255, 224, 25);
+        } else if (d.Protocol == 'UDP') {
+          return d3.rgb(255, 24, 166);
+        } else {
+          return d3.rgb(24, 255, 177);
+        }
+      })
       .style('stroke', d => strokeFor(d))
       .style('stroke-width', 1.0);
 
@@ -477,7 +473,7 @@ function Network() {
   // particular node.
   var strokeFor = d =>
     d3
-      .rgb(nodeColors(d.id))
+      .rgb(24, 255, 139) //(nodeColors(d.id))
       .darker()
       .toString();
 
@@ -530,7 +526,7 @@ function Network() {
     return d3
       .select(this)
       .style('stroke', 'black')
-      .style('stroke-width', 2.0);
+      .style('stroke-width', 5.0);
   };
 
   var showLinkDetails = function(d, i) {
