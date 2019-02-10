@@ -96,7 +96,7 @@ function RadialPlacement() {
 
   // Given an center point, angle, and radius length,
   // return a radial position for that angle
-  const radialLocation = (center, angle, radius) => {
+  const radialLocation = function(center, angle, radius) {
     const x = center.x + radius * Math.cos((angle * Math.PI) / 180);
     const y = center.y + radius * Math.sin((angle * Math.PI) / 180);
     return { x: x, y: y };
@@ -105,7 +105,7 @@ function RadialPlacement() {
   // Main entry point for RadialPlacement
   // Returns location for a particular key,
   // creating a new location if necessary.
-  const placement = key => {
+  const placement = function(key) {
     let value = values.get(key);
     if (!values.has(key)) {
       value = place(key);
@@ -114,7 +114,7 @@ function RadialPlacement() {
   };
 
   // Gets a new location for input key
-  var place = key => {
+  var place = function(key) {
     const value = radialLocation(center, current, radius);
     values.set(key, value);
     current += increment;
@@ -149,7 +149,7 @@ function RadialPlacement() {
     });
   };
 
-  placement.keys = _ => {
+  placement.keys = function(_) {
     if (!arguments.length) {
       return d3.keys(values);
     }
@@ -157,7 +157,7 @@ function RadialPlacement() {
     return placement;
   };
 
-  placement.center = _ => {
+  placement.center = function(_) {
     if (!arguments.length) {
       return center;
     }
@@ -165,7 +165,7 @@ function RadialPlacement() {
     return placement;
   };
 
-  placement.radius = _ => {
+  placement.radius = function(_) {
     if (!arguments.length) {
       return radius;
     }
@@ -173,7 +173,7 @@ function RadialPlacement() {
     return placement;
   };
 
-  placement.start = _ => {
+  placement.start = function(_) {
     if (!arguments.length) {
       return start;
     }
@@ -182,7 +182,7 @@ function RadialPlacement() {
     return placement;
   };
 
-  placement.increment = _ => {
+  placement.increment = function(_) {
     if (!arguments.length) {
       return increment;
     }
