@@ -28,6 +28,7 @@ import com.mongodb.MongoCredential;
 import com.mongodb.MongoSecurityException;
 import com.mongodb.MongoWriteException;
 import com.mongodb.ServerAddress;
+import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.MongoIterable;
 
@@ -64,11 +65,22 @@ public class MongoClientMediator {
 
             BasicDBObject ping = new BasicDBObject("ping", "1");
             db.runCommand(ping);
+
         } catch (MongoSecurityException e) {
 
             // force the caller to handle the exception
             throw new LoginFailureException(e.getMessage());
         }
+
+    //    String[] a = getRecordInRange("motor", "Timestamp","1548428021051", "1648428021051");
+
+    //     System.out.println("got " + a.length + " records");
+
+    //    for (String var : a) {
+    //        p(var);
+    //    }
+
+       
     }
 
     public MongoClientMediator(String udid, String password) throws LoginFailureException {
@@ -135,12 +147,16 @@ public class MongoClientMediator {
 
     // find returns a cursor to the first object so we simple return that one
     public String getStartRecord(String collection) {
-        return db.getCollection(collection).find().first().toString();
+        //TODO: check if collection is null
+
+        MongoCollection<Document> coll = db.getCollection(collection);
+
+        return db.getCollection(collection).find().first().toJson();
     }
 
     // we sort descending by id and then get the first (last object)
     public String getEndRecord(String collection) {
-        return db.getCollection(collection).find().sort(new Document("_id", -1)).first().toString();
+        return db.getCollection(collection).find().sort(new Document("_id", -1)).first().toJson();
     }
 
     // an int *should* suffice for now at least
@@ -150,12 +166,12 @@ public class MongoClientMediator {
         return (int) db.getCollection(collection).countDocuments();
     }
 
-    public String[] getRecordInRange(String collection, String key, String start, String end) {
-        BasicDBObject query = new BasicDBObject();
-        query.put(key, new BasicDBObject("$gte", start).append("$lt", (end)));
+    // public String[] getRecordInRange(String collection, String key, String start, String end) {
+    //     BasicDBObject query = new BasicDBObject();
+    //     query.put(key, new BasicDBObject("$gte", start).append("$lt", (end)));
 
-        return mongoIteratorToStringArray(db.getCollection(collection).find(query));
-    }
+    //     return mongoIteratorToStringArray(db.getCollection(collection).find(query));
+    // }
 
     public long getRecordsInRangeSize(String collection, String key, String start, String end) {
         BasicDBObject query = new BasicDBObject();
@@ -169,10 +185,20 @@ public class MongoClientMediator {
 
 
 
-
+    //TODO: get type of field in mongo and cast start and end to this type
     public String[] getRecordInRange(String collection, String key, Object start,Object end) {
+
+
         BasicDBObject query = new BasicDBObject();
-        query.put(key, new BasicDBObject("$gte", start).append("$lt", (end)));
+
+        if(key.equals("Timestamp"))
+        {
+            System.out.println("OMG TIMESTAMP!");
+            query.put(key, new BasicDBObject("$gte", new Date(Long.valueOf((String)start))).append("$lt", new Date(Long.valueOf((String)end)) ));
+
+        }
+        else
+            query.put(key, new BasicDBObject("$gte", start).append("$lt", (end)));
 
         return mongoIteratorToStringArray(db.getCollection(collection).find(query));
     }
@@ -197,16 +223,16 @@ public class MongoClientMediator {
         db.listCollectionNames().forEach((Consumer<String>) colls::add);
 
         for (int i = 0; i < colls.size(); i++) {
-            System.out.println(colls.get(i));
+            //System.out.println(colls.get(i));
         }
-        return mongoIteratorToStringArray(db.listCollectionNames());
+        return colls.toArray(new String[colls.size()]); //mongoIteratorToStringArray(db.listCollectionNames());
     }
 
     // HELPER FUNCTIONS
     private String[] mongoIteratorToStringArray(MongoIterable iterable) {
         List<String> colls = new ArrayList<>();
 
-        iterable.forEach((Block<Document>) document -> colls.add(document.toJson().toString()));
+        iterable.forEach((Block<Document>) document -> colls.add(document.toJson()));
 
         return colls.toArray(new String[colls.size()]);
     }

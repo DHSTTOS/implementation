@@ -1,5 +1,5 @@
 //import { observable, action } from "mobx";
-import { DEFAULT_SOURCE_NAME } from "./consts.js";
+// import { DEFAULT_SOURCE_NAME } from "./consts.js";
 import { jsonstreams } from "../../mockdata";
 
 class DataStore {

@@ -182,3 +182,5 @@ $RECYCLE.BIN/
 .*.swp
 
 \.vscode/launch\.json
+
+\.vscode/settings\.json
