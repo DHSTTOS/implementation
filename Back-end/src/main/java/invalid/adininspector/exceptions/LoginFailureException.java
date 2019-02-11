@@ -3,12 +3,19 @@
  */
 package invalid.adininspector.exceptions;
 
+/**
+ * Exceptions of this class are thrown by MongoClientMediator and
+ * MongoClientConsumer when login into the mongo database was not possible;
+ * usually due to invalid username or password.
+ */
 public class LoginFailureException extends Exception {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    public LoginFailureException(String errorMessage) {
-        super(errorMessage);
-    }
-
+	/**
+	 * @param errorMessage the error message to be reported
+	 */
+	public LoginFailureException(String errorMessage) {
+		super(errorMessage);
+	}
 }
