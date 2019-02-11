@@ -237,11 +237,10 @@ public class MongoClientMediator {
 	 * @param collection the collection to query
 	 * @return the number of entries in the collection
 	 */
-	public int CollectionSize(String collection) {
-		// an int *should* suffice for now at least
+	public long CollectionSize(String collection) {
 		// count is deprecated, there's an estimation which should work fine but it's
 		// not gonna be accurate
-		return (int) db.getCollection(collection).countDocuments();
+		return db.getCollection(collection).countDocuments();
 	}
 
 	// public String[] getRecordInRange(String collection, String key, String start, String end) {
@@ -266,7 +265,7 @@ public class MongoClientMediator {
 	 * @param end the end value of the range
 	 * @return String array containing all entries of the collection within that range
 	 */
-	public String[] getRecordInRange(String collection, String key, Object start,Object end) {
+	public String[] getRecordsInRange(String collection, String key, Object start, Object end) {
 		//TODO: get type of field in mongo and cast start and end to this type
 
 		BasicDBObject query = new BasicDBObject();

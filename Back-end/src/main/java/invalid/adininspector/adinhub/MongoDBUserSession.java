@@ -113,7 +113,7 @@ public class MongoDBUserSession implements IUserSession {
 	 * @return an array of records matching the filter range
 	 */
 	public String[] getRecordsInRange(String collection, String key, String start, String end) {
-		return mongoClientMediator.getRecordInRange(collection, key, start, end);
+		return mongoClientMediator.getRecordsInRange(collection, key, start, end);
 	}
 
 	/**
