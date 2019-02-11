@@ -1,8 +1,7 @@
 import React, { PureComponent } from 'react';
 import styled from '@emotion/styled';
 import * as d3 from 'd3';
-import { appStore, dataStore } from '@stores';
-import { getAvailableCollections } from '@libs';
+import { dataStore } from '@stores';
 
 const Container = styled.div`
   bottom: 0;
@@ -31,9 +30,6 @@ export default class Brush extends PureComponent {
     //  .text('Hole punched, D3 plugged in. :)');
 
     let main = d3.select(this.brush.current);
-
-    console.log('main:');
-    console.dir(main);
 
     let width = 700;
     let height = 100;

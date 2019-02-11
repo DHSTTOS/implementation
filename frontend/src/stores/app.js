@@ -1,6 +1,5 @@
 import { observable, action, computed } from 'mobx';
 import {
-  DEFAULT_SOURCE_NAME,
   DEFAULT_GLOBAL_FILTERS,
   SCATTER_PLOT,
   LINE_CHART,
@@ -130,7 +129,7 @@ class AppStore {
   get canSaveConfig() {
     const config = this.configModal.diagramConfig;
     if (config.plotType === NODE_LINK) return true;
-    
+
     return !!(config.plotType && config.x && config.y && config.groupName);
   }
 
