@@ -135,7 +135,13 @@ public class MongoClientMediator {
 		}
 	}
 
-	// we do not necessarly need a record for aggregated records.
+	/**
+	 * Takes a bson Document containing a record and uses the mongoAPI to insert
+	 * it into the database.
+	 *
+	 * @param record a record to add to the collection
+	 * @param collection name of the collection it should be added to.
+	 */
 	public void addRecordToCollection(Document record, String collection) {
 		try {
 			// p(record.getAsDocument());
@@ -150,7 +156,12 @@ public class MongoClientMediator {
 		}
 	}
 
-	// we do not necessarly need a record for aggregated records. we can pass documents along
+	/**
+	 * For each one of the members of the array call addRecordToCollection.
+	 *
+	 * @param records list of Documents containing a record each to be added to the specified collection
+	 * @param collection name of the collection it should be added to.
+	 */
 	public void addRecordsToCollection(ArrayList<Document> records, String collection) {
 
 		if(records == null) return;
@@ -161,24 +172,47 @@ public class MongoClientMediator {
 		}
 	}
 
+	/**
+	 * For each one of the members of the array call addRecordToCollection.
+	 *
+	 * @param records array of records to be added to the specified collection
+	 * @param collection name of the collection it should be added to.
+	 */
 	public void addRecordsToCollection(Record[] records, String collection) {
 		for (Record r : records) {
 			addRecordToCollection(r, collection);
 		}
 	}
 
+	/**
+	 * Signal the data processor to start the processing of a collection.
+	 *
+	 * @param collection name of the collection to process
+	 */
 	public void ProcessCollection(String collection) {
 		// DataProcessor
 		// DataProcessor.processData(,this);
 	}
 
 	// do we need this ? potentially not
+	/**
+	 * Returns all entries of the specified collection as strings.
+	 *
+	 * @param collection the collection to query
+	 * @return array of all record of the specified collection as strings
+	 */
 	public String[] getCollection(String collection) {
 		return mongoIteratorToStringArray(db.getCollection(collection).find());
 	}
 
-	// find returns a cursor to the first object so we simple return that one
+	/**
+	 * Return the first entry of the specified collection as a string in JSON format.
+	 *
+	 * @param collection the collection to query
+	 * @return the first record of the collection
+	 */
 	public String getStartRecord(String collection) {
+		// find returns a cursor to the first object so we simple return that one
 		//TODO: check if collection is null
 
 		MongoCollection<Document> coll = db.getCollection(collection);
@@ -186,13 +220,25 @@ public class MongoClientMediator {
 		return db.getCollection(collection).find().first().toJson();
 	}
 
-	// we sort descending by id and then get the first (last object)
+	/**
+	 * Return the last entry of the specified collection as a string in JSON format.
+	 *
+	 * @param collection the collection to query
+	 * @return the last record of the collection
+	 */
 	public String getEndRecord(String collection) {
+		// we sort descending by id and then get the first (last object)
 		return db.getCollection(collection).find().sort(new Document("_id", -1)).first().toJson();
 	}
 
-	// an int *should* suffice for now at least
+	/**
+	 * Return the number of entries in the specifed collection as int.
+	 *
+	 * @param collection the collection to query
+	 * @return the number of entries in the collection
+	 */
 	public int CollectionSize(String collection) {
+		// an int *should* suffice for now at least
 		// count is deprecated, there's an estimation which should work fine but it's
 		// not gonna be accurate
 		return (int) db.getCollection(collection).countDocuments();
@@ -205,21 +251,23 @@ public class MongoClientMediator {
 	//     return mongoIteratorToStringArray(db.getCollection(collection).find(query));
 	// }
 
-	public long getRecordsInRangeSize(String collection, String key, String start, String end) {
-		BasicDBObject query = new BasicDBObject();
-		query.put(key, new BasicDBObject("$gte", start).append("$lt", (end)));
-
-		return (int) db.getCollection(collection).countDocuments(query);
-	}
 
 
-
-
-
-
-	//TODO: get type of field in mongo and cast start and end to this type
+	/**
+	 * Return all records of this collection for which the value of the specified
+	 * record key is in the range specified by start (inclusive) and end (exclusive).
+	 * Records are returned as strings in JSON format.
+	 * This Method is very general to allow for flexibility. For example by
+	 * letting the key be SourceIPaddresses or a Timestamp.
+	 *
+	 * @param collection name of the collection to query
+	 * @param key record key used for filtering
+	 * @param start the start value of the range
+	 * @param end the end value of the range
+	 * @return String array containing all entries of the collection within that range
+	 */
 	public String[] getRecordInRange(String collection, String key, Object start,Object end) {
-
+		//TODO: get type of field in mongo and cast start and end to this type
 
 		BasicDBObject query = new BasicDBObject();
 
@@ -235,21 +283,48 @@ public class MongoClientMediator {
 		return mongoIteratorToStringArray(db.getCollection(collection).find(query));
 	}
 
+	
+	/**
+	 * Returns the number of elements matching the range as long
+	 *
+	 * @param collection name of the collection to query
+	 * @param key record key used for filtering
+	 * @param start the start value of the range
+	 * @param end the end value of the range
+	 * @return the number of elements matching the range as int
+	 */
+	public long getRecordsInRangeSize(String collection, String key, String start, String end) {
+		BasicDBObject query = new BasicDBObject();
+		query.put(key, new BasicDBObject("$gte", start).append("$lt", (end)));
+
+		return db.getCollection(collection).countDocuments(query);
+	}
+
+	
+	/**
+	 * Returns the number of elements matching the range as long
+	 *
+	 * @param collection name of the collection to query
+	 * @param key record key used for filtering
+	 * @param start the start value of the range
+	 * @param end the end value of the range
+	 * @return the number of elements matching the range as int
+	 */
 	public long getRecordsInRangeSize(String collection, String key, Object start, Object end) {
 		BasicDBObject query = new BasicDBObject();
 		query.put(key, new BasicDBObject("$gte", start).append("$lt", (end)));
 
-		return (int) db.getCollection(collection).countDocuments(query);
+		return db.getCollection(collection).countDocuments(query);
 	}
 
 
-
-
-
-
-
-	// get all names of all collections and put em in an Array.
+	/**
+	 * Returns an array with the names of the collections available to the current user.
+	 *
+	 * @return String array with collection names
+	 */
 	public String[] getAvailableCollections() {
+		// get all names of all collections and put em in an Array.
 		List<String> colls = new ArrayList<>();
 
 		db.listCollectionNames().forEach((Consumer<String>) colls::add);
@@ -260,6 +335,7 @@ public class MongoClientMediator {
 		return colls.toArray(new String[colls.size()]); //mongoIteratorToStringArray(db.listCollectionNames());
 	}
 
+	
 	// HELPER FUNCTIONS
 	private String[] mongoIteratorToStringArray(MongoIterable iterable) {
 		List<String> colls = new ArrayList<>();
