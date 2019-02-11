@@ -16,5 +16,5 @@ Array=("lemgo"
 
 
 for i in ${Array[@]}; do
-       mongoexport -d $DB -c ${i} -o ./${i}.json --pretty
+       mongoexport -d $DB -c ${i} -o ./${i}.jsonDump
 done

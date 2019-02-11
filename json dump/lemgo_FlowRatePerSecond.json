@@ -1,2621 +1,2623 @@
-{
-	"_id": 524,
-	"date": {
-		"$date": "2019-01-25T15:03:08.032Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "6",
-			"MAC": "01:0e:cf:00:00:00"
-		},
-		{
-			"In/Out": "In",
-			"count": "6",
-			"MAC": "b8:27:eb:ff:a5:08"
-		}
-	]
-}
-{
-	"_id": 525,
-	"date": {
-		"$date": "2019-01-25T15:03:08.032Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "6",
-			"MAC": "01:0e:cf:00:00:00"
-		},
-		{
-			"In/Out": "In",
-			"count": "6",
-			"MAC": "b8:27:eb:ff:a5:08"
-		}
-	]
-}
-{
-	"_id": 526,
-	"date": {
-		"$date": "2019-01-25T15:03:09.102Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "5",
-			"MAC": "01:0e:cf:00:00:00"
-		},
-		{
-			"In/Out": "In",
-			"count": "30",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "Out",
-			"count": "32",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "32",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "Out",
-			"count": "25",
-			"MAC": "00:15:7e:10:03:5a"
-		}
-	]
-}
-{
-	"_id": 527,
-	"date": {
-		"$date": "2019-01-25T15:03:10.112Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "34",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "34",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "Out",
-			"count": "32",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "32",
-			"MAC": "00:15:7e:10:03:5a"
-		}
-	]
-}
-{
-	"_id": 528,
-	"date": {
-		"$date": "2019-01-25T15:03:11.122Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "35",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "35",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "Out",
-			"count": "35",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "35",
-			"MAC": "00:15:7e:10:03:5a"
-		}
-	]
-}
-{
-	"_id": 529,
-	"date": {
-		"$date": "2019-01-25T15:03:12.129Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "38",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "38",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "Out",
-			"count": "36",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "36",
-			"MAC": "00:15:7e:10:03:5a"
-		}
-	]
-}
-{
-	"_id": 530,
-	"date": {
-		"$date": "2019-01-25T15:03:13.134Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "37",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "37",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "Out",
-			"count": "39",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "39",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "Out",
-			"count": "6",
-			"MAC": "01:0e:cf:00:00:00"
-		},
-		{
-			"In/Out": "In",
-			"count": "6",
-			"MAC": "b8:27:eb:6d:63:5d"
-		}
-	]
-}
-{
-	"_id": 531,
-	"date": {
-		"$date": "2019-01-25T15:03:14.141Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "44",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "44",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "Out",
-			"count": "43",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "43",
-			"MAC": "00:15:7e:10:03:5a"
-		}
-	]
-}
-{
-	"_id": 532,
-	"date": {
-		"$date": "2019-01-25T15:03:15.164Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "40",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "40",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "Out",
-			"count": "36",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "36",
-			"MAC": "00:15:7e:10:03:5a"
-		}
-	]
-}
-{
-	"_id": 533,
-	"date": {
-		"$date": "2019-01-25T15:03:16.176Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "37",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "37",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "Out",
-			"count": "36",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "36",
-			"MAC": "b8:27:eb:ff:a5:08"
-		}
-	]
-}
-{
-	"_id": 534,
-	"date": {
-		"$date": "2019-01-25T15:03:17.190Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "35",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "35",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "Out",
-			"count": "36",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "36",
-			"MAC": "b8:27:eb:ff:a5:08"
-		}
-	]
-}
-{
-	"_id": 535,
-	"date": {
-		"$date": "2019-01-25T15:03:18.212Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "37",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "37",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "Out",
-			"count": "39",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "39",
-			"MAC": "b8:27:eb:ff:a5:08"
-		}
-	]
-}
-{
-	"_id": 536,
-	"date": {
-		"$date": "2019-01-25T15:03:19.220Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "40",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "40",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "Out",
-			"count": "38",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "38",
-			"MAC": "b8:27:eb:ff:a5:08"
-		}
-	]
-}
-{
-	"_id": 537,
-	"date": {
-		"$date": "2019-01-25T15:03:20.225Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "40",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "40",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "Out",
-			"count": "40",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "40",
-			"MAC": "00:15:7e:10:03:5a"
-		}
-	]
-}
-{
-	"_id": 538,
-	"date": {
-		"$date": "2019-01-25T15:03:21.227Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "36",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "36",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "Out",
-			"count": "36",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "36",
-			"MAC": "b8:27:eb:ff:a5:08"
-		}
-	]
-}
-{
-	"_id": 539,
-	"date": {
-		"$date": "2019-01-25T15:03:22.237Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "35",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "35",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "Out",
-			"count": "35",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "35",
-			"MAC": "b8:27:eb:ff:a5:08"
-		}
-	]
-}
-{
-	"_id": 540,
-	"date": {
-		"$date": "2019-01-25T15:03:23.248Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "44",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "44",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "Out",
-			"count": "41",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "41",
-			"MAC": "b8:27:eb:ff:a5:08"
-		}
-	]
-}
-{
-	"_id": 541,
-	"date": {
-		"$date": "2019-01-25T15:03:24.254Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "37",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "37",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "Out",
-			"count": "36",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "36",
-			"MAC": "00:15:7e:10:03:5a"
-		}
-	]
-}
-{
-	"_id": 542,
-	"date": {
-		"$date": "2019-01-25T15:03:25.257Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "48",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "48",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "Out",
-			"count": "44",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "44",
-			"MAC": "b8:27:eb:ff:a5:08"
-		}
-	]
-}
-{
-	"_id": 543,
-	"date": {
-		"$date": "2019-01-25T15:03:26.274Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "47",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "47",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "Out",
-			"count": "44",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "44",
-			"MAC": "00:15:7e:10:03:5a"
-		}
-	]
-}
-{
-	"_id": 544,
-	"date": {
-		"$date": "2019-01-25T15:03:27.278Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "43",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "43",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "Out",
-			"count": "42",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "42",
-			"MAC": "b8:27:eb:ff:a5:08"
-		}
-	]
-}
-{
-	"_id": 545,
-	"date": {
-		"$date": "2019-01-25T15:03:28.279Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "37",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "37",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "Out",
-			"count": "40",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "40",
-			"MAC": "00:15:7e:10:03:5a"
-		}
-	]
-}
-{
-	"_id": 546,
-	"date": {
-		"$date": "2019-01-25T15:03:29.292Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "35",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "35",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "Out",
-			"count": "36",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "36",
-			"MAC": "00:15:7e:10:03:5a"
-		}
-	]
-}
-{
-	"_id": 547,
-	"date": {
-		"$date": "2019-01-25T15:03:30.294Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "34",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "34",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "Out",
-			"count": "32",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "32",
-			"MAC": "00:15:7e:10:03:5a"
-		}
-	]
-}
-{
-	"_id": 548,
-	"date": {
-		"$date": "2019-01-25T15:03:31.302Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "45",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "45",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "Out",
-			"count": "44",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "44",
-			"MAC": "b8:27:eb:ff:a5:08"
-		}
-	]
-}
-{
-	"_id": 549,
-	"date": {
-		"$date": "2019-01-25T15:03:32.307Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "45",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "45",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "Out",
-			"count": "44",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "44",
-			"MAC": "b8:27:eb:ff:a5:08"
-		}
-	]
-}
-{
-	"_id": 550,
-	"date": {
-		"$date": "2019-01-25T15:03:33.393Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "43",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "43",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "Out",
-			"count": "40",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "40",
-			"MAC": "00:15:7e:10:03:5a"
-		}
-	]
-}
-{
-	"_id": 551,
-	"date": {
-		"$date": "2019-01-25T15:03:34.403Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "36",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "36",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "Out",
-			"count": "33",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "33",
-			"MAC": "b8:27:eb:ff:a5:08"
-		}
-	]
-}
-{
-	"_id": 552,
-	"date": {
-		"$date": "2019-01-25T15:03:35.418Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "31",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "31",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "Out",
-			"count": "32",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "32",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "Out",
-			"count": "6",
-			"MAC": "01:0e:cf:00:00:00"
-		},
-		{
-			"In/Out": "In",
-			"count": "6",
-			"MAC": "b8:27:eb:6d:63:5d"
-		}
-	]
-}
-{
-	"_id": 553,
-	"date": {
-		"$date": "2019-01-25T15:03:36.426Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "46",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "46",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "Out",
-			"count": "48",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "48",
-			"MAC": "00:15:7e:10:03:5a"
-		}
-	]
-}
-{
-	"_id": 554,
-	"date": {
-		"$date": "2019-01-25T15:03:37.427Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "43",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "43",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "Out",
-			"count": "41",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "41",
-			"MAC": "00:15:7e:10:03:5a"
-		}
-	]
-}
-{
-	"_id": 555,
-	"date": {
-		"$date": "2019-01-25T15:03:38.429Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "42",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "42",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "Out",
-			"count": "41",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "41",
-			"MAC": "b8:27:eb:ff:a5:08"
-		}
-	]
-}
-{
-	"_id": 556,
-	"date": {
-		"$date": "2019-01-25T15:03:39.439Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "42",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "42",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "Out",
-			"count": "44",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "44",
-			"MAC": "00:15:7e:10:03:5a"
-		}
-	]
-}
-{
-	"_id": 557,
-	"date": {
-		"$date": "2019-01-25T15:03:40.454Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "38",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "38",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "Out",
-			"count": "36",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "36",
-			"MAC": "00:15:7e:10:03:5a"
-		}
-	]
-}
-{
-	"_id": 558,
-	"date": {
-		"$date": "2019-01-25T15:03:41.463Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "36",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "36",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "Out",
-			"count": "36",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "36",
-			"MAC": "b8:27:eb:ff:a5:08"
-		}
-	]
-}
-{
-	"_id": 559,
-	"date": {
-		"$date": "2019-01-25T15:03:42.465Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "44",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "44",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "Out",
-			"count": "44",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "44",
-			"MAC": "b8:27:eb:ff:a5:08"
-		}
-	]
-}
-{
-	"_id": 560,
-	"date": {
-		"$date": "2019-01-25T15:03:43.470Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "38",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "38",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "Out",
-			"count": "36",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "36",
-			"MAC": "b8:27:eb:ff:a5:08"
-		}
-	]
-}
-{
-	"_id": 561,
-	"date": {
-		"$date": "2019-01-25T15:03:44.474Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "39",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "39",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "Out",
-			"count": "40",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "40",
-			"MAC": "00:15:7e:10:03:5a"
-		}
-	]
-}
-{
-	"_id": 562,
-	"date": {
-		"$date": "2019-01-25T15:03:45.482Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "37",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "37",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "Out",
-			"count": "36",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "36",
-			"MAC": "00:15:7e:10:03:5a"
-		}
-	]
-}
-{
-	"_id": 563,
-	"date": {
-		"$date": "2019-01-25T15:03:46.488Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "37",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "37",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "Out",
-			"count": "38",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "38",
-			"MAC": "00:15:7e:10:03:5a"
-		}
-	]
-}
-{
-	"_id": 564,
-	"date": {
-		"$date": "2019-01-25T15:03:47.496Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "38",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "38",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "Out",
-			"count": "40",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "40",
-			"MAC": "b8:27:eb:ff:a5:08"
-		}
-	]
-}
-{
-	"_id": 565,
-	"date": {
-		"$date": "2019-01-25T15:03:48.511Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "48",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "48",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "Out",
-			"count": "48",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "48",
-			"MAC": "b8:27:eb:ff:a5:08"
-		}
-	]
-}
-{
-	"_id": 566,
-	"date": {
-		"$date": "2019-01-25T15:03:49.516Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "49",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "49",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "Out",
-			"count": "49",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "49",
-			"MAC": "b8:27:eb:ff:a5:08"
-		}
-	]
-}
-{
-	"_id": 567,
-	"date": {
-		"$date": "2019-01-25T15:03:50.529Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "50",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "50",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "Out",
-			"count": "46",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "46",
-			"MAC": "00:15:7e:10:03:5a"
-		}
-	]
-}
-{
-	"_id": 568,
-	"date": {
-		"$date": "2019-01-25T15:03:51.541Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "43",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "43",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "Out",
-			"count": "44",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "44",
-			"MAC": "b8:27:eb:ff:a5:08"
-		}
-	]
-}
-{
-	"_id": 569,
-	"date": {
-		"$date": "2019-01-25T15:03:52.544Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "37",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "37",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "Out",
-			"count": "36",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "36",
-			"MAC": "b8:27:eb:ff:a5:08"
-		}
-	]
-}
-{
-	"_id": 570,
-	"date": {
-		"$date": "2019-01-25T15:03:53.557Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "38",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "38",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "Out",
-			"count": "36",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "36",
-			"MAC": "00:15:7e:10:03:5a"
-		}
-	]
-}
-{
-	"_id": 571,
-	"date": {
-		"$date": "2019-01-25T15:03:54.571Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "40",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "40",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "Out",
-			"count": "37",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "37",
-			"MAC": "b8:27:eb:ff:a5:08"
-		}
-	]
-}
-{
-	"_id": 572,
-	"date": {
-		"$date": "2019-01-25T15:03:55.590Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "46",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "46",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "Out",
-			"count": "45",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "45",
-			"MAC": "00:15:7e:10:03:5a"
-		}
-	]
-}
-{
-	"_id": 573,
-	"date": {
-		"$date": "2019-01-25T15:03:56.592Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "46",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "46",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "Out",
-			"count": "45",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "45",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "Out",
-			"count": "6",
-			"MAC": "01:0e:cf:00:00:00"
-		},
-		{
-			"In/Out": "In",
-			"count": "6",
-			"MAC": "b8:27:eb:6d:63:5d"
-		}
-	]
-}
-{
-	"_id": 574,
-	"date": {
-		"$date": "2019-01-25T15:03:57.609Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "50",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "50",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "Out",
-			"count": "49",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "49",
-			"MAC": "00:15:7e:10:03:5a"
-		}
-	]
-}
-{
-	"_id": 575,
-	"date": {
-		"$date": "2019-01-25T15:03:58.617Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "46",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "46",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "Out",
-			"count": "46",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "46",
-			"MAC": "b8:27:eb:ff:a5:08"
-		}
-	]
-}
-{
-	"_id": 576,
-	"date": {
-		"$date": "2019-01-25T15:03:59.637Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "44",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "44",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "Out",
-			"count": "44",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "44",
-			"MAC": "00:15:7e:10:03:5a"
-		}
-	]
-}
-{
-	"_id": 577,
-	"date": {
-		"$date": "2019-01-25T15:04:00.641Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "49",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "49",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "Out",
-			"count": "44",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "44",
-			"MAC": "b8:27:eb:ff:a5:08"
-		}
-	]
-}
-{
-	"_id": 578,
-	"date": {
-		"$date": "2019-01-25T15:04:01.661Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "46",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "46",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "Out",
-			"count": "47",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "47",
-			"MAC": "b8:27:eb:ff:a5:08"
-		}
-	]
-}
-{
-	"_id": 579,
-	"date": {
-		"$date": "2019-01-25T15:04:02.665Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "48",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "48",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "Out",
-			"count": "50",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "50",
-			"MAC": "b8:27:eb:ff:a5:08"
-		}
-	]
-}
-{
-	"_id": 580,
-	"date": {
-		"$date": "2019-01-25T15:04:03.672Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "49",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "49",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "Out",
-			"count": "49",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "49",
-			"MAC": "00:15:7e:10:03:5a"
-		}
-	]
-}
-{
-	"_id": 581,
-	"date": {
-		"$date": "2019-01-25T15:04:04.678Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "41",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "41",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "Out",
-			"count": "40",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "40",
-			"MAC": "b8:27:eb:ff:a5:08"
-		}
-	]
-}
-{
-	"_id": 582,
-	"date": {
-		"$date": "2019-01-25T15:04:05.698Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "44",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "44",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "Out",
-			"count": "42",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "42",
-			"MAC": "00:15:7e:10:03:5a"
-		}
-	]
-}
-{
-	"_id": 583,
-	"date": {
-		"$date": "2019-01-25T15:04:06.703Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "49",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "49",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "Out",
-			"count": "49",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "49",
-			"MAC": "b8:27:eb:ff:a5:08"
-		}
-	]
-}
-{
-	"_id": 584,
-	"date": {
-		"$date": "2019-01-25T15:04:07.708Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "50",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "50",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "Out",
-			"count": "50",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "50",
-			"MAC": "00:15:7e:10:03:5a"
-		}
-	]
-}
-{
-	"_id": 585,
-	"date": {
-		"$date": "2019-01-25T15:04:08.712Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "48",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "48",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "Out",
-			"count": "48",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "48",
-			"MAC": "b8:27:eb:ff:a5:08"
-		}
-	]
-}
-{
-	"_id": 586,
-	"date": {
-		"$date": "2019-01-25T15:04:09.729Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "51",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "51",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "Out",
-			"count": "48",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "48",
-			"MAC": "00:15:7e:10:03:5a"
-		}
-	]
-}
-{
-	"_id": 587,
-	"date": {
-		"$date": "2019-01-25T15:04:10.732Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "94",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "94",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "Out",
-			"count": "92",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "92",
-			"MAC": "b8:27:eb:ff:a5:08"
-		}
-	]
-}
-{
-	"_id": 588,
-	"date": {
-		"$date": "2019-01-25T15:04:11.735Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "89",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "89",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "Out",
-			"count": "91",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "91",
-			"MAC": "b8:27:eb:ff:a5:08"
-		}
-	]
-}
-{
-	"_id": 589,
-	"date": {
-		"$date": "2019-01-25T15:04:12.737Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "93",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "93",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "Out",
-			"count": "92",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "92",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "Out",
-			"count": "6",
-			"MAC": "01:0e:cf:00:00:00"
-		},
-		{
-			"In/Out": "In",
-			"count": "6",
-			"MAC": "b8:27:eb:6d:63:5d"
-		}
-	]
-}
-{
-	"_id": 590,
-	"date": {
-		"$date": "2019-01-25T15:04:13.738Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "98",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "98",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "Out",
-			"count": "96",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "96",
-			"MAC": "b8:27:eb:ff:a5:08"
-		}
-	]
-}
-{
-	"_id": 591,
-	"date": {
-		"$date": "2019-01-25T15:04:14.741Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "91",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "91",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "Out",
-			"count": "91",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "91",
-			"MAC": "00:15:7e:10:03:5a"
-		}
-	]
-}
-{
-	"_id": 592,
-	"date": {
-		"$date": "2019-01-25T15:04:15.746Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "93",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "93",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "Out",
-			"count": "92",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "92",
-			"MAC": "00:15:7e:10:03:5a"
-		}
-	]
-}
-{
-	"_id": 593,
-	"date": {
-		"$date": "2019-01-25T15:04:16.749Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "94",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "94",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "Out",
-			"count": "92",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "92",
-			"MAC": "00:15:7e:10:03:5a"
-		}
-	]
-}
-{
-	"_id": 594,
-	"date": {
-		"$date": "2019-01-25T15:04:17.750Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "95",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "95",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "Out",
-			"count": "94",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "94",
-			"MAC": "b8:27:eb:ff:a5:08"
-		}
-	]
-}
-{
-	"_id": 595,
-	"date": {
-		"$date": "2019-01-25T15:04:18.756Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "93",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "93",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "Out",
-			"count": "94",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "94",
-			"MAC": "00:15:7e:10:03:5a"
-		}
-	]
-}
-{
-	"_id": 596,
-	"date": {
-		"$date": "2019-01-25T15:04:19.761Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "93",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "93",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "Out",
-			"count": "96",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "96",
-			"MAC": "b8:27:eb:ff:a5:08"
-		}
-	]
-}
-{
-	"_id": 597,
-	"date": {
-		"$date": "2019-01-25T15:04:20.765Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "94",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "94",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "Out",
-			"count": "92",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "92",
-			"MAC": "b8:27:eb:ff:a5:08"
-		}
-	]
-}
-{
-	"_id": 598,
-	"date": {
-		"$date": "2019-01-25T15:04:21.770Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "68",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "68",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "Out",
-			"count": "67",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "67",
-			"MAC": "00:15:7e:10:03:5a"
-		}
-	]
-}
-{
-	"_id": 599,
-	"date": {
-		"$date": "2019-01-25T15:04:22.772Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "92",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "92",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "Out",
-			"count": "94",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "94",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "Out",
-			"count": "6",
-			"MAC": "01:0e:cf:00:00:00"
-		},
-		{
-			"In/Out": "In",
-			"count": "6",
-			"MAC": "b8:27:eb:6d:63:5d"
-		}
-	]
-}
-{
-	"_id": 600,
-	"date": {
-		"$date": "2019-01-25T15:04:23.776Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "93",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "93",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "Out",
-			"count": "94",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "94",
-			"MAC": "b8:27:eb:ff:a5:08"
-		}
-	]
-}
-{
-	"_id": 601,
-	"date": {
-		"$date": "2019-01-25T15:04:24.778Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "89",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "89",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "Out",
-			"count": "91",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "91",
-			"MAC": "00:15:7e:10:03:5a"
-		}
-	]
-}
-{
-	"_id": 602,
-	"date": {
-		"$date": "2019-01-25T15:04:25.782Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "89",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "89",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "Out",
-			"count": "88",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "88",
-			"MAC": "00:15:7e:10:03:5a"
-		}
-	]
-}
-{
-	"_id": 603,
-	"date": {
-		"$date": "2019-01-25T15:04:26.783Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "94",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "94",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "Out",
-			"count": "95",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "95",
-			"MAC": "00:15:7e:10:03:5a"
-		}
-	]
-}
-{
-	"_id": 604,
-	"date": {
-		"$date": "2019-01-25T15:04:27.785Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "96",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "96",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "Out",
-			"count": "94",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "94",
-			"MAC": "00:15:7e:10:03:5a"
-		}
-	]
-}
-{
-	"_id": 605,
-	"date": {
-		"$date": "2019-01-25T15:04:28.788Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "93",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "93",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "Out",
-			"count": "93",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "93",
-			"MAC": "b8:27:eb:ff:a5:08"
-		}
-	]
-}
-{
-	"_id": 606,
-	"date": {
-		"$date": "2019-01-25T15:04:29.790Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "94",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "94",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "Out",
-			"count": "94",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "94",
-			"MAC": "00:15:7e:10:03:5a"
-		}
-	]
-}
-{
-	"_id": 607,
-	"date": {
-		"$date": "2019-01-25T15:04:30.794Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "93",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "93",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "Out",
-			"count": "92",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "92",
-			"MAC": "b8:27:eb:ff:a5:08"
-		}
-	]
-}
-{
-	"_id": 608,
-	"date": {
-		"$date": "2019-01-25T15:04:31.805Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "91",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "91",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "Out",
-			"count": "92",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "92",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "Out",
-			"count": "6",
-			"MAC": "01:0e:cf:00:00:00"
-		},
-		{
-			"In/Out": "In",
-			"count": "6",
-			"MAC": "b8:27:eb:6d:63:5d"
-		}
-	]
-}
-{
-	"_id": 609,
-	"date": {
-		"$date": "2019-01-25T15:04:32.806Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "95",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "95",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "Out",
-			"count": "92",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "92",
-			"MAC": "b8:27:eb:ff:a5:08"
-		}
-	]
-}
-{
-	"_id": 610,
-	"date": {
-		"$date": "2019-01-25T15:04:33.811Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "92",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "92",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "Out",
-			"count": "92",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "92",
-			"MAC": "00:15:7e:10:03:5a"
-		}
-	]
-}
-{
-	"_id": 611,
-	"date": {
-		"$date": "2019-01-25T15:04:34.813Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "94",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "94",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "Out",
-			"count": "94",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "94",
-			"MAC": "00:15:7e:10:03:5a"
-		}
-	]
-}
-{
-	"_id": 612,
-	"date": {
-		"$date": "2019-01-25T15:04:35.817Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "93",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "93",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "Out",
-			"count": "93",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "93",
-			"MAC": "b8:27:eb:ff:a5:08"
-		}
-	]
-}
-{
-	"_id": 613,
-	"date": {
-		"$date": "2019-01-25T15:04:36.823Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "94",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "94",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "Out",
-			"count": "95",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "95",
-			"MAC": "00:15:7e:10:03:5a"
-		}
-	]
-}
-{
-	"_id": 614,
-	"date": {
-		"$date": "2019-01-25T15:04:37.829Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "97",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "97",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "Out",
-			"count": "96",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "96",
-			"MAC": "00:15:7e:10:03:5a"
-		}
-	]
-}
-{
-	"_id": 615,
-	"date": {
-		"$date": "2019-01-25T15:04:38.833Z"
-	},
-	"connections": [
-		{
-			"In/Out": "Out",
-			"count": "94",
-			"MAC": "00:15:7e:10:03:5a"
-		},
-		{
-			"In/Out": "In",
-			"count": "94",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "Out",
-			"count": "93",
-			"MAC": "b8:27:eb:ff:a5:08"
-		},
-		{
-			"In/Out": "In",
-			"count": "93",
-			"MAC": "00:15:7e:10:03:5a"
-		}
-	]
-}
+[
+  {
+    "_id": 524,
+    "date": {
+      "$date": "2019-01-25T15:03:08.032Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "6",
+        "MAC": "01:0e:cf:00:00:00"
+      },
+      {
+        "In/Out": "In",
+        "count": "6",
+        "MAC": "b8:27:eb:ff:a5:08"
+      }
+    ]
+  },
+  {
+    "_id": 525,
+    "date": {
+      "$date": "2019-01-25T15:03:08.032Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "6",
+        "MAC": "01:0e:cf:00:00:00"
+      },
+      {
+        "In/Out": "In",
+        "count": "6",
+        "MAC": "b8:27:eb:ff:a5:08"
+      }
+    ]
+  },
+  {
+    "_id": 526,
+    "date": {
+      "$date": "2019-01-25T15:03:09.102Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "5",
+        "MAC": "01:0e:cf:00:00:00"
+      },
+      {
+        "In/Out": "In",
+        "count": "30",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "Out",
+        "count": "32",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "32",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "Out",
+        "count": "25",
+        "MAC": "00:15:7e:10:03:5a"
+      }
+    ]
+  },
+  {
+    "_id": 527,
+    "date": {
+      "$date": "2019-01-25T15:03:10.112Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "34",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "34",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "Out",
+        "count": "32",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "32",
+        "MAC": "00:15:7e:10:03:5a"
+      }
+    ]
+  },
+  {
+    "_id": 528,
+    "date": {
+      "$date": "2019-01-25T15:03:11.122Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "35",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "35",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "Out",
+        "count": "35",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "35",
+        "MAC": "00:15:7e:10:03:5a"
+      }
+    ]
+  },
+  {
+    "_id": 529,
+    "date": {
+      "$date": "2019-01-25T15:03:12.129Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "38",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "38",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "Out",
+        "count": "36",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "36",
+        "MAC": "00:15:7e:10:03:5a"
+      }
+    ]
+  },
+  {
+    "_id": 530,
+    "date": {
+      "$date": "2019-01-25T15:03:13.134Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "37",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "37",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "Out",
+        "count": "39",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "39",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "Out",
+        "count": "6",
+        "MAC": "01:0e:cf:00:00:00"
+      },
+      {
+        "In/Out": "In",
+        "count": "6",
+        "MAC": "b8:27:eb:6d:63:5d"
+      }
+    ]
+  },
+  {
+    "_id": 531,
+    "date": {
+      "$date": "2019-01-25T15:03:14.141Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "44",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "44",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "Out",
+        "count": "43",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "43",
+        "MAC": "00:15:7e:10:03:5a"
+      }
+    ]
+  },
+  {
+    "_id": 532,
+    "date": {
+      "$date": "2019-01-25T15:03:15.164Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "40",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "40",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "Out",
+        "count": "36",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "36",
+        "MAC": "00:15:7e:10:03:5a"
+      }
+    ]
+  },
+  {
+    "_id": 533,
+    "date": {
+      "$date": "2019-01-25T15:03:16.176Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "37",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "37",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "Out",
+        "count": "36",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "36",
+        "MAC": "b8:27:eb:ff:a5:08"
+      }
+    ]
+  },
+  {
+    "_id": 534,
+    "date": {
+      "$date": "2019-01-25T15:03:17.190Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "35",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "35",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "Out",
+        "count": "36",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "36",
+        "MAC": "b8:27:eb:ff:a5:08"
+      }
+    ]
+  },
+  {
+    "_id": 535,
+    "date": {
+      "$date": "2019-01-25T15:03:18.212Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "37",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "37",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "Out",
+        "count": "39",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "39",
+        "MAC": "b8:27:eb:ff:a5:08"
+      }
+    ]
+  },
+  {
+    "_id": 536,
+    "date": {
+      "$date": "2019-01-25T15:03:19.220Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "40",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "40",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "Out",
+        "count": "38",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "38",
+        "MAC": "b8:27:eb:ff:a5:08"
+      }
+    ]
+  },
+  {
+    "_id": 537,
+    "date": {
+      "$date": "2019-01-25T15:03:20.225Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "40",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "40",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "Out",
+        "count": "40",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "40",
+        "MAC": "00:15:7e:10:03:5a"
+      }
+    ]
+  },
+  {
+    "_id": 538,
+    "date": {
+      "$date": "2019-01-25T15:03:21.227Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "36",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "36",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "Out",
+        "count": "36",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "36",
+        "MAC": "b8:27:eb:ff:a5:08"
+      }
+    ]
+  },
+  {
+    "_id": 539,
+    "date": {
+      "$date": "2019-01-25T15:03:22.237Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "35",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "35",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "Out",
+        "count": "35",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "35",
+        "MAC": "b8:27:eb:ff:a5:08"
+      }
+    ]
+  },
+  {
+    "_id": 540,
+    "date": {
+      "$date": "2019-01-25T15:03:23.248Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "44",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "44",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "Out",
+        "count": "41",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "41",
+        "MAC": "b8:27:eb:ff:a5:08"
+      }
+    ]
+  },
+  {
+    "_id": 541,
+    "date": {
+      "$date": "2019-01-25T15:03:24.254Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "37",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "37",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "Out",
+        "count": "36",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "36",
+        "MAC": "00:15:7e:10:03:5a"
+      }
+    ]
+  },
+  {
+    "_id": 542,
+    "date": {
+      "$date": "2019-01-25T15:03:25.257Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "48",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "48",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "Out",
+        "count": "44",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "44",
+        "MAC": "b8:27:eb:ff:a5:08"
+      }
+    ]
+  },
+  {
+    "_id": 543,
+    "date": {
+      "$date": "2019-01-25T15:03:26.274Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "47",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "47",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "Out",
+        "count": "44",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "44",
+        "MAC": "00:15:7e:10:03:5a"
+      }
+    ]
+  },
+  {
+    "_id": 544,
+    "date": {
+      "$date": "2019-01-25T15:03:27.278Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "43",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "43",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "Out",
+        "count": "42",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "42",
+        "MAC": "b8:27:eb:ff:a5:08"
+      }
+    ]
+  },
+  {
+    "_id": 545,
+    "date": {
+      "$date": "2019-01-25T15:03:28.279Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "37",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "37",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "Out",
+        "count": "40",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "40",
+        "MAC": "00:15:7e:10:03:5a"
+      }
+    ]
+  },
+  {
+    "_id": 546,
+    "date": {
+      "$date": "2019-01-25T15:03:29.292Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "35",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "35",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "Out",
+        "count": "36",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "36",
+        "MAC": "00:15:7e:10:03:5a"
+      }
+    ]
+  },
+  {
+    "_id": 547,
+    "date": {
+      "$date": "2019-01-25T15:03:30.294Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "34",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "34",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "Out",
+        "count": "32",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "32",
+        "MAC": "00:15:7e:10:03:5a"
+      }
+    ]
+  },
+  {
+    "_id": 548,
+    "date": {
+      "$date": "2019-01-25T15:03:31.302Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "45",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "45",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "Out",
+        "count": "44",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "44",
+        "MAC": "b8:27:eb:ff:a5:08"
+      }
+    ]
+  },
+  {
+    "_id": 549,
+    "date": {
+      "$date": "2019-01-25T15:03:32.307Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "45",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "45",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "Out",
+        "count": "44",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "44",
+        "MAC": "b8:27:eb:ff:a5:08"
+      }
+    ]
+  },
+  {
+    "_id": 550,
+    "date": {
+      "$date": "2019-01-25T15:03:33.393Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "43",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "43",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "Out",
+        "count": "40",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "40",
+        "MAC": "00:15:7e:10:03:5a"
+      }
+    ]
+  },
+  {
+    "_id": 551,
+    "date": {
+      "$date": "2019-01-25T15:03:34.403Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "36",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "36",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "Out",
+        "count": "33",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "33",
+        "MAC": "b8:27:eb:ff:a5:08"
+      }
+    ]
+  },
+  {
+    "_id": 552,
+    "date": {
+      "$date": "2019-01-25T15:03:35.418Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "31",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "31",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "Out",
+        "count": "32",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "32",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "Out",
+        "count": "6",
+        "MAC": "01:0e:cf:00:00:00"
+      },
+      {
+        "In/Out": "In",
+        "count": "6",
+        "MAC": "b8:27:eb:6d:63:5d"
+      }
+    ]
+  },
+  {
+    "_id": 553,
+    "date": {
+      "$date": "2019-01-25T15:03:36.426Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "46",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "46",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "Out",
+        "count": "48",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "48",
+        "MAC": "00:15:7e:10:03:5a"
+      }
+    ]
+  },
+  {
+    "_id": 554,
+    "date": {
+      "$date": "2019-01-25T15:03:37.427Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "43",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "43",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "Out",
+        "count": "41",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "41",
+        "MAC": "00:15:7e:10:03:5a"
+      }
+    ]
+  },
+  {
+    "_id": 555,
+    "date": {
+      "$date": "2019-01-25T15:03:38.429Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "42",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "42",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "Out",
+        "count": "41",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "41",
+        "MAC": "b8:27:eb:ff:a5:08"
+      }
+    ]
+  },
+  {
+    "_id": 556,
+    "date": {
+      "$date": "2019-01-25T15:03:39.439Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "42",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "42",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "Out",
+        "count": "44",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "44",
+        "MAC": "00:15:7e:10:03:5a"
+      }
+    ]
+  },
+  {
+    "_id": 557,
+    "date": {
+      "$date": "2019-01-25T15:03:40.454Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "38",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "38",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "Out",
+        "count": "36",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "36",
+        "MAC": "00:15:7e:10:03:5a"
+      }
+    ]
+  },
+  {
+    "_id": 558,
+    "date": {
+      "$date": "2019-01-25T15:03:41.463Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "36",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "36",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "Out",
+        "count": "36",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "36",
+        "MAC": "b8:27:eb:ff:a5:08"
+      }
+    ]
+  },
+  {
+    "_id": 559,
+    "date": {
+      "$date": "2019-01-25T15:03:42.465Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "44",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "44",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "Out",
+        "count": "44",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "44",
+        "MAC": "b8:27:eb:ff:a5:08"
+      }
+    ]
+  },
+  {
+    "_id": 560,
+    "date": {
+      "$date": "2019-01-25T15:03:43.470Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "38",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "38",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "Out",
+        "count": "36",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "36",
+        "MAC": "b8:27:eb:ff:a5:08"
+      }
+    ]
+  },
+  {
+    "_id": 561,
+    "date": {
+      "$date": "2019-01-25T15:03:44.474Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "39",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "39",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "Out",
+        "count": "40",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "40",
+        "MAC": "00:15:7e:10:03:5a"
+      }
+    ]
+  },
+  {
+    "_id": 562,
+    "date": {
+      "$date": "2019-01-25T15:03:45.482Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "37",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "37",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "Out",
+        "count": "36",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "36",
+        "MAC": "00:15:7e:10:03:5a"
+      }
+    ]
+  },
+  {
+    "_id": 563,
+    "date": {
+      "$date": "2019-01-25T15:03:46.488Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "37",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "37",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "Out",
+        "count": "38",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "38",
+        "MAC": "00:15:7e:10:03:5a"
+      }
+    ]
+  },
+  {
+    "_id": 564,
+    "date": {
+      "$date": "2019-01-25T15:03:47.496Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "38",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "38",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "Out",
+        "count": "40",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "40",
+        "MAC": "b8:27:eb:ff:a5:08"
+      }
+    ]
+  },
+  {
+    "_id": 565,
+    "date": {
+      "$date": "2019-01-25T15:03:48.511Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "48",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "48",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "Out",
+        "count": "48",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "48",
+        "MAC": "b8:27:eb:ff:a5:08"
+      }
+    ]
+  },
+  {
+    "_id": 566,
+    "date": {
+      "$date": "2019-01-25T15:03:49.516Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "49",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "49",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "Out",
+        "count": "49",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "49",
+        "MAC": "b8:27:eb:ff:a5:08"
+      }
+    ]
+  },
+  {
+    "_id": 567,
+    "date": {
+      "$date": "2019-01-25T15:03:50.529Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "50",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "50",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "Out",
+        "count": "46",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "46",
+        "MAC": "00:15:7e:10:03:5a"
+      }
+    ]
+  },
+  {
+    "_id": 568,
+    "date": {
+      "$date": "2019-01-25T15:03:51.541Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "43",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "43",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "Out",
+        "count": "44",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "44",
+        "MAC": "b8:27:eb:ff:a5:08"
+      }
+    ]
+  },
+  {
+    "_id": 569,
+    "date": {
+      "$date": "2019-01-25T15:03:52.544Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "37",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "37",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "Out",
+        "count": "36",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "36",
+        "MAC": "b8:27:eb:ff:a5:08"
+      }
+    ]
+  },
+  {
+    "_id": 570,
+    "date": {
+      "$date": "2019-01-25T15:03:53.557Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "38",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "38",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "Out",
+        "count": "36",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "36",
+        "MAC": "00:15:7e:10:03:5a"
+      }
+    ]
+  },
+  {
+    "_id": 571,
+    "date": {
+      "$date": "2019-01-25T15:03:54.571Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "40",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "40",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "Out",
+        "count": "37",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "37",
+        "MAC": "b8:27:eb:ff:a5:08"
+      }
+    ]
+  },
+  {
+    "_id": 572,
+    "date": {
+      "$date": "2019-01-25T15:03:55.590Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "46",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "46",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "Out",
+        "count": "45",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "45",
+        "MAC": "00:15:7e:10:03:5a"
+      }
+    ]
+  },
+  {
+    "_id": 573,
+    "date": {
+      "$date": "2019-01-25T15:03:56.592Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "46",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "46",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "Out",
+        "count": "45",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "45",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "Out",
+        "count": "6",
+        "MAC": "01:0e:cf:00:00:00"
+      },
+      {
+        "In/Out": "In",
+        "count": "6",
+        "MAC": "b8:27:eb:6d:63:5d"
+      }
+    ]
+  },
+  {
+    "_id": 574,
+    "date": {
+      "$date": "2019-01-25T15:03:57.609Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "50",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "50",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "Out",
+        "count": "49",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "49",
+        "MAC": "00:15:7e:10:03:5a"
+      }
+    ]
+  },
+  {
+    "_id": 575,
+    "date": {
+      "$date": "2019-01-25T15:03:58.617Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "46",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "46",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "Out",
+        "count": "46",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "46",
+        "MAC": "b8:27:eb:ff:a5:08"
+      }
+    ]
+  },
+  {
+    "_id": 576,
+    "date": {
+      "$date": "2019-01-25T15:03:59.637Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "44",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "44",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "Out",
+        "count": "44",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "44",
+        "MAC": "00:15:7e:10:03:5a"
+      }
+    ]
+  },
+  {
+    "_id": 577,
+    "date": {
+      "$date": "2019-01-25T15:04:00.641Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "49",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "49",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "Out",
+        "count": "44",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "44",
+        "MAC": "b8:27:eb:ff:a5:08"
+      }
+    ]
+  },
+  {
+    "_id": 578,
+    "date": {
+      "$date": "2019-01-25T15:04:01.661Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "46",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "46",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "Out",
+        "count": "47",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "47",
+        "MAC": "b8:27:eb:ff:a5:08"
+      }
+    ]
+  },
+  {
+    "_id": 579,
+    "date": {
+      "$date": "2019-01-25T15:04:02.665Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "48",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "48",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "Out",
+        "count": "50",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "50",
+        "MAC": "b8:27:eb:ff:a5:08"
+      }
+    ]
+  },
+  {
+    "_id": 580,
+    "date": {
+      "$date": "2019-01-25T15:04:03.672Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "49",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "49",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "Out",
+        "count": "49",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "49",
+        "MAC": "00:15:7e:10:03:5a"
+      }
+    ]
+  },
+  {
+    "_id": 581,
+    "date": {
+      "$date": "2019-01-25T15:04:04.678Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "41",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "41",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "Out",
+        "count": "40",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "40",
+        "MAC": "b8:27:eb:ff:a5:08"
+      }
+    ]
+  },
+  {
+    "_id": 582,
+    "date": {
+      "$date": "2019-01-25T15:04:05.698Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "44",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "44",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "Out",
+        "count": "42",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "42",
+        "MAC": "00:15:7e:10:03:5a"
+      }
+    ]
+  },
+  {
+    "_id": 583,
+    "date": {
+      "$date": "2019-01-25T15:04:06.703Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "49",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "49",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "Out",
+        "count": "49",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "49",
+        "MAC": "b8:27:eb:ff:a5:08"
+      }
+    ]
+  },
+  {
+    "_id": 584,
+    "date": {
+      "$date": "2019-01-25T15:04:07.708Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "50",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "50",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "Out",
+        "count": "50",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "50",
+        "MAC": "00:15:7e:10:03:5a"
+      }
+    ]
+  },
+  {
+    "_id": 585,
+    "date": {
+      "$date": "2019-01-25T15:04:08.712Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "48",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "48",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "Out",
+        "count": "48",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "48",
+        "MAC": "b8:27:eb:ff:a5:08"
+      }
+    ]
+  },
+  {
+    "_id": 586,
+    "date": {
+      "$date": "2019-01-25T15:04:09.729Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "51",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "51",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "Out",
+        "count": "48",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "48",
+        "MAC": "00:15:7e:10:03:5a"
+      }
+    ]
+  },
+  {
+    "_id": 587,
+    "date": {
+      "$date": "2019-01-25T15:04:10.732Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "94",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "94",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "Out",
+        "count": "92",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "92",
+        "MAC": "b8:27:eb:ff:a5:08"
+      }
+    ]
+  },
+  {
+    "_id": 588,
+    "date": {
+      "$date": "2019-01-25T15:04:11.735Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "89",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "89",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "Out",
+        "count": "91",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "91",
+        "MAC": "b8:27:eb:ff:a5:08"
+      }
+    ]
+  },
+  {
+    "_id": 589,
+    "date": {
+      "$date": "2019-01-25T15:04:12.737Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "93",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "93",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "Out",
+        "count": "92",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "92",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "Out",
+        "count": "6",
+        "MAC": "01:0e:cf:00:00:00"
+      },
+      {
+        "In/Out": "In",
+        "count": "6",
+        "MAC": "b8:27:eb:6d:63:5d"
+      }
+    ]
+  },
+  {
+    "_id": 590,
+    "date": {
+      "$date": "2019-01-25T15:04:13.738Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "98",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "98",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "Out",
+        "count": "96",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "96",
+        "MAC": "b8:27:eb:ff:a5:08"
+      }
+    ]
+  },
+  {
+    "_id": 591,
+    "date": {
+      "$date": "2019-01-25T15:04:14.741Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "91",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "91",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "Out",
+        "count": "91",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "91",
+        "MAC": "00:15:7e:10:03:5a"
+      }
+    ]
+  },
+  {
+    "_id": 592,
+    "date": {
+      "$date": "2019-01-25T15:04:15.746Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "93",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "93",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "Out",
+        "count": "92",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "92",
+        "MAC": "00:15:7e:10:03:5a"
+      }
+    ]
+  },
+  {
+    "_id": 593,
+    "date": {
+      "$date": "2019-01-25T15:04:16.749Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "94",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "94",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "Out",
+        "count": "92",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "92",
+        "MAC": "00:15:7e:10:03:5a"
+      }
+    ]
+  },
+  {
+    "_id": 594,
+    "date": {
+      "$date": "2019-01-25T15:04:17.750Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "95",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "95",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "Out",
+        "count": "94",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "94",
+        "MAC": "b8:27:eb:ff:a5:08"
+      }
+    ]
+  },
+  {
+    "_id": 595,
+    "date": {
+      "$date": "2019-01-25T15:04:18.756Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "93",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "93",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "Out",
+        "count": "94",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "94",
+        "MAC": "00:15:7e:10:03:5a"
+      }
+    ]
+  },
+  {
+    "_id": 596,
+    "date": {
+      "$date": "2019-01-25T15:04:19.761Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "93",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "93",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "Out",
+        "count": "96",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "96",
+        "MAC": "b8:27:eb:ff:a5:08"
+      }
+    ]
+  },
+  {
+    "_id": 597,
+    "date": {
+      "$date": "2019-01-25T15:04:20.765Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "94",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "94",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "Out",
+        "count": "92",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "92",
+        "MAC": "b8:27:eb:ff:a5:08"
+      }
+    ]
+  },
+  {
+    "_id": 598,
+    "date": {
+      "$date": "2019-01-25T15:04:21.770Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "68",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "68",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "Out",
+        "count": "67",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "67",
+        "MAC": "00:15:7e:10:03:5a"
+      }
+    ]
+  },
+  {
+    "_id": 599,
+    "date": {
+      "$date": "2019-01-25T15:04:22.772Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "92",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "92",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "Out",
+        "count": "94",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "94",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "Out",
+        "count": "6",
+        "MAC": "01:0e:cf:00:00:00"
+      },
+      {
+        "In/Out": "In",
+        "count": "6",
+        "MAC": "b8:27:eb:6d:63:5d"
+      }
+    ]
+  },
+  {
+    "_id": 600,
+    "date": {
+      "$date": "2019-01-25T15:04:23.776Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "93",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "93",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "Out",
+        "count": "94",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "94",
+        "MAC": "b8:27:eb:ff:a5:08"
+      }
+    ]
+  },
+  {
+    "_id": 601,
+    "date": {
+      "$date": "2019-01-25T15:04:24.778Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "89",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "89",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "Out",
+        "count": "91",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "91",
+        "MAC": "00:15:7e:10:03:5a"
+      }
+    ]
+  },
+  {
+    "_id": 602,
+    "date": {
+      "$date": "2019-01-25T15:04:25.782Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "89",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "89",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "Out",
+        "count": "88",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "88",
+        "MAC": "00:15:7e:10:03:5a"
+      }
+    ]
+  },
+  {
+    "_id": 603,
+    "date": {
+      "$date": "2019-01-25T15:04:26.783Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "94",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "94",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "Out",
+        "count": "95",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "95",
+        "MAC": "00:15:7e:10:03:5a"
+      }
+    ]
+  },
+  {
+    "_id": 604,
+    "date": {
+      "$date": "2019-01-25T15:04:27.785Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "96",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "96",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "Out",
+        "count": "94",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "94",
+        "MAC": "00:15:7e:10:03:5a"
+      }
+    ]
+  },
+  {
+    "_id": 605,
+    "date": {
+      "$date": "2019-01-25T15:04:28.788Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "93",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "93",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "Out",
+        "count": "93",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "93",
+        "MAC": "b8:27:eb:ff:a5:08"
+      }
+    ]
+  },
+  {
+    "_id": 606,
+    "date": {
+      "$date": "2019-01-25T15:04:29.790Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "94",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "94",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "Out",
+        "count": "94",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "94",
+        "MAC": "00:15:7e:10:03:5a"
+      }
+    ]
+  },
+  {
+    "_id": 607,
+    "date": {
+      "$date": "2019-01-25T15:04:30.794Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "93",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "93",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "Out",
+        "count": "92",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "92",
+        "MAC": "b8:27:eb:ff:a5:08"
+      }
+    ]
+  },
+  {
+    "_id": 608,
+    "date": {
+      "$date": "2019-01-25T15:04:31.805Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "91",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "91",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "Out",
+        "count": "92",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "92",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "Out",
+        "count": "6",
+        "MAC": "01:0e:cf:00:00:00"
+      },
+      {
+        "In/Out": "In",
+        "count": "6",
+        "MAC": "b8:27:eb:6d:63:5d"
+      }
+    ]
+  },
+  {
+    "_id": 609,
+    "date": {
+      "$date": "2019-01-25T15:04:32.806Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "95",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "95",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "Out",
+        "count": "92",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "92",
+        "MAC": "b8:27:eb:ff:a5:08"
+      }
+    ]
+  },
+  {
+    "_id": 610,
+    "date": {
+      "$date": "2019-01-25T15:04:33.811Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "92",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "92",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "Out",
+        "count": "92",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "92",
+        "MAC": "00:15:7e:10:03:5a"
+      }
+    ]
+  },
+  {
+    "_id": 611,
+    "date": {
+      "$date": "2019-01-25T15:04:34.813Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "94",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "94",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "Out",
+        "count": "94",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "94",
+        "MAC": "00:15:7e:10:03:5a"
+      }
+    ]
+  },
+  {
+    "_id": 612,
+    "date": {
+      "$date": "2019-01-25T15:04:35.817Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "93",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "93",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "Out",
+        "count": "93",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "93",
+        "MAC": "b8:27:eb:ff:a5:08"
+      }
+    ]
+  },
+  {
+    "_id": 613,
+    "date": {
+      "$date": "2019-01-25T15:04:36.823Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "94",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "94",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "Out",
+        "count": "95",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "95",
+        "MAC": "00:15:7e:10:03:5a"
+      }
+    ]
+  },
+  {
+    "_id": 614,
+    "date": {
+      "$date": "2019-01-25T15:04:37.829Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "97",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "97",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "Out",
+        "count": "96",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "96",
+        "MAC": "00:15:7e:10:03:5a"
+      }
+    ]
+  },
+  {
+    "_id": 615,
+    "date": {
+      "$date": "2019-01-25T15:04:38.833Z"
+    },
+    "connections": [
+      {
+        "In/Out": "Out",
+        "count": "94",
+        "MAC": "00:15:7e:10:03:5a"
+      },
+      {
+        "In/Out": "In",
+        "count": "94",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "Out",
+        "count": "93",
+        "MAC": "b8:27:eb:ff:a5:08"
+      },
+      {
+        "In/Out": "In",
+        "count": "93",
+        "MAC": "00:15:7e:10:03:5a"
+      }
+    ]
+  }
+]
