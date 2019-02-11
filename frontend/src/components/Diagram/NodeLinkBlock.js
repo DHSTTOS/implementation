@@ -8,7 +8,6 @@ const LegendContainer = styled.div`
   z-index: 10000;
   list-style: none;
   top: 6rem;
-  /* background-color: red; */
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -46,9 +45,7 @@ class NodeLinkBlock extends PureComponent {
 
   componentWillUnmount = () => {
     this.disposeAutorun();
-    // this.nodeLinkGram.current.remove();
     this.nodeLinkGram.current.remove();
-    console.warn('Removed dom node');
     document.getElementById('vis-tooltip').remove();
   };
 
@@ -142,8 +139,6 @@ function RadialPlacement() {
   const setKeys = keys => {
     // start with an empty values
     values = d3.map();
-
-    // keys.forEach(k => console.log(k));
 
     increment = 25;
 
@@ -279,7 +274,6 @@ function Network() {
   var update = function() {
     // filter data to show based on current filter settings.
     curNodesData = filterNodes(allData.nodes);
-    // console.log(allData.node);
     curLinksData = filterLinks(allData.links, curNodesData);
 
     // sort nodes based on current sort and update centers for
@@ -300,14 +294,12 @@ function Network() {
     force.links([]);
     // if present, remove them from svg
     if (link) {
-      // console.log(link)
       link
         .data([])
         .exit()
         .remove();
       link = null;
     }
-    // }
 
     // start me up!
     force.start();
@@ -605,7 +597,6 @@ function Network() {
     let content = `<p class="main">Source: ${d.source.id}</span></p>
     <hr class="tooltip-hr">
     <p class="main">Target:  ${d.target.id}</span></p>`;
-    // console.log(d.source.id);
     tooltip.showTooltip(content, d3.event);
   };
 

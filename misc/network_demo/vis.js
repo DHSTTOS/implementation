@@ -176,10 +176,8 @@ const Network = function() {
   // update() is called everytime a parameter changes
   // and the network needs to be reset.
   var update = function() {
-    console.log(allData.links)
     // filter data to show based on current filter settings.
     curNodesData = filterNodes(allData.nodes);
-    // console.log(allData.node);
     curLinksData = filterLinks(allData.links, curNodesData);
 
     // sort nodes based on current sort and update centers for
@@ -200,7 +198,6 @@ const Network = function() {
     force.links([]);
     // if present, remove them from svg
     if (link) {
-      // console.log(link)
       link
         .data([])
         .exit()
@@ -381,7 +378,6 @@ const Network = function() {
 
   // enter/exit display for links
   var updateLinks = function() {
-    // console.log(curLinksData);
     link = linksG
       .selectAll('line.link')
       .data(curLinksData, d => `${d.source.id}_${d.target.id}`);
@@ -509,7 +505,6 @@ const Network = function() {
     let content = `<p class="main">Source: ${d.source.id}</span></p>
     <hr class="tooltip-hr">
     <p class="main">Target:  ${d.target.id}</span></p>`;
-    // console.log(d.source.id);
     d3.select('body')
       .append()
       .attr('class', 'tooltip')
@@ -517,7 +512,6 @@ const Network = function() {
       .duration(500)
       .style('opacity', 0.9)
       .html(content);
-    console.log(d3.select('body').html(content));
   };
 
   var hideLinkDetails = function(d, i) {

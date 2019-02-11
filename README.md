@@ -1,22 +1,5 @@
-# implementation
+# DHSTTOS
 
-Who's responsible for what?:
+DHSTTOS (Drawing How Stuff Talks To Other Stuff) project is part of the ADIN (Anomaly Detection in Industrial Networks) suite.
 
-K: login, maybe data processing?
-
-L: Front-end, diagrams
-
-P: Backend-front communication
-
-M: MongoDB, Backend Structure,
-
-ALL: diagram implementaion, take a look at react + d3
-
-To add the mongo database check mongo notes
-
-First steps:
-
-Set up the structure, according to responsability. that means create all classes.  Feel free to reuse any existing demos (just don't tell anyone ;))
-
-# Da rules
-For working on specific features please create a new branch, with: initial_FeatureName
+DHSTTOS mainly consists of 2 sub-projects: the [frontend](frontend) and [backend](Back-end). Please refer to their corresponding `README` and `LICENSE` files for more information.
