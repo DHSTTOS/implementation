@@ -5,22 +5,25 @@ package invalid.adininspector.records;
 
 import java.util.Date;
 
-//ankush's thing contains an object so this must also be a object
+/**
+ * Helper class to represent a timestamp object as it is used in the raw data
+ * format of the ADIN framework. In the raw data, they key "timestamp" maps to
+ * an object {"$date", timestamp} and to handle data with MongoDB and bson we
+ * need this corresponding class/object type.
+ */
 public class Timestamp {
-    // should be stored as UNIX timestamp? right??
-    public Date a;
-    public Date date;
+	// should be stored as UNIX timestamp? right??
+	public Date a;
+	public Date date;
 
-    public Timestamp(Date date) {
-        this.date = date;
-       
-    }
+	public Timestamp(Date date) {
+		this.date = date;
 
-    //TODO: fix for stupid broken variable in test data
-    public Date getDate() {
-        return    date ; 
+	}
 
-    }
+	//TODO: fix for stupid broken variable in test data
+	public Date getDate() {
+		return    date ; 
 
-    
+	}
 }

@@ -15,7 +15,28 @@ import org.bson.Document;
 import invalid.adininspector.records.PacketRecordDesFromMongo;
 import invalid.adininspector.records.Record;
 
-//TODO: this is terribly inneficient a better way would be to create a new record derivate and use the getAsDocument() function,
+/**
+ * Implements IAggregator. This calculates, per port, the outgoing and incoming
+ * connections per second.
+ *
+ * A record processed by this aggregator is stored in a collection as follows:
+ * Name of collection: collectionName\_FlowratePerSec
+ * structure of record as json:
+ * {
+ *   "date" : \{" date" " Unix_Timestamp  } 
+ *   rounded down to the second this record points to.
+ *   Connections : [
+ *     { Port: "portNumer", "InOut" : " In/Out ", count : "Number" }
+ *     { Port: "portNumer", "InOut" : " In/Out ", count : "Number" }
+ *     ...
+ *   ] This array has an entry per port if the port communicated that second. 
+ *     Precomputing this allows us to stream whenever the client needs the
+ *     information for a specific node.
+ * }
+ *
+ * TODO: this is terribly inneficient a better way would be to create a new record derivate and use the getAsDocument() function,
+ *
+ */
 public class FlowRatePerSecond implements IAggregator {
 
     private Date currentTstmp;
@@ -24,7 +45,16 @@ public class FlowRatePerSecond implements IAggregator {
     private long second = 1000;
     private int id = 0;
 
-    //we need to be able to do processing on more types of records, probably specialist methods.
+    /**
+     * Calculates, per port, the outgoing and incoming connections per second.
+     *
+     * TODO:  we need to be able to do processing on more types of records, probably specialist methods.
+     *
+     * @see invalid.adininspector.dataprocessing.IAggregator#processData(java.util.ArrayList)
+     *
+     * @param records - the records to be processed
+     * @return aggregated data as bson Document
+     */
     @Override
     public ArrayList<Document> processData(ArrayList<Record> records) {
 
@@ -133,6 +163,13 @@ public class FlowRatePerSecond implements IAggregator {
         return processedRecords;
     }
 
+    /**
+     * A helper routine that creates a new bson Document with default key-value pairs set.
+     * @see invalid.adininspector.dataprocessing.IAggregator#getNewAggregatorDocument(java.util.Date)
+     *
+     * @param tstmp - the timestamp for this document
+     * @return a new bson Document 
+     */
     @Override
     public Document getNewAggregatorDocument(Date tstmp) {
         Document d = new Document();

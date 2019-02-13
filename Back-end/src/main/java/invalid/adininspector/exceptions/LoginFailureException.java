@@ -13,7 +13,8 @@ public class LoginFailureException extends Exception {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * @param errorMessage the error message to be reported
+	 * Constructs an instance of LoginFailureException with the specified detail message.
+	 * @param errorMessage - the detailed error message
 	 */
 	public LoginFailureException(String errorMessage) {
 		super(errorMessage);

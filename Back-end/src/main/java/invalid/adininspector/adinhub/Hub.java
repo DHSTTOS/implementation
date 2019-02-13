@@ -11,8 +11,10 @@ import java.util.Random;
 import javax.websocket.*;
 
 /**
- * This class implements the network handlers for the websocket connection
- * to the client and access methods for a database connection.
+ * This class implements the network handlers for the WebSocket connection to
+ * the client.
+ * It also has wrapper methods that delegate the database access commands to the
+ * appropriate IUserSession object.
  */
 @ServerEndpoint("/adinhubsoc2")
 public class Hub {
@@ -93,12 +95,12 @@ public class Hub {
 
 
 	/**
-	 * This method is provided for the two-session-login scheme.
-	 * It takes a username and password to log into the database.
-	 * If successful, register the IUserSession and return a token to identify
-	 * it. Otherwise return an empty string.
+	 * If the username and password are valid, log the user in and create a new
+	 * IUserSession object for the database session, register it, and return an
+	 * authentication token for it.
+	 * If the login fails, return an empty string.
 	 * 
-	 * @param session the login websocket session
+	 * @param session the current websocket session
 	 * @param username the username to login with
 	 * @param password the password to login with
 	 * 
@@ -296,9 +298,9 @@ public class Hub {
 	}
 
 	/**
-	 * Returns an array containing all records of this collection for which the
-	 * value of the specified key is in the range [start, end). The records will
-	 * be in the same order as they are in the collection.
+	 * Returns an array containing all records of the specified collection for
+	 * which the value of the specified key is in the range [start, end).
+	 * The records will be in the same order as they are in the collection.
 	 * 
 	 * @param session the current websocket session
 	 * @param collection the collection to query
@@ -317,8 +319,8 @@ public class Hub {
 	}
 
 	/**
-	 * Returns the number of records in the specified collection for which the value
-	 * of the specified key is within the range [start, end).
+	 * Returns the number of records in the specified collection for which the
+	 * value of the specified key is within the range [start, end).
 	 * 
 	 * @param session the current websocket session
 	 * @param collection the collection to query
