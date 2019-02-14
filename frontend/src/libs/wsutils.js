@@ -74,7 +74,7 @@ const handleMessage = msg => {
       break;
     case 'LIST_COLL':
       // msg.par will be array
-      dataStore.availableCollections = msg.par;
+      dataStore.sourceOptions = msg.par;
       console.warn('Got LIST_COLL');
       console.log(msg.par);
       break;
