@@ -1,5 +1,4 @@
 import { observable, action } from 'mobx';
-import { DEFAULT_SOURCE_NAME } from '@libs';
 import {
   lmf,
   lmf_FlowRatePerSecond,
@@ -13,33 +12,7 @@ class DataStore {
   availableKeys = Object.keys(lmf[0]);
 
   @observable
-  availableCollections = []; //exampleCollection
-
-  // Raw network data
-  @observable.shallow
-  rawData = lmf;
-
-  @observable.shallow
-  flowrateData = lmf_FlowRatePerSecond;
-
-  @observable.shallow
-  connectionNumberData = lmf_NumberOfConnectionsPerNode;
-
-  @observable.shallow
-  addressLinkData = [];
-
-  @observable.shallow
-  currentNodeLinkData = nodeLinkSample;
-
-  @observable
-  endpoints = []; // The start and end indices for the x-axis
-
-  // The slice of raw data that is currently selected by the slider:
-  @observable.shallow
-  currentlySelectedData = lmf;
-
-  @observable
-  sourceOptions = ['Source 1', 'Live'];
+  sourceOptions = [];
   @observable
   currentlySelectedSource = '';
   @action
@@ -50,6 +23,22 @@ class DataStore {
     this.resetData();
     this.currentlySelectedSource = source;
   };
+
+  @observable.shallow
+  rawData = [];
+  @observable.shallow
+  flowrateData = [];
+  @observable.shallow
+  connectionNumberData = [];
+  @observable.shallow
+  currentNodeLinkData = [];
+
+  @observable
+  endpoints = []; // The start and end indices for the x-axis
+
+  // The slice of raw data that is currently selected by the slider:
+  @observable.shallow
+  currentlySelectedData = lmf;
 
   // Array of notification/alarm data sets:
   @observable

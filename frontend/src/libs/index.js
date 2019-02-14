@@ -31,6 +31,11 @@ import {
   removeUDP,
 } from './dataFilters';
 
+import {
+  requestAvailableCollections,
+  fillCollectionsMenu,
+} from './getCollections';
+
 /**
  * Formats raw data to nivo's format.
  *
@@ -90,4 +95,6 @@ export {
   removeEther,
   removeProfinet,
   removeUDP,
+  requestAvailableCollections,
+  fillCollectionsMenu,
 };
