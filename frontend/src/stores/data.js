@@ -9,6 +9,8 @@ import appStore from './app';
 
 class DataStore {
   // TODO: when ws binding is done, we'll make this flexible
+  // TODO: we need to create separate vars for all plot types, since they are gonna use different data sources
+  @observable
   availableKeys = Object.keys(lmf[0]);
 
   @observable
@@ -22,6 +24,7 @@ class DataStore {
     appStore.resetDiagramConfigs();
     this.resetData();
     this.currentlySelectedSource = source;
+    //TODO: populate different data vars down below
   };
 
   @observable.shallow
@@ -31,14 +34,20 @@ class DataStore {
   @observable.shallow
   connectionNumberData = [];
   @observable.shallow
-  currentNodeLinkData = [];
+  addressAndLinksData = [];
+
+  // The slice of data that is currently selected by the slider
+  @observable.shallow
+  currentlySelectedRawData = [];
+  @observable.shallow
+  currentlySelectedFlowrateData = [];
+  @observable.shallow
+  currentlySelectedConnectionNumberData = [];
+  @observable.shallow
+  currentlySelectedAddressAndLinksData = [];
 
   @observable
   endpoints = []; // The start and end indices for the x-axis
-
-  // The slice of raw data that is currently selected by the slider:
-  @observable.shallow
-  currentlySelectedData = lmf;
 
   // Array of notification/alarm data sets:
   @observable
