@@ -1,10 +1,10 @@
-import { appStore } from '@stores';
+import { userStore } from '@stores';
+import { getAvailableCollections } from './wsutils';
 
 // needs to observe appStore.loggedIn
-let requestAvailableCollections = () => {
-  if (appStore.loggedIn) {
-    wsutils.getAvailableCollections(); // the server's response will be written to dataStore.availableCollections
-  }
+let requestAvailableCollections = async () => {
+  while (!userStore.userDetails.wsLoggedIn);
+  getAvailableCollections(userStore.socket);
 };
 
 // needs to listen to dataStore.availableCollections

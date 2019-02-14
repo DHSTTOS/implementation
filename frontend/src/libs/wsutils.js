@@ -75,6 +75,8 @@ const handleMessage = msg => {
     case 'LIST_COLL':
       // msg.par will be array
       dataStore.availableCollections = msg.par;
+      console.warn('Got LIST_COLL');
+      console.log(msg.par);
       break;
     case 'COLL_SIZE':
       break;
@@ -133,7 +135,7 @@ const handleSession = async msg => {
     case 'LOGIN':
       if (msg.status === 'OK') {
         await localStorage.setItem('token', msg.token);
-        // TODO: present the main page
+        userStore.userDetails.wsLoggedIn = true;
       } else {
         // TODO: present the login screen again, with a "Username or password wrong" notice
       }
@@ -142,12 +144,12 @@ const handleSession = async msg => {
       if (msg.status !== 'OK') {
         console.log('websocket connection: AUTHentication failed:');
         console.dir(msg);
-        // TODO: present the login screen again, with a "Login failed, maybe technical problems" notice
+        userStore.userDetails.wsLoggedIn = true;
       }
       break;
     case 'LOGOUT':
       await localStorage.removeItem('token');
-      // TODO: present the login screen again
+      userStore.userDetails.wsLoggedIn = false;
       break;
     default:
       console.log('Protocol error: got unknown SESSION message:');

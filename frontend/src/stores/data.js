@@ -1,10 +1,5 @@
 import { observable, action } from 'mobx';
-import {
-  lmf,
-  lmf_FlowRatePerSecond,
-  lmf_NumberOfConnectionsPerNode,
-  nodeLinkSample,
-} from '../../mockdata';
+import { lmf } from '../../mockdata';
 import appStore from './app';
 
 class DataStore {
