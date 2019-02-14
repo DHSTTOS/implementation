@@ -1,12 +1,13 @@
 import { observable, action } from 'mobx';
-import { lmf } from '../../mockdata';
+// import { lmf } from '../../mockdata';
 import appStore from './app';
 
 class DataStore {
   // TODO: when ws binding is done, we'll make this flexible
   // TODO: we need to create separate vars for all plot types, since they are gonna use different data sources
   @observable
-  availableKeys = Object.keys(lmf[0]);
+  availableKeys = ['sample key'];
+  // availableKeys = Object.keys(lmf[0]);
 
   @observable
   sourceOptions = [];
