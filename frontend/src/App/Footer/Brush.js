@@ -38,7 +38,6 @@ export default class Brush extends PureComponent {
     console.log(dataStore.endpoints);
     console.log(dataStore.endpoints.length);
     if (dataStore.endpoints.length === 0) {  // TODO does dataStore.endpoints have to be shallow?
-      console.log("foo");
       dataStore.endpoints = [0, dataStore.rawData.length];
     }
     console.log("bar");
@@ -76,7 +75,8 @@ export default class Brush extends PureComponent {
       //console.log('setrange: ' + s + ' ' + e);
       //dataStore.currentlySelectedData = dataStore.rawData.slice(s, e);
       xCurrentScale.domain(range);
-      xAxisCurrent.scale(xCurrentScale);
+      //xAxisCurrent.scale(xCurrentScale);
+      xAxisCurrent.scale(xCurrentScale).tickFormat(tickFormatTimeStamp);
       //console.log(brushD.extent().call());
       updateCurrentlySelectedData(range);
       let t = d3.transition().duration(50); // XXX remove completely?
@@ -98,6 +98,7 @@ export default class Brush extends PureComponent {
     console.log("rawData length" + dataStore.rawData.length);
   
     let tickFormatTimeStamp = d => {
+      console.log('tickFormatTimeStamp called');
       //console.log("tickF: " + d + ": " + dataStore.currentlySelectedData[d]);
       let date = new Date(dataStore.currentlySelectedData[d].Timestamp.$date);
       let lh = ('' + date.getHours()).padStart(2, '0');
@@ -116,12 +117,13 @@ export default class Brush extends PureComponent {
       .tickSize(5)
       .tickFormat(tickFormatTimeStamp);
     //.tickFormat('f')
+
     let xAxisTotal = d3
       .axisBottom(xTotalScale)
       //.ticks(100)
-      .tickSize(10);
-    //.tickFormat(function(d){ return d.x;})
-    //.tickFormat('f')
+      .tickSize(10)
+      .tickFormat(tickFormatTimeStamp);
+
     // from example code:
 
     //var svg = d3.select("body").append("svg").attr("width",width).attr("height",height);
