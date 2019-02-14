@@ -1,10 +1,12 @@
 import { userStore } from '@stores';
 import { getAvailableCollections } from './wsutils';
+import { autorun } from 'mobx';
 
-// needs to observe appStore.loggedIn
-let requestAvailableCollections = async () => {
-  while (!userStore.userDetails.wsLoggedIn);
-  getAvailableCollections(userStore.socket);
+let requestAvailableCollections = () => {
+  autorun(() => {
+    if (userStore.userDetails.wsLoggedIn)
+      getAvailableCollections(userStore.socket);
+  });
 };
 
 // needs to listen to dataStore.availableCollections
