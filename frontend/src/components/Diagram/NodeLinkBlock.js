@@ -470,11 +470,29 @@ function Network() {
         showDetails(d, i);
       })
       .on('mouseout', hideDetails)
-      .on("click", function(d) {
-				alert(d.id);});
+      .on("click",function(d){
+        alert(d.id);});
+     
 
     return node.exit().remove();
   };
+
+ /* var zoomSettings = {
+    duration:1000,
+    ease:d3.easeCubicOut,
+    zoomLevel:5
+  };
+
+  function clicked(){
+vis.transition()
+  .duration(zoomSettings.zoomLevel)
+  .attr('transform', 'translate(' + width/2 +"," +height/2 +')scale(' + zoomLevel + ')translate(' + -x + ',' + -y +')');
+
+
+  }*/
+
+  
+
 
   // enter/exit display for links
   var updateLinks = function() {
