@@ -315,7 +315,10 @@ public class Hub {
 			System.err.println("got request for non-logged-in session" + session);
 			return null; // XXX return empty array?
 		}
-		return userSession.getRecordsInRange(collection, key, start, end);
+		System.out.println("Hub.gRIR1: key: " + key + " start: " + start + "end: " + end);
+		String[] tmp = userSession.getRecordsInRange(collection, key, start, end);
+		System.out.println("Hub.gRIR2: size: " + tmp.length + " " + ((tmp.length > 0) ? tmp[0] : ""));
+		return tmp;
 	}
 
 	/**

@@ -113,7 +113,10 @@ public class MongoDBUserSession implements IUserSession {
 	 * @return an array of records matching the filter range
 	 */
 	public String[] getRecordsInRange(String collection, String key, String start, String end) {
-		return mongoClientMediator.getRecordsInRange(collection, key, start, end);
+		System.out.println("MongoDBUserSession.gRIR1: key: " + key + " start: " + start + " end: " + end);
+		String[] tmp = mongoClientMediator.getRecordsInRange(collection, key, start, end);
+		System.out.println("MongoDBUserSession.gRIR2: size: " + tmp.length + " " + ((tmp.length > 0) ? tmp[0] : ""));
+		return tmp;
 	}
 
 	/**
@@ -127,6 +130,9 @@ public class MongoDBUserSession implements IUserSession {
 	 * @return the number of records matching the filter range
 	 */
 	public long getRecordsInRangeSize(String collection, String key, String start, String end) {
-		return mongoClientMediator.getRecordsInRangeSize(collection, key, start, end);
+		System.out.println("MongoDBUserSession.gRIRS1: key: " + key + " start: " + start + "end: " + end);
+		long tmp = mongoClientMediator.getRecordsInRangeSize(collection, key, start, end);
+		System.out.println("MongoDBUserSession.gRIRS2: size: " + tmp);
+		return tmp;
 	}
 }
