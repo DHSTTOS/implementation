@@ -31,23 +31,52 @@ class PlotTypeBar extends Component {
           currentSelection={diagramConfig.plotType}
         />
 
-        {diagramConfig.plotType !== NODE_LINK ? (
+        {diagramConfig.plotType == SCATTER_PLOT ? (
+          
           <>
             <Selector
               name="X-Axis"
-              options={availableKeys}
+              //we have the option .slice(start,end)
+              options={availableKeys.slice(3,10)}
               onSelect={appStore.setXAxis}
               currentSelection={diagramConfig.x}
             />
             <Selector
               name="Y-Axis"
-              options={availableKeys}
+              options={availableKeys.slice(3,10)}
               onSelect={appStore.setYAxis}
               currentSelection={diagramConfig.y}
             />
             <Selector
               name="Group by"
-              options={availableKeys}
+              options={availableKeys.slice(3,10)}
+              onSelect={appStore.setGroupBy}
+              currentSelection={diagramConfig.groupName}
+            />
+          </>
+        ) : (
+          <></>
+        )}
+
+{diagramConfig.plotType == LINE_CHART? (
+          
+          <>
+            <Selector
+              name="X-Axis"
+              //we have the option .slice(start,end)
+              options={availableKeys.slice(1,4)}
+              onSelect={appStore.setXAxis}
+              currentSelection={diagramConfig.x}
+            />
+            <Selector
+              name="Y-Axis"
+              options={availableKeys.slice(1,4)}
+              onSelect={appStore.setYAxis}
+              currentSelection={diagramConfig.y}
+            />
+            <Selector
+              name="Group by"
+              options={availableKeys.slice(1,4)}
               onSelect={appStore.setGroupBy}
               currentSelection={diagramConfig.groupName}
             />
