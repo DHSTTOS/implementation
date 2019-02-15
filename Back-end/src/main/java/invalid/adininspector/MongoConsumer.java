@@ -188,7 +188,7 @@ public class MongoConsumer {
 				Record incomingRecord = gson.fromJson(fixedRecord, type);
 				// set the offset as ID in the DB
 
-				incomingRecord.set_id(Long.toString(record.offset()));
+				incomingRecord.set_id(record.offset());
 
 				clientMediator.addRecordToCollection(incomingRecord, record.topic());
 
@@ -230,7 +230,7 @@ public class MongoConsumer {
 
 			// __consumer_offsets is internal to kafka and should be ignored
 			// TODO: ignore real-time data
-			if (!topic.getKey().contentEquals("__consumer_offsets") && topic.getKey().contentEquals("motor")) {
+			if (!topic.getKey().contentEquals("__consumer_offsets")) {
 				kafkaTopics.add(new TopicPartition(topic.getKey(), 0));
 				System.out.println("Topic: " + topic.getKey());
 			}
