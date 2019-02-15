@@ -3,10 +3,15 @@ package invalid.adininspector.adinhub;
 import javax.websocket.OnOpen;
 import javax.websocket.server.ServerEndpoint;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.stream.Stream;
 
 import javax.websocket.*;
 
@@ -218,6 +223,36 @@ public class Hub {
 
 
 	/**
+	 * Returns the collections available to the current user grouped according to their name.
+	 * Each of the list-of-strings starts with the name of a raw data collection
+	 * and is followed by the aggregated/processed variants of this raw data
+	 * collection.
+	 * Otherwise there is no sorting within each group, and the groups are in
+	 * the order that the raw data collections originally have.
+	 * 
+	 * @param session the current websocket session
+	 * @return a list of lists with collection names
+	 */
+	public List<List<String>> getCollectionGroups(Session session) {
+		IUserSession userSession = sessions.get(session);
+		if (userSession == null) {
+			System.err.println("got request for non-logged-in session" + session);
+			return null; // XXX return empty array?
+		}
+		String[] collections = userSession.getAvailableCollections();
+		String[] groups = Arrays.stream(collections).filter(s -> (s.indexOf('_') == -1)).toArray(String[]::new);
+		List<List<String>> groupedColl = new ArrayList<List<String>>(groups.length); 
+		for (int i = 0; i < groups.length; i++) {
+			ArrayList<String> members = new ArrayList<String>(collections.length / groups.length + 1);
+			String groupMainColl = groups[i];
+			members.add(groupMainColl);
+			Arrays.stream(collections).filter(s -> (s.startsWith(groupMainColl) && !s.equals(groupMainColl))).forEachOrdered(s -> members.add(s));
+			groupedColl.add(members);
+		}
+		return groupedColl;
+	}
+
+	/**
 	 * Returns an array containing all records of this collection in the order
 	 * they have in the collection.
 	 * 
@@ -234,6 +269,32 @@ public class Hub {
 		return userSession.getCollection(collection);
 	}
 
+	public List<HashMap<String, Object>> getCollectionGroupData(Session session, String collection) {
+		IUserSession userSession = sessions.get(session);
+		if (userSession == null) {
+			System.err.println("got request for non-logged-in session" + session);
+			return null; // XXX return empty array?
+		}
+		String[] collections = userSession.getAvailableCollections();
+		ArrayList<String> members = new ArrayList<String>(10);
+		Arrays.stream(collections).filter(s -> (s.startsWith(collection) && !s.equals(collection))).forEachOrdered(s -> members.add(s));
+		
+		List<HashMap<String, Object>> collectionGroup = new ArrayList<HashMap<String, Object>>(10);
+		for (int i = 0; i < members.size(); i++) {
+			String member = members.get(i);
+			HashMap<String, Object> coll = new HashMap<String, Object>();
+			coll.put("name",  member);
+			coll.put("size", userSession.getCollectionSize(member));
+			if (i > 0) {
+				coll.put("data", userSession.getCollection(member));
+			} else {
+				coll.put("data",  "[]"); // TODO XXX limit amount of data
+			}
+			collectionGroup.add(coll);
+		}
+		return collectionGroup;
+	}
+	
 	/**
 	 * Returns a JSON string representation of the first record of the specified collection. 
 	 * 
@@ -315,7 +376,10 @@ public class Hub {
 			System.err.println("got request for non-logged-in session" + session);
 			return null; // XXX return empty array?
 		}
-		return userSession.getRecordsInRange(collection, key, start, end);
+		System.out.println("Hub.gRIR1: key: " + key + " start: " + start + "end: " + end);
+		String[] tmp = userSession.getRecordsInRange(collection, key, start, end);
+		System.out.println("Hub.gRIR2: size: " + tmp.length + " " + ((tmp.length > 0) ? tmp[0] : ""));
+		return tmp;
 	}
 
 	/**

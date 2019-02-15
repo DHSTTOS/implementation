@@ -1,6 +1,7 @@
 package invalid.adininspector.adinhub;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.websocket.Session;
@@ -68,6 +69,26 @@ public class ClientProtocolHandler {
 				String[] collections = hub.getAvailableCollections(session);
 				msgParsed.put("cmd", "LIST_COLL");
 				msgParsed.put("par", collections);
+				return msgParsed;
+			}
+		},
+
+		GET_COLL_GROUPS("GET_COLL_GROUPS") {
+			public Map<String, Object> execute(Hub hub, Session session, Map<String,Object> msgParsed) {
+				List<List<String>> collectionGroups = hub.getCollectionGroups(session);
+				msgParsed.put("cmd", "LIST_COLL_GROUPS");
+				msgParsed.put("par", collectionGroups);
+				return msgParsed;
+			}
+		},
+
+		GET_COLL_GROUP_DATA("GET_COLL_GROUP_DATA") {
+			public Map<String, Object> execute(Hub hub, Session session, Map<String,Object> msgParsed) {
+				String collectionName = (String)msgParsed.get("par");
+				List<HashMap<String, Object>> collectionGroup = hub.getCollectionGroupData(session, collectionName);
+				msgParsed.put("cmd", "DATAGROUP");
+				msgParsed.put("name", collectionName);
+				msgParsed.put("par", collectionGroup);
 				return msgParsed;
 			}
 		},
