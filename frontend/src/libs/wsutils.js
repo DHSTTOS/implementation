@@ -76,6 +76,9 @@ const handleMessage = msg => {
       // msg.par will be array
       dataStore.availableCollections = msg.par;
       break;
+    case 'LIST_COLL_GROUPS':
+      // array of array of strings
+      break;
     case 'COLL_SIZE':
       break;
     case 'DATA_ENDPOINTS':
@@ -83,6 +86,9 @@ const handleMessage = msg => {
       break;
     case 'DATA':
       handleData(msg);
+      break;
+    case 'DATAGROUP':
+      handleDataGroup(msg);
       break;
     default:
       console.log('error: unknown request from server: ' + msg.cmd);
@@ -126,6 +132,18 @@ const handleData = msg => {
 
   console.log('Updated data store:');
   console.log(dataStore.data.length + ' ' + dataStore.data[0]);
+};
+
+const handleDataGroup = msg => {
+  let baseName = msg.name;
+  dataStore.rawData = msg.data[baseName].data;
+  dataStore.availableKeys = Object.keys(msg.data[baseName].data[0]);
+  dataStore.endpoints = [0, msg.data[baseName].size];
+
+  // XXX This hardcoded handling of the processed data should be made more flexible:
+  datastore.addressesAndLinks = msg.data[baseName + '_AddressesAndLinks'].data;
+  datastore.flowRatePerSecond = msg.data[baseName + '_FlowRatePerSecond'].data;
+  datastore.numberOfConnectionsPerNode = msg.data[baseName + '_AddressesAndLinks'].data;
 };
 
 const handleSession = async msg => {
@@ -196,6 +214,20 @@ const logout = socket => {
 const getAvailableCollections = socket => {
   const message = {
     cmd: 'GET_AV_COLL',
+  };
+  sendRequest(socket, message);
+};
+
+const getCollectionGroups = socket => {
+  const message = {
+    cmd: 'GET_COLL_GROUPS',
+  };
+  sendRequest(socket, message);
+};
+
+const getCollectionGroupData = socket => {
+  const message = {
+    cmd: 'GET_COLL_GROUP_DATA',
   };
   sendRequest(socket, message);
 };
