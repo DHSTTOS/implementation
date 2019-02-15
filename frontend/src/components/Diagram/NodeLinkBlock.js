@@ -469,7 +469,9 @@ function Network() {
       .on('mouseover', (d, i) => {
         showDetails(d, i);
       })
-      .on('mouseout', hideDetails);
+      .on('mouseout', hideDetails)
+      .on("click", function(d) {
+				alert(d.id);});
 
     return node.exit().remove();
   };
