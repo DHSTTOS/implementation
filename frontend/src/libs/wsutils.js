@@ -256,6 +256,16 @@ const getEndpoints = (socket, name) => {
   sendRequest(socket, message);
 };
 
+const getRecord = (socket, name, key, value) => {
+  const message = {
+    cmd: 'GET_RECORD',
+    par: name,
+    key: key,
+    value: value,
+  };
+  sendRequest(socket, message);
+};
+
 const getRecordsInRange = (socket, name, key, startValue, endValue) => {
   const message = {
     cmd: 'GET_RECORDS_RANGE',
@@ -319,9 +329,12 @@ export {
   auth,
   logout,
   getAvailableCollections,
+  getCollectionGroups,
+  getCollectionGroupData,
   getCollection,
   getCollectionSize,
   getEndpoints,
+  getRecord,
   getRecordsInRange,
   getRecordsInRangeSize,
   getLocalCollection,

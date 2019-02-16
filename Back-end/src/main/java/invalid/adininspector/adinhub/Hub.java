@@ -214,6 +214,8 @@ public class Hub {
 	 */
 	public String[] getAvailableCollections(Session session) {
 		IUserSession userSession = sessions.get(session);
+		System.out.println("XXX session: " + session + " sessions: " + sessions
+							+ " userSession: " + userSession);
 		if (userSession == null) {
 			System.err.println("got request for non-logged-in session" + session);
 			return null; // XXX return empty array?
@@ -359,9 +361,34 @@ public class Hub {
 	}
 
 	/**
+	 * Returns an array containing all records of the collection for which the
+	 * specified key has the specified value.
+	 * The records will be in the same order as they are in the collection and
+	 * are strings in json format.
+	 *
+	 * @param session the current websocket session
+	 * @param collection the collection to query
+	 * @param key the record key by which the records are filtered
+	 * @param value the value to match with
+	 * @return an array of records matching the value
+	 */
+	public String[] getRecord(Session session, String collection, String key, String value) {
+		IUserSession userSession = sessions.get(session);
+		if (userSession == null) {
+			System.err.println("got request for non-logged-in session" + session);
+			return null; // XXX return empty array?
+		}
+		System.out.println("Hub.gR1: key: " + key + " value: " + value);
+		String[] tmp = userSession.getRecord(collection, key, value);
+		System.out.println("Hub.gR2: size: " + tmp.length + " " + ((tmp.length > 0) ? tmp[0] : ""));
+		return tmp;
+	}
+
+	/**
 	 * Returns an array containing all records of the specified collection for
 	 * which the value of the specified key is in the range [start, end).
-	 * The records will be in the same order as they are in the collection.
+	 * The records will be in the same order as they are in the collection and
+	 * are strings in JSON format.
 	 * 
 	 * @param session the current websocket session
 	 * @param collection the collection to query

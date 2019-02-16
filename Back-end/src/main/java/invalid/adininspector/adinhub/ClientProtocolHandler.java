@@ -158,6 +158,21 @@ public class ClientProtocolHandler {
 			}
 		},
 
+		GET_RECORD("GET_RECORD") {
+			public Map<String, Object> execute(Hub hub, Session session, Map<String,Object> msgParsed) {
+				String collectionName = (String)msgParsed.get("par");
+				String key = (String)msgParsed.get("key");
+				String value = (String)msgParsed.get("value");
+				String[] data = hub.getRecord(session, collectionName, key, value);
+				//send augmented request back:
+				msgParsed.put("cmd", "DATASINGLE");
+				msgParsed.put("name", collectionName);
+				msgParsed.put("data", data);
+				msgParsed.remove("par");
+				return msgParsed;
+			}
+		},
+
 		GET_RECORDS_RANGE("GET_RECORDS_RANGE") {
 			public Map<String, Object> execute(Hub hub, Session session, Map<String,Object> msgParsed) {
 				String collectionName = (String)msgParsed.get("par");
