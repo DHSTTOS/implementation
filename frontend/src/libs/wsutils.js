@@ -20,7 +20,7 @@ const createConnection = () => {
 
 const initHandlers = socket => {
   socket.onopen = message => {
-    console.log('WebSocket onopen: ', message);
+    console.log('WebSocket onopen fired: ', message);
     // authenticate again when opening socket
     // XXX i.e. this should call auth()
     // XXX but for now (debugging the main page alone) use login
@@ -32,11 +32,11 @@ const initHandlers = socket => {
   };
 
   socket.onerror = message => {
-    console.error('WebSocket onerror: ', message);
+    console.error('WebSocket onerror fired: ', message);
   };
 
   socket.onclose = message => {
-    console.groupCollapsed('WebSocket onclose');
+    console.groupCollapsed('WebSocket onclose fired');
     console.dir(message);
     let echoText = 'Disconnect: ' + message;
     echoText += ', ' + message.code;
@@ -52,7 +52,7 @@ const initHandlers = socket => {
   };
 
   socket.onmessage = message => {
-    console.group('WebSocket onmessage: ');
+    console.group('WebSocket onmessage fired');
     console.dir(message);
     handleMessage(JSON.parse(message.data));
     console.groupEnd();
@@ -63,8 +63,8 @@ const initHandlers = socket => {
  * Take the JSON-formatted message and handle it according to the protocol.
  */
 const handleMessage = msg => {
-  console.group(`Handling ${msg.cmd} response ID ${msg.id}`);
-  console.log(msg);
+  console.groupCollapsed(`Handling ${msg.cmd} response ID ${msg.id}`);
+  console.table(msg.par);
   if (!msgRegister[msg.id]) {
     console.warn('Protocol: bug: this message was unrequested');
   }
