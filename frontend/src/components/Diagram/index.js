@@ -75,7 +75,6 @@ class Diagram extends Component {
       y,
       unformattedData,
     });
-    console.log(data);
 
     let width, height;
     if (this.props.isFullscreen) {
