@@ -234,9 +234,10 @@ const getCollectionGroups = socket => {
   sendRequest(socket, message);
 };
 
-const getCollectionGroupData = socket => {
+const getCollectionGroupData = (socket, name) => {
   const message = {
     cmd: 'GET_COLL_GROUP_DATA',
+    par: name,
   };
   sendRequest(socket, message);
 };
