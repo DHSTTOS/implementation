@@ -73,12 +73,13 @@ const handleMessage = msg => {
     case 'SESSION':
       handleSession(msg);
       break;
-    case 'LIST_COLL':
-      // msg.par will be array
-      dataStore.sourceOptions = msg.par;
-      break;
+    // // deprecated
+    // case 'LIST_COLL':
+    //   // msg.par will be array
+    //   dataStore.sourceOptions = msg.par;
+    //   break;
     case 'LIST_COLL_GROUPS':
-      // array of array of strings
+      dataStore.sourceOptions = msg.par.length && msg.par.map(x => x[0]);
       break;
     case 'COLL_SIZE':
       break;
