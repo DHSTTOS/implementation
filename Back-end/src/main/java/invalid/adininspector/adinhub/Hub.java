@@ -39,13 +39,18 @@ public class Hub {
 	 */
 	private static Map<Session, IUserSession> sessions;
 
+
+	static {
+		loginTokens = new HashMap<String, IUserSession>();
+		sessions = new HashMap<Session, IUserSession>();
+	}
+
+
 	/**
 	 * The default constructor.
 	 */
 	public Hub() {
 		requestHandler = new ClientProtocolHandler();
-		loginTokens = new HashMap<String, IUserSession>();
-		sessions = new HashMap<Session, IUserSession>();
 		System.out.println("hub started");
 	}
 
@@ -68,6 +73,7 @@ public class Hub {
 	@OnClose
 	public void handleClose(Session session) {
 		System.out.println("close, session: " + session);
+		logOut(session);
 	}
 
 	/**
@@ -191,6 +197,7 @@ public class Hub {
 			return;
 		}
 
+		System.out.println("logout of session: " + session);
 		sessions.remove(session);
 		// remove the token entry for this session:
 		Iterator<String> tokenSet = loginTokens.keySet().iterator();
@@ -214,6 +221,8 @@ public class Hub {
 	 */
 	public String[] getAvailableCollections(Session session) {
 		IUserSession userSession = sessions.get(session);
+		System.out.println("XXX session: " + session + " sessions: " + sessions
+							+ " userSession: " + userSession);
 		if (userSession == null) {
 			System.err.println("got request for non-logged-in session" + session);
 			return null; // XXX return empty array?
@@ -277,6 +286,7 @@ public class Hub {
 		}
 		String[] collections = userSession.getAvailableCollections();
 		ArrayList<String> members = new ArrayList<String>(10);
+		members.add(collection);
 		Arrays.stream(collections).filter(s -> (s.startsWith(collection) && !s.equals(collection))).forEachOrdered(s -> members.add(s));
 		
 		List<HashMap<String, Object>> collectionGroup = new ArrayList<HashMap<String, Object>>(10);
@@ -285,10 +295,10 @@ public class Hub {
 			HashMap<String, Object> coll = new HashMap<String, Object>();
 			coll.put("name",  member);
 			coll.put("size", userSession.getCollectionSize(member));
-			if (i > 0) {
-				coll.put("data", userSession.getCollection(member));
+			if (i == 0) {
+				coll.put("data", userSession.getCollection(member));// TODO XXX may need to limit amount of raw data
 			} else {
-				coll.put("data",  "[]"); // TODO XXX limit amount of data
+				coll.put("data", userSession.getCollection(member));
 			}
 			collectionGroup.add(coll);
 		}
@@ -359,9 +369,34 @@ public class Hub {
 	}
 
 	/**
+	 * Returns an array containing all records of the collection for which the
+	 * specified key has the specified value.
+	 * The records will be in the same order as they are in the collection and
+	 * are strings in json format.
+	 *
+	 * @param session the current websocket session
+	 * @param collection the collection to query
+	 * @param key the record key by which the records are filtered
+	 * @param value the value to match with
+	 * @return an array of records matching the value
+	 */
+	public String[] getRecord(Session session, String collection, String key, String value) {
+		IUserSession userSession = sessions.get(session);
+		if (userSession == null) {
+			System.err.println("got request for non-logged-in session" + session);
+			return null; // XXX return empty array?
+		}
+		System.out.println("Hub.gR1: key: " + key + " value: " + value);
+		String[] tmp = userSession.getRecord(collection, key, value);
+		System.out.println("Hub.gR2: size: " + tmp.length + " " + ((tmp.length > 0) ? tmp[0] : ""));
+		return tmp;
+	}
+
+	/**
 	 * Returns an array containing all records of the specified collection for
 	 * which the value of the specified key is in the range [start, end).
-	 * The records will be in the same order as they are in the collection.
+	 * The records will be in the same order as they are in the collection and
+	 * are strings in JSON format.
 	 * 
 	 * @param session the current websocket session
 	 * @param collection the collection to query
