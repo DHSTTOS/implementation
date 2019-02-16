@@ -43,11 +43,11 @@ import { requestAvailableCollections } from './getCollections';
  * @param {string} p.groupName
  * @param {string} p.x
  * @param {string} p.y
- * @param {Object[]} p.rawData
+ * @param {Object[]} p.unformattedData
  *
  * @return {Object[]}
  */
-const formatData = ({ groupName, x, y, rawData = [] }) => {
+const formatData = ({ groupName, x, y, unformattedData: rawData = [] }) => {
   // normalize the timestamp
   const normalizedRawData = rawData.map(x => ({
     ...x,

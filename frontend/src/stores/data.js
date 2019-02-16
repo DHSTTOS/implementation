@@ -1,5 +1,4 @@
-import { observable, action} from 'mobx';
-// import { lmf } from '../../mockdata';
+import { observable, action } from 'mobx';
 import appStore from './app';
 import { getCollectionGroupData } from '@libs';
 import userStore from './user';
@@ -62,7 +61,10 @@ class DataStore {
     this.availableCollections = [];
     this.rawData = [];
     this.endpoints = [];
-    this.currentlySelectedData = [];
+    this.currentlySelectedRawData = [];
+    this.currentlySelectedFlowrateData = [];
+    this.currentlySelectedConnectionNumberData = [];
+    this.currentlySelectedAddressAndLinksData = [];
     this.alarms = [];
   };
 }

@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import styled from '@emotion/styled';
 import * as d3 from 'd3';
 import { dataStore } from '@stores';
+import { autorun } from 'mobx';
 
 const Container = styled.div`
   bottom: 0;
@@ -14,6 +15,7 @@ const Container = styled.div`
 
 export default class Brush extends PureComponent {
   brush = React.createRef();
+  disposeAutorun = () => {};
 
   componentDidMount = () => {
     // DO NOT TOUCH THE CODE ABOVE (except importing and change the bg color ofc)
@@ -44,10 +46,6 @@ export default class Brush extends PureComponent {
     }
     let curRange = [0, curRangeWidth]; // the current range of the brush/slider; start with a small range
 
-    if (dataStore.rawData.length == 0) {
-            return;
-    }
-
     let xCurrentScale = d3
       .scaleLinear()
       .domain([curRange[0], curRange[1]])
@@ -58,15 +56,18 @@ export default class Brush extends PureComponent {
       .domain([dataEndpoints[0], dataEndpoints[1]])
       .range([0, width]);
 
+    let cSRD = [0, 0];
+
     let updateCurrentlySelectedData = range => {
       let start = range[0]; // TODO: instead of filtering, can we use slice()?
       let end = range[1];
-      console.log('updateCSD: ' + start + ', ' + end);
-      let tmpData = dataStore.rawData.filter((x, i) => start <= i && i < end); // TODO: or <= end?
-      dataStore.currentlySelectedData = tmpData;
+      //console.log('updateCSD: ' + start + ', ' + end);
+      cSRD = dataStore.rawData.filter((x, i) => start <= i && i < end); // TODO: or <= end?
+      dataStore.currentlySelectedRawData = cSRD;
     };
 
     let updateCurrentRange = range => {
+      //console.log('updateCR: ' + range[0] + ', ' + range[1]);
       curRange = range;
       updateCurrentlySelectedData(range);
       xCurrentScale.domain(range);
@@ -79,7 +80,19 @@ export default class Brush extends PureComponent {
         .call(xAxisCurrent);
     };
 
+    let updateTotalRange = range => {
+      //console.log('updateCR: ' + range[0] + ', ' + range[1]);
+      xTotalScale.domain(range);
+      xAxisTotal.scale(xTotalScale).tickFormat(tickFormatTimeStampTotal);
+      let t = d3.transition().duration(50); // XXX remove completely?
+      svg
+        .select('.axisTotal')
+        .transition(t)
+        .call(xAxisTotal);
+    };
+
     let updateCurrentRangeFromTotal = range => {
+      //console.log('updateCRFT: ' + range[0] + ', ' + range[1]);
       updateCurrentRange([
         xTotalScale.invert(range[0]),
         xTotalScale.invert(range[1]),
@@ -88,15 +101,19 @@ export default class Brush extends PureComponent {
 
     console.log('curRange: ' + curRange[0] + ' ' + curRange[1]);
     updateCurrentlySelectedData(curRange);
-    console.log('csd length' + dataStore.currentlySelectedData.length);
+    console.log('csd length' + cSRD.length);
     console.log('rawData length' + dataStore.rawData.length);
 
     let tickFormatTimeStamp = d => {
-      //console.log('tickFormatTimeStamp called, d:' + d + ' cr0 ' + curRange[0
-      //console.log("tickF: " + d + ": " + dataStore.currentlySelectedData[d]);
-      let date = new Date(
-        dataStore.currentlySelectedData[d - curRange[0]].Timestamp.$date
-      );
+      return 'foo';
+    };
+
+    let tickFormatTimeStampTotal = d => {
+      //console.log('tFTST: ' + d + ' ' + dataStore.rawData.length);
+      if (!dataStore.rawData.length) {
+        return d;
+      }
+      let date = new Date(dataStore.rawData[d].Timestamp.$date);
 
       let lh = ('' + date.getHours()).padStart(2, '0');
       let lm = ('' + date.getMinutes()).padStart(2, '0');
@@ -108,6 +125,7 @@ export default class Brush extends PureComponent {
     };
 
     //let xAxis = d3.axisBottom().scale(xTotalScale).orient("bottom");
+    //let xAxis = d3.axisBottom().scale(xTotalScale).orient("bottom");
     let xAxisCurrent = d3
       .axisBottom(xCurrentScale)
       .ticks(5)
@@ -117,9 +135,9 @@ export default class Brush extends PureComponent {
 
     let xAxisTotal = d3
       .axisBottom(xTotalScale)
-      //.ticks(100)
-      .tickSize(10)
-      .tickFormat(tickFormatTimeStamp);
+      .ticks(5)
+      .tickSize(5)
+      .tickFormat(tickFormatTimeStampTotal);
 
     // from example code:
 
@@ -186,9 +204,58 @@ export default class Brush extends PureComponent {
       }
     }
 
+    this.disposeAutorun = autorun(() => {
+      // this block will be rerun whenever the observable targets that you used get updated
+      console.warn(
+        `Now we have ${dataStore.rawData.length} entries in rawData!`
+      );
+
+      console.log(dataStore.endpoints);
+      if (dataStore.endpoints.length === 0) {
+        dataStore.endpoints = [0, dataStore.rawData.length];
+      }
+      console.log('');
+      let dataEndpoints = dataStore.endpoints; // the range of the whole datastream
+      console.log(dataEndpoints);
+
+      updateCurrentlySelectedData(curRange);
+
+      tickFormatTimeStamp = d => {
+        //console.log('tickFormatTimeStamp called, d:' + d + ' cr0 ' + curRange[0
+        //console.log("tickF: " + d + ": " + cSRD[d]);
+
+        //console.log('autorun.tickFormatTimeStamp:');
+        let offset = Math.floor(d - curRange[0]);
+        //console.log('cSRD.length: ' + cSRD.length + ' ' + curRange[0]);
+        //console.log(curRange);
+        //return d + '_' + (d-curRange[0]);
+        //console.log('offset: ' + offset);
+        let date = new Date(cSRD[offset].Timestamp.$date);
+
+        let lh = ('' + date.getHours()).padStart(2, '0');
+        let lm = ('' + date.getMinutes()).padStart(2, '0');
+        let ls = ('' + date.getSeconds()).padStart(2, '0');
+        let lms = ('' + date.getMilliseconds()).padStart(3, '0');
+
+        let label = '' + d + '_' + lh + ':' + lm + ':' + ls + '.' + lms;
+        return label;
+      };
+
+      updateTotalRange(dataEndpoints);
+
+      updateCurrentRange(curRange);
+
+      // So you might wanna write a function which "handles" updating the ticks etc
+    });
+
     // do whatever you want :)
 
     // DO NOT TOUCH THE CODE BELOW
+  };
+
+  componentWillUnmount = () => {
+    this.disposeAutorun();
+    this.brush.current.remove();
   };
 
   render() {
