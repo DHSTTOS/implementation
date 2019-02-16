@@ -43,13 +43,7 @@ public class DataProcessor {
 	public static void processData(String collectionName, MongoClientMediator clientMediator){
 
 		for (IAggregator agg : aggregators) {
-
-			//clientMediator.p("calculating : " + agg.getClass().getSimpleName() + " for: " + collectionName);
-
 			clientMediator.addRecordsToCollection(agg.processData(clientMediator.getCollectionAsRecordsArrayList(collectionName)), collectionName + "_" + agg.getClass().getSimpleName());
-
-			//clientMediator.p("FINISHED");
-
 		}
 	}
 

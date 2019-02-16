@@ -35,17 +35,15 @@ import invalid.adininspector.records.AlarmRecord;
 import invalid.adininspector.records.PacketRecordDesFromKafka;
 import invalid.adininspector.records.Record;
 
-
-
 //project hasn't even started and we're already doing hacky shit
 //TODO: convert Timestampo date value into a mongoDB timestamp object
 //TODO: check if changing Timestamp into a number fixes the use
 //TODO: test ignoring timestamp object and add our own timestamp object
 
 /**
- * The Mongo Consumer, as the name implies, consumes all messages from all topics
- * in the Kafka messaging system. Once a message is found it is passed along to
- * the Mongo Client for further processing.
+ * The Mongo Consumer, as the name implies, consumes all messages from all
+ * topics in the Kafka messaging system. Once a message is found it is passed
+ * along to the Mongo Client for further processing.
  */
 public class MongoConsumer {
 
@@ -62,18 +60,18 @@ public class MongoConsumer {
 
 	/**
 	 * This constructor logs into the specified database with the specified
-	 * credentials and, on success, initializes the MongoClient variable and
-	 * calls listenForRecords().
+	 * credentials and, on success, initializes the MongoClient variable and calls
+	 * listenForRecords().
 	 *
-	 * @param udid user name to login with
-	 * @param pass password to login with
+	 * @param udid   user name to login with
+	 * @param pass   password to login with
 	 * @param dbName the database to login into
-	 * @throws LoginFailureException - if login failed, e.g. wrong username or password
+	 * @throws LoginFailureException - if login failed, e.g. wrong username or
+	 *                               password
 	 */
 	public MongoConsumer(String udid, String pass, String dbName) throws LoginFailureException {
 
-
-		if(dbName.isEmpty()){
+		if (dbName.isEmpty()) {
 			throw new LoginFailureException("dbName cannot be empty");
 		}
 
@@ -86,8 +84,6 @@ public class MongoConsumer {
 			throw new LoginFailureException(e.getMessage());
 		}
 
-
-
 		Properties props = new Properties();
 		props.put("bootstrap.servers", "localhost:9092");
 		props.put("group.id", "test");
@@ -96,15 +92,13 @@ public class MongoConsumer {
 		props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
 		props.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
 		props.put("auto.offset.reset", "earliest");
-		//  props.put("max.poll.records","-1");
+		// props.put("max.poll.records","-1");
 
 		consumer = new KafkaConsumer<>(props);
 
 		// KafkaConsumer<String, String> consumer = new KafkaConsumer<String,
 		// String>(props);
 
-		// we do NOT subsrice to a topic, but initialize the first parition to the start
-		// and read from here, assuring we'll read everything
 		// this will be done once, all missing entries from kafka are added to the
 		// appropriate collection
 
@@ -113,36 +107,49 @@ public class MongoConsumer {
 		// TopicPartition topicPartition = new TopicPartition("test", 0);
 		// List partitions = Arrays.asList(topicPartition);
 
+		//ArrayList<TopicPartition> a =  (ArrayList<TopicPartition>) partitions;
+		
 		// manually assign the partition
 		consumer.assign(partitions);
-		consumer.seekToBeginning(partitions);
+
+		//assign the proper offset to the partitions i.e. the last consumed offsets, except realtime
+		consumer.endOffsets(partitions).entrySet().forEach(part -> {
+			
+			//get the last record collected and that's were we continue to consume;
+			long ConsumedOffset = clientMediator.CollectionSize(part.getKey().topic());
+
+			consumer.seek(part.getKey(), ConsumedOffset);
+		});
+	
+
+
+		//consumer.seekToBeginning(partitions);
+		
 
 		ListenForRecords();
 	}
 
 	/**
-	 * This Method first calls getAllTopics and uses the array of topics to poll
-	 * the kafka server for new messages.
-	 * If new messages are found then the messages are passed to the Mongo Mediator
-	 * for adding them to the Database.
-	 * If no new messages are found for a topic notify the Mongo Mediator that
-	 * the collection tied to the topic is ready for pre-processing.
+	 * This Method first calls getAllTopics and uses the array of topics to poll the
+	 * kafka server for new messages. If new messages are found then the messages
+	 * are passed to the Mongo Mediator for adding them to the Database. If no new
+	 * messages are found for a topic notify the Mongo Mediator that the collection
+	 * tied to the topic is ready for pre-processing.
 	 */
 	// TODO: we SHOULD check if records already exist?
 	// TODO: put ALL stored data in mongo before processing it.
 	// TODO: differentiage between realm-time and stored data
 	void ListenForRecords() {
 
-		GsonBuilder builder = new GsonBuilder(); 
+		GsonBuilder builder = new GsonBuilder();
 
-		// Register an adapter to manage the date types as long values 
-		builder.registerTypeAdapter(Date.class, new JsonDeserializer<Date>() { 
-			public Date deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-				return new Date(json.getAsJsonPrimitive().getAsLong()); 
-			} 
+		// Register an adapter to manage the date types as long values
+		builder.registerTypeAdapter(Date.class, new JsonDeserializer<Date>() {
+			public Date deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+					throws JsonParseException {
+				return new Date(json.getAsJsonPrimitive().getAsLong());
+			}
 		});
-
-
 
 		Gson gson = builder.create();
 
@@ -154,8 +161,16 @@ public class MongoConsumer {
 		while (true) {
 
 			ConsumerRecords<String, String> records = consumer.poll(pollingTimeOut);
+			//consumer.endOffsets(partitions);
 
-			for (ConsumerRecord<String, String> record : records ) {
+			// create duplicate partitions set to the end offset of kafka ,
+			// check once we finish consuming records, if all topiucs except real time have
+			// been consumed.
+			// once all but realtime reach the end, then start consuming it and get into a
+			// cycle of saving data.
+			// set a max number of records to be saved,
+
+			for (ConsumerRecord<String, String> record : records) {
 
 				// System.out.printf("offset = %d, key = %s, value = %s, partition = %d%n",
 				// record.offset(), record.key(),record.value(), record.partition());
@@ -165,48 +180,48 @@ public class MongoConsumer {
 				// TODO: fix this horrible hack // relegate it to the Mediator??? maybe?
 				Type type = null;
 
-				if(record.value().contains("Alarm"))
-				{
-					type = new TypeToken<AlarmRecord>() {}.getType();
-				}
-				else if (record.value().contains("L2"))
-				{
-					type = new TypeToken<PacketRecordDesFromKafka>() {}.getType();
-				}
-				else
-				{
-					System.out.println("Non recognized record type");
-					continue;
-				}
 
-				//TODO: Tell ankush to fix his messy timestamp handling becuase mongo does not work with special chars
-				String fixedRecord = record.value().replace("$","");
+					if (record.value().contains("Alarm")) {
+						type = new TypeToken<AlarmRecord>() {
+						}.getType();
+					} else if (record.value().contains("L2")) {
+						type = new TypeToken<PacketRecordDesFromKafka>() {
+						}.getType();
+					} else {
+						System.out.println("Non recognized record type");
+						continue;
+					}
 
-				// clientMediator.p(fixedRecord);
+					// TODO: Tell ankush to fix his messy timestamp handling becuase mongo does not
+					// work with special chars
+					String fixedRecord = record.value().replace("$", "");
 
-				// convert it into a java object
-				Record incomingRecord = gson.fromJson(fixedRecord, type);
-				// set the offset as ID in the DB
+					// clientMediator.p(fixedRecord);
 
-				incomingRecord.set_id(record.offset());
+					// convert it into a java object
+					Record incomingRecord = gson.fromJson(fixedRecord, type);
+					// set the offset as ID in the DB
 
-				clientMediator.addRecordToCollection(incomingRecord, record.topic());
+					incomingRecord.set_id(record.offset());
 
-				if(addedRecords)
-					System.out.println(record.value());
+					clientMediator.addRecordToCollection(incomingRecord, record.topic());
 
+					if (addedRecords)
+						System.out.println(record.value());
 			}
+
+			// if(records.records())
 
 			if (records.isEmpty() && processRecords) {
 				// TODO: notify the mediator that data needs to be processed
-				// System.out.println("Stored Records have been added, process them");
+				System.out.println("Stored Records have been added, process them");
 
 				DataProcessor.processData(getTopicsForProcessing(), clientMediator);
 
-				//stop processing records
+				// stop processing records
 				processRecords = false;
 
-				//System.out.println("all stored records have been processed");
+				System.out.println("all stored records have been processed");
 			}
 		}
 	}
@@ -222,6 +237,10 @@ public class MongoConsumer {
 		Map<String, List<PartitionInfo>> topicsMap;
 		topicsMap = consumer.listTopics();
 
+
+
+		//consumer.en
+
 		System.out.println("******************************************");
 		System.out.println("          L I S T    T O P I C S          ");
 		System.out.println("******************************************\n");
@@ -230,7 +249,7 @@ public class MongoConsumer {
 
 			// __consumer_offsets is internal to kafka and should be ignored
 			// TODO: ignore real-time data
-			if (!topic.getKey().contentEquals("__consumer_offsets")) {
+			if (!topic.getKey().contentEquals("__consumer_offsets") && !topic.getKey().contentEquals("_realTime")) {
 				kafkaTopics.add(new TopicPartition(topic.getKey(), 0));
 				System.out.println("Topic: " + topic.getKey());
 			}
@@ -242,11 +261,10 @@ public class MongoConsumer {
 		return kafkaTopics;
 	}
 
-
 	/**
 	 * This convenience method returns a list of all topics to process as strings,
-	 * excluding internal Kafka topics and real-time data since the processing
-	 * call is done elsewhere.
+	 * excluding internal Kafka topics and real-time data since the processing call
+	 * is done elsewhere.
 	 *
 	 * @return a list of topic names
 	 */
@@ -256,14 +274,15 @@ public class MongoConsumer {
 		Map<String, List<PartitionInfo>> topicsMap;
 		topicsMap = consumer.listTopics();
 
-
 		for (Map.Entry<String, List<PartitionInfo>> topic : topicsMap.entrySet()) {
-
-			// __consumer_offsets is internal to kafka and should be ignored we also need to ingore everything that isn't Packet Records
-			//--> that means ignore everything that contains an underscore
-			if (!topic.getKey().contentEquals("__consumer_offsets") ) {
+			// __consumer_offsets is internal to kafka and should be ignored we also need to
+			// ingore everything that isn't Packet Records
+			// --> that means ignore everything that contains an underscore
+			if (!topic.getKey().contentEquals("__consumer_offsets") && !topic.getKey().contentEquals("_realTime")) {
 				kafkaTopics.add(topic.getKey());
 			}
+
+			//consumer.offset
 			// System.out.println("Value: " + topic.getValue() + "\n");
 		}
 
