@@ -156,7 +156,7 @@ const handleDataGroup = msg => {
     .data.map(x => JSON.parse(x));
 
   dataStore.connectionNumberData = msg.par
-    .find(x => x.name === baseName + '_AddressesAndLinks')
+    .find(x => x.name === baseName + '_NumberOfConnectionsPerNode')
     .data.map(x => JSON.parse(x));
 };
 
