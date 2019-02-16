@@ -1,4 +1,4 @@
-import { observable, action } from 'mobx';
+import { observable, action} from 'mobx';
 // import { lmf } from '../../mockdata';
 import appStore from './app';
 import { getCollectionGroupData } from '@libs';
@@ -22,7 +22,6 @@ class DataStore {
     this.resetData();
     this.currentlySelectedSource = source;
     getCollectionGroupData(userStore.socket, source);
-    //TODO: populate different data vars down below
   };
 
   @observable.shallow

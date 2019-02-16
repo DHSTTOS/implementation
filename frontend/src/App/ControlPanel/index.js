@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styled from '@emotion/styled';
 import { observer } from 'mobx-react';
+import { toJS } from 'mobx';
 
 import { Logo, Column, Selector } from '@components';
 import { dataStore } from '@stores';
@@ -19,11 +20,15 @@ const Row = styled.div`
 class SourceSelector extends Component {
   selectSource = source => {
     dataStore.selectSource(source);
+    console.log(toJS(dataStore.rawData));
+    console.log(toJS(dataStore.flowrateData));
+    console.log(toJS(dataStore.connectionNumberData));
+    console.log(toJS(dataStore.addressesAndLinksData));
   };
 
   componentDidMount = () => {
     requestAvailableCollections();
-  }
+  };
 
   render() {
     return (
