@@ -143,9 +143,10 @@ const handleDataGroup = msg => {
   dataStore.endpoints = [0, msg.data[baseName].size];
 
   // XXX This hardcoded handling of the processed data should be made more flexible:
-  datastore.addressesAndLinks = msg.data[baseName + '_AddressesAndLinks'].data;
-  datastore.flowRatePerSecond = msg.data[baseName + '_FlowRatePerSecond'].data;
-  datastore.numberOfConnectionsPerNode = msg.data[baseName + '_AddressesAndLinks'].data;
+  dataStore.addressesAndLinks = msg.data[baseName + '_AddressesAndLinks'].data;
+  dataStore.flowRatePerSecond = msg.data[baseName + '_FlowRatePerSecond'].data;
+  dataStore.numberOfConnectionsPerNode =
+    msg.data[baseName + '_AddressesAndLinks'].data;
 };
 
 const handleSession = async msg => {
