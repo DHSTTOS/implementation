@@ -3,11 +3,12 @@ import { observer } from 'mobx-react';
 import styled from '@emotion/styled';
 import Typography from '@material-ui/core/Typography';
 
-import { jsonstreams } from '../../../mockdata';
-import { formatData, SCATTER_PLOT, LINE_CHART } from '@libs';
+import { formatData, SCATTER_PLOT, LINE_CHART, NODE_LINK } from '@libs';
+import { appStore, dataStore } from '@stores';
 
 import LineChartBlock from './LineChartBlock';
 import ScatterPlotBlock from './ScatterPlotBlock';
+import NodeLinkBlock from './NodeLinkBlock';
 
 const CenteredTypography = styled(Typography)`
   align-self: center;
@@ -32,6 +33,20 @@ const PlotContainer = styled.div`
 @observer
 class Diagram extends Component {
   render() {
+    if (this.props.config.plotType === NODE_LINK) {
+      return (
+        <PlotContainer>
+          {!this.props.isFullscreen ? (
+            <CenteredTypography variant="subtitle1" color="error">
+              Please toggle full screen mode to see the node link diagram
+            </CenteredTypography>
+          ) : (
+            <NodeLinkBlock />
+          )}
+        </PlotContainer>
+      );
+    }
+    
     const { plotType, groupName, x, y } = this.props.config;
     const {
       colors,
@@ -45,7 +60,7 @@ class Diagram extends Component {
       groupName,
       x,
       y,
-      rawData: jsonstreams,
+      rawData: dataStore.currentlySelectedData,
     });
     console.log(data);
 
@@ -60,7 +75,7 @@ class Diagram extends Component {
 
     let plot = (
       <CenteredTypography variant="subtitle1" color="error">
-        Enable to render diagram, please check configs
+        Unable to render diagram, please check configs
       </CenteredTypography>
     );
 

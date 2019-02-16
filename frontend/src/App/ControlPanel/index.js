@@ -4,6 +4,7 @@ import { observer } from 'mobx-react';
 
 import { Logo, Column, Selector } from '@components';
 import { dataStore } from '@stores';
+import { requestAvailableCollections } from '@libs';
 
 import GlobalFilters from './GlobalFilters';
 import UserControl from './UserControl';
@@ -19,6 +20,10 @@ class SourceSelector extends Component {
   selectSource = source => {
     dataStore.selectSource(source);
   };
+
+  componentDidMount = () => {
+    requestAvailableCollections();
+  }
 
   render() {
     return (

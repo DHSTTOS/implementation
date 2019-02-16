@@ -20,8 +20,7 @@ const createConnection = () => {
 
 const initHandlers = socket => {
   socket.onopen = message => {
-    console.log('WebSocket onopen: ', message);
-    console.dir(message);
+    console.log('WebSocket onopen fired: ', message);
     // authenticate again when opening socket
     // XXX i.e. this should call auth()
     // XXX but for now (debugging the main page alone) use login
@@ -33,12 +32,11 @@ const initHandlers = socket => {
   };
 
   socket.onerror = message => {
-    console.log('WebSocket onerror: ', message);
-    console.dir(message);
+    console.error('WebSocket onerror fired: ', message);
   };
 
   socket.onclose = message => {
-    console.log('WebSocket onclose:');
+    console.groupCollapsed('WebSocket onclose fired');
     console.dir(message);
     let echoText = 'Disconnect: ' + message;
     echoText += ', ' + message.code;
@@ -47,15 +45,17 @@ const initHandlers = socket => {
     echoText += ', ' + message.isTrusted;
     echoText += '\n';
     console.log(echoText);
+    console.groupEnd();
 
     // TODO XXX: if logout was called (intentional) then do nothing (stay logged out),
     // else try to open the connection again and login again, with token
   };
 
   socket.onmessage = message => {
-    console.log('WebSocket onmessage: ');
+    console.group('WebSocket onmessage fired');
     console.dir(message);
     handleMessage(JSON.parse(message.data));
+    console.groupEnd();
   };
 };
 
@@ -63,18 +63,23 @@ const initHandlers = socket => {
  * Take the JSON-formatted message and handle it according to the protocol.
  */
 const handleMessage = msg => {
-  console.log(msg);
+  console.groupCollapsed(`Handling ${msg.cmd} response ID ${msg.id}`);
+  console.table(msg.par);
   if (!msgRegister[msg.id]) {
-    console.log('Protocol: bug: this message was unrequested');
+    console.warn('Protocol: bug: this message was unrequested');
   }
 
   switch (msg.cmd) {
     case 'SESSION':
       handleSession(msg);
       break;
-    case 'LIST_COLL':
-      // msg.par will be array
-      dataStore.availableCollections = msg.par;
+    // // deprecated
+    // case 'LIST_COLL':
+    //   // msg.par will be array
+    //   dataStore.sourceOptions = msg.par;
+    //   break;
+    case 'LIST_COLL_GROUPS':
+      dataStore.sourceOptions = msg.par.length && msg.par.map(x => x[0]);
       break;
     case 'COLL_SIZE':
       break;
@@ -84,10 +89,15 @@ const handleMessage = msg => {
     case 'DATA':
       handleData(msg);
       break;
+    case 'DATAGROUP':
+      handleDataGroup(msg);
+      break;
     default:
-      console.log('error: unknown request from server: ' + msg.cmd);
+      console.error('error: unknown request from server: ' + msg.cmd);
       break;
   }
+  console.groupEnd();
+
   // Now that msg has been handled, delete its request:
   delete msgRegister[msg.id];
 };
@@ -128,12 +138,25 @@ const handleData = msg => {
   console.log(dataStore.data.length + ' ' + dataStore.data[0]);
 };
 
+const handleDataGroup = msg => {
+  let baseName = msg.name;
+  dataStore.rawData = msg.data[baseName].data;
+  dataStore.availableKeys = Object.keys(msg.data[baseName].data[0]);
+  dataStore.endpoints = [0, msg.data[baseName].size];
+
+  // XXX This hardcoded handling of the processed data should be made more flexible:
+  dataStore.addressesAndLinks = msg.data[baseName + '_AddressesAndLinks'].data;
+  dataStore.flowRatePerSecond = msg.data[baseName + '_FlowRatePerSecond'].data;
+  dataStore.numberOfConnectionsPerNode =
+    msg.data[baseName + '_AddressesAndLinks'].data;
+};
+
 const handleSession = async msg => {
   switch (msg.par) {
     case 'LOGIN':
       if (msg.status === 'OK') {
         await localStorage.setItem('token', msg.token);
-        // TODO: present the main page
+        userStore.userDetails.wsLoggedIn = true;
       } else {
         // TODO: present the login screen again, with a "Username or password wrong" notice
       }
@@ -142,12 +165,12 @@ const handleSession = async msg => {
       if (msg.status !== 'OK') {
         console.log('websocket connection: AUTHentication failed:');
         console.dir(msg);
-        // TODO: present the login screen again, with a "Login failed, maybe technical problems" notice
+        userStore.userDetails.wsLoggedIn = true;
       }
       break;
     case 'LOGOUT':
       await localStorage.removeItem('token');
-      // TODO: present the login screen again
+      userStore.userDetails.wsLoggedIn = false;
       break;
     default:
       console.log('Protocol error: got unknown SESSION message:');
@@ -193,9 +216,27 @@ const logout = socket => {
   sendRequest(socket, message);
 };
 
+/**
+ * @deprecated
+ * @param {WebSocket} socket
+ */
 const getAvailableCollections = socket => {
   const message = {
     cmd: 'GET_AV_COLL',
+  };
+  sendRequest(socket, message);
+};
+
+const getCollectionGroups = socket => {
+  const message = {
+    cmd: 'GET_COLL_GROUPS',
+  };
+  sendRequest(socket, message);
+};
+
+const getCollectionGroupData = socket => {
+  const message = {
+    cmd: 'GET_COLL_GROUP_DATA',
   };
   sendRequest(socket, message);
 };
@@ -220,6 +261,16 @@ const getEndpoints = (socket, name) => {
   const message = {
     cmd: 'GET_ENDPOINTS',
     par: name,
+  };
+  sendRequest(socket, message);
+};
+
+const getRecord = (socket, name, key, value) => {
+  const message = {
+    cmd: 'GET_RECORD',
+    par: name,
+    key: key,
+    value: value,
   };
   sendRequest(socket, message);
 };
@@ -287,9 +338,12 @@ export {
   auth,
   logout,
   getAvailableCollections,
+  getCollectionGroups,
+  getCollectionGroupData,
   getCollection,
   getCollectionSize,
   getEndpoints,
+  getRecord,
   getRecordsInRange,
   getRecordsInRangeSize,
   getLocalCollection,

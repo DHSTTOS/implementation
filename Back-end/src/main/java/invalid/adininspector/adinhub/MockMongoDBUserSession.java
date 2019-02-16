@@ -12,8 +12,7 @@ import java.util.Vector;
 import com.google.gson.Gson;
 
 /**
- * Encapsulates a user session for a connection to a MongoDB database.
- *
+ * Encapsulates a user session to a simulated database, for testing.
  */
 public class MockMongoDBUserSession implements IUserSession {
 
@@ -62,6 +61,39 @@ public class MockMongoDBUserSession implements IUserSession {
 
 	public long getCollectionSize(String collection) {
 		return dataset.size();
+	}
+
+
+	/**
+	 * Returns an array containing all records of the collection for which the
+	 * specified key has the specified value.
+	 * The records will be in the same order as they are in the collection and
+	 * are strings in json format.
+	 *
+	 * @param collection the collection to query
+	 * @param key the record key by which the records are filtered
+	 * @param value the value to match with
+	 * @return an array of records matching the value
+	 */
+	public String[] getRecord(String collection, String key, String value) {
+		if (dataset.size() == 0)
+			return new String[]{};
+
+		// assume that all data points (i.e. strings in dataset) have the same structure:
+		Gson gson = new Gson();
+		Map<String, Object> datapoint = gson.fromJson(dataset.firstElement(), Map.class);
+		if (!datapoint.containsKey(key))
+				return new String[]{};
+
+		Vector<String> tmp = new Vector<String>(dataset.size()/10);
+		for (String dataString : dataset) {
+			datapoint = gson.fromJson(dataString, Map.class);
+			// treat all values as strings for now
+			String val = (String)datapoint.get(key);
+			if (val.equals(value))
+				tmp.add(dataString);
+		}
+		return tmp.toArray(new String[tmp.size()]);
 	}
 
 	public String[] getRecordsInRange(String collection, String key, String start, String end) {

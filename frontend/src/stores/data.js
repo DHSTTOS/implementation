@@ -1,28 +1,16 @@
 import { observable, action } from 'mobx';
-import { DEFAULT_SOURCE_NAME } from '@libs';
-import { jsonstreams } from '../../mockdata';
+// import { lmf } from '../../mockdata';
 import appStore from './app';
 
 class DataStore {
   // TODO: when ws binding is done, we'll make this flexible
-  availableKeys = Object.keys(jsonstreams[0]);
+  // TODO: we need to create separate vars for all plot types, since they are gonna use different data sources
+  @observable
+  availableKeys = ['sample key'];
+  // availableKeys = Object.keys(lmf[0]);
 
   @observable
-  availableCollections = []; //exampleCollection
-
-  // Raw network data
-  @observable.shallow
-  rawData = jsonstreams;
-
-  @observable
-  endpoints = []; // The start and end indices for the x-axis
-
-  // The slice of raw data that is currently selected by the slider:
-  @observable.shallow
-  currentlySelectedData = jsonstreams;
-
-  @observable
-  sourceOptions = ['Source 1', 'Live'];
+  sourceOptions = [];
   @observable
   currentlySelectedSource = '';
   @action
@@ -32,7 +20,30 @@ class DataStore {
     appStore.resetDiagramConfigs();
     this.resetData();
     this.currentlySelectedSource = source;
+    //TODO: populate different data vars down below
   };
+
+  @observable.shallow
+  rawData = [];
+  @observable.shallow
+  flowrateData = [];
+  @observable.shallow
+  connectionNumberData = [];
+  @observable.shallow
+  addressAndLinksData = [];
+
+  // The slice of data that is currently selected by the slider
+  @observable.shallow
+  currentlySelectedRawData = [];
+  @observable.shallow
+  currentlySelectedFlowrateData = [];
+  @observable.shallow
+  currentlySelectedConnectionNumberData = [];
+  @observable.shallow
+  currentlySelectedAddressAndLinksData = [];
+
+  @observable
+  endpoints = []; // The start and end indices for the x-axis
 
   // Array of notification/alarm data sets:
   @observable

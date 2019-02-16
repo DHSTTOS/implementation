@@ -3,6 +3,7 @@ import {
   DEFAULT_GLOBAL_FILTERS,
   SCATTER_PLOT,
   LINE_CHART,
+  NODE_LINK,
   NIVO_COLOR_SCHEMES,
 } from './consts';
 
@@ -29,6 +30,8 @@ import {
   removeProfinet,
   removeUDP,
 } from './dataFilters';
+
+import { requestAvailableCollections } from './getCollections';
 
 /**
  * Formats raw data to nivo's format.
@@ -68,6 +71,7 @@ export {
   DEFAULT_GLOBAL_FILTERS,
   SCATTER_PLOT,
   LINE_CHART,
+  NODE_LINK,
   NIVO_COLOR_SCHEMES,
   createConnection,
   login,
@@ -88,4 +92,5 @@ export {
   removeEther,
   removeProfinet,
   removeUDP,
+  requestAvailableCollections,
 };

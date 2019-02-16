@@ -5,12 +5,8 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 
 import { appStore } from '@stores';
-import { dataStore } from '@stores';
-import { jsonstreams } from '../../../mockdata';
-import { formatData, SCATTER_PLOT, LINE_CHART } from '@libs';
+import { Diagram } from '@components';
 import DiagramControl from './DiagramControl';
-import ScatterPlotBlock from './ScatterPlotBlock';
-import LineChartBlock from './LineChartBlock';
 
 const Container = styled.div`
   display: flex;
@@ -90,69 +86,66 @@ class DiagramsContainer extends Component {
   }
 }
 
-@observer
-class Diagram extends Component {
-  render() {
-    const { plotType, groupName, x, y } = this.props.config;
-    const {
-      colors,
-      enableArea,
-      lineWidth,
-      areaOpacity,
-      symbolSize,
-    } = this.props.config.specConfig;
+// @observer
+// class Diagram extends Component {
+//   render() {
+//     const { plotType, groupName, x, y } = this.props.config;
+//     const {
+//       colors,
+//       enableArea,
+//       lineWidth,
+//       areaOpacity,
+//       symbolSize,
+//     } = this.props.config.specConfig;
 
-    const tmp = dataStore.currentlySelectedData;
-    console.log(tmp);
+//     const data = formatData({
+//       groupName,
+//       x,
+//       y,
+//       rawData: dataStore.currentlySelectedData,
+//     });
 
-    const data = formatData({
-      groupName,
-      x,
-      y,
-      rawData: dataStore.currentlySelectedData,
-    });
+//     const { width, height } = appStore.diagramDimension;
 
-    const { width, height } = appStore.diagramDimension;
+//     let plot = (
+//       <CenteredTypography variant="subtitle1" color="error">
+//         Enable to render diagram, please check configs
+//       </CenteredTypography>
+//     );
 
-    let plot = (
-      <CenteredTypography variant="subtitle1" color="error">
-        Enable to render diagram, please check configs
-      </CenteredTypography>
-    );
+//     switch (plotType) {
+//       case SCATTER_PLOT:
+//         plot = (
+//           <ScatterPlotBlock
+//             data={data}
+//             x={x}
+//             y={y}
+//             width={width}
+//             height={height}
+//             colors={colors}
+//             symbolSize={symbolSize}
+//           />
+//         );
+//         break;
+//       case LINE_CHART:
+//         plot = (
+//           <LineChartBlock
+//             data={data}
+//             x={x}
+//             y={y}
+//             width={width}
+//             height={height}
+//             colors={colors}
+//             enableArea={enableArea}
+//             lineWidth={lineWidth}
+//             areaOpacity={areaOpacity}
+//           />
+//         );
+//         break;
+//     }
 
-    switch (plotType) {
-      case SCATTER_PLOT:
-        plot = (
-          <ScatterPlotBlock
-            data={data}
-            x={x}
-            y={y}
-            width={width}
-            height={height}
-            colors={colors}
-            symbolSize={symbolSize}
-          />
-        );
-        break;
-      case LINE_CHART:
-        plot = (
-          <LineChartBlock
-            data={data}
-            x={x}
-            y={y}
-            width={width}
-            height={height}
-            colors={colors}
-            enableArea={enableArea}
-            lineWidth={lineWidth}
-            areaOpacity={areaOpacity}
-          />
-        );
-        break;
-    }
-
-    return <PlotContainer>{plot}</PlotContainer>;
-  }
-}
+//     return <PlotContainer>{plot}</PlotContainer>;
+//   }
+// }
 
 export default DiagramsContainer;

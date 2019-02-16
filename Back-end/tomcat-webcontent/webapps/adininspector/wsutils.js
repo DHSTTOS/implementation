@@ -1,5 +1,3 @@
-//import { appStore, dataStore } from "@stores";
-
 const appStore = {
   username: "alice",
   authToken: "swordfish",

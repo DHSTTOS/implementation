@@ -1,0 +1,119 @@
+//constants we need just to have em somewhere
+Name of database: AdinInspector
+Names of users: Analyst, Operator
+
+User within Mongo:
+{
+        "_id" : "admin.Analyst",
+        "user" : "Analyst",
+        "db" : "admin",
+        "roles" : [
+                {
+                        "role" : "Analyst",
+                        "db" : "admin"
+                }
+        ],
+        "mechanisms" : [
+                "SCRAM-SHA-1",
+                "SCRAM-SHA-256"
+        ]
+}
+{
+        "_id" : "admin.Operator",
+        "user" : "Operator",
+        "db" : "admin",
+        "roles" : [
+                {
+                        "role" : "Operator",
+                        "db" : "admin"
+                }
+        ],
+        "mechanisms" : [
+                "SCRAM-SHA-1",
+                "SCRAM-SHA-256"
+        ]
+}
+{
+        "_id" : "admin.admin",
+        "user" : "admin",
+        "db" : "admin",
+        "roles" : [
+                {
+                        "role" : "userAdminAnyDatabase",
+                        "db" : "admin"
+                },
+                {
+                        "role" : "readWriteAnyDatabase",
+                        "db" : "admin"
+                }
+        ],
+        "mechanisms" : [
+                "SCRAM-SHA-1",
+                "SCRAM-SHA-256"
+        ]
+}
+
+
+
+roles within mongo: 
+
+{
+        "role" : "Operator",
+        "privileges" : [ ],
+        "roles" : [
+                {
+                        "role" : "read",
+                        "db" : "AdinInspector"
+                }
+        ]
+}
+
+{
+        "role" : "Analyst",
+        "privileges" : [ ],
+        "roles" : [
+                {
+                        "role" : "read",
+                        "db" : "AdinInspector"
+                }
+        ]
+}
+
+//Useful Kafka commands
+1. start zookeper
+sudo bin/zookeeper-server-start.sh config/zookeeper.properties
+2. start Kafka
+sudo bin/kafka-server-start.sh config/server.properties
+3.List topics
+sudo bin/kafka-topics.sh --list --zookeeper localhost:2181
+4.delete topics
+sudo bin/kafka-topics.sh --delete --zookeeper localhost:2181 --topic motor
+5.create topics
+sudo bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic test
+
+//Useful mongo stuff
+1.start service
+sudo service mongod start 
+
+//
+
+//things that I need to do
+MongoDB comparison for range? numerical? stringwise? M
+when a new collection is added the permissions for operators need to be updated on a per collection basis. 
+figure out 
+Mongo cannot insert things prepended with special symbols like $. either he fixes it or we remove special characters
+check how to send chunks of data from mongo ro implement Async Mongoclient.
+for now. I believe hte best way would be to do it sync, but make it expandable.
+
+
+//Things to fix in documentation:
+Json format from FlowRatePerSecond is wrong since port number is only provided at L4
+
+//things we would need for a server:
+mongo
+Kafka
+Tomcat
+java jdk
+
+>2GB of ram
+enough hdd for all testing data + realtime + OS

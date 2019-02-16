@@ -1,8 +1,7 @@
 import React, { PureComponent } from 'react';
 import styled from '@emotion/styled';
 import * as d3 from 'd3';
-import { appStore, dataStore } from '@stores';
-import { getAvailableCollections } from '@libs';
+import { dataStore } from '@stores';
 
 const Container = styled.div`
   bottom: 0;

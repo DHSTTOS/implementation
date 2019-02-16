@@ -1,6 +1,7 @@
 package invalid.adininspector.adinhub;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.websocket.Session;
@@ -10,13 +11,19 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonSyntaxException;
 
 /**
- * This class handles client requests by parsing them, executing
- * the requested action and producing responses.
- * The requested action are executed by calls to the Hub object.
+ * This class handles client requests by parsing them, executing the requested
+ * action and producing a response. The requested actions are typically executed
+ * by calls to the appropriate methods in the Hub object. The relation between
+ * the Hub class and this class is basically the strategy design pattern with a
+ * single strategy.
  */
 public class ClientProtocolHandler {
 
-	public enum Command {
+	/**
+	 * A Command object holds a client command and a method that implements the response to it.
+	 *
+	 */
+	enum Command {
 		LOGIN("LOGIN") {
 			public Map<String, Object> execute(Hub hub, Session session, Map<String,Object> msgParsed) {
 				Map<String, Object> m = new HashMap<String, Object>();
@@ -39,7 +46,7 @@ public class ClientProtocolHandler {
 		AUTH("AUTH") {
 			public Map<String, Object> execute(Hub hub, Session session, Map<String,Object> msgParsed) {
 				String token = (String)msgParsed.get("token");
-				boolean loggedIn = hub.loginWithToken(session, token);
+				boolean loggedIn = hub.authenticate(session, token);
 				Map<String, Object> m = new HashMap<String, Object>();
 				m.put("cmd", "SESSION");
 				m.put("par", "AUTH");
@@ -65,7 +72,27 @@ public class ClientProtocolHandler {
 				return msgParsed;
 			}
 		},
-		
+
+		GET_COLL_GROUPS("GET_COLL_GROUPS") {
+			public Map<String, Object> execute(Hub hub, Session session, Map<String,Object> msgParsed) {
+				List<List<String>> collectionGroups = hub.getCollectionGroups(session);
+				msgParsed.put("cmd", "LIST_COLL_GROUPS");
+				msgParsed.put("par", collectionGroups);
+				return msgParsed;
+			}
+		},
+
+		GET_COLL_GROUP_DATA("GET_COLL_GROUP_DATA") {
+			public Map<String, Object> execute(Hub hub, Session session, Map<String,Object> msgParsed) {
+				String collectionName = (String)msgParsed.get("par");
+				List<HashMap<String, Object>> collectionGroup = hub.getCollectionGroupData(session, collectionName);
+				msgParsed.put("cmd", "DATAGROUP");
+				msgParsed.put("name", collectionName);
+				msgParsed.put("par", collectionGroup);
+				return msgParsed;
+			}
+		},
+
 		GET_COLL("GET_COLL") {
 			public Map<String, Object> execute(Hub hub, Session session, Map<String,Object> msgParsed) {
 				String collectionName = (String)msgParsed.get("par");
@@ -78,7 +105,7 @@ public class ClientProtocolHandler {
 				return m;
 			}
 		},
-		
+
 		GET_START("GET_START") {
 			public Map<String, Object> execute(Hub hub, Session session, Map<String,Object> msgParsed) {
 				String collectionName = (String)msgParsed.get("par");
@@ -117,7 +144,7 @@ public class ClientProtocolHandler {
 				return msgParsed;
 			}
 		},
-		
+
 		GET_COLL_SIZE("GET_COLL_SIZE") {
 			public Map<String, Object> execute(Hub hub, Session session, Map<String,Object> msgParsed) {
 				String collectionName = (String)msgParsed.get("par");
@@ -128,6 +155,21 @@ public class ClientProtocolHandler {
 				m.put("key", "");
 				m.put("par", size);
 				return m;
+			}
+		},
+
+		GET_RECORD("GET_RECORD") {
+			public Map<String, Object> execute(Hub hub, Session session, Map<String,Object> msgParsed) {
+				String collectionName = (String)msgParsed.get("par");
+				String key = (String)msgParsed.get("key");
+				String value = (String)msgParsed.get("value");
+				String[] data = hub.getRecord(session, collectionName, key, value);
+				//send augmented request back:
+				msgParsed.put("cmd", "DATASINGLE");
+				msgParsed.put("name", collectionName);
+				msgParsed.put("data", data);
+				msgParsed.remove("par");
+				return msgParsed;
 			}
 		},
 
@@ -161,28 +203,40 @@ public class ClientProtocolHandler {
 				return msgParsed;
 			}
 		};
-		
+
 		public final String command;
-		
+
 		Command(String command) {
 			this.command = command;
 		}
+		/**
+		 * Take a request (parsed into a string) and construct the response by
+		 * calling the appropriate hub method(s).
+		 * 
+		 * @param hub the hub object holding the database connection
+		 * @param session the websocket session
+		 * @param msgParsed the request as key-value map
+		 * @return the response as key-value map
+		 */
 		abstract Map<String, Object> execute(Hub hub, Session session, Map<String,Object> msgParsed);
 	}
-	
+
 	private String cleanString(String message) {
-		int len = message.length();
-		if (len > 1000) len = 1000;
-		return message.substring(0, len);
+		final int MAXLEN = 800;
+		if (message.length() > MAXLEN) {
+			return message.substring(0, MAXLEN);
+		} else {
+			return message;
+		}
 	}
-	
+
 	/**
-	 * Parse the message from the client, call the corresponding method of the hub
-	 * and construct the response message which is then send via the hub
+	 * Parse the message from the client, call the specific method to handle this
+	 * request and construct the response message which is then send via the hub
 	 * to the client.
 	 * 
 	 * @param hub the hub for database access
-	 * @param session the current session
+	 * @param session the current websocket session
 	 * @param message the client request to handle
 	 */
 	String handleRequest(Hub hub, Session session, String message) {
@@ -190,7 +244,7 @@ public class ClientProtocolHandler {
 		Map<String,Object> msgParsed = null;
 		try {
 			msgParsed = new Gson().fromJson(message, Map.class);
-			
+
 		} catch (JsonSyntaxException e) {
 			System.err.println("handleRequest() got non-JSON message: " + cleanString(message));
 			return "";

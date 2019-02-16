@@ -6,8 +6,9 @@ class UserStore {
    */
   @observable
   userDetails = {
-    userName: 'suitcase',
-    authToken: '12345',
+    userName: 'admin',
+    password: 'admin',
+    authToken: 'token',
     wsLoggedIn: false,
   };
 

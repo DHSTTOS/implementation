@@ -3,28 +3,26 @@ package invalid.adininspector.adinhub;
 import javax.websocket.OnOpen;
 import javax.websocket.server.ServerEndpoint;
 
-import invalid.adininspector.exceptions.LoginFailureException;
-
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.stream.Stream;
 
 import javax.websocket.*;
 
 /**
- * This class implements the network handlers for the websocket connection
- * to the client and access methods for a database connection.
+ * This class implements the network handlers for the WebSocket connection to
+ * the client.
+ * It also has wrapper methods that delegate the database access commands to the
+ * appropriate IUserSession object.
  */
 @ServerEndpoint("/adinhubsoc2")
 public class Hub {
-	
-	
-	/**
-	 * The database to use
-	 */
-	IUserSession database = null;
-	
 	/**
 	 * The strategy object we call for the actual parsing of the client requests.
 	 */
@@ -35,150 +33,173 @@ public class Hub {
 	 * and provided by the server. 
 	 */
 	private static Map<String, IUserSession> loginTokens;
-	
 
 	/**
 	 * Map a websocket connection to a IUserSession (i.e. a database connection).
 	 */
 	private static Map<Session, IUserSession> sessions;
-	
-	public Hub() {
-		try {
-			database = new MongoDBUserSession();
-		} catch (LoginFailureException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		System.out.println("Hub, database: " + database);
-		requestHandler = new ClientProtocolHandler();
+
+
+	static {
 		loginTokens = new HashMap<String, IUserSession>();
 		sessions = new HashMap<Session, IUserSession>();
+	}
+
+
+	/**
+	 * The default constructor.
+	 */
+	public Hub() {
+		requestHandler = new ClientProtocolHandler();
 		System.out.println("hub started");
 	}
-	
-    /**
-     * Event handler for the start of websocket connection.
-     * 
-     * @param session the current session
-     */
-    @OnOpen
-    public void handleOpen(Session session) {
-	System.out.println("hub open, session: " + session);
-	session.setMaxIdleTimeout(-1);
-    }
 
-    /**
-     * Event handler for closing a connection.
-     * 
-     * @param session the current session
-     */
-    @OnClose
-    public void handleClose(Session session) {
-    	System.out.println("close, session: " + session);
-    }
+	/**
+	 * Event handler for the start of websocket connection.
+	 * 
+	 * @param session the current session
+	 */
+	@OnOpen
+	public void handleOpen(Session session) {
+		System.out.println("hub open, session: " + session);
+		session.setMaxIdleTimeout(-1);
+	}
 
-    /**
-     * Event handler for receiving a message. The message is passed
-     * to the ClientProtocolHandler.
-     * 
-     * @param message the message that we received from the client
-     * @param session the current session
-     * @return the response for the client
-     */
-    @OnMessage
-    public String handleMessage(String message, Session session) {
-    	System.out.println("message from client1: " + message);
-    	String echoMsg = requestHandler.handleRequest(this, session, message);
-    	System.out.println("answer to client   1: " + echoMsg);
-    	return echoMsg;                       
-    }
+	/**
+	 * Event handler for closing a connection.
+	 * 
+	 * @param session the current session
+	 */
+	@OnClose
+	public void handleClose(Session session) {
+		System.out.println("close, session: " + session);
+		logOut(session);
+	}
 
-    /**
-     * Event handler for errors/exceptions during communication.
-     * 
-     * @param session the current session
-     * @param t the exception that occurred
-     */
-    @OnError
-    public void handleError(Session session, Throwable t) {
-	System.out.println("error, session: " + session);
-	t.printStackTrace();
-    }
+	/**
+	 * Event handler for receiving a message. The message is passed
+	 * to the ClientProtocolHandler.
+	 * 
+	 * @param message the message that we received from the client
+	 * @param session the current session
+	 * @return the response for the client
+	 */
+	@OnMessage
+	public String handleMessage(String message, Session session) {
+		System.out.println("message from client1: " + message);
+		String echoMsg = requestHandler.handleRequest(this, session, message);
+		System.out.println("answer to client   1: " + echoMsg);
+		return echoMsg;                       
+	}
 
-    
-    /**
-     * This method is provided for the two-session-login scheme.
-     * It takes a username and password to log into the database.
-     * If successful, register the IUserSession and return a token to identify
-     * it. Otherwise return an empty string.
-     * 
-     * @param session the login websocket session
-     * @param username the username to login with
-     * @param password the password to login with
-     * 
-     * @return a token to identify the IUserSession
-     */
-    String login(Session session, String username, String password) {
+	/**
+	 * Event handler for errors/exceptions during communication.
+	 * 
+	 * @param session the current session
+	 * @param t the exception that occurred
+	 */
+	@OnError
+	public void handleError(Session session, Throwable t) {
+		System.out.println("error, session: " + session);
+		t.printStackTrace();
+	}
+
+
+	/**
+	 * If the username and password are valid, log the user in and create a new
+	 * IUserSession object for the database session, register it, and return an
+	 * authentication token for it.
+	 * If the login fails, return an empty string.
+	 * 
+	 * @param session the current websocket session
+	 * @param username the username to login with
+	 * @param password the password to login with
+	 * 
+	 * @return a token to identify the IUserSession
+	 */
+	public String login(Session session, String username, String password) {
 		IUserSession dbUserSession = createUserSession(session, username, password);
 		if (dbUserSession == null)
 			return "";
-		
+
 		long tokenValue = new Random().nextLong();
-    	String token = Long.toString(tokenValue);
-    	sessions.put(session, dbUserSession);	// needed for single-ws-session case
-    	loginTokens.put(token, dbUserSession);
-    	System.out.println("l #registered keys: "  + loginTokens.keySet().size());
-    	for (String key : loginTokens.keySet()) {
+		String token = Long.toString(tokenValue);
+		sessions.put(session, dbUserSession);	// needed for single-ws-session case
+		loginTokens.put(token, dbUserSession);
+		System.out.println("l #registered keys: "  + loginTokens.keySet().size());
+		for (String key : loginTokens.keySet()) {
 			System.out.println("registered key: " + key);
 		}
-    	System.out.println("login: this " + this);
-    	return token;
-    }
-    
+		System.out.println("login: this " + this);
+		return token;
+	}
+
 	/**
-	 * Instantiate a new UserSession and log in into the database 
+	 * Instantiate a new IUserSession and log in into the database 
 	 * using the given credentials.
+	 * If the login was successful it returns an IUserSession object for a logged
+	 * in database session, otherwise null.
 	 * 
-	 * @param udid - the user id to login with
-	 * @param password the password
+	 * NOTE: This method is currently hardcoded to instantiate a MongoDBUserSession
+	 * object; it could be made more flexible by using the factory or abstract
+	 * factory design pattern.
+	 * 
+	 * @param session the websocket session
+	 * @param username the username to login with
+	 * @param password the password to login with
+	 * @return a new IUserSession object for a logged in database session
+
 	 */
 	public IUserSession createUserSession(Session session, String username, String password) {
-		IUserSession dbUserSession = database.createUserSession(username, password);
+		IUserSession dbUserSession = MongoDBUserSession.createUserSession(username, password);
 		return dbUserSession;
 	}
 
-    boolean loginWithToken(Session session, String token) {
-    	System.out.println("lWT: this " + this);
-    	System.out.println("lWT #registered keys: "  + loginTokens.keySet().size());
-    	for (String key : loginTokens.keySet()) {
+	/**
+	 * Login with the given authentication token.
+	 * 
+	 * @param session the current, "main" websocket session
+	 * @param token the token to authenticate this session with
+	 *
+	 * @return true if login/authentication successful
+	 */
+	public boolean authenticate(Session session, String token) {
+		System.out.println("lWT: this " + this);
+		System.out.println("lWT #registered keys: "  + loginTokens.keySet().size());
+		for (String key : loginTokens.keySet()) {
 			System.out.println("lWT: registered key: " + key);
 		}
-    	boolean isLoggedIn = loginTokens.containsKey(token);
-    	System.out.println("lWT: " + token + " " + isLoggedIn);
-    	if (isLoggedIn) {
-        	IUserSession dbUserSession = loginTokens.get(token);
+		boolean isLoggedIn = loginTokens.containsKey(token);
+		System.out.println("lWT: " + token + " " + isLoggedIn);
+		if (isLoggedIn) {
+			IUserSession dbUserSession = loginTokens.get(token);
 
-        	// remove the sessions entry for the login websocket session:
-        	for (Session oldSession : sessions.keySet()) {
+			// remove the sessions entry for the login websocket session:
+			for (Session oldSession : sessions.keySet()) {
 				if (sessions.get(oldSession).equals(dbUserSession))
 					sessions.remove(oldSession);
 			}
-        	
-        	sessions.put(session, dbUserSession);	// register the current ("work") session
-        	return true;
-    	}
-    	return false;
-    }
 
-    void logOut(Session session) {
+			sessions.put(session, dbUserSession);	// register the current ("work") session
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Logout.
+	 * @param session the current websocket session
+	 */
+	public void logOut(Session session) {
 		IUserSession dbUserSession = sessions.get(session);
 		if (dbUserSession == null) {
 			System.err.println("logOut(): got request for non-logged-in session" + session);
 			return;
 		}
 
+		System.out.println("logout of session: " + session);
 		sessions.remove(session);
-    	// remove the token entry for this session:
+		// remove the token entry for this session:
 		Iterator<String> tokenSet = loginTokens.keySet().iterator();
 		for(; tokenSet.hasNext();) {
 			String token = tokenSet.next();
@@ -190,28 +211,62 @@ public class Hub {
 		// The session will ultimately be closed when the garbage collection
 		// removes it:
 		dbUserSession = null;
-    }
+	}
 
-    /**
+	/**
 	 * Returns an array with the names of the collections available to the current user.
 	 * 
+	 * @param session the current websocket session
 	 * @return an array with collection names
 	 */
 	public String[] getAvailableCollections(Session session) {
 		IUserSession userSession = sessions.get(session);
+		System.out.println("XXX session: " + session + " sessions: " + sessions
+							+ " userSession: " + userSession);
 		if (userSession == null) {
 			System.err.println("got request for non-logged-in session" + session);
 			return null; // XXX return empty array?
 		}
 		return userSession.getAvailableCollections();
 	}
-	
-	
+
+
+	/**
+	 * Returns the collections available to the current user grouped according to their name.
+	 * Each of the list-of-strings starts with the name of a raw data collection
+	 * and is followed by the aggregated/processed variants of this raw data
+	 * collection.
+	 * Otherwise there is no sorting within each group, and the groups are in
+	 * the order that the raw data collections originally have.
+	 * 
+	 * @param session the current websocket session
+	 * @return a list of lists with collection names
+	 */
+	public List<List<String>> getCollectionGroups(Session session) {
+		IUserSession userSession = sessions.get(session);
+		if (userSession == null) {
+			System.err.println("got request for non-logged-in session" + session);
+			return null; // XXX return empty array?
+		}
+		String[] collections = userSession.getAvailableCollections();
+		String[] groups = Arrays.stream(collections).filter(s -> (s.indexOf('_') == -1)).toArray(String[]::new);
+		List<List<String>> groupedColl = new ArrayList<List<String>>(groups.length); 
+		for (int i = 0; i < groups.length; i++) {
+			ArrayList<String> members = new ArrayList<String>(collections.length / groups.length + 1);
+			String groupMainColl = groups[i];
+			members.add(groupMainColl);
+			Arrays.stream(collections).filter(s -> (s.startsWith(groupMainColl) && !s.equals(groupMainColl))).forEachOrdered(s -> members.add(s));
+			groupedColl.add(members);
+		}
+		return groupedColl;
+	}
+
 	/**
 	 * Returns an array containing all records of this collection in the order
 	 * they have in the collection.
 	 * 
-	 * @param coll the collection to query
+	 * @param session the current websocket session
+	 * @param collection the collection to query
 	 * @return an array of the records of the specified collection
 	 */
 	public String[] getCollection(Session session, String collection){
@@ -223,10 +278,37 @@ public class Hub {
 		return userSession.getCollection(collection);
 	}
 
+	public List<HashMap<String, Object>> getCollectionGroupData(Session session, String collection) {
+		IUserSession userSession = sessions.get(session);
+		if (userSession == null) {
+			System.err.println("got request for non-logged-in session" + session);
+			return null; // XXX return empty array?
+		}
+		String[] collections = userSession.getAvailableCollections();
+		ArrayList<String> members = new ArrayList<String>(10);
+		Arrays.stream(collections).filter(s -> (s.startsWith(collection) && !s.equals(collection))).forEachOrdered(s -> members.add(s));
+		
+		List<HashMap<String, Object>> collectionGroup = new ArrayList<HashMap<String, Object>>(10);
+		for (int i = 0; i < members.size(); i++) {
+			String member = members.get(i);
+			HashMap<String, Object> coll = new HashMap<String, Object>();
+			coll.put("name",  member);
+			coll.put("size", userSession.getCollectionSize(member));
+			if (i > 0) {
+				coll.put("data", userSession.getCollection(member));
+			} else {
+				coll.put("data",  "[]"); // TODO XXX limit amount of data
+			}
+			collectionGroup.add(coll);
+		}
+		return collectionGroup;
+	}
+	
 	/**
 	 * Returns a JSON string representation of the first record of the specified collection. 
 	 * 
-	 * @param coll the collection to query
+	 * @param session the current websocket session
+	 * @param collection the collection to query
 	 * @return the first record of the collection as a JSON string
 	 */
 	public String getStartRecord(Session session, String collection){
@@ -239,9 +321,10 @@ public class Hub {
 	}
 
 	/**
-	 * Returns a JSON string representation of the first record of the specified collection. 
+	 * Returns a JSON string representation of the last record of the specified collection. 
 	 * 
-	 * @param coll the collection to query
+	 * @param session the current websocket session
+	 * @param collection the collection to query
 	 * @return the last record of the collection as a JSON string
 	 */
 	public String getEndRecord(Session session, String collection){
@@ -257,6 +340,7 @@ public class Hub {
 	/**
 	 * Returns the number of records in the specified collection.
 	 * 
+	 * @param session the current websocket session
 	 * @param collection the collection to query
 	 * 
 	 * @return the number of records
@@ -269,11 +353,12 @@ public class Hub {
 		}
 		return userSession.getCollectionSize(collection);
 	}
-	
-	
+
+
 	/**
 	 * Returns the record with the given id from the given collecton.
 	 * 
+	 * @param session the current websocket session
 	 * @param collection the collection to query
 	 * @param id identifier of the record to return 
 	 * @return the record with the specified identifier in this collection
@@ -283,10 +368,37 @@ public class Hub {
 	}
 
 	/**
-	 * Returns an array containing all records of this collection for which the
-	 * value of the specified key is in the range [start, end). The records will
-	 * be in the same order as they are in the collection.
+	 * Returns an array containing all records of the collection for which the
+	 * specified key has the specified value.
+	 * The records will be in the same order as they are in the collection and
+	 * are strings in json format.
+	 *
+	 * @param session the current websocket session
+	 * @param collection the collection to query
+	 * @param key the record key by which the records are filtered
+	 * @param value the value to match with
+	 * @return an array of records matching the value
+	 */
+	public String[] getRecord(Session session, String collection, String key, String value) {
+		IUserSession userSession = sessions.get(session);
+		if (userSession == null) {
+			System.err.println("got request for non-logged-in session" + session);
+			return null; // XXX return empty array?
+		}
+		System.out.println("Hub.gR1: key: " + key + " value: " + value);
+		String[] tmp = userSession.getRecord(collection, key, value);
+		System.out.println("Hub.gR2: size: " + tmp.length + " " + ((tmp.length > 0) ? tmp[0] : ""));
+		return tmp;
+	}
+
+	/**
+	 * Returns an array containing all records of the specified collection for
+	 * which the value of the specified key is in the range [start, end).
+	 * The records will be in the same order as they are in the collection and
+	 * are strings in JSON format.
 	 * 
+	 * @param session the current websocket session
+	 * @param collection the collection to query
 	 * @param key the record key by which the records are filtered
 	 * @param start the start of the range of key values
 	 * @param end the exclusive end of the range of key values
@@ -298,13 +410,18 @@ public class Hub {
 			System.err.println("got request for non-logged-in session" + session);
 			return null; // XXX return empty array?
 		}
-		return userSession.getRecordsInRange(collection, key, start, end);
+		System.out.println("Hub.gRIR1: key: " + key + " start: " + start + "end: " + end);
+		String[] tmp = userSession.getRecordsInRange(collection, key, start, end);
+		System.out.println("Hub.gRIR2: size: " + tmp.length + " " + ((tmp.length > 0) ? tmp[0] : ""));
+		return tmp;
 	}
-	
+
 	/**
-	 * Returns the number of records in the specified collection for which the value
-	 * of the specified key is within the range [start, end).
+	 * Returns the number of records in the specified collection for which the
+	 * value of the specified key is within the range [start, end).
 	 * 
+	 * @param session the current websocket session
+	 * @param collection the collection to query
 	 * @param key the record key by which the records are filtered
 	 * @param start the start of the range of key values
 	 * @param end the exclusive end of the range of key values
