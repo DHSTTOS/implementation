@@ -31,6 +31,7 @@ import com.mongodb.ServerAddress;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.MongoIterable;
+import com.mongodb.client.model.Filters;
 
 import org.bson.BsonTimestamp;
 import org.bson.Document;
@@ -88,16 +89,14 @@ public class MongoClientMediator {
 
 			// force the caller to handle the exception
 			throw new LoginFailureException(e.getMessage());
-		}
+        }
+        
 
-		//    String[] a = getRecordInRange("motor", "Timestamp","1548428021051", "1648428021051");
-
-		//     System.out.println("got " + a.length + " records");
-
-		//    for (String var : a) {
-		//        p(var);
-		//    }
-
+        String[] t = getRecord("lemgo","_id","9");
+ 
+        for (int i = 0; i < t.length; i++) {
+             p(t[i]);
+         }
 
 	}
 
@@ -113,7 +112,8 @@ public class MongoClientMediator {
 	}
 
 	/**
-	 * Converts the record to a bson document and uses the mongoAPI to insert it
+	 * Converts the record to a bson document and uses t
+     * he mongoAPI to insert it
 	 * into the database.
 	 * 
 	 * @param record the record to add to the collection
@@ -274,14 +274,32 @@ public class MongoClientMediator {
 		{
 			System.out.println("OMG TIMESTAMP!");
 			query.put(key, new BasicDBObject("$gte", new Date(Long.valueOf((String)start))).append("$lt", new Date(Long.valueOf((String)end)) ));
-
 		}
+		else if(key.equals("_id"))
+			query.put(key, new BasicDBObject("$gte", Long.valueOf((String)start)).append("$lt", Long.valueOf((String)end)));
 		else
 			query.put(key, new BasicDBObject("$gte", start).append("$lt", (end)));
 
 		return mongoIteratorToStringArray(db.getCollection(collection).find(query));
 	}
 
+
+    public String[] getRecord(String collection, String key, Object equals)
+    {		
+		//TODO: read the type from mongo and convert it to that
+		if(key.equals("Timestamp"))
+		{
+			equals = new Date(Long.valueOf((String)equals));
+		}
+		else if(key.equals("_id"))
+		{
+			//if it's not a long then make it one
+			if(!equals.getClass().equals(Long.class))
+				equals = Long.valueOf((String)equals);
+		}
+		
+        return mongoIteratorToStringArray(db.getCollection(collection).find(Filters.eq(key,equals)));
+    }
 	
 	/**
 	 * Returns the number of elements matching the range as long
@@ -292,12 +310,9 @@ public class MongoClientMediator {
 	 * @param end the end value of the range
 	 * @return the number of elements matching the range as int
 	 */
-	public long getRecordsInRangeSize(String collection, String key, String start, String end) {
-		BasicDBObject query = new BasicDBObject();
-		query.put(key, new BasicDBObject("$gte", start).append("$lt", (end)));
-
-		return db.getCollection(collection).countDocuments(query);
-	}
+	// public long getRecordsInRangeSize(String collection, String key, String start, String end) {
+	// 	return getRecordsInRange(collection, key, start, end).length; //db.getCollection(collection).countDocuments(query);
+	// }
 
 	
 	/**
@@ -310,11 +325,8 @@ public class MongoClientMediator {
 	 * @return the number of elements matching the range as int
 	 */
 	public long getRecordsInRangeSize(String collection, String key, Object start, Object end) {
-		BasicDBObject query = new BasicDBObject();
-		query.put(key, new BasicDBObject("$gte", start).append("$lt", (end)));
-
-		return db.getCollection(collection).countDocuments(query);
-	}
+        return getRecordsInRange(collection, key, start, end).length; 
+    }
 
 
 	/**
@@ -347,16 +359,7 @@ public class MongoClientMediator {
 	// TODO: figure out a way to make this less wasteful
 	public ArrayList<Record> getCollectionAsRecordsArrayList(String collectionName) {
 
-
-		JsonSerializer<Date> ser = new JsonSerializer<Date>() {
-			@Override
-			public JsonElement serialize(Date src, Type typeOfSrc, JsonSerializationContext 
-					context) {
-				return src == null ? null : new JsonPrimitive(src.getTime());
-			}
-		};
-
-		JsonDeserializer<Date> deser = new JsonDeserializer<Date>() {
+		JsonDeserializer<Date> dateDeser = new JsonDeserializer<Date>() {
 			@Override
 			public Date deserialize(JsonElement json, Type typeOfT,
 					JsonDeserializationContext context) throws JsonParseException {
@@ -366,9 +369,19 @@ public class MongoClientMediator {
 			}
 		};
 
+		JsonDeserializer<Long> longDeser = new JsonDeserializer<Long>() {
+
+			@Override
+			public Long deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+					throws JsonParseException {
+				return  json.getAsJsonObject().getAsJsonPrimitive("$numberLong").getAsLong();
+			}
+		
+		};
+
 		Gson gson = new GsonBuilder()
-				.registerTypeAdapter(Date.class, ser)
-				.registerTypeAdapter(Date.class, deser).create();
+				.registerTypeAdapter(Date.class, dateDeser)
+				.registerTypeAdapter(long.class, longDeser).create();
 
 
 		// GsonBuilder builder = new GsonBuilder(); 

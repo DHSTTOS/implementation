@@ -26,7 +26,7 @@ import java.util.Map;
 public abstract class Record {
 
 	// every record has to have an id. if none is provided then mongo takes the Java object ID
-	protected String _id;
+	protected long _id;
 
 	// serialize all variables (in order ) of a Record into a Bson document for
 	// mongoDB
@@ -81,7 +81,7 @@ public abstract class Record {
 	 * Setter for _id
 	 * @param _id the new value for atribute _id
 	 */
-	public void set_id(String _id) {
+	public void set_id(long _id) {
 		this._id = _id;
 	}
 
@@ -89,7 +89,7 @@ public abstract class Record {
 	 * Getter for _id
 	 * @return the value of attribute _id
 	 */
-	public String get_id() {
+	public long get_id() {
 		return _id;
 	}
 

@@ -3,10 +3,15 @@ package invalid.adininspector.adinhub;
 import javax.websocket.OnOpen;
 import javax.websocket.server.ServerEndpoint;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.stream.Stream;
 
 import javax.websocket.*;
 
@@ -34,13 +39,18 @@ public class Hub {
 	 */
 	private static Map<Session, IUserSession> sessions;
 
+
+	static {
+		loginTokens = new HashMap<String, IUserSession>();
+		sessions = new HashMap<Session, IUserSession>();
+	}
+
+
 	/**
 	 * The default constructor.
 	 */
 	public Hub() {
 		requestHandler = new ClientProtocolHandler();
-		loginTokens = new HashMap<String, IUserSession>();
-		sessions = new HashMap<Session, IUserSession>();
 		System.out.println("hub started");
 	}
 
@@ -63,6 +73,7 @@ public class Hub {
 	@OnClose
 	public void handleClose(Session session) {
 		System.out.println("close, session: " + session);
+		logOut(session);
 	}
 
 	/**
@@ -186,6 +197,7 @@ public class Hub {
 			return;
 		}
 
+		System.out.println("logout of session: " + session);
 		sessions.remove(session);
 		// remove the token entry for this session:
 		Iterator<String> tokenSet = loginTokens.keySet().iterator();
@@ -209,6 +221,8 @@ public class Hub {
 	 */
 	public String[] getAvailableCollections(Session session) {
 		IUserSession userSession = sessions.get(session);
+		System.out.println("XXX session: " + session + " sessions: " + sessions
+							+ " userSession: " + userSession);
 		if (userSession == null) {
 			System.err.println("got request for non-logged-in session" + session);
 			return null; // XXX return empty array?
@@ -216,6 +230,36 @@ public class Hub {
 		return userSession.getAvailableCollections();
 	}
 
+
+	/**
+	 * Returns the collections available to the current user grouped according to their name.
+	 * Each of the list-of-strings starts with the name of a raw data collection
+	 * and is followed by the aggregated/processed variants of this raw data
+	 * collection.
+	 * Otherwise there is no sorting within each group, and the groups are in
+	 * the order that the raw data collections originally have.
+	 * 
+	 * @param session the current websocket session
+	 * @return a list of lists with collection names
+	 */
+	public List<List<String>> getCollectionGroups(Session session) {
+		IUserSession userSession = sessions.get(session);
+		if (userSession == null) {
+			System.err.println("got request for non-logged-in session" + session);
+			return null; // XXX return empty array?
+		}
+		String[] collections = userSession.getAvailableCollections();
+		String[] groups = Arrays.stream(collections).filter(s -> (s.indexOf('_') == -1)).toArray(String[]::new);
+		List<List<String>> groupedColl = new ArrayList<List<String>>(groups.length); 
+		for (int i = 0; i < groups.length; i++) {
+			ArrayList<String> members = new ArrayList<String>(collections.length / groups.length + 1);
+			String groupMainColl = groups[i];
+			members.add(groupMainColl);
+			Arrays.stream(collections).filter(s -> (s.startsWith(groupMainColl) && !s.equals(groupMainColl))).forEachOrdered(s -> members.add(s));
+			groupedColl.add(members);
+		}
+		return groupedColl;
+	}
 
 	/**
 	 * Returns an array containing all records of this collection in the order
@@ -234,6 +278,32 @@ public class Hub {
 		return userSession.getCollection(collection);
 	}
 
+	public List<HashMap<String, Object>> getCollectionGroupData(Session session, String collection) {
+		IUserSession userSession = sessions.get(session);
+		if (userSession == null) {
+			System.err.println("got request for non-logged-in session" + session);
+			return null; // XXX return empty array?
+		}
+		String[] collections = userSession.getAvailableCollections();
+		ArrayList<String> members = new ArrayList<String>(10);
+		Arrays.stream(collections).filter(s -> (s.startsWith(collection) && !s.equals(collection))).forEachOrdered(s -> members.add(s));
+		
+		List<HashMap<String, Object>> collectionGroup = new ArrayList<HashMap<String, Object>>(10);
+		for (int i = 0; i < members.size(); i++) {
+			String member = members.get(i);
+			HashMap<String, Object> coll = new HashMap<String, Object>();
+			coll.put("name",  member);
+			coll.put("size", userSession.getCollectionSize(member));
+			if (i > 0) {
+				coll.put("data", userSession.getCollection(member));
+			} else {
+				coll.put("data",  "[]"); // TODO XXX limit amount of data
+			}
+			collectionGroup.add(coll);
+		}
+		return collectionGroup;
+	}
+	
 	/**
 	 * Returns a JSON string representation of the first record of the specified collection. 
 	 * 
@@ -298,9 +368,34 @@ public class Hub {
 	}
 
 	/**
+	 * Returns an array containing all records of the collection for which the
+	 * specified key has the specified value.
+	 * The records will be in the same order as they are in the collection and
+	 * are strings in json format.
+	 *
+	 * @param session the current websocket session
+	 * @param collection the collection to query
+	 * @param key the record key by which the records are filtered
+	 * @param value the value to match with
+	 * @return an array of records matching the value
+	 */
+	public String[] getRecord(Session session, String collection, String key, String value) {
+		IUserSession userSession = sessions.get(session);
+		if (userSession == null) {
+			System.err.println("got request for non-logged-in session" + session);
+			return null; // XXX return empty array?
+		}
+		System.out.println("Hub.gR1: key: " + key + " value: " + value);
+		String[] tmp = userSession.getRecord(collection, key, value);
+		System.out.println("Hub.gR2: size: " + tmp.length + " " + ((tmp.length > 0) ? tmp[0] : ""));
+		return tmp;
+	}
+
+	/**
 	 * Returns an array containing all records of the specified collection for
 	 * which the value of the specified key is in the range [start, end).
-	 * The records will be in the same order as they are in the collection.
+	 * The records will be in the same order as they are in the collection and
+	 * are strings in JSON format.
 	 * 
 	 * @param session the current websocket session
 	 * @param collection the collection to query
@@ -315,7 +410,10 @@ public class Hub {
 			System.err.println("got request for non-logged-in session" + session);
 			return null; // XXX return empty array?
 		}
-		return userSession.getRecordsInRange(collection, key, start, end);
+		System.out.println("Hub.gRIR1: key: " + key + " start: " + start + "end: " + end);
+		String[] tmp = userSession.getRecordsInRange(collection, key, start, end);
+		System.out.println("Hub.gRIR2: size: " + tmp.length + " " + ((tmp.length > 0) ? tmp[0] : ""));
+		return tmp;
 	}
 
 	/**

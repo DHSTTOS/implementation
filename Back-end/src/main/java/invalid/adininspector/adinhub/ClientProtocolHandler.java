@@ -1,6 +1,7 @@
 package invalid.adininspector.adinhub;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.websocket.Session;
@@ -72,6 +73,26 @@ public class ClientProtocolHandler {
 			}
 		},
 
+		GET_COLL_GROUPS("GET_COLL_GROUPS") {
+			public Map<String, Object> execute(Hub hub, Session session, Map<String,Object> msgParsed) {
+				List<List<String>> collectionGroups = hub.getCollectionGroups(session);
+				msgParsed.put("cmd", "LIST_COLL_GROUPS");
+				msgParsed.put("par", collectionGroups);
+				return msgParsed;
+			}
+		},
+
+		GET_COLL_GROUP_DATA("GET_COLL_GROUP_DATA") {
+			public Map<String, Object> execute(Hub hub, Session session, Map<String,Object> msgParsed) {
+				String collectionName = (String)msgParsed.get("par");
+				List<HashMap<String, Object>> collectionGroup = hub.getCollectionGroupData(session, collectionName);
+				msgParsed.put("cmd", "DATAGROUP");
+				msgParsed.put("name", collectionName);
+				msgParsed.put("par", collectionGroup);
+				return msgParsed;
+			}
+		},
+
 		GET_COLL("GET_COLL") {
 			public Map<String, Object> execute(Hub hub, Session session, Map<String,Object> msgParsed) {
 				String collectionName = (String)msgParsed.get("par");
@@ -134,6 +155,21 @@ public class ClientProtocolHandler {
 				m.put("key", "");
 				m.put("par", size);
 				return m;
+			}
+		},
+
+		GET_RECORD("GET_RECORD") {
+			public Map<String, Object> execute(Hub hub, Session session, Map<String,Object> msgParsed) {
+				String collectionName = (String)msgParsed.get("par");
+				String key = (String)msgParsed.get("key");
+				String value = (String)msgParsed.get("value");
+				String[] data = hub.getRecord(session, collectionName, key, value);
+				//send augmented request back:
+				msgParsed.put("cmd", "DATASINGLE");
+				msgParsed.put("name", collectionName);
+				msgParsed.put("data", data);
+				msgParsed.remove("par");
+				return msgParsed;
 			}
 		},
 
