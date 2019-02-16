@@ -1,11 +1,12 @@
 import { userStore } from '@stores';
-import { getAvailableCollections } from './wsutils';
+import { getAvailableCollections, getCollectionGroups } from './wsutils';
 import { autorun } from 'mobx';
 
 let requestAvailableCollections = () => {
   autorun(() => {
-    if (userStore.userDetails.wsLoggedIn)
-      getAvailableCollections(userStore.socket);
+    if (userStore.userDetails.wsLoggedIn) {
+      getCollectionGroups(userStore.socket);
+    }
   });
 };
 

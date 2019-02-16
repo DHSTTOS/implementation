@@ -215,6 +215,10 @@ const logout = socket => {
   sendRequest(socket, message);
 };
 
+/**
+ * @deprecated
+ * @param {WebSocket} socket
+ */
 const getAvailableCollections = socket => {
   const message = {
     cmd: 'GET_AV_COLL',
