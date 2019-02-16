@@ -20,10 +20,6 @@ const Row = styled.div`
 class SourceSelector extends Component {
   selectSource = source => {
     dataStore.selectSource(source);
-    console.log(toJS(dataStore.rawData));
-    console.log(toJS(dataStore.flowrateData));
-    console.log(toJS(dataStore.connectionNumberData));
-    console.log(toJS(dataStore.addressesAndLinksData));
   };
 
   componentDidMount = () => {
@@ -31,6 +27,7 @@ class SourceSelector extends Component {
   };
 
   render() {
+    console.log(`I'll be damned `, toJS(dataStore.rawData));
     return (
       <Selector
         options={dataStore.sourceOptions}
