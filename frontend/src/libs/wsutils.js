@@ -147,20 +147,17 @@ const handleDataGroup = msg => {
   dataStore.endpoints = [0, rawDataPayload.size];
 
   // XXX This hardcoded handling of the processed data should be made more flexible:
-  const addressesAndLinksDataPayload = msg.par.find(
+  dataStore.addressesAndLinksData = msg.par.find(
     x => x.name === baseName + '_AddressesAndLinks'
-  );
-  dataStore.addressesAndLinksData = addressesAndLinksDataPayload.data;
+  ).data;
 
-  const flowrateDataPayload = msg.par.find(
+  dataStore.flowrateData = msg.par.find(
     x => x.name === baseName + '_FlowRatePerSecond'
-  );
-  dataStore.flowrateData = flowrateDataPayload.data;
+  ).data;
 
-  const connectionNumberDataPayload = msg.par.find(
+  dataStore.connectionNumberData = msg.par.find(
     x => x.name === baseName + '_AddressesAndLinks'
-  );
-  dataStore.connectionNumberData = connectionNumberDataPayload.data;
+  ).data;
 };
 
 const handleSession = async msg => {
