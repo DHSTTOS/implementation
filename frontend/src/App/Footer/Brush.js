@@ -21,8 +21,6 @@ export default class Brush extends PureComponent {
     // use `this.brush.current` as the reference to the root node and that's it
     // reference dataStore or appStore as needed, there shouldn't be any problems
 
-    //wsutils.getStartEnd(appStore.sourceSelected);
-
     /* Main Brush Code */
 
     let main = d3.select(this.brush.current);
@@ -33,12 +31,10 @@ export default class Brush extends PureComponent {
 
     console.log('start brush : ' + dataStore.rawData.length);
     console.log(dataStore.endpoints);
-    console.log(dataStore.endpoints.length);
     if (dataStore.endpoints.length === 0) {
-      // TODO does dataStore.endpoints have to be shallow?
       dataStore.endpoints = [0, dataStore.rawData.length];
     }
-    console.log('bar');
+    console.log('');
     let dataEndpoints = dataStore.endpoints; // the range of the whole datastream
     console.log(dataEndpoints);
 
@@ -48,38 +44,37 @@ export default class Brush extends PureComponent {
     }
     let curRange = [0, curRangeWidth]; // the current range of the brush/slider; start with a small range
 
+    if (dataStore.rawData.length == 0) {
+            return;
+    }
+
     let xCurrentScale = d3
       .scaleLinear()
       .domain([curRange[0], curRange[1]])
       .range([0, width]);
+
     let xTotalScale = d3
       .scaleLinear()
       .domain([dataEndpoints[0], dataEndpoints[1]])
       .range([0, width]);
 
     let updateCurrentlySelectedData = range => {
-      //console.log('setrange: ' + s + ' ' + e);
-      //dataStore.currentlySelectedData = dataStore.rawData.slice(s, e);
       let start = range[0]; // TODO: instead of filtering, can we use slice()?
       let end = range[1];
       console.log('updateCSD: ' + start + ', ' + end);
       let tmpData = dataStore.rawData.filter((x, i) => start <= i && i < end); // TODO: or <= end?
-      //console.log(tmpData)
       dataStore.currentlySelectedData = tmpData;
     };
 
     let updateCurrentRange = range => {
-      //console.log('setrange: ' + s + ' ' + e);
-      //dataStore.currentlySelectedData = dataStore.rawData.slice(s, e);
       curRange = range;
       updateCurrentlySelectedData(range);
       xCurrentScale.domain(range);
       //xAxisCurrent.scale(xCurrentScale);
       xAxisCurrent.scale(xCurrentScale).tickFormat(tickFormatTimeStamp);
-      //console.log(brushD.extent().call());
       let t = d3.transition().duration(50); // XXX remove completely?
       svg
-        .select('.axisCurrent') // XXX was does this select?
+        .select('.axisCurrent')
         .transition(t)
         .call(xAxisCurrent);
     };
