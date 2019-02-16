@@ -64,6 +64,20 @@ export default class Brush extends PureComponent {
       //console.log('updateCSD: ' + start + ', ' + end);
       cSRD = dataStore.rawData.filter((x, i) => start <= i && i < end); // TODO: or <= end?
       dataStore.currentlySelectedRawData = cSRD;
+
+      let tmp = dataStore.flowrateData.filter((x, i) => start <= i && i < end);
+      dataStore.currentlySelectedFlowrateData = tmp;
+
+      tmp = dataStore.connectionNumberData.filter(
+        (x, i) => start <= i && i < end
+      );
+      dataStore.currentlySelectedConnectionNumberData = tmp;
+
+      // With the current data layout this will hilariously fail:
+      tmp = dataStore.addressesAndLinksData.filter(
+        (x, i) => start <= i && i < end
+      );
+      dataStore.currentlySelectedAddressAndLinksData = tmp;
     };
 
     let updateCurrentRange = range => {
