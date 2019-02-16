@@ -28,7 +28,7 @@ The [`/src/libs`](src/libs) should contain *ONLY* static helper functions or cla
 
 State management is handled with MobX in a observer/reactive manner. Access and mutate the state anywhere inside the project via simply referencing the corresponding class attributes inside [`/stores`](src/stores) or reassigning values to them.
 
-Most of the development of the node-link diagram was happening inside [../misc/network_demo](https://github.com/DHSTTOS/implementation/tree/master/misc/network_demo), but we have already migrated everything there into [/src/components/Diagram/NodeLinkBlock.js](src/components/Diagram/NodeLinkBlock.js).
+Most of the development of the node-link diagram was happening inside [`../misc/network_demo`](https://github.com/DHSTTOS/implementation/tree/master/misc/network_demo), but we have already migrated everything there into [`/src/components/Diagram/NodeLinkBlock.js`](src/components/Diagram/NodeLinkBlock.js).
 
 If you have access to our server, log in as root (I know 😅) and run `boom` to rebuild and redeploy both the login page and this app based on the latest master branch.
 
