@@ -32,7 +32,7 @@ class DataStore {
   @observable.shallow
   connectionNumberData = [];
   @observable.shallow
-  addressAndLinksData = [];
+  addressesAndLinksData = [];
 
   // The slice of data that is currently selected by the slider
   @observable.shallow
