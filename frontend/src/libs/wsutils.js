@@ -142,22 +142,23 @@ const handleDataGroup = msg => {
   const baseName = msg.name;
   console.warn(msg);
   const rawDataPayload = msg.par.find(x => x.name === baseName);
-  dataStore.rawData = rawDataPayload.data;
-  dataStore.availableKeys = Object.keys(rawDataPayload.data[0]);
+  const rawData = rawDataPayload.data.map(x => JSON.parse(x));
+  dataStore.rawData = rawData;
+  dataStore.availableKeys = Object.keys(rawData[0]);
   dataStore.endpoints = [0, rawDataPayload.size];
 
   // XXX This hardcoded handling of the processed data should be made more flexible:
-  dataStore.addressesAndLinksData = msg.par.find(
-    x => x.name === baseName + '_AddressesAndLinks'
-  ).data;
+  dataStore.addressesAndLinksData = msg.par
+    .find(x => x.name === baseName + '_AddressesAndLinks')
+    .data.map(x => JSON.parse(x));
 
-  dataStore.flowrateData = msg.par.find(
-    x => x.name === baseName + '_FlowRatePerSecond'
-  ).data;
+  dataStore.flowrateData = msg.par
+    .find(x => x.name === baseName + '_FlowRatePerSecond')
+    .data.map(x => JSON.parse(x));
 
-  dataStore.connectionNumberData = msg.par.find(
-    x => x.name === baseName + '_AddressesAndLinks'
-  ).data;
+  dataStore.connectionNumberData = msg.par
+    .find(x => x.name === baseName + '_AddressesAndLinks')
+    .data.map(x => JSON.parse(x));
 };
 
 const handleSession = async msg => {
