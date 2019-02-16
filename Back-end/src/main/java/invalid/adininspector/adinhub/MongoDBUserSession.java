@@ -64,8 +64,7 @@ public class MongoDBUserSession implements IUserSession {
 	 * @return an array of strings of the records of the specified collection in json format
 	 */
 	public String[] getCollection(String collection) {
-		//return mongoClientMediator.getCollection(collection);
-		throw new NoSuchMethodError("abort in MongoDBUsersession.getCollection() because it's not implemented in MongoClientMediator");
+		return mongoClientMediator.getCollection(collection);
 	}
 
 	/**

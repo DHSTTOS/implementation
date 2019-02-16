@@ -286,6 +286,7 @@ public class Hub {
 		}
 		String[] collections = userSession.getAvailableCollections();
 		ArrayList<String> members = new ArrayList<String>(10);
+		members.add(collection);
 		Arrays.stream(collections).filter(s -> (s.startsWith(collection) && !s.equals(collection))).forEachOrdered(s -> members.add(s));
 		
 		List<HashMap<String, Object>> collectionGroup = new ArrayList<HashMap<String, Object>>(10);
@@ -294,10 +295,10 @@ public class Hub {
 			HashMap<String, Object> coll = new HashMap<String, Object>();
 			coll.put("name",  member);
 			coll.put("size", userSession.getCollectionSize(member));
-			if (i > 0) {
-				coll.put("data", userSession.getCollection(member));
+			if (i == 0) {
+				coll.put("data", userSession.getCollection(member));// TODO XXX may need to limit amount of raw data
 			} else {
-				coll.put("data",  "[]"); // TODO XXX limit amount of data
+				coll.put("data", userSession.getCollection(member));
 			}
 			collectionGroup.add(coll);
 		}
