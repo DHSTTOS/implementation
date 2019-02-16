@@ -27,7 +27,6 @@ class SourceSelector extends Component {
   };
 
   render() {
-    console.log(`I'll be damned `, toJS(dataStore.rawData));
     return (
       <Selector
         options={dataStore.sourceOptions}

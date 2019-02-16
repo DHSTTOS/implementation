@@ -140,7 +140,6 @@ const handleData = msg => {
 
 const handleDataGroup = msg => {
   const baseName = msg.name;
-  console.warn(msg);
   const rawDataPayload = msg.par.find(x => x.name === baseName);
   const rawData = rawDataPayload.data.map(x => JSON.parse(x));
   dataStore.rawData = rawData;
