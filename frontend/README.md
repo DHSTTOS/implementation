@@ -1,13 +1,23 @@
-# Frontend of DHSTTOS
+# Frontend Of DHSTTOS
 
-This project is the main page of the frontend application, the login page is not (yet) integrated.
+This project is the main page of the frontend application, the login page is not (yet) integrated. For the login page only, see [`../login-frontend`](https://github.com/DHSTTOS/implementation/tree/master/login-frontend).
 
-## How to Fire This Up
+## How To Create A Production Build
+
+0. `cd` into this sub directory
+1. Install dependencies with `npm i` (please don't use `yarn`)
+2. Run `npm run build` to create an optimized production build
+
+Because we allow the user to enter their own WebSocket endpoint of DHSTTOS backend, this web application can be hosted anywhere. One thing to notice is that for most browsers, if the user loads this app from a server which enforces HTTPS (eg. vanilla Netlify), they won't be able to connect to an unencrypted WebSocket endpoint via `ws://` protocol, so `wss://` is required.
+
+## How To Fire This Up For Development
 
 0. `cd` into this sub directory
 1. Install dependencies with `npm i` (please don't use `yarn`)
 2. Run `npm start` to spin up a local dev server
 3. Go to the URL printed in the console
+
+`http://localhost` allows you to connect to an unencrypted WebSocket endpoint.
 
 ## Recommended Tools
 
@@ -30,7 +40,7 @@ State management is handled with MobX in a observer/reactive manner. Access and 
 
 Most of the development of the node-link diagram was happening inside [`../misc/network_demo`](https://github.com/DHSTTOS/implementation/tree/master/misc/network_demo), but we have already migrated everything there into [`/src/components/Diagram/NodeLinkBlock.js`](src/components/Diagram/NodeLinkBlock.js).
 
-If you have access to our server, log in as root (I know 😅) and run `boom` to rebuild and redeploy both the login page and this app based on the latest master branch.
+If you have access to our server, log in as root (I know 😅) and run `boom` to rebuild and redeploy both the login page and this app based on the latest master branch, in order to test the complete frontend suite.
 
 ## License
 
