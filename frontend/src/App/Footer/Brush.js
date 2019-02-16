@@ -114,9 +114,10 @@ export default class Brush extends PureComponent {
       console.log('setrange: ' + s + ' ' + e);
       //dataStore.currentlySelectedData = dataStore.rawData.slice(s, e);
 
-      let tmpData = dataStore.rawData.filter((x, i) => s <= i && i < e);
-      console.log(tmpData);
-      dataStore.currentlySelectedData = tmpData;
+      let tmpRawData = dataStore.rawData.filter((_, i) => s <= i && i < e);
+      console.log(tmpRawData);
+      dataStore.currentlySelectedRawData = tmpRawData;
+      // TODO: XXX handle updates for other data collections
     };
 
     function brushed() {
