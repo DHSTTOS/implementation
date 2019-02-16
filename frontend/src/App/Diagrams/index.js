@@ -39,22 +39,6 @@ const StyledPaper = styled(Paper)`
   margin: 0.5rem;
 `;
 
-const PlotContainer = styled.div`
-  display: flex;
-  flex: 1;
-  align-items: center;
-  justify-content: center;
-  align-self: stretch;
-  margin: 0.5rem;
-`;
-
-const Row = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: stretch;
-`;
-
 const CenteredTypography = styled(Typography)`
   align-self: center;
 `;
@@ -85,67 +69,5 @@ class DiagramsContainer extends Component {
     );
   }
 }
-
-// @observer
-// class Diagram extends Component {
-//   render() {
-//     const { plotType, groupName, x, y } = this.props.config;
-//     const {
-//       colors,
-//       enableArea,
-//       lineWidth,
-//       areaOpacity,
-//       symbolSize,
-//     } = this.props.config.specConfig;
-
-//     const data = formatData({
-//       groupName,
-//       x,
-//       y,
-//       rawData: dataStore.currentlySelectedData,
-//     });
-
-//     const { width, height } = appStore.diagramDimension;
-
-//     let plot = (
-//       <CenteredTypography variant="subtitle1" color="error">
-//         Enable to render diagram, please check configs
-//       </CenteredTypography>
-//     );
-
-//     switch (plotType) {
-//       case SCATTER_PLOT:
-//         plot = (
-//           <ScatterPlotBlock
-//             data={data}
-//             x={x}
-//             y={y}
-//             width={width}
-//             height={height}
-//             colors={colors}
-//             symbolSize={symbolSize}
-//           />
-//         );
-//         break;
-//       case LINE_CHART:
-//         plot = (
-//           <LineChartBlock
-//             data={data}
-//             x={x}
-//             y={y}
-//             width={width}
-//             height={height}
-//             colors={colors}
-//             enableArea={enableArea}
-//             lineWidth={lineWidth}
-//             areaOpacity={areaOpacity}
-//           />
-//         );
-//         break;
-//     }
-
-//     return <PlotContainer>{plot}</PlotContainer>;
-//   }
-// }
 
 export default DiagramsContainer;

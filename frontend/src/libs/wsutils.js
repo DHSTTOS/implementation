@@ -139,16 +139,25 @@ const handleData = msg => {
 };
 
 const handleDataGroup = msg => {
-  let baseName = msg.name;
-  dataStore.rawData = msg.data[baseName].data;
-  dataStore.availableKeys = Object.keys(msg.data[baseName].data[0]);
-  dataStore.endpoints = [0, msg.data[baseName].size];
+  const baseName = msg.name;
+  const rawDataPayload = msg.par.find(x => x.name === baseName);
+  const rawData = rawDataPayload.data.map(x => JSON.parse(x));
+  dataStore.rawData = rawData;
+  dataStore.availableKeys = Object.keys(rawData[0]);
+  dataStore.endpoints = [0, rawDataPayload.size];
 
   // XXX This hardcoded handling of the processed data should be made more flexible:
-  dataStore.addressesAndLinks = msg.data[baseName + '_AddressesAndLinks'].data;
-  dataStore.flowRatePerSecond = msg.data[baseName + '_FlowRatePerSecond'].data;
-  dataStore.numberOfConnectionsPerNode =
-    msg.data[baseName + '_AddressesAndLinks'].data;
+  dataStore.addressesAndLinksData = msg.par
+    .find(x => x.name === baseName + '_AddressesAndLinks')
+    .data.map(x => JSON.parse(x));
+
+  dataStore.flowrateData = msg.par
+    .find(x => x.name === baseName + '_FlowRatePerSecond')
+    .data.map(x => JSON.parse(x));
+
+  dataStore.connectionNumberData = msg.par
+    .find(x => x.name === baseName + '_NumberOfConnectionsPerNode')
+    .data.map(x => JSON.parse(x));
 };
 
 const handleSession = async msg => {
@@ -234,9 +243,10 @@ const getCollectionGroups = socket => {
   sendRequest(socket, message);
 };
 
-const getCollectionGroupData = socket => {
+const getCollectionGroupData = (socket, name) => {
   const message = {
     cmd: 'GET_COLL_GROUP_DATA',
+    par: name,
   };
   sendRequest(socket, message);
 };

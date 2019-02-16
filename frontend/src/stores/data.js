@@ -1,6 +1,8 @@
-import { observable, action } from 'mobx';
+import { observable, action} from 'mobx';
 // import { lmf } from '../../mockdata';
 import appStore from './app';
+import { getCollectionGroupData } from '@libs';
+import userStore from './user';
 
 class DataStore {
   // TODO: when ws binding is done, we'll make this flexible
@@ -16,11 +18,10 @@ class DataStore {
   @action
   selectSource = source => {
     if (this.currentlySelectedSource === source) return;
-
     appStore.resetDiagramConfigs();
     this.resetData();
     this.currentlySelectedSource = source;
-    //TODO: populate different data vars down below
+    getCollectionGroupData(userStore.socket, source);
   };
 
   @observable.shallow
@@ -30,7 +31,7 @@ class DataStore {
   @observable.shallow
   connectionNumberData = [];
   @observable.shallow
-  addressAndLinksData = [];
+  addressesAndLinksData = [];
 
   // The slice of data that is currently selected by the slider
   @observable.shallow
