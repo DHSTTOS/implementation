@@ -9,9 +9,4 @@ let requestAvailableCollections = () => {
   });
 };
 
-// needs to listen to dataStore.availableCollections
-let fillCollectionsMenu = () => {
-  // fill the pull down menu where the user selects the collection
-};
-
-export { requestAvailableCollections, fillCollectionsMenu };
+export { requestAvailableCollections };
