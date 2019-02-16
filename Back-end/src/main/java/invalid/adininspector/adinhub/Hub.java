@@ -39,13 +39,18 @@ public class Hub {
 	 */
 	private static Map<Session, IUserSession> sessions;
 
+
+	static {
+		loginTokens = new HashMap<String, IUserSession>();
+		sessions = new HashMap<Session, IUserSession>();
+	}
+
+
 	/**
 	 * The default constructor.
 	 */
 	public Hub() {
 		requestHandler = new ClientProtocolHandler();
-		loginTokens = new HashMap<String, IUserSession>();
-		sessions = new HashMap<Session, IUserSession>();
 		System.out.println("hub started");
 	}
 
@@ -68,6 +73,7 @@ public class Hub {
 	@OnClose
 	public void handleClose(Session session) {
 		System.out.println("close, session: " + session);
+		logOut(session);
 	}
 
 	/**
@@ -191,6 +197,7 @@ public class Hub {
 			return;
 		}
 
+		System.out.println("logout of session: " + session);
 		sessions.remove(session);
 		// remove the token entry for this session:
 		Iterator<String> tokenSet = loginTokens.keySet().iterator();
