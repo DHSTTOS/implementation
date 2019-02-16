@@ -21,7 +21,6 @@ const createConnection = () => {
 const initHandlers = socket => {
   socket.onopen = message => {
     console.log('WebSocket onopen: ', message);
-    console.dir(message);
     // authenticate again when opening socket
     // XXX i.e. this should call auth()
     // XXX but for now (debugging the main page alone) use login
@@ -33,12 +32,11 @@ const initHandlers = socket => {
   };
 
   socket.onerror = message => {
-    console.log('WebSocket onerror: ', message);
-    console.dir(message);
+    console.error('WebSocket onerror: ', message);
   };
 
   socket.onclose = message => {
-    console.log('WebSocket onclose:');
+    console.groupCollapsed('WebSocket onclose');
     console.dir(message);
     let echoText = 'Disconnect: ' + message;
     echoText += ', ' + message.code;
@@ -47,15 +45,17 @@ const initHandlers = socket => {
     echoText += ', ' + message.isTrusted;
     echoText += '\n';
     console.log(echoText);
+    console.groupEnd();
 
     // TODO XXX: if logout was called (intentional) then do nothing (stay logged out),
     // else try to open the connection again and login again, with token
   };
 
   socket.onmessage = message => {
-    console.log('WebSocket onmessage: ');
+    console.group('WebSocket onmessage: ');
     console.dir(message);
     handleMessage(JSON.parse(message.data));
+    console.groupEnd();
   };
 };
 
@@ -63,9 +63,10 @@ const initHandlers = socket => {
  * Take the JSON-formatted message and handle it according to the protocol.
  */
 const handleMessage = msg => {
+  console.group(`Handling ${msg.cmd} response ID ${msg.id}`);
   console.log(msg);
   if (!msgRegister[msg.id]) {
-    console.log('Protocol: bug: this message was unrequested');
+    console.warn('Protocol: bug: this message was unrequested');
   }
 
   switch (msg.cmd) {
@@ -75,8 +76,6 @@ const handleMessage = msg => {
     case 'LIST_COLL':
       // msg.par will be array
       dataStore.sourceOptions = msg.par;
-      console.warn('Got LIST_COLL');
-      console.log(msg.par);
       break;
     case 'LIST_COLL_GROUPS':
       // array of array of strings
@@ -93,9 +92,11 @@ const handleMessage = msg => {
       handleDataGroup(msg);
       break;
     default:
-      console.log('error: unknown request from server: ' + msg.cmd);
+      console.error('error: unknown request from server: ' + msg.cmd);
       break;
   }
+  console.groupEnd();
+
   // Now that msg has been handled, delete its request:
   delete msgRegister[msg.id];
 };
