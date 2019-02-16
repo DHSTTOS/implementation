@@ -1,5 +1,4 @@
 import { observable, action } from 'mobx';
-// import { lmf } from '../../mockdata';
 import appStore from './app';
 import { getCollectionGroupData } from '@libs';
 import userStore from './user';

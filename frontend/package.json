@@ -49,16 +49,14 @@
     "@libs": "./src/libs",
     "@components": "./src/components",
     "@stores": "./src/stores",
-    "@assets": "./src/assets",
-    "@mockdata": "./mockdata"
+    "@assets": "./src/assets"
   },
   "jest": {
     "moduleNameMapper": {
       "@libs": "<rootDir>/src/libs",
       "@components": "<rootDir>/src/components",
       "@stores": "<rootDir>/src/stores",
-      "@assets": "<rootDir>/src/assets",
-      "@mockdata": "<rootDir>/mockdata"
+      "@assets": "<rootDir>/src/assets"
     }
   },
   "repository": {
