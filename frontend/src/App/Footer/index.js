@@ -25,11 +25,15 @@ const Content = styled.div`
   justify-items: center;
   margin: 0 1rem;
   padding: 0 2rem;
-  grid-template-columns: 10rem auto auto 10rem;
+  grid-template-columns: 10rem auto 10rem;
 `;
 
 const StyledAddBoxIcon = styled(AddBoxIcon)`
   margin-right: 0.5rem;
+`;
+
+const Row = styled.div`
+  display: flex;
 `;
 
 @observer
@@ -47,8 +51,10 @@ class Footer extends Component {
               {'© 2018 DHSTTOS Frontend Contributors'}
             </Typography>
           </div>
-          <BrushConfig />
-          <Brush />
+          <Row>
+            <BrushConfig />
+            <Brush />
+          </Row>
           <div>
             <Button
               onClick={this.handleAddDiagram}

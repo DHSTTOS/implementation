@@ -12,7 +12,7 @@ const Container = styled.div`
   flex-direction: column;
   align-items: left;
   height: 5rem;
-  background-color: red;
+  margin: 0 1rem;
 `;
 
 @observer
