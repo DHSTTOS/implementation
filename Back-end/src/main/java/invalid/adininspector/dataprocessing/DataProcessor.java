@@ -27,6 +27,8 @@ public class DataProcessor {
 	}};
 
 
+	public static boolean isRealTimeUptoDate = false;
+
 	/**
 	 * This method processes the specified collection of the specified MongoClientMediator
 	 * by each of the aggregators registered in this class.
@@ -35,12 +37,14 @@ public class DataProcessor {
 	 * MongoClientMediator in a new collection whose name is the collection name
 	 * followed by an underscore followed by the aggregator's name.
 	 * 
-	 * TODO: compute and store the name of the aggregated collection
 	 * 
 	 * @param collectionName - the record collection to process
 	 * @param clientMediator - the clientMediator holding the specified collection
 	 */
 	public static void processData(String collectionName, MongoClientMediator clientMediator){
+
+		if(collectionName.equals("realTime"))
+			isRealTimeUptoDate = true;
 
 		for (IAggregator agg : aggregators) {
 			clientMediator.addRecordsToCollection(agg.processData(clientMediator.getCollectionAsRecordsArrayList(collectionName)), collectionName + "_" + agg.getClass().getSimpleName());
@@ -54,7 +58,6 @@ public class DataProcessor {
 	 * It calls processData(String, MongoClientMediator) for each of the specified
 	 * collections.
 	 * 
-	 * TODO: compute and store the name of the aggregated collection 
 	 * 
 	 * @param collectionNames - the collections to process
 	 * @param clientMediator - the clientMediator holding these collections
@@ -76,5 +79,11 @@ public class DataProcessor {
 		for (IAggregator agg : aggregators) {
 			clientMediator.dropCollection(collection + "_" + agg.getClass().getSimpleName());
 		}
+	}
+
+	public static void redoAggregation(String collection, MongoClientMediator clientMediator)
+	{
+		dropAggCollections(collection, clientMediator);
+		processData(collection, clientMediator);
 	}
 }

@@ -4,7 +4,6 @@
 package invalid.adininspector;
 
 import java.lang.reflect.Type;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -17,9 +16,6 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
-import com.google.gson.JsonPrimitive;
-import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonSerializer;
 import com.google.gson.reflect.TypeToken;
 import com.mongodb.BasicDBObject;
 import com.mongodb.Block;
@@ -33,12 +29,16 @@ import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.MongoIterable;
 import com.mongodb.client.model.Filters;
 
-import org.bson.BsonTimestamp;
 import org.bson.Document;
 
+import invalid.adininspector.dataprocessing.DataProcessor;
 import invalid.adininspector.exceptions.LoginFailureException;
-import invalid.adininspector.records.*;
+import invalid.adininspector.records.AlarmRecord;
+import invalid.adininspector.records.PacketRecordDesFromMongo;
+import invalid.adininspector.records.Record;
 
+
+//TODO: it would be ideal to have a variable storing whether or not the realTime collection is up to date
 /**
  * This class serves as a nexus between the users who want to get data out of the
  * database and the consumer and dataProcessor who want to add data into the
@@ -121,11 +121,11 @@ public class MongoClientMediator {
 	 */
 	public void addRecordToCollection(Record record, String collection) {
 
-		if(collection.equals("_realTime"))
+		if(collection.equals("realTime"))
 		{
 			//check how many records are in the collection
 
-			//TODO: bad practice magic var buw hatevs
+			//TODO: bad practice magic var but whatevs
 			int maxNumRecords = 60000;
 			if(CollectionSize(collection) >= maxNumRecords)
 			{
@@ -133,9 +133,11 @@ public class MongoClientMediator {
 
 				//delete the first document a new one will be added at the end. 
 				db.getCollection(collection).deleteOne(filter);
+
+				//aggregation not longer up to date
 			}
 
-
+			DataProcessor.isRealTimeUptoDate = false;
 		}
 
 		try {
@@ -165,6 +167,10 @@ public class MongoClientMediator {
 	 * @param collection name of the collection it should be added to.
 	 */
 	public void addRecordToCollection(Document record, String collection) {
+
+		if(collection.equals("realTime"))
+			DataProcessor.isRealTimeUptoDate = false;
+
 		try {
 			// p(record.getAsDocument());
 			db.getCollection(collection).insertOne(record);
@@ -224,6 +230,9 @@ public class MongoClientMediator {
 	 * @return array of all record of the specified collection as strings
 	 */
 	public String[] getCollection(String collection) {
+
+		//check if the user is trying to get a realTime aggregation and if it's up to date. if not then process it and return the updated version
+		updateRTaggregation(collection);
 		return mongoIteratorToStringArray(db.getCollection(collection).find());
 	}
 
@@ -236,6 +245,7 @@ public class MongoClientMediator {
 	public String getStartRecord(String collection) {
 		// find returns a cursor to the first object so we simple return that one
 		//TODO: check if collection is null
+		updateRTaggregation(collection);
 
 		MongoCollection<Document> coll = db.getCollection(collection);
 
@@ -249,6 +259,7 @@ public class MongoClientMediator {
 	 * @return the last record of the collection
 	 */
 	public String getEndRecord(String collection) {
+		updateRTaggregation(collection);
 		// we sort descending by id and then get the first (last object)
 		return db.getCollection(collection).find().sort(new Document("_id", -1)).first().toJson();
 	}
@@ -260,8 +271,8 @@ public class MongoClientMediator {
 	 * @return the number of entries in the collection
 	 */
 	public long CollectionSize(String collection) {
-		// count is deprecated, there's an estimation which should work fine but it's
-		// not gonna be accurate
+		updateRTaggregation(collection);
+
 		return db.getCollection(collection).countDocuments();
 	}
 
@@ -289,6 +300,7 @@ public class MongoClientMediator {
 	 */
 	public String[] getRecordsInRange(String collection, String key, Object start, Object end) {
 		//TODO: get type of field in mongo and cast start and end to this type
+		updateRTaggregation(collection);
 
 		BasicDBObject query = new BasicDBObject();
 
@@ -307,6 +319,8 @@ public class MongoClientMediator {
 
     public String[] getRecord(String collection, String key, Object equals)
     {		
+		updateRTaggregation(collection);
+
 		//TODO: read the type from mongo and convert it to that
 		if(key.equals("Timestamp"))
 		{
@@ -439,6 +453,14 @@ public class MongoClientMediator {
 		return records;
 	}
 
+	public void updateRTaggregation(String collection)
+	{
+		//check if the user is trying to get a realTime aggregation and if it's up to date. if not then process it and return the new one
+		if(collection.contains("realTime_"))
+			if(!DataProcessor.isRealTimeUptoDate)
+				DataProcessor.processData("realTime", this);
+	}
+
 	// Might be useful for the upper layers
 	public Type getCollectionType(String collectionName) {
 		Type type = null;
@@ -451,11 +473,6 @@ public class MongoClientMediator {
 		}.getType();
 
 		return type;
-	}
-
-	// TODO: implement me
-	private Record[] mongoIteratorToRecordArray(MongoIterable it) {
-		return null;
 	}
 
 	public void p(Object line) {
