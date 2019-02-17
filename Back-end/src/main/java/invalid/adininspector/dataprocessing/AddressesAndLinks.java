@@ -13,6 +13,7 @@ import org.bson.Document;
 import invalid.adininspector.records.PacketRecordDesFromMongo;
 import invalid.adininspector.records.Record;
 
+//TODO: we need to change this to be per second not for the whole data set
 /**
  * AddressesAndLinks implements IAggregator. This aggregator produces a document
  * containing a list of network nodes that show up in a collection and a list of
