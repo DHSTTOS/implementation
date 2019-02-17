@@ -1,10 +1,6 @@
 import React, { Component } from 'react';
 import { observer } from 'mobx-react';
 import styled from '@emotion/styled';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
-import FormControl from '@material-ui/core/FormControl';
-import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 
@@ -16,12 +12,7 @@ const Container = styled.div`
   flex-direction: column;
   align-items: left;
   height: 5rem;
-  width: 20rem;
-`;
-
-const StyledFormControlLabel = styled(FormControlLabel)`
-  flex: 1 1 2rem;
-  align-self: flex-start;
+  background-color: red;
 `;
 
 @observer
@@ -33,7 +24,7 @@ class BrushConfig extends Component {
   render() {
     return (
       <Container>
-        <StyledFormControlLabel
+        <FormControlLabel
           control={
             <Checkbox
               checked={appStore.brushConfig.smoothScroll}
@@ -43,7 +34,7 @@ class BrushConfig extends Component {
           }
           label="Smooth scroll"
         />
-        <StyledFormControlLabel
+        <FormControlLabel
           control={
             <Checkbox
               checked={appStore.brushConfig.tickstyle}

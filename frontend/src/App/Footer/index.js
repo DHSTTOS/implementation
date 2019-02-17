@@ -25,7 +25,7 @@ const Content = styled.div`
   justify-items: center;
   margin: 0 1rem;
   padding: 0 2rem;
-  grid-template-columns: 10rem auto 10rem;
+  grid-template-columns: 10rem auto auto 10rem;
 `;
 
 const StyledAddBoxIcon = styled(AddBoxIcon)`
