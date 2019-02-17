@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import styled from '@emotion/styled';
 import * as d3 from 'd3';
-import { dataStore } from '@stores';
+import { appStore, dataStore } from '@stores';
 import { autorun } from 'mobx';
 
 const Container = styled.div`
@@ -120,7 +120,7 @@ export default class Brush extends PureComponent {
     console.log('rawData length' + dataStore.rawData.length);
 
     let tickFormatTimeStamp = d => {
-      return 'foo';
+      return '0';
     };
 
     let tickFormatTimeStampTotal = d => {
@@ -206,7 +206,9 @@ export default class Brush extends PureComponent {
 
     function brushed() {
       // console.log( d3.event.selection );
-      updateCurrentRangeFromTotal(d3.event.selection);
+      if (appStore.brushConfig.smoothScroll) {
+        updateCurrentRangeFromTotal(d3.event.selection);
+      }
     }
 
     function brushended() {
@@ -240,6 +242,10 @@ export default class Brush extends PureComponent {
         //console.log("tickF: " + d + ": " + cSRD[d]);
 
         //console.log('autorun.tickFormatTimeStamp:');
+        if (appStore.brushConfig.tickstyle) {
+          return '' + d;
+        }
+
         let offset = Math.floor(d - curRange[0]);
         //console.log('cSRD.length: ' + cSRD.length + ' ' + curRange[0]);
         //console.log(curRange);
@@ -252,7 +258,7 @@ export default class Brush extends PureComponent {
         let ls = ('' + date.getSeconds()).padStart(2, '0');
         let lms = ('' + date.getMilliseconds()).padStart(3, '0');
 
-        let label = '' + d + '_' + lh + ':' + lm + ':' + ls + '.' + lms;
+        let label = lh + ':' + lm + ':' + ls + '.' + lms;
         return label;
       };
 

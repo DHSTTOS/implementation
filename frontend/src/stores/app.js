@@ -237,7 +237,6 @@ class AppStore {
   updateBrushConfig = name => value => {
     this.brushConfig[name] = value;
   };
-
 }
 
 const appStore = new AppStore();
