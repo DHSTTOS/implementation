@@ -30,6 +30,7 @@ export default class Brush extends PureComponent {
     let width = 700;
     let height = 100;
     let maxDisplayable = 2000;
+    let margin = [10, 0, 10, 0]; // Margin around brush and axes
 
     console.log('start brush : ' + dataStore.rawData.length);
     console.log(dataStore.endpoints);
@@ -49,12 +50,12 @@ export default class Brush extends PureComponent {
     let xCurrentScale = d3
       .scaleLinear()
       .domain([curRange[0], curRange[1]])
-      .range([0, width]);
+      .range([0, width - margin[0] - margin[2]]);
 
     let xTotalScale = d3
       .scaleLinear()
       .domain([dataEndpoints[0], dataEndpoints[1]])
-      .range([0, width]);
+      .range([0, width - margin[0] - margin[2]]);
 
     let cSRD = [0, 0];
 
@@ -138,8 +139,6 @@ export default class Brush extends PureComponent {
       return label;
     };
 
-    //let xAxis = d3.axisBottom().scale(xTotalScale).orient("bottom");
-    //let xAxis = d3.axisBottom().scale(xTotalScale).orient("bottom");
     let xAxisCurrent = d3
       .axisBottom(xCurrentScale)
       .ticks(5)
@@ -165,22 +164,23 @@ export default class Brush extends PureComponent {
     let focus = svg
       .append('g')
       .attr('class', 'focus')
-      .attr('transform', 'translate(' + 0 + ',' + 10 + ')');
-    // does this shift the axis too far right?
+      .attr('transform', 'translate(' + margin[0] + ',' + margin[1] + ')');
+    let offsetAxisCurrent = 10;
+    let offsetAxisTotal = 50;
 
     focus
       .append('g')
       .attr('class', 'x axisCurrent')
-      .attr('transform', 'translate(0,' + 10 + ')')
+      .attr('transform', 'translate(0,' + offsetAxisCurrent + ')')
       .call(xAxisCurrent);
 
-    // XXX should we append/use another "g"?
     focus
       .append('g')
       .attr('class', 'x axisTotal')
-      .attr('transform', 'translate(0,' + 50 + ')')
+      .attr('transform', 'translate(0,' + offsetAxisTotal + ')')
       .call(xAxisTotal);
 
+    // Draw frame around the area for the brush and the axes:
     svg
       .append('rect')
       .attr('width', width)
@@ -192,11 +192,14 @@ export default class Brush extends PureComponent {
 
     let brushD = d3
       .brushX()
-      .extent([[0, height / 2], [width, height]])
+      .extent([
+        [0, offsetAxisTotal - 20],
+        [width - margin[0] - margin[2], offsetAxisTotal + 20],
+      ])
       .on('start brush', brushed)
       .on('end', brushended);
 
-    svg
+    focus
       .append('g')
       .attr('class', 'brush')
       .call(brushD);
@@ -207,15 +210,13 @@ export default class Brush extends PureComponent {
     }
 
     function brushended() {
-      console.log(
-        'brushing ended: ' + d3.event.selection[0] + ' ' + d3.event.selection[1]
-      );
-      //getAvailableCollections(userStore.socket);
-      updateCurrentRangeFromTotal(d3.event.selection);
-      //xTotalScale.domain(dataEndpoints).range([0, width]);
       if (!d3.event.selection) {
         console.log('There is no selection');
       }
+      console.log(
+        'brushing ended: ' + d3.event.selection[0] + ' ' + d3.event.selection[1]
+      );
+      updateCurrentRangeFromTotal(d3.event.selection);
     }
 
     this.disposeAutorun = autorun(() => {
