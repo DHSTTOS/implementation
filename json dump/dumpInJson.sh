@@ -1,7 +1,7 @@
 #!/bin/bash
 
 DB=AdinInspector
-Array=("lemgo"
+Array=( "lemgo"
         "lemgo_AddressesAndLinks"
         "lemgo_FlowRatePerSecond"
         "lemgo_NumberOfConnectionsPerNode"
@@ -16,5 +16,5 @@ Array=("lemgo"
 
 
 for i in ${Array[@]}; do
-       mongoexport -d $DB -c ${i} -o ./${i}.jsonDump
+       mongoexport -d $DB -c ${i} -o ./${i}.json
 done
