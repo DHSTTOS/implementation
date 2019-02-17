@@ -65,4 +65,16 @@ public class DataProcessor {
 			processData(collectionNames.get(i), clientMediator);
 		}
 	}
+
+	public static void createMockAggCollections(String collection , MongoClientMediator clientMediator){
+		for (IAggregator agg : aggregators) {
+			clientMediator.createEmptyCollection(collection + "_" + agg.getClass().getSimpleName());
+		}
+	}
+
+	public static void dropAggCollections(String collection , MongoClientMediator clientMediator){
+		for (IAggregator agg : aggregators) {
+			clientMediator.dropCollection(collection + "_" + agg.getClass().getSimpleName());
+		}
+	}
 }

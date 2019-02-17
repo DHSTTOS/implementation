@@ -35,10 +35,7 @@ import invalid.adininspector.records.AlarmRecord;
 import invalid.adininspector.records.PacketRecordDesFromKafka;
 import invalid.adininspector.records.Record;
 
-//project hasn't even started and we're already doing hacky shit
-//TODO: convert Timestampo date value into a mongoDB timestamp object
-//TODO: check if changing Timestamp into a number fixes the use
-//TODO: test ignoring timestamp object and add our own timestamp object
+//TODO: find a way to continue to listen to all topics, including realtime.
 
 /**
  * The Mongo Consumer, as the name implies, consumes all messages from all
@@ -54,6 +51,8 @@ public class MongoConsumer {
 	private MongoClientMediator clientMediator;
 
 	private KafkaConsumer<String, String> consumer;
+
+	private String realTimeTopicName = "realTime";
 
 	// private String[] topics;
 	List<String> topics;
@@ -115,7 +114,7 @@ public class MongoConsumer {
 		//assign the proper offset to the partitions i.e. the last consumed offsets, except realtime
 		consumer.endOffsets(partitions).entrySet().forEach(part -> {
 			
-			//get the last record collected and that's were we continue to consume;
+			//get the last record offset, equal to size of  the appropriate collection in mongo, and that's were we continue to consume;
 			long ConsumedOffset = clientMediator.CollectionSize(part.getKey().topic());
 
 			consumer.seek(part.getKey(), ConsumedOffset);
@@ -125,6 +124,9 @@ public class MongoConsumer {
 
 		//consumer.seekToBeginning(partitions);
 		
+		//drop the realTime collection and it's aggregation
+		clientMediator.dropCollection(realTimeTopicName);
+		DataProcessor.dropAggCollections(realTimeTopicName, clientMediator);
 
 		ListenForRecords();
 	}
@@ -222,6 +224,19 @@ public class MongoConsumer {
 				processRecords = false;
 
 				System.out.println("all stored records have been processed");
+
+				Collection<TopicPartition> tops = getAllTopicsPartitions();
+				tops.add(new TopicPartition(realTimeTopicName, 0));
+				clientMediator.createEmptyCollection(realTimeTopicName);
+				System.out.println("Added realTime to topics and created empty realTime collection");
+
+
+				consumer.assign(tops);//we manage only one partition so it'd be fine to take the first one
+				//now that everything is stored and processed, add the realtime topic into the consumer
+				
+				DataProcessor.createMockAggCollections(realTimeTopicName, clientMediator);
+				System.out.println("Created mock collections");
+
 			}
 		}
 	}
@@ -249,7 +264,7 @@ public class MongoConsumer {
 
 			// __consumer_offsets is internal to kafka and should be ignored
 			// TODO: ignore real-time data
-			if (!topic.getKey().contentEquals("__consumer_offsets") && !topic.getKey().contentEquals("_realTime")) {
+			if (!topic.getKey().contentEquals("__consumer_offsets") && !topic.getKey().contentEquals("realTime")) {
 				kafkaTopics.add(new TopicPartition(topic.getKey(), 0));
 				System.out.println("Topic: " + topic.getKey());
 			}
@@ -278,7 +293,7 @@ public class MongoConsumer {
 			// __consumer_offsets is internal to kafka and should be ignored we also need to
 			// ingore everything that isn't Packet Records
 			// --> that means ignore everything that contains an underscore
-			if (!topic.getKey().contentEquals("__consumer_offsets") && !topic.getKey().contentEquals("_realTime")) {
+			if (!topic.getKey().contentEquals("__consumer_offsets") && !topic.getKey().contentEquals("realTime")) {
 				kafkaTopics.add(topic.getKey());
 			}
 

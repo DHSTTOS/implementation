@@ -92,11 +92,11 @@ public class MongoClientMediator {
         }
         
 
-        String[] t = getRecord("lemgo","_id","9");
+        // String[] t = getRecord("lemgo","_id","9");
  
-        for (int i = 0; i < t.length; i++) {
-             p(t[i]);
-         }
+        // for (int i = 0; i < t.length; i++) {
+        //      p(t[i]);
+        //  }
 
 	}
 
@@ -121,6 +121,23 @@ public class MongoClientMediator {
 	 */
 	public void addRecordToCollection(Record record, String collection) {
 
+		if(collection.equals("_realTime"))
+		{
+			//check how many records are in the collection
+
+			//TODO: bad practice magic var buw hatevs
+			int maxNumRecords = 60000;
+			if(CollectionSize(collection) >= maxNumRecords)
+			{
+				Document filter = new Document("_id", db.getCollection(collection).find().first().get("_id"));
+
+				//delete the first document a new one will be added at the end. 
+				db.getCollection(collection).deleteOne(filter);
+			}
+
+
+		}
+
 		try {
 			// p(record.getAsDocument());
 			db.getCollection(collection).insertOne(record.getAsDocument());
@@ -133,6 +150,11 @@ public class MongoClientMediator {
 		catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	public void dropCollection(String collection)
+	{
+		db.getCollection(collection).drop();
 	}
 
 	/**
@@ -272,7 +294,6 @@ public class MongoClientMediator {
 
 		if(key.equals("Timestamp"))
 		{
-			System.out.println("OMG TIMESTAMP!");
 			query.put(key, new BasicDBObject("$gte", new Date(Long.valueOf((String)start))).append("$lt", new Date(Long.valueOf((String)end)) ));
 		}
 		else if(key.equals("_id"))
@@ -346,6 +367,11 @@ public class MongoClientMediator {
 		return colls.toArray(new String[colls.size()]); //mongoIteratorToStringArray(db.listCollectionNames());
 	}
 
+
+	public void createEmptyCollection(String collection)
+	{
+		db.createCollection(collection);
+	}
 	
 	// HELPER FUNCTIONS
 	private String[] mongoIteratorToStringArray(MongoIterable iterable) {
