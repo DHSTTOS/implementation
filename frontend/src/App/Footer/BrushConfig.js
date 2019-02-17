@@ -11,12 +11,12 @@ import Checkbox from '@material-ui/core/Checkbox';
 import { appStore } from '@stores';
 
 const Container = styled.div`
-  width: 50%;
+  bottom: 0;
   display: flex;
   flex-direction: column;
-  align-self: flex-start;
   align-items: left;
-  margin: 0.5rem;
+  height: 5rem;
+  width: 20rem;
 `;
 
 const StyledFormControlLabel = styled(FormControlLabel)`
