@@ -8,9 +8,7 @@ const Container = styled.div`
   bottom: 0;
   display: flex;
   height: 5rem;
-  width: 65rem;
-  /* TODO: you can remove the background color now */
-  background-color: pink;
+  width: 700px;
 `;
 
 export default class Brush extends PureComponent {
@@ -28,7 +26,7 @@ export default class Brush extends PureComponent {
     let main = d3.select(this.brush.current);
 
     let width = 700;
-    let height = 100;
+    let height = 85;
     let maxDisplayable = 2000;
     let margin = [10, 0, 10, 0]; // Margin around brush and axes
 
