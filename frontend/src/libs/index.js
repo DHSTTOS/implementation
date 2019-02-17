@@ -5,6 +5,7 @@ import {
   LINE_CHART,
   NODE_LINK,
   NIVO_COLOR_SCHEMES,
+  DEFAULT_BRUSH_CONFIG,
 } from './consts';
 
 import {
@@ -76,6 +77,7 @@ export {
   LINE_CHART,
   NODE_LINK,
   NIVO_COLOR_SCHEMES,
+  DEFAULT_BRUSH_CONFIG,
   createConnection,
   login,
   auth,

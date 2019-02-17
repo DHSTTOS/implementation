@@ -5,6 +5,7 @@ import {
   LINE_CHART,
   NIVO_COLOR_SCHEMES,
   NODE_LINK,
+  DEFAULT_BRUSH_CONFIG,
 } from '@libs';
 
 // JS Doc type defs
@@ -228,6 +229,15 @@ class AppStore {
     // TODO: finish this logic
     this.globalFilters[name] = value;
   };
+
+  @observable
+  brushConfig = DEFAULT_BRUSH_CONFIG;
+
+  @action
+  updateBrushConfig = name => value => {
+    this.brushConfig[name] = value;
+  };
+
 }
 
 const appStore = new AppStore();

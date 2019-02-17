@@ -8,6 +8,7 @@ import uniqid from 'uniqid';
 
 import { appStore } from '@stores';
 import Brush from './Brush';
+import BrushConfig from './BrushConfig';
 
 const Container = styled.div`
   position: fixed;
@@ -46,6 +47,7 @@ class Footer extends Component {
               {'© 2018 DHSTTOS Frontend Contributors'}
             </Typography>
           </div>
+          <BrushConfig />
           <Brush />
           <div>
             <Button
