@@ -1,55 +1,49 @@
 import { observable, action } from 'mobx';
-import { DEFAULT_SOURCE_NAME } from '@libs';
-import {
-  lmf,
-  lmf_FlowRatePerSecond,
-  lmf_NumberOfConnectionsPerNode,
-  nodeLinkSample,
-} from '../../mockdata';
 import appStore from './app';
+import { getCollectionGroupData } from '@libs';
+import userStore from './user';
 
 class DataStore {
   // TODO: when ws binding is done, we'll make this flexible
-  availableKeys = Object.keys(lmf[0]);
+  // TODO: we need to create separate vars for all plot types, since they are gonna use different data sources
+  @observable
+  availableKeys = ['sample key'];
+  // availableKeys = Object.keys(lmf[0]);
 
   @observable
-  availableCollections = []; //exampleCollection
-
-  // Raw network data
-  @observable.shallow
-  rawData = lmf;
-
-  @observable.shallow
-  flowrateData = lmf_FlowRatePerSecond;
-
-  @observable.shallow
-  connectionNumberData = lmf_NumberOfConnectionsPerNode;
-
-  @observable.shallow
-  addressLinkData = [];
-
-  @observable.shallow
-  currentNodeLinkData = nodeLinkSample;
-
-  @observable
-  endpoints = []; // The start and end indices for the x-axis
-
-  // The slice of raw data that is currently selected by the slider:
-  @observable.shallow
-  currentlySelectedData = lmf;
-
-  @observable
-  sourceOptions = ['Source 1', 'Live'];
+  sourceOptions = [];
   @observable
   currentlySelectedSource = '';
   @action
   selectSource = source => {
     if (this.currentlySelectedSource === source) return;
-
     appStore.resetDiagramConfigs();
     this.resetData();
     this.currentlySelectedSource = source;
+    getCollectionGroupData(userStore.socket, source);
   };
+
+  @observable.shallow
+  rawData = [];
+  @observable.shallow
+  flowrateData = [];
+  @observable.shallow
+  connectionNumberData = [];
+  @observable.shallow
+  addressesAndLinksData = [];
+
+  // The slice of data that is currently selected by the slider
+  @observable.shallow
+  currentlySelectedRawData = [];
+  @observable.shallow
+  currentlySelectedFlowrateData = [];
+  @observable.shallow
+  currentlySelectedConnectionNumberData = [];
+  @observable.shallow
+  currentlySelectedAddressAndLinksData = [];
+
+  @observable
+  endpoints = []; // The start and end indices for the x-axis
 
   // Array of notification/alarm data sets:
   @observable
@@ -67,7 +61,10 @@ class DataStore {
     this.availableCollections = [];
     this.rawData = [];
     this.endpoints = [];
-    this.currentlySelectedData = [];
+    this.currentlySelectedRawData = [];
+    this.currentlySelectedFlowrateData = [];
+    this.currentlySelectedConnectionNumberData = [];
+    this.currentlySelectedAddressAndLinksData = [];
     this.alarms = [];
   };
 }

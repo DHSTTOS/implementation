@@ -39,7 +39,7 @@ test(`it formats raw data into a structure that's easy for d3 to handle`, () => 
       groupName: 'L2Protocol',
       x: 'Timestamp',
       y: 'SourceMACAddress',
-      rawData: mockData,
+      unformattedData: mockData,
     })
   ).toEqual([
     {

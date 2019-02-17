@@ -13,9 +13,12 @@ import {
   auth,
   logout,
   getAvailableCollections,
+  getCollectionGroups,
+  getCollectionGroupData,
   getCollection,
   getCollectionSize,
   getEndpoints,
+  getRecord,
   getRecordsInRange,
   getRecordsInRangeSize,
   getLocalCollection,
@@ -31,6 +34,8 @@ import {
   removeUDP,
 } from './dataFilters';
 
+import { requestAvailableCollections } from './getCollections';
+
 /**
  * Formats raw data to nivo's format.
  *
@@ -38,11 +43,11 @@ import {
  * @param {string} p.groupName
  * @param {string} p.x
  * @param {string} p.y
- * @param {Object[]} p.rawData
+ * @param {Object[]} p.unformattedData
  *
  * @return {Object[]}
  */
-const formatData = ({ groupName, x, y, rawData = [] }) => {
+const formatData = ({ groupName, x, y, unformattedData: rawData = [] }) => {
   // normalize the timestamp
   const normalizedRawData = rawData.map(x => ({
     ...x,
@@ -76,9 +81,12 @@ export {
   auth,
   logout,
   getAvailableCollections,
+  getCollectionGroups,
+  getCollectionGroupData,
   getCollection,
   getCollectionSize,
   getEndpoints,
+  getRecord,
   getRecordsInRange,
   getRecordsInRangeSize,
   getLocalCollection,
@@ -90,4 +98,5 @@ export {
   removeEther,
   removeProfinet,
   removeUDP,
+  requestAvailableCollections,
 };

@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import styled from '@emotion/styled';
 import * as d3 from 'd3';
 import { dataStore } from '@stores';
+import { autorun } from 'mobx';
 
 const Container = styled.div`
   bottom: 0;
@@ -14,6 +15,7 @@ const Container = styled.div`
 
 export default class Brush extends PureComponent {
   brush = React.createRef();
+  disposeAutorun = () => {};
 
   componentDidMount = () => {
     // DO NOT TOUCH THE CODE ABOVE (except importing and change the bg color ofc)
@@ -114,9 +116,10 @@ export default class Brush extends PureComponent {
       console.log('setrange: ' + s + ' ' + e);
       //dataStore.currentlySelectedData = dataStore.rawData.slice(s, e);
 
-      let tmpData = dataStore.rawData.filter((x, i) => s <= i && i < e);
-      console.log(tmpData);
-      dataStore.currentlySelectedData = tmpData;
+      let tmpRawData = dataStore.rawData.filter((_, i) => s <= i && i < e);
+      console.log(tmpRawData);
+      dataStore.currentlySelectedRawData = tmpRawData;
+      // TODO: XXX handle updates for other data collections
     };
 
     function brushed() {
@@ -159,9 +162,24 @@ export default class Brush extends PureComponent {
       }
     }
 
+    this.disposeAutorun = autorun(() => {
+      // this block will be rerun whenever the observable targets that you used get updated
+      console.warn(
+        `Now we have ${
+          dataStore.currentlySelectedRawData.length
+        } entries in currently selected rawData!`
+      );
+      // So you might wanna write a function which "handles" updating the ticks etc
+    });
+
     // do whatever you want :)
 
     // DO NOT TOUCH THE CODE BELOW
+  };
+
+  componentWillUnmount = () => {
+    this.disposeAutorun();
+    this.brush.current.remove();
   };
 
   render() {

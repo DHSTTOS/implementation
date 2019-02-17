@@ -46,7 +46,20 @@ class Diagram extends Component {
         </PlotContainer>
       );
     }
-    
+
+    let unformattedData;
+    switch (this.props.config.plotType) {
+      case NODE_LINK:
+        unformattedData = dataStore.currentlySelectedAddressAndLinksData;
+        break;
+      case SCATTER_PLOT:
+        unformattedData = dataStore.currentlySelectedRawData;
+        break;
+      case LINE_CHART:
+        unformattedData = dataStore.currentlySelectedFlowrateData;
+        break;
+    }
+
     const { plotType, groupName, x, y } = this.props.config;
     const {
       colors,
@@ -60,9 +73,8 @@ class Diagram extends Component {
       groupName,
       x,
       y,
-      rawData: dataStore.currentlySelectedData,
+      unformattedData,
     });
-    console.log(data);
 
     let width, height;
     if (this.props.isFullscreen) {
