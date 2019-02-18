@@ -42,7 +42,7 @@ class BrushConfig extends Component {
               value="tickstyle"
             />
           }
-          label="Tickstyle"
+          label="Ticks: Index"
         />
       </Container>
     );
