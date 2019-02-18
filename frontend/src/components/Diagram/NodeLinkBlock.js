@@ -98,7 +98,9 @@ function RadialPlacement() {
   let increment = 5;
   // how large to make the layout
   let radius = 100;
+  //starting x-radius of the ellipse
   let radiusA = 200;
+  //starting y-radius of the ellipse
   let radiusB = 150;
   // where the center of the layout should be
   let center = { x: 0, y: 0 };
@@ -106,7 +108,7 @@ function RadialPlacement() {
   let start = -120;
   let current = start;
 
-  // Given an center point, angle, and radius length,
+  // Given an center point, angle, and x-radius length and y-radius length,
   // return a radial position for that angle
   const radialLocation = function(center, angle, radiusA, radiusB) {
     const x = center.x + radiusA * Math.cos((angle * Math.PI) / 180);
@@ -147,14 +149,17 @@ function RadialPlacement() {
     // Fullscreen size
     keys.forEach(k => {
       if (k.includes(':')) {
+        //set the radius for the first layer
         radiusA = 200;
         radiusB = 150;
         place(k);
       } else if (k.includes('.')) {
+        //set the radius for the second layer
         radiusA = 400;
         radiusB = 280;
         place(k);
       } else {
+        //set the radius for the third layer
         radiusA = 600;
         radiusB = 400;
         place(k);
