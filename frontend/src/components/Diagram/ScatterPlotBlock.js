@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { observer } from 'mobx-react';
-import { ScatterPlot } from '@nivo/scatterplot';
+import { ResponsiveScatterPlotCanvas } from '@nivo/scatterplot';
 
 /**
  * @typedef {object} Props
@@ -19,7 +19,7 @@ class ScatterPlotBlock extends Component {
   render() {
     const { width, height, data, x, y, colors, symbolSize } = this.props;
     return (
-      <ScatterPlot
+      <ResponsiveScatterPlotCanvas
         width={width}
         height={height}
         data={data}
@@ -56,6 +56,7 @@ class ScatterPlotBlock extends Component {
           legendOffset: -120,
         }}
         animate={false}
+        useMesh={true}
         legends={[
           {
             anchor: 'bottom-right',
