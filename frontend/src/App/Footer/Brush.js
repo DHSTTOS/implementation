@@ -16,10 +16,8 @@ export default class Brush extends PureComponent {
   disposeAutorun = () => {};
 
   componentDidMount = () => {
-    // DO NOT TOUCH THE CODE ABOVE (except importing and change the bg color ofc)
-
-    // use `this.brush.current` as the reference to the root node and that's it
-    // reference dataStore or appStore as needed, there shouldn't be any problems
+    // DO NOT TOUCH THE CODE ABOVE (except importing and style changes.)
+    // use `this.brush.current` as the reference to the root node
 
     /* Main Brush Code
      *
@@ -100,11 +98,12 @@ export default class Brush extends PureComponent {
       //console.log('updateCR: ' + range[0] + ', ' + range[1]);
       curRange = range;
       updateCurrentlySelectedData(range);
+
       /*
-      xSectionScale.domain(range);
+      // Since we have now fetched new data, update the ticksmarks:
+      xSectionScale.domain(sectionRange);
       //xAxisSection.scale(xSectionScale);
       xAxisSection.scale(xSectionScale).tickFormat(tickFormatTimeStamp);
-      let t = d3.transition().duration(50); // XXX remove completely?
       svg.select('.axisSection').call(xAxisSection);
       */
     };
@@ -180,9 +179,6 @@ export default class Brush extends PureComponent {
       .tickSize(5)
       .tickFormat(tickFormatTimeStampTotal);
 
-    // from example code:
-
-    //var svg = d3.select("body").append("svg").attr("width",width).attr("height",height);
     let svg = main
       .append('svg')
       .attr('width', width)
@@ -281,10 +277,15 @@ export default class Brush extends PureComponent {
           d3.event.selection[1]
       );
       updateCurrentRangeFromSection(d3.event.selection);
+      updateSectionRange(sectionRange); // update tickmarks
     }
 
+    /**
+     * Update slider ranges and tickmarks when new data gets loaded.
+     * This function will be rerun whenever the observable targets that
+     * it uses (dataStore.rawData and .endpoints) get updated.
+     */
     this.disposeAutorun = autorun(() => {
-      // this block will be rerun whenever the observable targets that you used get updated
       console.warn(
         `Now we have ${dataStore.rawData.length} entries in rawData!`
       );
@@ -309,7 +310,7 @@ export default class Brush extends PureComponent {
         }
 
         console.log('d: ' + d + ' curRange: ' + curRange[0]);
-        let offset = Math.floor(d - curRange[0]);
+        let offset = Math.floor(d - sectionRange[0]);
         //console.log('cSRD.length: ' + cSRD.length + ' ' + curRange[0]);
         //console.log(curRange);
         //return d + '_' + (d-curRange[0]);
@@ -328,13 +329,10 @@ export default class Brush extends PureComponent {
       };
 
       updateTotalRange(totalRange);
-      updateSectionRange(curRange);
-      //updateCurrentRange(curRange);  // TODO
-
-      // So you might wanna write a function which "handles" updating the ticks etc
+      updateSectionRange(sectionRange);
+      updateCurrentRange(curRange); // TODO
+      updateSectionRange(sectionRange); // update tickmarks
     });
-
-    // do whatever you want :)
 
     // DO NOT TOUCH THE CODE BELOW
   };
