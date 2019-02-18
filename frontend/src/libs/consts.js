@@ -22,3 +22,8 @@ export const NIVO_COLOR_SCHEMES = [
   'set2',
   'set3',
 ];
+
+export const DEFAULT_BRUSH_CONFIG = {
+  tickstyle: false,
+  smoothScroll: false,
+};
