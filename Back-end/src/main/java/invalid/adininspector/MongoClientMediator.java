@@ -306,6 +306,7 @@ public class MongoClientMediator {
 
 		if(key.equals("Timestamp"))
 		{
+			updateRTaggregation(collection, key, new Date(Long.valueOf((String)start)), new Date(Long.valueOf((String)end)));
 			query.put(key, new BasicDBObject("$gte", new Date(Long.valueOf((String)start))).append("$lt", new Date(Long.valueOf((String)end)) ));
 		}
 		else if(key.equals("_id"))
@@ -324,6 +325,7 @@ public class MongoClientMediator {
 		//TODO: read the type from mongo and convert it to that
 		if(key.equals("Timestamp"))
 		{
+			updateRTaggregation(collection, key, new Date(Long.valueOf((String)equals)), new Date(Long.valueOf((String)equals)));
 			equals = new Date(Long.valueOf((String)equals));
 		}
 		else if(key.equals("_id"))
@@ -423,17 +425,6 @@ public class MongoClientMediator {
 				.registerTypeAdapter(Date.class, dateDeser)
 				.registerTypeAdapter(long.class, longDeser).create();
 
-
-		// GsonBuilder builder = new GsonBuilder(); 
-
-		// builder.registerTypeAdapter(Date.class, new JsonDeserializer<Date>() { 
-		//     public Date deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-		//        return new Date(json.getAsJsonPrimitive().getAsLong()); 
-		//     } 
-		//  });
-
-		// Gson gson = builder.create();
-
 		ArrayList<Record> records = new ArrayList<>();
 
 		Type collType = getCollectionType(collectionName);
@@ -453,6 +444,52 @@ public class MongoClientMediator {
 		return records;
 	}
 
+	public ArrayList<Record> getCollectionAsRecordsArrayList(String collectionName, String key, Object start, Object end)
+	{
+		JsonDeserializer<Date> dateDeser = new JsonDeserializer<Date>() {
+			@Override
+			public Date deserialize(JsonElement json, Type typeOfT,
+					JsonDeserializationContext context) throws JsonParseException {
+				long time = json.getAsJsonObject().getAsJsonPrimitive("$date").getAsLong();
+				Date d = new Date(time);
+				return d;
+			}
+		};
+		JsonDeserializer<Long> longDeser = new JsonDeserializer<Long>() {
+
+			@Override
+			public Long deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+					throws JsonParseException {
+				return  json.getAsJsonObject().getAsJsonPrimitive("$numberLong").getAsLong();
+			}
+		
+		};
+
+		Gson gson = new GsonBuilder()
+				.registerTypeAdapter(Date.class, dateDeser)
+				.registerTypeAdapter(long.class, longDeser).create();
+
+
+
+		ArrayList<Record> records = new ArrayList<>();
+
+		Type collType = getCollectionType(collectionName);
+
+		String[] recordsToConvert = start.equals(end) ? getRecord(collectionName, key, start) : getRecordsInRange(collectionName,key,start,end);
+
+		if (recordsToConvert.length == 0)
+			return new ArrayList<>();
+
+		for (int i = 0; i < recordsToConvert.length; i++) {
+			records.add(gson.fromJson(recordsToConvert[i], collType));
+		}
+
+		return records;
+
+		
+	}
+
+
 	public void updateRTaggregation(String collection)
 	{
 		//check if the user is trying to get a realTime aggregation and if it's up to date. if not then process it and return the new one
@@ -460,6 +497,17 @@ public class MongoClientMediator {
 			if(!DataProcessor.isRealTimeUptoDate)
 				DataProcessor.processData("realTime", this);
 	}
+
+	
+	public void updateRTaggregation(String collection,String key, Object start, Object end)
+	{
+		//check if the user is trying to get a realTime aggregation and if it's up to date. if not then process it and return the new one
+		if(collection.contains("realTime_"))
+			if(!DataProcessor.isRealTimeUptoDate)
+				DataProcessor.processDataInRange("realTime", this,key,(Date)start,(Date)end);
+	}
+	
+
 
 	// Might be useful for the upper layers
 	public Type getCollectionType(String collectionName) {
