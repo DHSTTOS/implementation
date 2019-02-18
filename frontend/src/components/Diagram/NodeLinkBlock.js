@@ -98,6 +98,8 @@ function RadialPlacement() {
   let increment = 5;
   // how large to make the layout
   let radius = 100;
+  let radiusA = 200;
+  let radiusB = 150;
   // where the center of the layout should be
   let center = { x: 0, y: 0 };
   // what angle to start at
@@ -106,9 +108,9 @@ function RadialPlacement() {
 
   // Given an center point, angle, and radius length,
   // return a radial position for that angle
-  const radialLocation = function(center, angle, radius) {
-    const x = center.x + radius * Math.cos((angle * Math.PI) / 180);
-    const y = center.y + radius * Math.sin((angle * Math.PI) / 180);
+  const radialLocation = function(center, angle, radiusA, radiusB) {
+    const x = center.x + radiusA * Math.cos((angle * Math.PI) / 180);
+    const y = center.y + radiusB * Math.sin((angle * Math.PI) / 180);
     return { x: x, y: y };
   };
 
@@ -125,7 +127,7 @@ function RadialPlacement() {
 
   // Gets a new location for input key
   var place = function(key) {
-    const value = radialLocation(center, current, radius);
+    const value = radialLocation(center, current, radiusA,radiusB);
     values.set(key, value);
     current += increment;
     return value;
@@ -145,13 +147,16 @@ function RadialPlacement() {
     // Fullscreen size
     keys.forEach(k => {
       if (k.includes(':')) {
-        radius = 100;
+        radiusA = 200;
+        radiusB = 150;
         place(k);
       } else if (k.includes('.')) {
-        radius = 300;
+        radiusA = 400;
+        radiusB = 280;
         place(k);
       } else {
-        radius = 600;
+        radiusA = 600;
+        radiusB = 400;
         place(k);
       }
     });
@@ -441,15 +446,16 @@ function Network() {
 
   // enter/exit display for nodes
   var updateNodes = function() {
-    node = nodesG.selectAll('circle.node').data(curNodesData, d => d.id);
+    node = nodesG.selectAll('ellipse.node').data(curNodesData, d => d.id);
 
     node
       .enter()
-      .append('circle')
+      .append('ellipse')
       .attr('class', 'node')
       .attr('cx', d => d.x)
       .attr('cy', d => d.y)
-      .attr('r', d => d.radius)
+      .attr('rx', d => d.radius)
+      .attr('ry', d => d.radius)
       // .style('fill', d => nodeColors(d.id))
       .style('fill', function(d) {
         if (d.Protocol == 'IP') {
