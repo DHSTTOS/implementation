@@ -482,25 +482,11 @@ function Network() {
       })
       .on('mouseout', hideDetails)
       .on("click",function(d){
-        alert("The id is : " +" "+ d.id  +"\nThe type is: " +" " +d.type + "\nThe Protocol is : " +" "+d.Protocol);});
+        alert("The id of the clicked node is : " +" "+ d.id  +"\nItstype is: " +" " +d.type + "\nIts Protocol is : " +" "+d.Protocol);});
      
 
     return node.exit().remove();
   };
-
- /* var zoomSettings = {
-    duration:1000,
-    ease:d3.easeCubicOut,
-    zoomLevel:5
-  };
-
-  function clicked(){
-vis.transition()
-  .duration(zoomSettings.zoomLevel)
-  .attr('transform', 'translate(' + width/2 +"," +height/2 +')scale(' + zoomLevel + ')translate(' + -x + ',' + -y +')');
-
-
-  }*/
 
   
 
