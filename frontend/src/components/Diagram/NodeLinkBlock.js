@@ -481,8 +481,10 @@ function Network() {
         showDetails(d, i);
       })
       .on('mouseout', hideDetails)
-      .on("click",function(d){
-        alert("The id of the clicked node is : " +" "+ d.id  +"\nItstype is: " +" " +d.type + "\nIts Protocol is : " +" "+d.Protocol);});
+      .on("click",function(d,l){
+        alert("The id of the clicked node is : " +" "+ d.id  +
+        "\nItstype is: " +" " +d.type +  
+        "\nIts Protocol is : " +" "+d.Protocol);});
      
 
     return node.exit().remove();
