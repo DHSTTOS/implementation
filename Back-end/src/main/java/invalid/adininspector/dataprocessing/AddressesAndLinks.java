@@ -42,6 +42,9 @@ public class AddressesAndLinks implements IAggregator {
 
 	private ArrayList<Map<String, Object>> linksMapList;
 
+	private Date currentTstmp;
+
+
 	/**
 	 * Builds a document list containing a collection of nodes and a collection
 	 * of connections from the given list of network packet records.
@@ -60,10 +63,16 @@ public class AddressesAndLinks implements IAggregator {
 		ArrayList<Document> processedRecords = new ArrayList<>();
 
 		Document doc = getNewAggregatorDocument(null);
-
+			//TODO
+		doc.append("startTime",((PacketRecordDesFromMongo)records.get(0)).getTimestamp() );
+		doc.append("endTime", ((PacketRecordDesFromMongo)records.get(records.size() -1 )).getTimestamp() );
 
 		connectionsMapList = new ArrayList<>();
 		linksMapList = new ArrayList<>();
+
+
+		//currentTstmp = ((PacketRecordDesFromMongo) records.get(0)).getTimestamp();
+
 
 		records.forEach(record -> {
 
@@ -244,8 +253,6 @@ public class AddressesAndLinks implements IAggregator {
 		doc.put("links", linksMapList);
 
 		processedRecords.add(doc);
-
-
 		return processedRecords;
 	}
 
