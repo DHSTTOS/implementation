@@ -1,5 +1,7 @@
 package invalid.adininspector.adinhub;
 
+import com.mongodb.MongoSocketOpenException;
+
 import invalid.adininspector.MongoClientMediator;
 import invalid.adininspector.exceptions.LoginFailureException;
 
@@ -33,17 +35,23 @@ public class MongoDBUserSession implements IUserSession {
 	 * @param username the username to login with
 	 * @param password the password to login with
 	 * @return the new IUserSession object with a logged-in database connection, or null
+	 * @throws LoginFailureException if connecting to or logging into the MongoDB failed  
 	 */
-	public static IUserSession createUserSession(String username, String password) {
+	public static IUserSession createUserSession(String username, String password) throws LoginFailureException {
 		MongoDBUserSession m = new MongoDBUserSession();
 		try {
 			m.setMongoClientMediator(new MongoClientMediator(username, password));
 			m.getAvailableCollections(); // check if login succeeded
 			return m;
 		} catch (LoginFailureException e) {
-			System.err.println("createUserSession: login failed; u: " + username + "pw: " + password);
+			System.err.println("MongoDBUserSession.createUserSession: login failed; username: " + username);
 			m = null;
-			return null;
+			throw e;
+		} catch (MongoSocketOpenException e) {
+			System.err.println("MongoDBUserSession.createUserSession failed:");
+			e.printStackTrace();
+			m = null;
+			throw new LoginFailureException(e.toString());
 		}
 	}
 
