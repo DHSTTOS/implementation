@@ -3,15 +3,15 @@ package invalid.adininspector.adinhub;
 import javax.websocket.OnOpen;
 import javax.websocket.server.ServerEndpoint;
 
+import invalid.adininspector.exceptions.LoginFailureException;
+
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.stream.Stream;
 
 import javax.websocket.*;
 
@@ -116,9 +116,26 @@ public class Hub {
 	 * @param password the password to login with
 	 * 
 	 * @return a token to identify the IUserSession
+	 * @throws LoginFailureException if connecting to or logging into the MongoDB failed
 	 */
-	public String login(Session session, String username, String password) {
-		IUserSession dbUserSession = createUserSession(session, username, password);
+	public String login(Session session, String username, String password) throws LoginFailureException {
+		IUserSession dbUserSession = null;
+		try {
+			dbUserSession = createUserSession(session, username, password);
+		} catch (LoginFailureException e) {
+			System.err.println("Hub.login: LoginFailureException:");
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			/* It is acceptable here to catch all exceptions since we can't do
+			   permanent damage (no write accesses). But this makes sure
+			   that the hub keeps running and that the user can always start
+			   a new session.
+			 */
+			System.err.println("Hub.login: unknown/unexpected exception/error:");
+			e.printStackTrace();
+			throw new LoginFailureException(e.getMessage());
+		}
 		if (dbUserSession == null)
 			return "";
 
@@ -148,9 +165,10 @@ public class Hub {
 	 * @param username the username to login with
 	 * @param password the password to login with
 	 * @return a new IUserSession object for a logged in database session
+	 * @throws LoginFailureException if connecting to or logging into the MongoDB failed
 
 	 */
-	public IUserSession createUserSession(Session session, String username, String password) {
+	public IUserSession createUserSession(Session session, String username, String password) throws LoginFailureException {
 		IUserSession dbUserSession = MongoDBUserSession.createUserSession(username, password);
 		return dbUserSession;
 	}
@@ -222,7 +240,7 @@ public class Hub {
 	public String[] getAvailableCollections(Session session) {
 		IUserSession userSession = sessions.get(session);
 		System.out.println("XXX session: " + session + " sessions: " + sessions
-							+ " userSession: " + userSession);
+				+ " userSession: " + userSession);
 		if (userSession == null) {
 			System.err.println("got request for non-logged-in session" + session);
 			return null; // XXX return empty array?
@@ -288,7 +306,7 @@ public class Hub {
 		ArrayList<String> members = new ArrayList<String>(10);
 		members.add(collection);
 		Arrays.stream(collections).filter(s -> (s.startsWith(collection) && !s.equals(collection))).forEachOrdered(s -> members.add(s));
-		
+
 		List<HashMap<String, Object>> collectionGroup = new ArrayList<HashMap<String, Object>>(10);
 		for (int i = 0; i < members.size(); i++) {
 			String member = members.get(i);
@@ -304,7 +322,7 @@ public class Hub {
 		}
 		return collectionGroup;
 	}
-	
+
 	/**
 	 * Returns a JSON string representation of the first record of the specified collection. 
 	 * 
@@ -352,6 +370,7 @@ public class Hub {
 			System.err.println("got request for non-logged-in session" + session);
 			return 0;
 		}
+		System.out.println("Hub.gCS:");
 		return userSession.getCollectionSize(collection);
 	}
 
