@@ -482,7 +482,7 @@ function Network() {
       })
       .on('mouseout', hideDetails)
       .on("click",function(d){
-        alert(d.id);});
+        alert("The id is : " +" "+ d.id  +"\nThe type is: " +" " +d.type + "\nThe Protocol is : " +" "+d.Protocol);});
      
 
     return node.exit().remove();
