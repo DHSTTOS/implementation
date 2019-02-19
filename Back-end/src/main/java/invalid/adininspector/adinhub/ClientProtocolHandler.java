@@ -10,6 +10,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonSyntaxException;
 
+import invalid.adininspector.exceptions.LoginFailureException;
+
 /**
  * This class handles client requests by parsing them, executing the requested
  * action and producing a response. The requested actions are typically executed
@@ -29,7 +31,17 @@ public class ClientProtocolHandler {
 				Map<String, Object> m = new HashMap<String, Object>();
 				String username = (String)msgParsed.get("user");
 				String password = (String)msgParsed.get("pwd");
-				String res = hub.login(session, username, password);
+				String res = null;
+				try {
+					res = hub.login(session, username, password);
+				} catch (LoginFailureException e) {
+					e.printStackTrace();
+					m.put("cmd", "SESSION");
+					m.put("par", "LOGIN");
+					m.put("status", "FAIL");
+					m.put("token", "");
+					m.put("msg", e.getMessage());
+				}
 
 				m.put("cmd", "SESSION");
 				m.put("par", "LOGIN");
@@ -240,11 +252,9 @@ public class ClientProtocolHandler {
 	 * @param message the client request to handle
 	 */
 	String handleRequest(Hub hub, Session session, String message) {
-		Gson gson = new Gson();
 		Map<String,Object> msgParsed = null;
 		try {
 			msgParsed = new Gson().fromJson(message, Map.class);
-
 		} catch (JsonSyntaxException e) {
 			System.err.println("handleRequest() got non-JSON message: " + cleanString(message));
 			return "";
