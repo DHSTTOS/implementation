@@ -11,6 +11,8 @@ import org.junit.Test;
 
 import invalid.adininspector.exceptions.LoginFailureException;
 
+import static org.mockito.Mockito.*;
+
 /**
  * Test those methods of Hub that are not simply pass-through.
  * NOTE: these tests require Hub to access MockMongoDBUserSession().
@@ -20,7 +22,7 @@ public class TestHub {
 	private static Hub hub = null;
 	private static Session session = null;
 	
-	//@BeforeClass
+	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		hub = new Hub();
 	}
@@ -34,11 +36,11 @@ public class TestHub {
 	public void tearDown() throws Exception {
 	}
 
-	//@Test
+	@Test
 	public void testLogin() {
 		String token = null;
 		try {
-			token = hub.login(session, "foo", "bar");
+			token = hub.login(session, "admin", "admin");
 		} catch (LoginFailureException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -46,11 +48,11 @@ public class TestHub {
 		assertNotNull(token);
 	}
 
-	//@Test
+	@Test
 	public void testLoginTokenSuccess() {
 		String token = null;
 		try {
-			token = hub.login(session, "foo", "bar");
+			token = hub.login(session, "admin", "admin");
 		} catch (LoginFailureException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -60,7 +62,7 @@ public class TestHub {
 		assertTrue(loggedIn);
 	}
 	
-	//@Test
+	@Test
 	public void testLoginTokenFail() {
 		String token = null;
 		try {
@@ -69,16 +71,16 @@ public class TestHub {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		assertNotNull(token);
+		assertNull(token);
 		boolean loggedIn = hub.authenticate(session, "invalid_token");
 		assertFalse(loggedIn);
 	}
 
-	//@Test
+	@Test
 	public void testLogout() {
 		String token = null;
 		try {
-			token = hub.login(session, "foo", "bar");
+			token = hub.login(session, "admin", "admin");
 		} catch (LoginFailureException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
