@@ -231,6 +231,9 @@ public class MongoClientMediator {
 	 */
 	public String[] getCollection(String collection) {
 
+		if(collection.isEmpty())
+			return new String[0];
+
 		//check if the user is trying to get a realTime aggregation and if it's up to date. if not then process it and return the updated version
 		updateRTaggregation(collection);
 		return mongoIteratorToStringArray(db.getCollection(collection).find());
@@ -245,6 +248,10 @@ public class MongoClientMediator {
 	public String getStartRecord(String collection) {
 		// find returns a cursor to the first object so we simple return that one
 		//TODO: check if collection is null
+
+		if(collection.isEmpty())
+			return "";
+
 		updateRTaggregation(collection);
 
 		MongoCollection<Document> coll = db.getCollection(collection);
@@ -259,6 +266,10 @@ public class MongoClientMediator {
 	 * @return the last record of the collection
 	 */
 	public String getEndRecord(String collection) {
+
+		if(collection.isEmpty())
+			return "";
+
 		updateRTaggregation(collection);
 		// we sort descending by id and then get the first (last object)
 		return db.getCollection(collection).find().sort(new Document("_id", -1)).first().toJson();
@@ -271,6 +282,10 @@ public class MongoClientMediator {
 	 * @return the number of entries in the collection
 	 */
 	public long CollectionSize(String collection) {
+
+		if(collection.isEmpty())
+			return (long) 0.0;
+
 		updateRTaggregation(collection);
 
 		return db.getCollection(collection).countDocuments();
@@ -299,6 +314,9 @@ public class MongoClientMediator {
 	 * @return String array containing all entries of the collection within that range
 	 */
 	public String[] getRecordsInRange(String collection, String key, Object start, Object end) {
+		if(collection.isEmpty())
+			return new String[0];
+
 		//TODO: get type of field in mongo and cast start and end to this type
 		updateRTaggregation(collection);
 
@@ -320,6 +338,9 @@ public class MongoClientMediator {
 
     public String[] getRecord(String collection, String key, Object equals)
     {		
+		if(collection.isEmpty())
+			return new String[0];
+
 		updateRTaggregation(collection);
 
 		//TODO: read the type from mongo and convert it to that
@@ -362,6 +383,10 @@ public class MongoClientMediator {
 	 * @return the number of elements matching the range as int
 	 */
 	public long getRecordsInRangeSize(String collection, String key, Object start, Object end) {
+		
+		if(collection.isEmpty())
+			return (long) 0.0;
+
         return getRecordsInRange(collection, key, start, end).length; 
     }
 
