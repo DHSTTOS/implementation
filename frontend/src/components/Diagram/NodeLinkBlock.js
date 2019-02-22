@@ -2,6 +2,11 @@ import React, { PureComponent } from 'react';
 import { autorun, toJS } from 'mobx';
 import { dataStore } from '@stores';
 import styled from '@emotion/styled';
+import { COLOR_MAC } from '@libs';
+import { COLOR_IP } from '@libs';
+import { COLOR_UDP} from '@libs';
+import { COLOR_TCP } from '@libs';
+
 
 const LegendContainer = styled.div`
   position: absolute;
@@ -48,17 +53,17 @@ class NodeLinkBlock extends PureComponent {
     this.nodeLinkGram.current.remove();
     document.getElementById('vis-tooltip').remove();
   };
-
+ 
   render() {
     return (
       <div>
         <div ref={this.nodeLinkGram} />
         <LegendContainer>
           <Row>
-            <LegendBox color="rgb(12, 67, 199)" /> MAC Address
+            <LegendBox color={COLOR_MAC} /> MAC Address
           </Row>
           <Row>
-            <LegendBox color="rgb(255, 224, 25)" /> IP Address
+            <LegendBox color="rgb(12, 67, 199)" /> IP Address
           </Row>
           <Row>
             <LegendBox color="rgb(255, 24, 166)" /> UDP
@@ -71,6 +76,7 @@ class NodeLinkBlock extends PureComponent {
     );
   }
 }
+
 
 //
 // ** WARNING **
@@ -93,6 +99,8 @@ class NodeLinkBlock extends PureComponent {
 
 function RadialPlacement() {
   // stores the key -> location values
+  var colorMac = d3.rgb(12, 67, 199);
+ var colorIp = d3.rgb(255, 224, 25);
   let values = d3.map();
   // how much to separate each location by
   let increment = 5;
@@ -651,7 +659,7 @@ function Network() {
     d3
     .select(this)
     .style('stroke','#ddd')
-    .style('stroke-width',1.0);
+    .style('stroke-width',0);
     tooltip.hideTooltip();
   };
   // Mouseout function
