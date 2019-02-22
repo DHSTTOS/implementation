@@ -185,13 +185,18 @@ const handleDataGroupEndpoints = msg => {
       start: JSON.parse(coll.start),
       end: JSON.parse(coll.end),
     };
+
     start = JSON.parse(coll.start)._id;
+    start = start.$numberLong || start; // extract from subobject if necessary
+    start = start * 1; // make it a number
 
     end = JSON.parse(coll.end)._id;
-    tmpIdx[coll.name] = [];
-
-    dataStore.totalEndpoints = tmp;
+    end = end.$numberLong || end; // extract from subobject if necessary
+    end = end * 1; // make it a number
+    tmpIdx[coll.name] = [start, end];
   }
+  dataStore.totalEndpoints = tmp;
+  dataStore.totalEndpointsIdx = tmpIdx;
 };
 
 const handleSession = async msg => {
