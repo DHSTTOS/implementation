@@ -156,6 +156,7 @@ public class MongoClientMediator {
 
 	public void dropCollection(String collection)
 	{
+		//System.out.println("Droped " + collection);
 		db.getCollection(collection).drop();
 	}
 
@@ -325,6 +326,7 @@ public class MongoClientMediator {
 		if(key.equals("Timestamp"))
 		{
 			updateRTaggregation(collection, key, new Date(Long.valueOf((String)start)), new Date(Long.valueOf((String)end)));
+
 			query.put(key, new BasicDBObject("$gte", new Date(Long.valueOf((String)start))).append("$lt", new Date(Long.valueOf((String)end)) ));
 		}
 		else if(key.equals("_id"))
