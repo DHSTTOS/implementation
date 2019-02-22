@@ -53,6 +53,7 @@ const formatData = ({ groupName, x, y, unformattedData: rawData = [] }) => {
   const normalizedRawData = rawData.map(x => ({
     ...x,
     Timestamp: x['Timestamp']['$date'],
+    id: x['_id']['$numberLong'] + 'hi',
   }));
 
   // get all the names of groups of data by groupID
@@ -64,7 +65,7 @@ const formatData = ({ groupName, x, y, unformattedData: rawData = [] }) => {
   normalizedRawData.map(e => {
     dataArr
       .filter(o => o.id === e[groupName])
-      .map(o => o.data.push({ x: e[x], y: e[y] }));
+      .map(o => o.data.push({ x: e[x], y: e[y], id: e['id'] }));
   });
 
   return dataArr;

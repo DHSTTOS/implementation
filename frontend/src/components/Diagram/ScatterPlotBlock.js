@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { observer } from 'mobx-react';
-import { ScatterPlotCanvas } from '@nivo/scatterplot';
+import { ScatterPlot } from '@nivo/scatterplot';
 
 /**
  * @typedef {object} Props
@@ -19,7 +19,16 @@ class ScatterPlotBlock extends Component {
   render() {
     const { width, height, data, x, y, colors, symbolSize } = this.props;
     return (
-      <ScatterPlotCanvas
+      <ScatterPlot
+        tooltip={d => {
+          const [groupName, idInSerie] = d.id.split('.');
+          const realID = d.serie.data[idInSerie].data.id;
+          return (
+            <div>
+              group: {groupName}, id: {realID}
+            </div>
+          );
+        }}
         width={width}
         height={height}
         data={data}
@@ -56,7 +65,6 @@ class ScatterPlotBlock extends Component {
           legendOffset: -120,
         }}
         animate={false}
-        useMesh={true}
         legends={[
           {
             anchor: 'bottom-right',
