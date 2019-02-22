@@ -10,6 +10,7 @@ Array=( "lemgo"
         "lmf_FlowRatePerSecond"
         "lmf_NumberOfConnectionsPerNode"
         "motor"
+        "motor_alarms"
         "motor_AddressesAndLinks"
         "motor_FlowRatePerSecond"
         "motor_NumberOfConnectionsPerNode")
