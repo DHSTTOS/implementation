@@ -4,6 +4,8 @@
 package invalid.adininspector.dataprocessing;
 
 import java.util.List;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -38,7 +40,7 @@ public class NumberOfConnectionsPerNode implements IAggregator {
     private ArrayList<Map<String, Object>> connectionsMapList;
     private Document currentDocument;
     private long second = 1000;
-    private int id;
+    private long id;
 
     /**
      * Calculate the outgoing and incoming connections.
@@ -56,16 +58,15 @@ public class NumberOfConnectionsPerNode implements IAggregator {
         if (records.size() == 0)
                  return new ArrayList<>();
 
-        id=0;
+         //reset the id
+         id = 0;
 
         ArrayList<Document> processedRecords = new ArrayList<>();
 
         // we know that the records are organized by time
         // we are only doing aggregation on packetRecords
         // get first timestamp
-        currentTstmp = ((PacketRecordDesFromMongo) records.get(0)).getTimestamp();
-
-        System.out.println("START PROCESSING");
+        currentTstmp = Date.from( ((PacketRecordDesFromMongo) records.get(0)).getTimestamp().toInstant().truncatedTo(ChronoUnit.SECONDS) );
 
         currentDocument = getNewAggregatorDocument(currentTstmp);
 
@@ -92,7 +93,7 @@ public class NumberOfConnectionsPerNode implements IAggregator {
 
 
                 //set new timestamp
-                currentTstmp = r.getTimestamp();
+                currentTstmp = Date.from(currentTstmp.toInstant().plus(1,ChronoUnit.SECONDS));
 
                 // create new objects for processing
                 connectionsMapList = new ArrayList<>();

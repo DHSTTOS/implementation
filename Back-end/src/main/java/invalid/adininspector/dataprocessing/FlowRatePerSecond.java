@@ -3,6 +3,7 @@
  */
 package invalid.adininspector.dataprocessing;
 
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -43,7 +44,7 @@ public class FlowRatePerSecond implements IAggregator {
     private ArrayList<Map<String, Object>> connectionsMapList;
     private Document currentDocument;
     private long second = 1000;
-    private int id = 0;
+    private long id = 0;
 
     /**
      * Calculates, per port, the outgoing and incoming connections per second.
@@ -60,17 +61,17 @@ public class FlowRatePerSecond implements IAggregator {
 
         if (records.size() == 0)
                     return new ArrayList<>();
-
-            int id = 0;
+        
+        //reset the id
+        id = 0;
+        
 
         ArrayList<Document> processedRecords = new ArrayList<>();
 
         // we know that the records are organized by time
         // we are only doing aggregation on packetRecords
         // get first timestamp
-        currentTstmp =  ((PacketRecordDesFromMongo)records.get(0)).getTimestamp();
-
-        System.out.println("START PROCESSING");
+        currentTstmp =  Date.from( ((PacketRecordDesFromMongo) records.get(0)).getTimestamp().toInstant().truncatedTo(ChronoUnit.SECONDS) );
 
         currentDocument = getNewAggregatorDocument(currentTstmp);
 
@@ -97,7 +98,7 @@ public class FlowRatePerSecond implements IAggregator {
 
 
                 //set new timestamp
-                currentTstmp = r.getTimestamp();
+                currentTstmp = Date.from(currentTstmp.toInstant().plus(1,ChronoUnit.SECONDS));
 
                 // create new objects for processing
                 connectionsMapList = new ArrayList<>();

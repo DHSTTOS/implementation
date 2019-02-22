@@ -53,6 +53,8 @@ public class DataProcessor {
 		if (collectionName.equals("realTime"))
 			isRealTimeUptoDate = true;
 
+		System.out.println("processing: " + collectionName);
+
 		for (IAggregator agg : aggregators) {
 			clientMediator.addRecordsToCollection(
 					agg.processData(clientMediator.getCollectionAsRecordsArrayList(collectionName)),
