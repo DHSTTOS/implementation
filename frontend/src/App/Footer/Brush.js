@@ -249,7 +249,12 @@ export default class Brush extends PureComponent {
         //console.log(curRange);
         //return d + '_' + (d-curRange[0]);
         //console.log('offset: ' + offset);
-        let date = new Date(cSRD[offset].Timestamp.$date);
+        // XXX workaround, if offset is too big:
+        let tmpOffset = Math.min(offset, cSRD.length - 1);
+        if (tmpOffset == -1) {
+          return 'n/a';
+        }
+        let date = new Date(cSRD[tmpOffset].Timestamp.$date);
 
         let lh = ('' + date.getHours()).padStart(2, '0');
         let lm = ('' + date.getMinutes()).padStart(2, '0');
