@@ -179,11 +179,17 @@ const handleDataGroupEndpoints = msg => {
   const baseName = msg.name;
 
   let tmp = [];
+  let tmpIdx = [];
   for (coll in msg.par) {
     tmp[coll.name] = {
       start: JSON.parse(coll.start),
       end: JSON.parse(coll.end),
     };
+    start = JSON.parse(coll.start)._id;
+
+    end = JSON.parse(coll.end)._id;
+    tmpIdx[coll.name] = [];
+
     dataStore.totalEndpoints = tmp;
   }
 };

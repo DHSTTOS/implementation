@@ -55,7 +55,10 @@ class DataStore {
    * @type{number[]}
    */
   @observable
-  totalEndpoints = []; // The start and end indices for the x-axis
+  totalEndpoints = []; // The start and end records for the x-axis
+
+  @observable
+  totalEndpointsIdx = []; // The start and end indices for the x-axis
 
   // Array of notification/alarm data sets:
   @observable
