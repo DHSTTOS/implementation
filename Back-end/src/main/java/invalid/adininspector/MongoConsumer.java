@@ -32,7 +32,6 @@ import org.apache.kafka.common.TopicPartition;
 import invalid.adininspector.dataprocessing.DataProcessor;
 import invalid.adininspector.exceptions.LoginFailureException;
 import invalid.adininspector.records.AlarmRecord;
-import invalid.adininspector.records.PacketRecordDesFromKafka;
 import invalid.adininspector.records.PacketRecordDesFromMongo;
 import invalid.adininspector.records.Record;
 
@@ -302,11 +301,9 @@ public class MongoConsumer {
 			if (!topic.getKey().contains("_") && !topic.getKey().contentEquals("realTime")) {
 				kafkaTopics.add(topic.getKey());
 			}
-
 			//consumer.offset
 			// System.out.println("Value: " + topic.getValue() + "\n");
 		}
-
 		return kafkaTopics;
 	}
 }
