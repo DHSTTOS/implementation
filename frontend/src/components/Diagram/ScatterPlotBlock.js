@@ -2,6 +2,21 @@ import React, { Component } from 'react';
 import { observer } from 'mobx-react';
 import { ScatterPlot } from '@nivo/scatterplot';
 import { selectOriginalRawDatum } from '@libs';
+import styled from '@emotion/styled';
+import { Typography } from '@material-ui/core';
+
+const Column = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+const Row = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+
+const KeyContainer = styled.div`
+  margin-right: 0.5rem;
+`;
 
 /**
  * @typedef {object} Props
@@ -30,11 +45,23 @@ class ScatterPlotBlock extends Component {
           const rawDatumKeys = Object.keys(rawDatum);
 
           return (
-            <div>
+            <Column>
               {rawDatumKeys.map(x => {
-                return <div key={x}>{`${x}: ${rawDatum[x]}`}</div>;
+                if (rawDatum[x] !== '') {
+                  return (
+                    <Row key={x}>
+                      <KeyContainer>
+                        <Typography
+                          variant="body1"
+                          color="textSecondary"
+                        >{`${x}: `}</Typography>
+                      </KeyContainer>
+                      <Typography variant="body1">{rawDatum[x]}</Typography>
+                    </Row>
+                  );
+                }
               })}
-            </div>
+            </Column>
           );
         }}
         width={width}
