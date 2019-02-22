@@ -53,7 +53,7 @@ const formatData = ({ groupName, x, y, unformattedData: rawData = [] }) => {
   const normalizedRawData = rawData.map(x => ({
     ...x,
     Timestamp: x['Timestamp']['$date'],
-    id: x['_id']['$numberLong'] + 'hi',
+    id: Number(x['_id']['$numberLong']),
   }));
 
   // get all the names of groups of data by groupID
