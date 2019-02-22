@@ -60,6 +60,7 @@ public class DataProcessor {
 		}
 	}
 
+	//TODO: take objects not dates
 	public static void processDataInRange(String collectionName, MongoClientMediator clientMediator, String key,
 			Date start, Date end) {
 		for (IAggregator agg : rangeAggregators) {

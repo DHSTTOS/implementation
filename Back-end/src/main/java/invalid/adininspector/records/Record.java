@@ -45,12 +45,17 @@ public abstract class Record {
 		for (Field var : this.getClass().getDeclaredFields()) {
 			try {
 				Method m = this.getClass().getDeclaredMethod("get" + var.getName());
-				if (var.getType() == String.class) //if we get a string, cast the getter. EASY
+				if (var.getType() == String.class || var.getType() == Date.class) //if we get a string, cast the getter. EASY
 					doc.append(var.getName(), m.invoke(this));
+				else if(var.getType() == Date.class)
+				{
+					
+				}
 				else if(var.getType() == Timestamp.class) //STUPID HACK FOR ANKUSH'S IDIOTIC TIMESTAMP HANDLING
 				{
 					//TODO: Fix this
 					Map<String, Date> rightHereMap = new HashMap<String, Date>();
+					System.out.println( (String)m.invoke(this));
 					rightHereMap.put("date", (Date)m.invoke(this));
 
 

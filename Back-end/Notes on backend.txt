@@ -117,3 +117,6 @@ java jdk
 
 >2GB of ram
 enough hdd for all testing data + realtime + OS
+
+
+offset in Kafka reset?
