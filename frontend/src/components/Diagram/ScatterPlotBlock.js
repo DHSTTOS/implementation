@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { observer } from 'mobx-react';
 import { ScatterPlot } from '@nivo/scatterplot';
+import { selectOriginalRawDatum } from '@libs';
 
 /**
  * @typedef {object} Props
@@ -21,11 +22,18 @@ class ScatterPlotBlock extends Component {
     return (
       <ScatterPlot
         tooltip={d => {
-          const [groupName, idInSerie] = d.id.split('.');
+          const idInSerie = d.id.split('.')[1];
           const realID = d.serie.data[idInSerie].data.id;
+          const { Timestamp, _id, ...rawDatum } = selectOriginalRawDatum(
+            realID
+          );
+          const rawDatumKeys = Object.keys(rawDatum);
+
           return (
             <div>
-              group: {groupName}, id: {realID}
+              {rawDatumKeys.map(x => {
+                return <div key={x}>{`${x}: ${rawDatum[x]}`}</div>;
+              })}
             </div>
           );
         }}

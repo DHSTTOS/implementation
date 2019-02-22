@@ -36,6 +36,7 @@ import {
 } from './dataFilters';
 
 import { requestAvailableCollections } from './getCollections';
+import { dataStore } from '@stores';
 
 /**
  * Formats raw data to nivo's format.
@@ -71,6 +72,15 @@ const formatData = ({ groupName, x, y, unformattedData: rawData = [] }) => {
   return dataArr;
 };
 
+/**
+ * @param {number} id
+ *
+ * @return {Object[]}
+ */
+const selectOriginalRawDatum = id => {
+  return dataStore.rawData.filter(x => x['_id']['$numberLong'] == id)[0];
+};
+
 export {
   DEFAULT_SOURCE_NAME,
   DEFAULT_GLOBAL_FILTERS,
@@ -94,7 +104,6 @@ export {
   getRecordsInRangeSize,
   getLocalCollection,
   getLocalCollectionData,
-  formatData,
   removeL2,
   removeL3,
   removeL4,
@@ -102,4 +111,6 @@ export {
   removeProfinet,
   removeUDP,
   requestAvailableCollections,
+  formatData,
+  selectOriginalRawDatum,
 };
