@@ -76,6 +76,8 @@ class Diagram extends Component {
       unformattedData,
     });
 
+    console.warn(data);
+
     let width, height;
     if (this.props.isFullscreen) {
       width = window.innerWidth * 0.9;

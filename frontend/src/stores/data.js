@@ -7,7 +7,7 @@ class DataStore {
   // TODO: when ws binding is done, we'll make this flexible
   // TODO: we need to create separate vars for all plot types, since they are gonna use different data sources
   @observable
-  availableKeys = ['sample key'];
+  availableKeys = ['Please Wait...'];
   // availableKeys = Object.keys(lmf[0]);
 
   @observable
