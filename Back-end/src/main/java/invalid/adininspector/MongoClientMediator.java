@@ -38,7 +38,6 @@ import invalid.adininspector.records.PacketRecordDesFromMongo;
 import invalid.adininspector.records.Record;
 
 
-//TODO: it would be ideal to have a variable storing whether or not the realTime collection is up to date
 /**
  * This class serves as a nexus between the users who want to get data out of the
  * database and the consumer and dataProcessor who want to add data into the
@@ -91,13 +90,6 @@ public class MongoClientMediator {
 			throw new LoginFailureException(e.getMessage());
         }
         
-
-        // String[] t = getRecord("lemgo","_id","9");
- 
-        // for (int i = 0; i < t.length; i++) {
-        //      p(t[i]);
-        //  }
-
 	}
 
 	/**
@@ -154,6 +146,11 @@ public class MongoClientMediator {
 		}
 	}
 
+	
+	/**
+	 * Destroys a collection by name
+	 * @param collection
+	 */
 	public void dropCollection(String collection)
 	{
 		//System.out.println("Droped " + collection);
@@ -338,6 +335,13 @@ public class MongoClientMediator {
 	}
 
 
+    /**
+     * Matches records of a collection to a value
+     * @param collection
+     * @param key
+     * @param equals
+     * @return an array containing all collection entry where key = equals
+     */
     public String[] getRecord(String collection, String key, Object equals)
     {		
 		if(collection.isEmpty())
@@ -411,12 +415,21 @@ public class MongoClientMediator {
 	}
 
 
+	/**
+	 * creates an empty collection in the database
+	 * @param collection
+	 */
 	public void createEmptyCollection(String collection)
 	{
 		db.createCollection(collection);
 	}
 	
 	// HELPER FUNCTIONS
+	/**
+	 * converts a mongoIterator to a string array
+	 * @param iterable
+	 * @return the iterator as an array
+	 */
 	private String[] mongoIteratorToStringArray(MongoIterable iterable) {
 		List<String> colls = new ArrayList<>();
 
@@ -426,6 +439,11 @@ public class MongoClientMediator {
 	}
 
 	// TODO: figure out a way to make this less wasteful
+	/**
+	 * gets a collection and returns it as an ArrayList
+	 * @param collectionName
+	 * @return the collection as ArrayList
+	 */
 	public ArrayList<Record> getCollectionAsRecordsArrayList(String collectionName) {
 
 		JsonDeserializer<Date> dateDeser = new JsonDeserializer<Date>() {
@@ -471,6 +489,14 @@ public class MongoClientMediator {
 		return records;
 	}
 
+	/**
+	 * get's the collection and truncates it in between a range
+	 * @param collectionName
+	 * @param key
+	 * @param start
+	 * @param end
+	 * @return the collection truncated in between a range
+	 */
 	public ArrayList<Record> getCollectionAsRecordsArrayList(String collectionName, String key, Object start, Object end)
 	{
 		JsonDeserializer<Date> dateDeser = new JsonDeserializer<Date>() {
@@ -517,6 +543,10 @@ public class MongoClientMediator {
 	}
 
 
+	/**
+	 * the Data processor to update the realTime aggregation 
+	 * @param collection
+	 */
 	public void updateRTaggregation(String collection)
 	{
 		//check if the user is trying to get a realTime aggregation and if it's up to date. if not then process it and return the new one
@@ -526,6 +556,13 @@ public class MongoClientMediator {
 	}
 
 	
+	/**
+	 * Calls the Data processor to update the realTime aggregation in between a date range
+	 * @param collection
+	 * @param key
+	 * @param start
+	 * @param end
+	 */
 	public void updateRTaggregation(String collection,String key, Object start, Object end)
 	{
 		//check if the user is trying to get a realTime aggregation and if it's up to date. if not then process it and return the new one
@@ -534,9 +571,11 @@ public class MongoClientMediator {
 				DataProcessor.processDataInRange("realTime", this,key,(Date)start,(Date)end);
 	}
 	
-
-
-	// Might be useful for the upper layers
+	/**
+	 * Associates the name of a collection to it's Java type
+	 * @param collectionName
+	 * @return the java type associated to the collection
+	 */
 	public Type getCollectionType(String collectionName) {
 		Type type = null;
 

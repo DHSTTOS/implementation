@@ -272,6 +272,12 @@ public class AddressesAndLinks implements IAggregator {
 		return d;
 	}
 
+	/**
+	 * creates a new linkMap template
+	 * @param src
+	 * @param dest
+	 * @return new map template for the links
+	 */
 	private Map<String,Object> linkMap(String src,String dest)
 	{
 
@@ -282,6 +288,13 @@ public class AddressesAndLinks implements IAggregator {
 
 	}
 
+	/**
+	 * Creates new nodeMap template
+	 * @param id
+	 * @param type
+	 * @param protocol
+	 * @return new nodeMap template
+	 */
 	private Map<String,Object> nodeMap(String id,String type,String protocol)
 	{
 		return new HashMap<String,Object>() {{

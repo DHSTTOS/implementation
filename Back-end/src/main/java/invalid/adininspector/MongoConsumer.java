@@ -50,6 +50,7 @@ public class MongoConsumer {
 	 */
 	private MongoClientMediator clientMediator;
 
+	
 	private KafkaConsumer<String, String> consumer;
 
 	private String realTimeTopicName = "realTime";
