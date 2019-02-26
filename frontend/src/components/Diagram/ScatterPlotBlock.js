@@ -8,9 +8,11 @@ import {
   COLOR_TCP,
   COLOR_PROFI,
   COLOR_ETHER,
+  COLOR_WHITE,
 } from '@libs';
 import styled from '@emotion/styled';
 import { Typography } from '@material-ui/core';
+import { appStore } from '@stores';
 
 const Column = styled.div`
   display: flex;
@@ -81,17 +83,20 @@ class ScatterPlotBlock extends Component {
         }}
         colorBy={d => {
           const group = d.serie.id;
+
           switch (group) {
             case 'Ether':
-              return COLOR_ETHER;
+              return appStore.globalFilters.ether ? COLOR_ETHER : COLOR_WHITE;
             case 'Profi':
-              return COLOR_PROFI;
+              return appStore.globalFilters.profinet
+                ? COLOR_PROFI
+                : COLOR_WHITE;
             case 'TCP':
-              return COLOR_TCP;
+              return appStore.globalFilters.tcp ? COLOR_TCP : COLOR_WHITE;
             case 'IP':
-              return COLOR_IP;
+              return appStore.globalFilters.ip ? COLOR_IP : COLOR_WHITE;
             case 'UDP':
-              return COLOR_UDP;
+              return appStore.globalFilters.udp ? COLOR_UDP : COLOR_WHITE;
           }
         }}
         symbolSize={symbolSize}
