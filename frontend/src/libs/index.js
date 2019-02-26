@@ -5,6 +5,10 @@ import {
   LINE_CHART,
   NODE_LINK,
   NIVO_COLOR_SCHEMES,
+  COLOR_MAC,
+  COLOR_IP,
+  COLOR_UDP,
+  COLOR_TCP,
   DEFAULT_BRUSH_CONFIG,
 } from './consts';
 
@@ -92,6 +96,10 @@ export {
   LINE_CHART,
   NODE_LINK,
   NIVO_COLOR_SCHEMES,
+  COLOR_MAC,
+  COLOR_IP,
+  COLOR_UDP,
+  COLOR_TCP,
   DEFAULT_BRUSH_CONFIG,
   createConnection,
   login,

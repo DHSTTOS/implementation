@@ -2,6 +2,11 @@ import React, { PureComponent } from 'react';
 import { autorun, toJS } from 'mobx';
 import { dataStore } from '@stores';
 import styled from '@emotion/styled';
+import { COLOR_MAC } from '@libs';
+import { COLOR_IP } from '@libs';
+import { COLOR_UDP} from '@libs';
+import { COLOR_TCP } from '@libs';
+
 
 const LegendContainer = styled.div`
   position: absolute;
@@ -50,17 +55,17 @@ class NodeLinkBlock extends PureComponent {
     this.nodeLinkGram.current.remove();
     document.getElementById('vis-tooltip').remove();
   };
-
+ 
   render() {
     return (
       <div>
         <div ref={this.nodeLinkGram} />
         <LegendContainer>
           <Row>
-            <LegendBox color="rgb(12, 67, 199)" /> MAC Address
+            <LegendBox color={COLOR_MAC} /> MAC Address
           </Row>
           <Row>
-            <LegendBox color="rgb(255, 224, 25)" /> IP Address
+            <LegendBox color="rgb(12, 67, 199)" /> IP Address
           </Row>
           <Row>
             <LegendBox color="rgb(255, 24, 166)" /> UDP
@@ -73,6 +78,7 @@ class NodeLinkBlock extends PureComponent {
     );
   }
 }
+
 
 //
 // ** WARNING **
@@ -95,22 +101,28 @@ class NodeLinkBlock extends PureComponent {
 
 function RadialPlacement() {
   // stores the key -> location values
+  var colorMac = d3.rgb(12, 67, 199);
+ var colorIp = d3.rgb(255, 224, 25);
   let values = d3.map();
   // how much to separate each location by
   let increment = 5;
   // how large to make the layout
   let radius = 100;
+  //starting x-radius of the ellipse
+  let radiusA = 800;
+  //starting y-radius of the ellipse
+  let radiusB = 150;
   // where the center of the layout should be
   let center = { x: 0, y: 0 };
   // what angle to start at
   let start = -120;
   let current = start;
 
-  // Given an center point, angle, and radius length,
+  // Given an center point, angle, and x-radius length and y-radius length,
   // return a radial position for that angle
-  const radialLocation = function(center, angle, radius) {
-    const x = center.x + radius * Math.cos((angle * Math.PI) / 180);
-    const y = center.y + radius * Math.sin((angle * Math.PI) / 180);
+  const radialLocation = function(center, angle, radiusA, radiusB) {
+    const x = center.x + radiusA * Math.cos((angle * Math.PI) / 180);
+    const y = center.y + radiusB * Math.sin((angle * Math.PI) / 180);
     return { x: x, y: y };
   };
 
@@ -127,7 +139,7 @@ function RadialPlacement() {
 
   // Gets a new location for input key
   var place = function(key) {
-    const value = radialLocation(center, current, radius);
+    const value = radialLocation(center, current, radiusA,radiusB);
     values.set(key, value);
     current += increment;
     return value;
@@ -142,18 +154,24 @@ function RadialPlacement() {
     // start with an empty values
     values = d3.map();
 
-    increment = 25;
+    increment = 35;
 
     // Fullscreen size
     keys.forEach(k => {
       if (k.includes(':')) {
-        radius = 100;
+        //set the radius for the first layer
+        radiusA = 500;
+        radiusB = 300;
         place(k);
       } else if (k.includes('.')) {
-        radius = 300;
+        //set the radius for the second layer
+        radiusA = 800;
+        radiusB = 600;
         place(k);
       } else {
-        radius = 600;
+        //set the radius for the third layer
+        radiusA = 1100;
+        radiusB = 900;
         place(k);
       }
     });
@@ -206,8 +224,8 @@ function RadialPlacement() {
 function Network() {
   // variables we want to access
   // in multiple places of Network
-  const width = 1260;
-  const height = 1260;
+  const width = 2000;
+  const height = 2000;
 
   // allData will store the unfiltered data
   let allData = [];
@@ -443,23 +461,24 @@ function Network() {
 
   // enter/exit display for nodes
   var updateNodes = function() {
-    node = nodesG.selectAll('circle.node').data(curNodesData, d => d.id);
+    node = nodesG.selectAll('ellipse.node').data(curNodesData, d => d.id);
 
     node
       .enter()
-      .append('circle')
+      .append('ellipse')
       .attr('class', 'node')
       .attr('cx', d => d.x)
       .attr('cy', d => d.y)
-      .attr('r', d => d.radius)
+      .attr('rx', d => d.radius)
+      .attr('ry', d => d.radius)
       // .style('fill', d => nodeColors(d.id))
       .style('fill', function(d) {
         if (d.Protocol == 'IP') {
           return d3.rgb(12, 67, 199);
         } else if (d.Protocol == 'Ether') {
-          return d3.rgb(255, 224, 25);
+          return d3.rgb(239, 149, 23);
         } else if (d.Protocol == 'UDP') {
-          return d3.rgb(255, 24, 166);
+          return d3.rgb(177, 16, 111);
         } else {
           return d3.rgb(24, 255, 177);
         }
@@ -471,10 +490,18 @@ function Network() {
       .on('mouseover', (d, i) => {
         showDetails(d, i);
       })
-      .on('mouseout', hideDetails);
+      .on('mouseout', hideDetails)
+      .on("click",function(d){
+        alert("The id of the clicked node is : " +" "+ d.id  +
+        "\nIts Type is: " +" " +d.type +  
+        "\nIts Protocol is : " +" "+d.Protocol);});
+     
 
     return node.exit().remove();
   };
+
+  
+
 
   // enter/exit display for links
   var updateLinks = function() {
@@ -547,6 +574,8 @@ function Network() {
   var showDetails = function(d, i) {
     let content = `<p class="main">id:  ${d.id}</span></p>`;
     content += '<hr class="tooltip-hr">';
+    content += `<p class="main">Layer:  ${d.type}</span></p>`;
+    content += '<hr class="tooltip-hr">';
     content += `<p class="main">Protocol:  ${d.Protocol}</span></p>`;
     tooltip.showTooltip(content, d3.event);
 
@@ -595,14 +624,44 @@ function Network() {
       .style('stroke-width', 5.0);
   };
 
-  var showLinkDetails = function(d, i) {
-    let content = `<p class="main">Source: ${d.source.id}</span></p>
+  var showLinkDetails = function(d) {
+    let content = `<p class="main">Source id: ${d.source.id}</span></p>
+    <p>
+    </p>
+    <p class="main">Level of the Source: ${d.source.type}</span></p>
+    <p>
+    </p>
+    <p class="main">Protocol of the Source: ${d.source.Protocol}</span></p>
+    <p>
+    </p>
     <hr class="tooltip-hr">
-    <p class="main">Target:  ${d.target.id}</span></p>`;
+    <p>
+    </p>
+    <p class="main">Target id:  ${d.target.id}</span></p>
+    <p>
+    </p>
+    <p class="main">Level of the target:  ${d.target.type}</span></p>
+    <p>
+    </p>
+    <p class="main">Protocol of the target:  ${d.target.Protocol}</span></p>`;
+    <p>
+    </p>
     tooltip.showTooltip(content, d3.event);
+
+   d3
+    .select(this)
+    .style('stroke', 'blue')
+    .style('stroke-width', 3.0);
   };
 
   var hideLinkDetails = function(d, i) {
+    
+    
+ 
+    d3
+    .select(this)
+    .style('stroke','#ddd')
+    .style('stroke-width',0);
     tooltip.hideTooltip();
   };
   // Mouseout function
