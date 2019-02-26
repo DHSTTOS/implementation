@@ -101,12 +101,28 @@ class ScatterPlotBlock extends Component {
           }
         }}
         symbolSize={symbolSize}
-        xScale={{
-          type: 'point',
-        }}
-        yScale={{
-          type: 'point',
-        }}
+        xScale={
+          x === 'Timestamp'
+            ? {
+                type: 'time',
+                format: '%m-%d %H:%M:%S',
+                precision: 'millisecond',
+              }
+            : {
+                type: 'point',
+              }
+        }
+        yScale={
+          y === 'Timestamp'
+            ? {
+                type: 'time',
+                format: '%m-%d %H:%M:%S',
+                precision: 'millisecond',
+              }
+            : {
+                type: 'point',
+              }
+        }
         axisBottom={{
           orient: 'bottom',
           tickSize: 5,
