@@ -3,7 +3,7 @@ import { observer } from 'mobx-react';
 import styled from '@emotion/styled';
 import Typography from '@material-ui/core/Typography';
 
-import { formatData, SCATTER_PLOT, LINE_CHART, NODE_LINK } from '@libs';
+import { SCATTER_PLOT, LINE_CHART, NODE_LINK, formatRawData } from '@libs';
 import { appStore, dataStore } from '@stores';
 
 import LineChartBlock from './LineChartBlock';
@@ -60,7 +60,7 @@ class Diagram extends Component {
         break;
     }
 
-    const { plotType, groupName, x, y } = this.props.config;
+    const { plotType, x, y } = this.props.config;
     const {
       colors,
       enableArea,
@@ -69,8 +69,8 @@ class Diagram extends Component {
       symbolSize,
     } = this.props.config.specConfig;
 
-    const data = formatData({
-      groupName,
+    const data = formatRawData({
+      highestLayer: appStore.highestLayer,
       x,
       y,
       unformattedData,
