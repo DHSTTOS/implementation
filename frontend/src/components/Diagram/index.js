@@ -82,15 +82,16 @@ class Diagram extends Component {
         break;
     }
 
-    console.warn(data);
+    // console.warn(data);
 
     let width, height;
     if (this.props.isFullscreen) {
       width = window.innerWidth * 0.9;
       height = window.innerHeight * 0.9;
     } else {
-      width = appStore.diagramDimension.width;
-      height = appStore.diagramDimension.height;
+      width = window.innerWidth * 0.9;
+      // width = appStore.diagramDimension.width;
+      height = window.innerHeight * 0.61;
     }
 
     let plot = (
