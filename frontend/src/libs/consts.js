@@ -19,6 +19,8 @@ export const COLOR_IP = `rgb(12, 67, 199)`;
 export const COLOR_TCP = `rgb(24, 255, 177)`;
 export const COLOR_UDP = `rgb(255, 24, 166)`;
 
+export const COLOR_PROFI = `#78aba5`;
+export const COLOR_ETHER = `#d6d01b`;
 
 export const NIVO_COLOR_SCHEMES = [
   'nivo',
