@@ -92,6 +92,9 @@ const handleMessage = msg => {
     case 'DATAGROUP':
       handleDataGroup(msg);
       break;
+    case 'DATAGROUP_ENDPOINTS':
+      handleDataGroupEndpoints(msg);
+      break;
     default:
       console.error('error: unknown request from server: ' + msg.cmd);
       break;
@@ -158,6 +161,31 @@ const handleDataGroup = msg => {
   dataStore.connectionNumberData = msg.par
     .find(x => x.name === baseName + '_NumberOfConnectionsPerNode')
     .data.map(x => JSON.parse(x));
+};
+
+/**
+ * Sets dataStore.totalEndpoints to a list of {startrecord, endrecord}
+ * for each collection listed in the message.
+ * Note: these are the start and endpoint of a collection as it is
+ * on the server. The data stored in dataStore.rawdata etc. may be
+ * only a shorter section.
+ * I.e. these endpoint may lay beyond the record arrays in
+ * dataStore.rawdata etc.
+ * They're used for the scales and axes.
+ *
+ * @param msg
+ */
+const handleDataGroupEndpoints = msg => {
+  const baseName = msg.name;
+
+  let tmp = [];
+  for (coll in msg.par) {
+    tmp[coll.name] = {
+      start: JSON.parse(coll.start),
+      end: JSON.parse(coll.end),
+    };
+    dataStore.totalEndpoints = tmp;
+  }
 };
 
 const handleSession = async msg => {
@@ -246,6 +274,14 @@ const getCollectionGroups = socket => {
 const getCollectionGroupData = (socket, name) => {
   const message = {
     cmd: 'GET_COLL_GROUP_DATA',
+    par: name,
+  };
+  sendRequest(socket, message);
+};
+
+const getCollectionGroupEndpoints = (socket, name) => {
+  const message = {
+    cmd: 'GET_COLL_GROUP_ENDPOINTS',
     par: name,
   };
   sendRequest(socket, message);
@@ -350,6 +386,7 @@ export {
   getAvailableCollections,
   getCollectionGroups,
   getCollectionGroupData,
+  getCollectionGroupEndpoints,
   getCollection,
   getCollectionSize,
   getEndpoints,

@@ -53,16 +53,26 @@ public class DataProcessor {
 		if (collectionName.equals("realTime"))
 			isRealTimeUptoDate = true;
 
+		System.out.println("processing: " + collectionName);
+
 		for (IAggregator agg : aggregators) {
+
+			//drop old collections
+			clientMediator.dropCollection(collectionName + "_" + agg.getClass().getSimpleName());
+
 			clientMediator.addRecordsToCollection(
 					agg.processData(clientMediator.getCollectionAsRecordsArrayList(collectionName)),
 					collectionName + "_" + agg.getClass().getSimpleName());
 		}
 	}
 
+	//TODO: take objects not dates
 	public static void processDataInRange(String collectionName, MongoClientMediator clientMediator, String key,
 			Date start, Date end) {
 		for (IAggregator agg : rangeAggregators) {
+			//drop old collections
+			clientMediator.dropCollection(collectionName + "_" + collectionName);
+
 			clientMediator.addRecordsToCollection(
 					agg.processData(clientMediator.getCollectionAsRecordsArrayList(collectionName, key, start, end)),
 					collectionName + "_" + agg.getClass().getSimpleName());

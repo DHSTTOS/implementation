@@ -16,6 +16,7 @@ import {
   getAvailableCollections,
   getCollectionGroups,
   getCollectionGroupData,
+  getCollectionGroupEndpoints,
   getCollection,
   getCollectionSize,
   getEndpoints,
@@ -36,6 +37,7 @@ import {
 } from './dataFilters';
 
 import { requestAvailableCollections } from './getCollections';
+import { dataStore } from '@stores';
 
 /**
  * Formats raw data to nivo's format.
@@ -53,6 +55,7 @@ const formatData = ({ groupName, x, y, unformattedData: rawData = [] }) => {
   const normalizedRawData = rawData.map(x => ({
     ...x,
     Timestamp: x['Timestamp']['$date'],
+    id: Number(x['_id']['$numberLong']),
   }));
 
   // get all the names of groups of data by groupID
@@ -64,10 +67,19 @@ const formatData = ({ groupName, x, y, unformattedData: rawData = [] }) => {
   normalizedRawData.map(e => {
     dataArr
       .filter(o => o.id === e[groupName])
-      .map(o => o.data.push({ x: e[x], y: e[y] }));
+      .map(o => o.data.push({ x: e[x], y: e[y], id: e['id'] }));
   });
 
   return dataArr;
+};
+
+/**
+ * @param {number} id
+ *
+ * @return {Object[]}
+ */
+const selectOriginalRawDatum = id => {
+  return dataStore.rawData.filter(x => x['_id']['$numberLong'] == id)[0];
 };
 
 export {
@@ -85,6 +97,7 @@ export {
   getAvailableCollections,
   getCollectionGroups,
   getCollectionGroupData,
+  getCollectionGroupEndpoints,
   getCollection,
   getCollectionSize,
   getEndpoints,
@@ -93,7 +106,6 @@ export {
   getRecordsInRangeSize,
   getLocalCollection,
   getLocalCollectionData,
-  formatData,
   removeL2,
   removeL3,
   removeL4,
@@ -101,4 +113,6 @@ export {
   removeProfinet,
   removeUDP,
   requestAvailableCollections,
+  formatData,
+  selectOriginalRawDatum,
 };

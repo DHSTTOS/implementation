@@ -32,7 +32,7 @@ import org.apache.kafka.common.TopicPartition;
 import invalid.adininspector.dataprocessing.DataProcessor;
 import invalid.adininspector.exceptions.LoginFailureException;
 import invalid.adininspector.records.AlarmRecord;
-import invalid.adininspector.records.PacketRecordDesFromKafka;
+import invalid.adininspector.records.PacketRecordDesFromMongo;
 import invalid.adininspector.records.Record;
 
 //TODO: find a way to continue to listen to all topics, including realtime.
@@ -50,6 +50,7 @@ public class MongoConsumer {
 	 */
 	private MongoClientMediator clientMediator;
 
+	
 	private KafkaConsumer<String, String> consumer;
 
 	private String realTimeTopicName = "realTime";
@@ -149,7 +150,10 @@ public class MongoConsumer {
 		builder.registerTypeAdapter(Date.class, new JsonDeserializer<Date>() {
 			public Date deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
 					throws JsonParseException {
-				return new Date(json.getAsJsonPrimitive().getAsLong());
+						
+
+						//System.out.println(json.getAsJsonObject().get("$date"));
+				return new Date(json.getAsJsonObject().get("$date").getAsLong());
 			}
 		});
 
@@ -182,12 +186,14 @@ public class MongoConsumer {
 				// TODO: fix this horrible hack // relegate it to the Mediator??? maybe?
 				Type type = null;
 
+				//System.out.println(record.value());
 
 					if (record.value().contains("Alarm")) {
+						//System.out.println("AAAGH");
 						type = new TypeToken<AlarmRecord>() {
 						}.getType();
 					} else if (record.value().contains("L2")) {
-						type = new TypeToken<PacketRecordDesFromKafka>() {
+						type = new TypeToken<PacketRecordDesFromMongo>() {
 						}.getType();
 					} else {
 						System.out.println("Non recognized record type");
@@ -195,13 +201,13 @@ public class MongoConsumer {
 					}
 
 					// TODO: Tell ankush to fix his messy timestamp handling becuase mongo does not
-					// work with special chars
-					String fixedRecord = record.value().replace("$", "");
+					// work with special chars, it uses them to save in json but gson does not
+					//String fixedRecord = record.value().replace("$", "");
 
 					// clientMediator.p(fixedRecord);
 
 					// convert it into a java object
-					Record incomingRecord = gson.fromJson(fixedRecord, type);
+					Record incomingRecord = gson.fromJson(record.value(), type);
 					// set the offset as ID in the DB
 
 					incomingRecord.set_id(record.offset());
@@ -293,14 +299,12 @@ public class MongoConsumer {
 			// __consumer_offsets is internal to kafka and should be ignored we also need to
 			// ingore everything that isn't Packet Records
 			// --> that means ignore everything that contains an underscore
-			if (!topic.getKey().contentEquals("__consumer_offsets") && !topic.getKey().contentEquals("realTime")) {
+			if (!topic.getKey().contains("_") && !topic.getKey().contentEquals("realTime")) {
 				kafkaTopics.add(topic.getKey());
 			}
-
 			//consumer.offset
 			// System.out.println("Value: " + topic.getValue() + "\n");
 		}
-
 		return kafkaTopics;
 	}
 }

@@ -1,6 +1,22 @@
 import React, { Component } from 'react';
 import { observer } from 'mobx-react';
-import { ResponsiveScatterPlotCanvas } from '@nivo/scatterplot';
+import { ScatterPlot } from '@nivo/scatterplot';
+import { selectOriginalRawDatum } from '@libs';
+import styled from '@emotion/styled';
+import { Typography } from '@material-ui/core';
+
+const Column = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+const Row = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+
+const KeyContainer = styled.div`
+  margin-right: 0.5rem;
+`;
 
 /**
  * @typedef {object} Props
@@ -19,7 +35,35 @@ class ScatterPlotBlock extends Component {
   render() {
     const { width, height, data, x, y, colors, symbolSize } = this.props;
     return (
-      <ResponsiveScatterPlotCanvas
+      <ScatterPlot
+        tooltip={d => {
+          const idInSerie = d.id.split('.')[1];
+          const realID = d.serie.data[idInSerie].data.id;
+          const { Timestamp, _id, ...rawDatum } = selectOriginalRawDatum(
+            realID
+          );
+          const rawDatumKeys = Object.keys(rawDatum);
+
+          return (
+            <Column>
+              {rawDatumKeys.map(x => {
+                if (rawDatum[x] !== '') {
+                  return (
+                    <Row key={x}>
+                      <KeyContainer>
+                        <Typography
+                          variant="body1"
+                          color="textSecondary"
+                        >{`${x}: `}</Typography>
+                      </KeyContainer>
+                      <Typography variant="body1">{rawDatum[x]}</Typography>
+                    </Row>
+                  );
+                }
+              })}
+            </Column>
+          );
+        }}
         width={width}
         height={height}
         data={data}

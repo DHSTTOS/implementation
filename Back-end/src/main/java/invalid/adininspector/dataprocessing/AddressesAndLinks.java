@@ -42,7 +42,7 @@ public class AddressesAndLinks implements IAggregator {
 
 	private ArrayList<Map<String, Object>> linksMapList;
 
-	private Date currentTstmp;
+	//private Date currentTstmp;
 
 
 	/**
@@ -58,7 +58,7 @@ public class AddressesAndLinks implements IAggregator {
 		if (records.size() == 0)
 			return new ArrayList<>();
 
-		int id = 0;
+		long id = 0;
 
 		ArrayList<Document> processedRecords = new ArrayList<>();
 
@@ -267,11 +267,17 @@ public class AddressesAndLinks implements IAggregator {
 		Document d = new Document();
 
 		// one collection with 1 object
-		d.append("_id", 0);
+		d.append("_id", (long)0);
 
 		return d;
 	}
 
+	/**
+	 * creates a new linkMap template
+	 * @param src
+	 * @param dest
+	 * @return new map template for the links
+	 */
 	private Map<String,Object> linkMap(String src,String dest)
 	{
 
@@ -282,6 +288,13 @@ public class AddressesAndLinks implements IAggregator {
 
 	}
 
+	/**
+	 * Creates new nodeMap template
+	 * @param id
+	 * @param type
+	 * @param protocol
+	 * @return new nodeMap template
+	 */
 	private Map<String,Object> nodeMap(String id,String type,String protocol)
 	{
 		return new HashMap<String,Object>() {{

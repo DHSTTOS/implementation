@@ -105,6 +105,17 @@ public class ClientProtocolHandler {
 			}
 		},
 
+		GET_COLL_GROUP_ENDPOINTS("GET_COLL_GROUP_ENDPOINTS") {
+			public Map<String, Object> execute(Hub hub, Session session, Map<String,Object> msgParsed) {
+				String collectionName = (String)msgParsed.get("par");
+				List<HashMap<String, Object>> collectionGroupEndpoints = hub.getCollectionGroupEndpoints(session, collectionName);
+				msgParsed.put("cmd", "DATAGROUP_ENDPOINTS");
+				msgParsed.put("name", collectionName);
+				msgParsed.put("par", collectionGroupEndpoints);
+				return msgParsed;
+			}
+		},
+
 		GET_COLL("GET_COLL") {
 			public Map<String, Object> execute(Hub hub, Session session, Map<String,Object> msgParsed) {
 				String collectionName = (String)msgParsed.get("par");

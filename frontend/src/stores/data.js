@@ -7,7 +7,7 @@ class DataStore {
   // TODO: when ws binding is done, we'll make this flexible
   // TODO: we need to create separate vars for all plot types, since they are gonna use different data sources
   @observable
-  availableKeys = ['sample key'];
+  availableKeys = ['Please Wait...'];
   // availableKeys = Object.keys(lmf[0]);
 
   @observable
@@ -44,6 +44,18 @@ class DataStore {
 
   @observable
   endpoints = []; // The start and end indices for the x-axis
+
+  /**
+   * These are the start and end records for each collection as
+   * available on the server. This is used for the scales and axes.
+   *
+   * Note: the arrays above, i.e. the data currently hold on the frontend,
+   * will typically only contain a subsection of the total range.
+   *
+   * @type{number[]}
+   */
+  @observable
+  totalEndpoints = []; // The start and end indices for the x-axis
 
   // Array of notification/alarm data sets:
   @observable

@@ -323,6 +323,48 @@ public class Hub {
 		return collectionGroup;
 	}
 
+	
+	/**
+	 * For the specified collection name, return a list of Maps with metadata
+	 * for those collections, which belong to the specified raw data collection.
+	 * The first entry in the list is for the specified collection itself
+	 * and the following entries are for the aggregation collections belonging
+	 * to the specified collection, e.g. <collection>_AdressesAndLinks.
+	 * The map for each collection contains they keys "name", "start", and
+	 * "end".
+	 * "name"'s value is the name of one of the groups' collections.
+	 * "start"'s value is the JSON-encoded first record of this collection.
+	 * "end"'s value is the JSON-encoded end record of this collection.
+	 *
+	 * @param session the current websocket session
+	 * @param rawDataCollection the raw data collection to query
+	 * @return
+	 */
+	public List<HashMap<String, Object>> getCollectionGroupEndpoints(Session session, String rawDataCollection) {
+		IUserSession userSession = sessions.get(session);
+		if (userSession == null) {
+			System.err.println("got request for non-logged-in session" + session);
+			return null; // XXX return empty array?
+		}
+		// Get list of collections belonging to rawDataCollection's group:
+		String[] collections = userSession.getAvailableCollections();
+		ArrayList<String> members = new ArrayList<String>(10);
+		members.add(rawDataCollection);
+		Arrays.stream(collections).filter(s -> (s.startsWith(rawDataCollection) && !s.equals(rawDataCollection))).forEachOrdered(s -> members.add(s));
+
+		// Build the requested data list:
+		List<HashMap<String, Object>> collectionGroup = new ArrayList<HashMap<String, Object>>(10);
+		for (int i = 0; i < members.size(); i++) {
+			String member = members.get(i);
+			HashMap<String, Object> coll = new HashMap<String, Object>();
+			coll.put("name",  member);
+			coll.put("start", userSession.getStartRecord(member));
+			coll.put("end", userSession.getEndRecord(member));
+			collectionGroup.add(coll);
+		}
+		return collectionGroup;
+	}
+	
 	/**
 	 * Returns a JSON string representation of the first record of the specified collection. 
 	 * 

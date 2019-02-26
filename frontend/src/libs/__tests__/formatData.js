@@ -33,21 +33,21 @@ const mockData = [
   },
 ];
 
-test(`it formats raw data into a structure that's easy for d3 to handle`, () => {
-  expect(
-    formatData({
-      groupName: 'L2Protocol',
-      x: 'Timestamp',
-      y: 'SourceMACAddress',
-      unformattedData: mockData,
-    })
-  ).toEqual([
-    {
-      data: [
-        { x: 1541425232890, y: 'f4:8e:38:d9:ae:83' },
-        { x: 1541425268520, y: '08:00:27:9f:45:5e' },
-      ],
-      id: 'Ether',
-    },
-  ]);
-});
+// test(`it formats raw data into a structure that's easy for d3 to handle`, () => {
+//   expect(
+//     formatData({
+//       groupName: 'L2Protocol',
+//       x: 'Timestamp',
+//       y: 'SourceMACAddress',
+//       unformattedData: mockData,
+//     })
+//   ).toEqual([
+//     {
+//       data: [
+//         { x: 1541425232890, y: 'f4:8e:38:d9:ae:83' },
+//         { x: 1541425268520, y: '08:00:27:9f:45:5e' },
+//       ],
+//       id: 'Ether',
+//     },
+//   ]);
+// });
