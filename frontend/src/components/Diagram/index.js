@@ -26,6 +26,7 @@ const PlotContainer = styled.div`
   align-items: center;
   justify-content: center;
   align-self: stretch;
+  min-height: 15rem;
   margin: 0.5rem;
 `;
 

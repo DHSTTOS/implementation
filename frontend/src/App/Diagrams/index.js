@@ -25,7 +25,7 @@ const Content = styled.div`
 `;
 
 const BottomPad = styled.div`
-  height: 4rem;
+  height: 5rem;
   width: 100%;
   /* background-color: red; */
 `;
