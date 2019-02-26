@@ -131,6 +131,7 @@ class ScatterPlotBlock extends Component {
           legend: x,
           legendPosition: 'middle',
           legendOffset: 46,
+          format: x === 'Timestamp' ? '%H:%M:%S.%L' : undefined,
         }}
         axisLeft={{
           orient: 'left',
@@ -140,6 +141,7 @@ class ScatterPlotBlock extends Component {
           legend: y,
           legendPosition: 'middle',
           legendOffset: -120,
+          format: y === 'Timestamp' ? '%H:%M:%S.%L' : undefined,
         }}
         animate={false}
         legends={[
