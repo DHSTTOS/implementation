@@ -4,9 +4,9 @@ import {
   SCATTER_PLOT,
   LINE_CHART,
   NIVO_COLOR_SCHEMES,
-  NODE_LINK,
   DEFAULT_BRUSH_CONFIG,
 } from '@libs';
+import { dataStore } from '.';
 
 // JS Doc type defs
 /**
@@ -127,10 +127,13 @@ class AppStore {
 
   @computed
   get canSaveConfig() {
-    const config = this.configModal.diagramConfig;
-    if (config.plotType === NODE_LINK) return true;
+    if (!dataStore.currentlySelectedSource) return false;
 
-    return !!(config.plotType && config.x && config.y);
+    const config = this.configModal.diagramConfig;
+    if (config.plotType === SCATTER_PLOT)
+      return !!(config.plotType && config.x && config.y);
+
+    return !!config.plotType;
   }
 
   @action
