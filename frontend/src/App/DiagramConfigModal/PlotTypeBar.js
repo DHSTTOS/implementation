@@ -31,7 +31,7 @@ class PlotTypeBar extends Component {
           currentSelection={diagramConfig.plotType}
         />
 
-        {diagramConfig.plotType !== NODE_LINK ? (
+        {diagramConfig.plotType === SCATTER_PLOT ? (
           <>
             <Selector
               name="X-Axis"

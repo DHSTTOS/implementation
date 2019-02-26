@@ -39,7 +39,7 @@
 /**
  * @typedef Connection
  * @type {Object}
- * @property {string} direction
+ * @property {string} Direction
  * @property {number} count
  * @property {string} MAC
  */
@@ -139,4 +139,38 @@ const formatRawData = ({
   }, grouped);
 };
 
-export { formatRawData };
+/**
+ * Formats flowrate data to nivo's format.
+ *
+ * @param {FlowRatePerSecondDatum[]} flowrateData
+ *
+ * @return {Object[]}
+ */
+const formatFlowrateData = (flowrateData = []) => {
+  // normalize the timestamp
+  const normalized = flowrateData.map(x => ({
+    ...x,
+    date: String(new Date(x['date']['$date']).getTime()),
+    id: Number(x['_id']['$numberLong']),
+  }));
+
+  const groups = {};
+
+  normalized.forEach(d => {
+    d.connections.forEach(e => {
+      if (!(e.MAC in groups)) {
+        groups[e.MAC] = { data: [{ x: d.date, y: e.count }] };
+      } else {
+        groups[e.MAC].data = [...groups[e.MAC].data, { x: d.date, y: e.count }];
+      }
+    });
+  });
+
+  const macs = Object.keys(groups);
+  return macs.map(x => ({
+    id: x,
+    data: groups[x].data,
+  }));
+};
+
+export { formatRawData, formatFlowrateData };

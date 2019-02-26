@@ -42,7 +42,7 @@ import {
   removeUDP,
 } from './dataFilters';
 
-import { formatRawData } from './dataMappers';
+import { formatRawData, formatFlowrateData } from './dataMappers';
 
 import { requestAvailableCollections } from './getCollections';
 import { dataStore } from '@stores';
@@ -131,4 +131,5 @@ export {
   formatData,
   selectOriginalRawDatum,
   formatRawData,
+  formatFlowrateData,
 };

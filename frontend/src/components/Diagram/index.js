@@ -3,7 +3,13 @@ import { observer } from 'mobx-react';
 import styled from '@emotion/styled';
 import Typography from '@material-ui/core/Typography';
 
-import { SCATTER_PLOT, LINE_CHART, NODE_LINK, formatRawData } from '@libs';
+import {
+  SCATTER_PLOT,
+  LINE_CHART,
+  NODE_LINK,
+  formatRawData,
+  formatFlowrateData,
+} from '@libs';
 import { appStore, dataStore } from '@stores';
 
 import LineChartBlock from './LineChartBlock';
@@ -72,7 +78,7 @@ class Diagram extends Component {
         break;
       case LINE_CHART:
         unformattedData = dataStore.currentlySelectedFlowrateData;
-        data = [];
+        data = formatFlowrateData(unformattedData);
         break;
     }
 
@@ -110,8 +116,6 @@ class Diagram extends Component {
         plot = (
           <LineChartBlock
             data={data}
-            x={x}
-            y={y}
             width={width}
             height={height}
             enableArea={enableArea}
