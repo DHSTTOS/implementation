@@ -27,8 +27,8 @@ import invalid.adininspector.records.Record;
  *   "date" : \{" date" " Unix_Timestamp  } 
  *   rounded down to the second this record points to.
  *   Connections : [
- *     { Port: "portNumer", "InOut" : " In/Out ", count : "Number" }
- *     { Port: "portNumer", "InOut" : " In/Out ", count : "Number" }
+ *     { Port: "portNumer", "Direction" : " In/Out ", count : "Number" }
+ *     { Port: "portNumer", "Direction" : " In/Out ", count : "Number" }
  *     ...
  *   ] This array has an entry per port if the port communicated that second. 
  *     Precomputing this allows us to stream whenever the client needs the
@@ -113,7 +113,7 @@ public class FlowRatePerSecond implements IAggregator {
                 for (Map<String, Object> map : connectionsMapList) {
                 
                     // is the mac already part of the map?
-                    if (map.get("MAC").equals(r.getDestinationMACAddress()) && map.get("In/Out").equals("Out")) {
+                    if (map.get("MAC").equals(r.getDestinationMACAddress()) && map.get("Direction").equals("Out")) {
                         destInMap = !destInMap;
                         // get the current count, add 1 and put it back into the map
                         int count = Integer.parseInt((String) map.get("count")) + 1;
@@ -124,7 +124,7 @@ public class FlowRatePerSecond implements IAggregator {
                     }
 
                     // is the mac already part of the map?
-                    if (map.get("MAC").equals(r.getSourceMACAddress()) && map.get("In/Out").equals("In")) {
+                    if (map.get("MAC").equals(r.getSourceMACAddress()) && map.get("Direction").equals("In")) {
                         srcInMap = !srcInMap;
 
                         int count = Integer.parseInt((String) map.get("count")) + 1;
@@ -139,7 +139,7 @@ public class FlowRatePerSecond implements IAggregator {
 
                     // add it to the map
                     map.put("MAC", r.getDestinationMACAddress());
-                    map.put("In/Out", "Out");
+                    map.put("Direction", "Out");
                     map.put("count", "1");
 
                     connectionsMapList.add(map);
@@ -151,7 +151,7 @@ public class FlowRatePerSecond implements IAggregator {
 
                     // add it to the map
                     map.put("MAC", r.getSourceMACAddress());
-                    map.put("In/Out", "In");
+                    map.put("Direction", "In");
                     map.put("count", "1");
 
                     connectionsMapList.add(map);
