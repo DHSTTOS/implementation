@@ -16,8 +16,9 @@ const Container = styled.div`
 
 const Content = styled.div`
   display: flex;
-  flex-wrap: wrap;
+  /* flex-wrap: wrap; */
   flex: 1;
+  flex-direction: column;
   align-self: stretch;
   margin: 0.5rem;
   /* height: 20rem; */
