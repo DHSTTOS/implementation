@@ -210,23 +210,14 @@ class AppStore {
 
   @computed
   get highestLayer() {
-    const {
-      ether,
-      profinet,
-      l2other,
-      l3,
-      tcp,
-      udp,
-      l4other,
-    } = this.globalFilters;
-
-    if (tcp || udp || l4other) {
+    const { ether, profinet, ip, tcp, udp } = this.globalFilters;
+    if (tcp || udp) {
       return 'L4Protocol';
     }
-    if (l3) {
+    if (ip) {
       return 'L3Protocol';
     }
-    if (ether || profinet || l2other) {
+    if (ether || profinet) {
       return 'L2Protocol';
     }
   }
