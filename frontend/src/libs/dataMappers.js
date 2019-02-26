@@ -142,18 +142,11 @@ const formatRawData = ({
 /**
  * Formats flowrate data to nivo's format.
  *
- * @param {Object} p
- * @param {string} p.highestLayer
- * @param {Object} p.globalFilters
- * @param {FlowRatePerSecondDatum[]} p.unformattedData
+ * @param {FlowRatePerSecondDatum[]} flowrateData
  *
  * @return {Object[]}
  */
-const formatFlowrateData = ({
-  highestLayer,
-  globalFilters,
-  unformattedData: flowrateData = [],
-}) => {
+const formatFlowrateData = (flowrateData = []) => {
   // normalize the timestamp
   const normalized = flowrateData.map(x => ({
     ...x,
@@ -161,73 +154,23 @@ const formatFlowrateData = ({
     id: Number(x['_id']['$numberLong']),
   }));
 
-  console.log('Global Filters: ', { ...globalFilters });
+  const groups = {};
 
-  let formatted = [];
-  const groups = new Set();
+  normalized.forEach(d => {
+    d.connections.forEach(e => {
+      if (!(e.MAC in groups)) {
+        groups[e.MAC] = { data: [{ x: d.date, y: e.count }] };
+      } else {
+        groups[e.MAC].data = [...groups[e.MAC].data, { x: d.date, y: e.count }];
+      }
+    });
+  });
 
-  switch (highestLayer) {
-    case 'L4Protocol':
-      normalized.forEach(x => {
-        if (x['L4Protocol']) {
-          const datum = { ...x, group: x['L4Protocol'] };
-          groups.add(datum.group);
-          formatted = [...formatted, datum];
-          return;
-        }
-        if (x['L3Protocol']) {
-          const datum = { ...x, group: x['L3Protocol'] };
-          groups.add(datum.group);
-          formatted = [...formatted, datum];
-          return;
-        }
-        if (x['L2Protocol']) {
-          const datum = { ...x, group: x['L2Protocol'] };
-          groups.add(datum.group);
-          formatted = [...formatted, datum];
-          return;
-        }
-      });
-      break;
-    case 'L3Protocol':
-      normalized.forEach(x => {
-        if (x['L3Protocol']) {
-          const datum = { ...x, group: x['L3Protocol'] };
-          groups.add(datum.group);
-          formatted = [...formatted, datum];
-          return;
-        }
-        if (x['L2Protocol']) {
-          const datum = { ...x, group: x['L2Protocol'] };
-          groups.add(datum.group);
-          formatted = [...formatted, datum];
-          return;
-        }
-      });
-      break;
-    case 'L2Protocol':
-      normalized.forEach(x => {
-        if (x['L2Protocol']) {
-          const datum = { ...x, group: x['L2Protocol'] };
-          groups.add(datum.group);
-          formatted = [...formatted, datum];
-          return;
-        }
-      });
-      break;
-    default:
-      return [];
-  }
-
-  let grouped = Array.from(groups).map(key => ({ id: key, data: [] }));
-
-  return formatted.reduce((prev, curr) => {
-    const group = curr.group;
-    curr = { x: curr[x], y: curr[y], id: curr.id };
-    return prev.map(x =>
-      x.id !== group ? x : { id: x.id, data: [...x.data, curr] }
-    );
-  }, grouped);
+  const macs = Object.keys(groups);
+  return macs.map(x => ({
+    id: x,
+    data: groups[x].data,
+  }));
 };
 
 export { formatRawData, formatFlowrateData };
