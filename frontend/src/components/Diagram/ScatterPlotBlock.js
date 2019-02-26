@@ -84,6 +84,7 @@ class ScatterPlotBlock extends Component {
         colorBy={d => {
           const group = d.serie.id;
 
+          // would be better to use unified var names but no time to refactor
           switch (group) {
             case 'Ether':
               return appStore.globalFilters.ether ? COLOR_ETHER : COLOR_WHITE;
