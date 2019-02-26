@@ -9,6 +9,7 @@ import {
   COLOR_IP,
   COLOR_UDP,
   COLOR_TCP,
+  COLOR_WHITE,
   DEFAULT_BRUSH_CONFIG,
   COLOR_PROFI,
   COLOR_ETHER,
@@ -89,13 +90,6 @@ const formatData = ({ groupName, x, y, unformattedData: rawData = [] }) => {
  */
 const selectOriginalRawDatum = id => {
   return dataStore.rawData.filter(x => x['_id']['$numberLong'] == id)[0];
-};
-
-const getColorByGroup = group => {
-  let color;
-  switch (group) {
-    case 'Profinet':
-  }
 };
 
 export {
