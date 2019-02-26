@@ -59,9 +59,12 @@ class Diagram extends Component {
     let unformattedData;
     switch (this.props.config.plotType) {
       case SCATTER_PLOT:
-        unformattedData = dataStore.currentlySelectedAddressAndLinksData;
+        unformattedData = dataStore.currentlySelectedRawData;
+
         data = formatRawData({
           highestLayer: appStore.highestLayer,
+          // lazy workaround to reformat data when filters have changed
+          globalFilters: appStore.globalFilters,
           x,
           y,
           unformattedData,

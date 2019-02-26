@@ -51,6 +51,7 @@
  * @param {string} p.x
  * @param {string} p.y
  * @param {string} p.highestLayer
+ * @param {Object} p.globalFilters
  * @param {RawDatum[]} p.unformattedData
  *
  * @return {Object[]}
@@ -59,6 +60,7 @@ const formatRawData = ({
   x,
   y,
   highestLayer,
+  globalFilters,
   unformattedData: rawData = [],
 }) => {
   // normalize the timestamp
@@ -67,6 +69,8 @@ const formatRawData = ({
     Timestamp: x['Timestamp']['$date'],
     id: Number(x['_id']['$numberLong']),
   }));
+
+  console.log('Global Filters: ', { ...globalFilters });
 
   let formatted = [];
   const groups = new Set();
@@ -120,6 +124,8 @@ const formatRawData = ({
         }
       });
       break;
+    default:
+      return [];
   }
 
   let grouped = Array.from(groups).map(key => ({ id: key, data: [] }));
