@@ -45,12 +45,6 @@ class PlotTypeBar extends Component {
               onSelect={appStore.setYAxis}
               currentSelection={diagramConfig.y}
             />
-            <Selector
-              name="Group by"
-              options={availableKeys}
-              onSelect={appStore.setGroupBy}
-              currentSelection={diagramConfig.groupName}
-            />
           </>
         ) : (
           <></>
