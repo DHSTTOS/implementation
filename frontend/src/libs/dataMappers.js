@@ -133,4 +133,42 @@ const formatRawData = ({
   }, grouped);
 };
 
-export default { formatRawData };
+/**
+ * Finds the group of given raw data point.
+ *
+ * @param {Object} p
+ * @param {string} p.highestLayer
+ * @param {RawDatum} p.datum
+ *
+ * @return {string}
+ */
+const findDatumGroup = ({ highestLayer, datum }) => {
+  switch (highestLayer) {
+    case 'L4Protocol':
+      if (x['L4Protocol']) {
+        return x['L4Protocol'];
+      }
+      if (x['L3Protocol']) {
+        return x['L3Protocol'];
+      }
+      if (x['L2Protocol']) {
+        return x['L2Protocol'];
+      }
+      break;
+    case 'L3Protocol':
+      if (x['L3Protocol']) {
+        return x['L3Protocol'];
+      }
+      if (x['L2Protocol']) {
+        return x['L2Protocol'];
+      }
+      break;
+    case 'L2Protocol':
+      if (x['L2Protocol']) {
+        return x['L2Protocol'];
+      }
+      break;
+  }
+};
+
+export default { formatRawData, findDatumGroup };
