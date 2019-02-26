@@ -22,6 +22,8 @@ export const COLOR_UDP = `rgb(255, 24, 166)`;
 export const COLOR_PROFI = `#78aba5`;
 export const COLOR_ETHER = `#d6d01b`;
 
+export const COLOR_WHITE = `#fff`;
+
 export const NIVO_COLOR_SCHEMES = [
   'nivo',
   'category10',

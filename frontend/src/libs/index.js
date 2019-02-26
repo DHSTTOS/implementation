@@ -111,6 +111,7 @@ export {
   COLOR_TCP,
   COLOR_PROFI,
   COLOR_ETHER,
+  COLOR_WHITE,
   DEFAULT_BRUSH_CONFIG,
   createConnection,
   login,
