@@ -10,6 +10,8 @@ import {
   COLOR_UDP,
   COLOR_TCP,
   DEFAULT_BRUSH_CONFIG,
+  COLOR_PROFI,
+  COLOR_ETHER,
 } from './consts';
 
 import {
@@ -40,7 +42,7 @@ import {
   removeUDP,
 } from './dataFilters';
 
-import { formatRawData } from './dataMappers';
+import { formatRawData, findDatumGroup } from './dataMappers';
 
 import { requestAvailableCollections } from './getCollections';
 import { dataStore } from '@stores';
@@ -89,6 +91,13 @@ const selectOriginalRawDatum = id => {
   return dataStore.rawData.filter(x => x['_id']['$numberLong'] == id)[0];
 };
 
+const getColorByGroup = group => {
+  let color;
+  switch (group) {
+    case 'Profinet':
+  }
+};
+
 export {
   DEFAULT_SOURCE_NAME,
   DEFAULT_GLOBAL_FILTERS,
@@ -100,6 +109,8 @@ export {
   COLOR_IP,
   COLOR_UDP,
   COLOR_TCP,
+  COLOR_PROFI,
+  COLOR_ETHER,
   DEFAULT_BRUSH_CONFIG,
   createConnection,
   login,
@@ -127,4 +138,5 @@ export {
   formatData,
   selectOriginalRawDatum,
   formatRawData,
+  findDatumGroup,
 };

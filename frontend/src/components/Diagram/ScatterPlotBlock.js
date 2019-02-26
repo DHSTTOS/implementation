@@ -1,7 +1,14 @@
 import React, { Component } from 'react';
 import { observer } from 'mobx-react';
 import { ScatterPlot } from '@nivo/scatterplot';
-import { selectOriginalRawDatum } from '@libs';
+import {
+  selectOriginalRawDatum,
+  COLOR_IP,
+  COLOR_UDP,
+  COLOR_TCP,
+  COLOR_PROFI,
+  COLOR_ETHER,
+} from '@libs';
 import styled from '@emotion/styled';
 import { Typography } from '@material-ui/core';
 
@@ -25,7 +32,6 @@ const KeyContainer = styled.div`
  * @prop {object[]} data
  * @prop {string} x
  * @prop {string} y
- * @prop {string} colors
  * @prop {number} symbolSize
  *
  * @extends {Component<Props>}
@@ -33,7 +39,7 @@ const KeyContainer = styled.div`
 @observer
 class ScatterPlotBlock extends Component {
   render() {
-    const { width, height, data, x, y, colors, symbolSize } = this.props;
+    const { width, height, data, x, y, symbolSize } = this.props;
     return (
       <ScatterPlot
         tooltip={d => {
@@ -74,7 +80,21 @@ class ScatterPlotBlock extends Component {
           left: 140,
         }}
         // TODO: feed in color picker function
-        colorBy={x => 'red'}
+        colorBy={d => {
+          const group = d.serie.id;
+          switch (group) {
+            case 'Ether':
+              return COLOR_ETHER;
+            case 'Profi':
+              return COLOR_PROFI;
+            case 'TCP':
+              return COLOR_TCP;
+            case 'IP':
+              return COLOR_IP;
+            case 'UDP':
+              return COLOR_UDP;
+          }
+        }}
         symbolSize={symbolSize}
         xScale={{
           type: 'point',
