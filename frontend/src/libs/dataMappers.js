@@ -68,68 +68,69 @@ const formatRawData = ({
     id: Number(x['_id']['$numberLong']),
   }));
 
-  const formatted = [];
+  let formatted = [];
+  const groups = new Set();
 
   switch (highestLayer) {
     case 'L4Protocol':
-      const l4Groups = new Set();
-      const l3Groups = new Set();
-      const l2Groups = new Set();
-      const l4Data = [];
-      const l3Data = [];
-      const l2Data = [];
-      normalized.forEach(d => {
-        if (d['L4Protocol']) {
-          l4Groups.add(d['L4Protocol']);
-          l4Data = [...l4Data, d];
+      normalized.forEach(x => {
+        if (x['L4Protocol']) {
+          const datum = { ...x, group: x['L4Protocol'] };
+          groups.add(datum.group);
+          formatted = [...formatted, datum];
           return;
         }
-        if (d['L3Protocol']) {
-          l3Groups.add(d['L3Protocol']);
-          l3Data = [...l3Data, d];
+        if (x['L3Protocol']) {
+          const datum = { ...x, group: x['L3Protocol'] };
+          groups.add(datum.group);
+          formatted = [...formatted, datum];
           return;
         }
-        if (d['L2Protocol']) {
-          l2Groups.add(d['L2Protocol']);
-          l2Data = [...l2Data, d];
+        if (x['L2Protocol']) {
+          const datum = { ...x, group: x['L2Protocol'] };
+          groups.add(datum.group);
+          formatted = [...formatted, datum];
           return;
         }
       });
-
-      l4Groups.forEach(group => {
-        formatted.push({ id: group, data: [] });
-      });
-      normalized.reduce(
-        ([l4, others], d) => {
-          d['L4Protocol'] ? [[...l4, d], others] : [l4, [...others, d]];
-        },
-        [[], []]
-      );
-
-      l3Groups.forEach(group => {
-        formatted.push({ id: group, data: [] });
-      });
-      normalized.reduce(
-        ([l3, others], d) => {
-          d['L3Protocol'] ? [[...l3, d], others] : [l3, [...others, d]];
-        },
-        [[], []]
-      );
-
-      // normalized.forEach(d => {
-      //   formatted
-      //     .filter(o => o.id === d[groupName])
-      //     .map(o => o.data.push({ x: d[x], y: d[y], id: d['id'] }));
-      // });
-
       break;
     case 'L3Protocol':
+      normalized.forEach(x => {
+        if (x['L3Protocol']) {
+          const datum = { ...x, group: x['L3Protocol'] };
+          groups.add(datum.group);
+          formatted = [...formatted, datum];
+          return;
+        }
+        if (x['L2Protocol']) {
+          const datum = { ...x, group: x['L2Protocol'] };
+          groups.add(datum.group);
+          formatted = [...formatted, datum];
+          return;
+        }
+      });
       break;
     case 'L2Protocol':
+      normalized.forEach(x => {
+        if (x['L2Protocol']) {
+          const datum = { ...x, group: x['L2Protocol'] };
+          groups.add(datum.group);
+          formatted = [...formatted, datum];
+          return;
+        }
+      });
       break;
   }
 
-  return formatted;
+  let grouped = Array.from(groups).map(key => ({ id: key, data: [] }));
+
+  return formatted.reduce((prev, curr) => {
+    const group = curr.group;
+    curr = { x: curr[x], y: curr[y], id: curr.id };
+    return prev.map(x =>
+      x.id !== group ? x : { id: x.id, data: [...x.data, curr] }
+    );
+  }, grouped);
 };
 
 export default { formatRawData };
