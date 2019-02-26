@@ -133,7 +133,9 @@ const handleData = msg => {
     };
   } else {
     dataStore.rawData = msg.data;
-    dataStore.availableKeys = Object.keys(msg.data[0]);
+    const { _id, L2Protocol, L3Protocol, L4Protocol, ...shape } = msg.data[0];
+
+    dataStore.availableKeys = Object.keys(shape);
   }
   // TODO: remove msgRegister[msg.id]
 
@@ -146,7 +148,9 @@ const handleDataGroup = msg => {
   const rawDataPayload = msg.par.find(x => x.name === baseName);
   const rawData = rawDataPayload.data.map(x => JSON.parse(x));
   dataStore.rawData = rawData;
-  dataStore.availableKeys = Object.keys(rawData[0]);
+  const { _id, L2Protocol, L3Protocol, L4Protocol, ...shape } = rawData[0];
+
+  dataStore.availableKeys = Object.keys(shape);
   dataStore.endpoints = [0, rawDataPayload.size];
 
   // XXX This hardcoded handling of the processed data should be made more flexible:
@@ -176,10 +180,8 @@ const handleDataGroup = msg => {
  * @param msg
  */
 const handleDataGroupEndpoints = msg => {
-  const baseName = msg.name;
-
   let tmp = [];
-  for (coll in msg.par) {
+  for (let coll in msg.par) {
     tmp[coll.name] = {
       start: JSON.parse(coll.start),
       end: JSON.parse(coll.end),

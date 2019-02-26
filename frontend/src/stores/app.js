@@ -14,7 +14,6 @@ import {
  * @type {Object}
  * @property {string} diagramID
  * @property {string} plotType
- * @property {string} groupName
  * @property {string} x
  * @property {string} y
  * @property {(LinePlotConfig | ScatterPlotConfig | NetworkPlotConfig)} specConfig
@@ -131,7 +130,7 @@ class AppStore {
     const config = this.configModal.diagramConfig;
     if (config.plotType === NODE_LINK) return true;
 
-    return !!(config.plotType && config.x && config.y && config.groupName);
+    return !!(config.plotType && config.x && config.y);
   }
 
   @action
@@ -155,7 +154,6 @@ class AppStore {
         diagramConfig: {
           diagramID,
           plotType: '',
-          groupName: '',
           x: '',
           y: '',
           specConfig: null,
@@ -203,10 +201,20 @@ class AppStore {
   setYAxis = y => {
     this.configModal.diagramConfig.y = y;
   };
-  @action
-  setGroupBy = groupName => {
-    this.configModal.diagramConfig.groupName = groupName;
-  };
+
+  @computed
+  get highestLayer() {
+    const { ether, profinet, ip, tcp, udp } = this.globalFilters;
+    if (tcp || udp) {
+      return 'L4Protocol';
+    }
+    if (ip) {
+      return 'L3Protocol';
+    }
+    if (ether || profinet) {
+      return 'L2Protocol';
+    }
+  }
 
   @observable
   globalFilters = DEFAULT_GLOBAL_FILTERS;

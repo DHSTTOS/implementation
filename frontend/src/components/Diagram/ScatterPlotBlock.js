@@ -1,9 +1,18 @@
 import React, { Component } from 'react';
 import { observer } from 'mobx-react';
 import { ScatterPlot } from '@nivo/scatterplot';
-import { selectOriginalRawDatum } from '@libs';
+import {
+  selectOriginalRawDatum,
+  COLOR_IP,
+  COLOR_UDP,
+  COLOR_TCP,
+  COLOR_PROFI,
+  COLOR_ETHER,
+  COLOR_WHITE,
+} from '@libs';
 import styled from '@emotion/styled';
 import { Typography } from '@material-ui/core';
+import { appStore } from '@stores';
 
 const Column = styled.div`
   display: flex;
@@ -25,7 +34,6 @@ const KeyContainer = styled.div`
  * @prop {object[]} data
  * @prop {string} x
  * @prop {string} y
- * @prop {string} colors
  * @prop {number} symbolSize
  *
  * @extends {Component<Props>}
@@ -33,7 +41,7 @@ const KeyContainer = styled.div`
 @observer
 class ScatterPlotBlock extends Component {
   render() {
-    const { width, height, data, x, y, colors, symbolSize } = this.props;
+    const { width, height, data, x, y, symbolSize } = this.props;
     return (
       <ScatterPlot
         tooltip={d => {
@@ -73,14 +81,48 @@ class ScatterPlotBlock extends Component {
           bottom: 70,
           left: 140,
         }}
-        colors={colors}
+        colorBy={d => {
+          const group = d.serie.id;
+
+          // would be better to use unified var names but no time to refactor
+          switch (group) {
+            case 'Ether':
+              return appStore.globalFilters.ether ? COLOR_ETHER : COLOR_WHITE;
+            case 'Profi':
+              return appStore.globalFilters.profinet
+                ? COLOR_PROFI
+                : COLOR_WHITE;
+            case 'TCP':
+              return appStore.globalFilters.tcp ? COLOR_TCP : COLOR_WHITE;
+            case 'IP':
+              return appStore.globalFilters.ip ? COLOR_IP : COLOR_WHITE;
+            case 'UDP':
+              return appStore.globalFilters.udp ? COLOR_UDP : COLOR_WHITE;
+          }
+        }}
         symbolSize={symbolSize}
-        xScale={{
-          type: 'point',
-        }}
-        yScale={{
-          type: 'point',
-        }}
+        xScale={
+          x === 'Timestamp'
+            ? {
+                type: 'time',
+                format: '%m-%d %H:%M:%S',
+                precision: 'millisecond',
+              }
+            : {
+                type: 'point',
+              }
+        }
+        yScale={
+          y === 'Timestamp'
+            ? {
+                type: 'time',
+                format: '%m-%d %H:%M:%S',
+                precision: 'millisecond',
+              }
+            : {
+                type: 'point',
+              }
+        }
         axisBottom={{
           orient: 'bottom',
           tickSize: 5,

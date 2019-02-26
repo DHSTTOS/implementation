@@ -3,7 +3,7 @@ import { observer } from 'mobx-react';
 import styled from '@emotion/styled';
 import Typography from '@material-ui/core/Typography';
 
-import { formatData, SCATTER_PLOT, LINE_CHART, NODE_LINK } from '@libs';
+import { SCATTER_PLOT, LINE_CHART, NODE_LINK, formatRawData } from '@libs';
 import { appStore, dataStore } from '@stores';
 
 import LineChartBlock from './LineChartBlock';
@@ -47,34 +47,34 @@ class Diagram extends Component {
       );
     }
 
-    let unformattedData;
-    switch (this.props.config.plotType) {
-      case NODE_LINK:
-        unformattedData = dataStore.currentlySelectedAddressAndLinksData;
-        break;
-      case SCATTER_PLOT:
-        unformattedData = dataStore.currentlySelectedRawData;
-        break;
-      case LINE_CHART:
-        unformattedData = dataStore.currentlySelectedFlowrateData;
-        break;
-    }
-
-    const { plotType, groupName, x, y } = this.props.config;
+    const { plotType, x, y } = this.props.config;
     const {
-      colors,
       enableArea,
       lineWidth,
       areaOpacity,
       symbolSize,
     } = this.props.config.specConfig;
 
-    const data = formatData({
-      groupName,
-      x,
-      y,
-      unformattedData,
-    });
+    let data;
+    let unformattedData;
+    switch (this.props.config.plotType) {
+      case SCATTER_PLOT:
+        unformattedData = dataStore.currentlySelectedRawData;
+
+        data = formatRawData({
+          highestLayer: appStore.highestLayer,
+          // lazy workaround to reformat data when filters have changed
+          globalFilters: appStore.globalFilters,
+          x,
+          y,
+          unformattedData,
+        });
+        break;
+      case LINE_CHART:
+        unformattedData = dataStore.currentlySelectedFlowrateData;
+        data = [];
+        break;
+    }
 
     console.warn(data);
 
@@ -102,7 +102,6 @@ class Diagram extends Component {
             y={y}
             width={width}
             height={height}
-            colors={colors}
             symbolSize={symbolSize}
           />
         );
@@ -115,7 +114,6 @@ class Diagram extends Component {
             y={y}
             width={width}
             height={height}
-            colors={colors}
             enableArea={enableArea}
             lineWidth={lineWidth}
             areaOpacity={areaOpacity}
