@@ -36,6 +36,8 @@ import {
   removeUDP,
 } from './dataFilters';
 
+import { formatRawData } from './dataMappers';
+
 import { requestAvailableCollections } from './getCollections';
 import { dataStore } from '@stores';
 
@@ -49,6 +51,7 @@ import { dataStore } from '@stores';
  * @param {Object[]} p.unformattedData
  *
  * @return {Object[]}
+ * @deprecated
  */
 const formatData = ({ groupName, x, y, unformattedData: rawData = [] }) => {
   // normalize the timestamp
@@ -115,4 +118,5 @@ export {
   requestAvailableCollections,
   formatData,
   selectOriginalRawDatum,
+  formatRawData,
 };
