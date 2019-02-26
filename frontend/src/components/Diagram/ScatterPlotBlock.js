@@ -73,7 +73,8 @@ class ScatterPlotBlock extends Component {
           bottom: 70,
           left: 140,
         }}
-        colors={colors}
+        // TODO: feed in color picker function
+        colorBy={x => 'red'}
         symbolSize={symbolSize}
         xScale={{
           type: 'point',
