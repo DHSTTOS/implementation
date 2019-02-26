@@ -150,7 +150,7 @@ const formatFlowrateData = (flowrateData = []) => {
   // normalize the timestamp
   const normalized = flowrateData.map(x => ({
     ...x,
-    date: String(new Date(x['Timestamp']['$date']).getTime()),
+    date: String(new Date(x['date']['$date']).getTime()),
     id: Number(x['_id']['$numberLong']),
   }));
 
