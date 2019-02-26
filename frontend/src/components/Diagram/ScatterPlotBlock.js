@@ -77,9 +77,9 @@ class ScatterPlotBlock extends Component {
         data={data}
         margin={{
           top: 35,
-          right: 140,
+          right: 90,
           bottom: 70,
-          left: 140,
+          left: 130,
         }}
         colorBy={d => {
           const group = d.serie.id;

@@ -14,6 +14,7 @@ const Row = styled.div`
   display: flex;
   margin: 0 1rem;
   align-items: flex-start;
+  user-select: none;
 `;
 
 @observer

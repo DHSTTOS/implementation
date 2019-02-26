@@ -34,9 +34,9 @@ class LineChartBlock extends Component {
         data={data}
         margin={{
           top: 35,
-          right: 140,
+          right: 135,
           bottom: 70,
-          left: 140,
+          left: 70,
         }}
         colors={colors}
         enableArea={enableArea}
@@ -70,7 +70,7 @@ class LineChartBlock extends Component {
           tickRotation: 0,
           legend: 'Connections',
           legendPosition: 'middle',
-          legendOffset: -120,
+          legendOffset: -50,
         }}
         animate={false}
         legends={[
