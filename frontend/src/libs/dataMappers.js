@@ -66,7 +66,7 @@ const formatRawData = ({
   // normalize the timestamp
   const normalized = rawData.map(x => ({
     ...x,
-    Timestamp: x['Timestamp']['$date'],
+    Timestamp: new Date(x['Timestamp']['$date']),
     id: Number(x['_id']['$numberLong']),
   }));
 
