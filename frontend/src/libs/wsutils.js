@@ -176,10 +176,8 @@ const handleDataGroup = msg => {
  * @param msg
  */
 const handleDataGroupEndpoints = msg => {
-  const baseName = msg.name;
-
   let tmp = [];
-  for (coll in msg.par) {
+  for (let coll in msg.par) {
     tmp[coll.name] = {
       start: JSON.parse(coll.start),
       end: JSON.parse(coll.end),
