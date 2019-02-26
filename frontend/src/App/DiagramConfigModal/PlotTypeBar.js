@@ -20,7 +20,7 @@ class PlotTypeBar extends Component {
   availablePlotTypes = [SCATTER_PLOT, LINE_CHART, NODE_LINK];
 
   render() {
-    const availableKeys = dataStore.availableKeys;
+    const availableKeys = [...dataStore.availableKeys];
     const diagramConfig = appStore.configModal.diagramConfig;
     return (
       <Container>
