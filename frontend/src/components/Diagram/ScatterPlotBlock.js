@@ -105,7 +105,7 @@ class ScatterPlotBlock extends Component {
           x === 'Timestamp'
             ? {
                 type: 'time',
-                format: '%m-%d %H:%M:%S',
+                format: '%Q',
                 precision: 'millisecond',
               }
             : {
@@ -116,7 +116,7 @@ class ScatterPlotBlock extends Component {
           y === 'Timestamp'
             ? {
                 type: 'time',
-                format: '%m-%d %H:%M:%S',
+                format: '%Q',
                 precision: 'millisecond',
               }
             : {

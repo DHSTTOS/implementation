@@ -63,7 +63,7 @@ const formatData = ({ groupName, x, y, unformattedData: rawData = [] }) => {
   // normalize the timestamp
   const normalizedRawData = rawData.map(x => ({
     ...x,
-    Timestamp: new Date(x['Timestamp']['$date']),
+    Timestamp: String(new Date(x['Timestamp']['$date']).getTime()),
     id: Number(x['_id']['$numberLong']),
   }));
 
