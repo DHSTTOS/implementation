@@ -79,7 +79,6 @@ class ScatterPlotBlock extends Component {
           bottom: 70,
           left: 140,
         }}
-        // TODO: feed in color picker function
         colorBy={d => {
           const group = d.serie.id;
           switch (group) {
