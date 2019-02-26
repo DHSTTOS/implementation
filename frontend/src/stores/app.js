@@ -208,6 +208,29 @@ class AppStore {
     this.configModal.diagramConfig.groupName = groupName;
   };
 
+  @computed
+  get highestLayer() {
+    const {
+      ether,
+      profinet,
+      l2other,
+      l3,
+      tcp,
+      udp,
+      l4other,
+    } = this.globalFilters;
+
+    if (tcp || udp || l4other) {
+      return 'L4Protocol';
+    }
+    if (l3) {
+      return 'L3Protocol';
+    }
+    if (ether || profinet || l2other) {
+      return 'L2Protocol';
+    }
+  }
+
   @observable
   globalFilters = DEFAULT_GLOBAL_FILTERS;
 
