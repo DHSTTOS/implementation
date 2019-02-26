@@ -38,6 +38,7 @@ const StyledPaper = styled(Paper)`
   justify-content: center;
   align-self: stretch;
   margin: 0.5rem;
+  user-select: none;
 `;
 
 const CenteredTypography = styled(Typography)`

@@ -18,6 +18,7 @@ import NodeLinkBlock from './NodeLinkBlock';
 
 const CenteredTypography = styled(Typography)`
   align-self: center;
+  user-select: none;
 `;
 
 const PlotContainer = styled.div`
