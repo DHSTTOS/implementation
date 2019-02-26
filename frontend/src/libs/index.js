@@ -133,5 +133,4 @@ export {
   formatData,
   selectOriginalRawDatum,
   formatRawData,
-  findDatumGroup,
 };

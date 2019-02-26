@@ -47,34 +47,31 @@ class Diagram extends Component {
       );
     }
 
-    let unformattedData;
-    switch (this.props.config.plotType) {
-      case NODE_LINK:
-        unformattedData = dataStore.currentlySelectedAddressAndLinksData;
-        break;
-      case SCATTER_PLOT:
-        unformattedData = dataStore.currentlySelectedRawData;
-        break;
-      case LINE_CHART:
-        unformattedData = dataStore.currentlySelectedFlowrateData;
-        break;
-    }
-
     const { plotType, x, y } = this.props.config;
     const {
-      colors,
       enableArea,
       lineWidth,
       areaOpacity,
       symbolSize,
     } = this.props.config.specConfig;
 
-    const data = formatRawData({
-      highestLayer: appStore.highestLayer,
-      x,
-      y,
-      unformattedData,
-    });
+    let data;
+    let unformattedData;
+    switch (this.props.config.plotType) {
+      case SCATTER_PLOT:
+        unformattedData = dataStore.currentlySelectedAddressAndLinksData;
+        data = formatRawData({
+          highestLayer: appStore.highestLayer,
+          x,
+          y,
+          unformattedData,
+        });
+        break;
+      case LINE_CHART:
+        unformattedData = dataStore.currentlySelectedFlowrateData;
+        data = [];
+        break;
+    }
 
     console.warn(data);
 
@@ -102,7 +99,6 @@ class Diagram extends Component {
             y={y}
             width={width}
             height={height}
-            colors={colors}
             symbolSize={symbolSize}
           />
         );
@@ -115,7 +111,6 @@ class Diagram extends Component {
             y={y}
             width={width}
             height={height}
-            colors={colors}
             enableArea={enableArea}
             lineWidth={lineWidth}
             areaOpacity={areaOpacity}
