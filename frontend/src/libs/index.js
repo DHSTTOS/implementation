@@ -43,7 +43,7 @@ import {
   removeUDP,
 } from './dataFilters';
 
-import { formatRawData, findDatumGroup } from './dataMappers';
+import { formatRawData } from './dataMappers';
 
 import { requestAvailableCollections } from './getCollections';
 import { dataStore } from '@stores';
