@@ -20,8 +20,10 @@ export default class UserControl extends Component {
           variant="contained"
           color="secondary"
           onClick={() => {
-            userStore.userLogout;
-            window.location.href = '../';
+            userStore.userLogout();
+            requestAnimationFrame(() => {
+              window.location.href = '../';
+            });
           }}
         >
           <StyledExitIcon />
