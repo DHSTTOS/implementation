@@ -3,7 +3,13 @@ import { observer } from 'mobx-react';
 import styled from '@emotion/styled';
 import Typography from '@material-ui/core/Typography';
 
-import { formatData, SCATTER_PLOT, LINE_CHART, NODE_LINK } from '@libs';
+import {
+  SCATTER_PLOT,
+  LINE_CHART,
+  NODE_LINK,
+  formatRawData,
+  formatFlowrateData,
+} from '@libs';
 import { appStore, dataStore } from '@stores';
 
 import LineChartBlock from './LineChartBlock';
@@ -12,6 +18,7 @@ import NodeLinkBlock from './NodeLinkBlock';
 
 const CenteredTypography = styled(Typography)`
   align-self: center;
+  user-select: none;
 `;
 
 const PlotContainer = styled.div`
@@ -20,6 +27,7 @@ const PlotContainer = styled.div`
   align-items: center;
   justify-content: center;
   align-self: stretch;
+  min-height: 15rem;
   margin: 0.5rem;
 `;
 
@@ -47,44 +55,45 @@ class Diagram extends Component {
       );
     }
 
-    let unformattedData;
-    switch (this.props.config.plotType) {
-      case NODE_LINK:
-        unformattedData = dataStore.currentlySelectedAddressAndLinksData;
-        break;
-      case SCATTER_PLOT:
-        unformattedData = dataStore.currentlySelectedRawData;
-        break;
-      case LINE_CHART:
-        unformattedData = dataStore.currentlySelectedFlowrateData;
-        break;
-    }
-
-    const { plotType, groupName, x, y } = this.props.config;
+    const { plotType, x, y } = this.props.config;
     const {
-      colors,
       enableArea,
       lineWidth,
       areaOpacity,
       symbolSize,
     } = this.props.config.specConfig;
 
-    const data = formatData({
-      groupName,
-      x,
-      y,
-      unformattedData,
-    });
+    let data;
+    let unformattedData;
+    switch (this.props.config.plotType) {
+      case SCATTER_PLOT:
+        unformattedData = dataStore.currentlySelectedRawData;
 
-    console.warn(data);
+        data = formatRawData({
+          highestLayer: appStore.highestLayer,
+          // lazy workaround to reformat data when filters have changed
+          globalFilters: appStore.globalFilters,
+          x,
+          y,
+          unformattedData,
+        });
+        break;
+      case LINE_CHART:
+        unformattedData = dataStore.currentlySelectedFlowrateData;
+        data = formatFlowrateData(unformattedData);
+        break;
+    }
+
+    // console.warn(data);
 
     let width, height;
     if (this.props.isFullscreen) {
       width = window.innerWidth * 0.9;
       height = window.innerHeight * 0.9;
     } else {
-      width = appStore.diagramDimension.width;
-      height = appStore.diagramDimension.height;
+      width = window.innerWidth * 0.9;
+      // width = appStore.diagramDimension.width;
+      height = window.innerHeight * 0.61;
     }
 
     let plot = (
@@ -102,7 +111,6 @@ class Diagram extends Component {
             y={y}
             width={width}
             height={height}
-            colors={colors}
             symbolSize={symbolSize}
           />
         );
@@ -111,11 +119,8 @@ class Diagram extends Component {
         plot = (
           <LineChartBlock
             data={data}
-            x={x}
-            y={y}
             width={width}
             height={height}
-            colors={colors}
             enableArea={enableArea}
             lineWidth={lineWidth}
             areaOpacity={areaOpacity}

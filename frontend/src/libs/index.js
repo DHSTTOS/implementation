@@ -5,6 +5,12 @@ import {
   LINE_CHART,
   NODE_LINK,
   NIVO_COLOR_SCHEMES,
+  COLOR_ETHER,
+  COLOR_PROFI,
+  COLOR_IP,
+  COLOR_UDP,
+  COLOR_TCP,
+  COLOR_WHITE,
   DEFAULT_BRUSH_CONFIG,
 } from './consts';
 
@@ -36,6 +42,8 @@ import {
   removeUDP,
 } from './dataFilters';
 
+import { formatRawData, formatFlowrateData } from './dataMappers';
+
 import { requestAvailableCollections } from './getCollections';
 import { dataStore } from '@stores';
 
@@ -49,12 +57,13 @@ import { dataStore } from '@stores';
  * @param {Object[]} p.unformattedData
  *
  * @return {Object[]}
+ * @deprecated
  */
 const formatData = ({ groupName, x, y, unformattedData: rawData = [] }) => {
   // normalize the timestamp
   const normalizedRawData = rawData.map(x => ({
     ...x,
-    Timestamp: x['Timestamp']['$date'],
+    Timestamp: String(new Date(x['Timestamp']['$date']).getTime()),
     id: Number(x['_id']['$numberLong']),
   }));
 
@@ -89,6 +98,12 @@ export {
   LINE_CHART,
   NODE_LINK,
   NIVO_COLOR_SCHEMES,
+  COLOR_IP,
+  COLOR_UDP,
+  COLOR_TCP,
+  COLOR_PROFI,
+  COLOR_ETHER,
+  COLOR_WHITE,
   DEFAULT_BRUSH_CONFIG,
   createConnection,
   login,
@@ -115,4 +130,6 @@ export {
   requestAvailableCollections,
   formatData,
   selectOriginalRawDatum,
+  formatRawData,
+  formatFlowrateData,
 };

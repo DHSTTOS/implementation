@@ -20,7 +20,7 @@ class PlotTypeBar extends Component {
   availablePlotTypes = [SCATTER_PLOT, LINE_CHART, NODE_LINK];
 
   render() {
-    const availableKeys = dataStore.availableKeys;
+    const availableKeys = [...dataStore.availableKeys];
     const diagramConfig = appStore.configModal.diagramConfig;
     return (
       <Container>
@@ -31,7 +31,7 @@ class PlotTypeBar extends Component {
           currentSelection={diagramConfig.plotType}
         />
 
-        {diagramConfig.plotType !== NODE_LINK ? (
+        {diagramConfig.plotType === SCATTER_PLOT ? (
           <>
             <Selector
               name="X-Axis"
@@ -44,12 +44,6 @@ class PlotTypeBar extends Component {
               options={availableKeys}
               onSelect={appStore.setYAxis}
               currentSelection={diagramConfig.y}
-            />
-            <Selector
-              name="Group by"
-              options={availableKeys}
-              onSelect={appStore.setGroupBy}
-              currentSelection={diagramConfig.groupName}
             />
           </>
         ) : (

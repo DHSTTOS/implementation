@@ -16,6 +16,8 @@ const Container = styled.div`
   display: flex;
   height: 6rem;
   width: 100%;
+  background-color: rgba(255, 255, 255, 0.75);
+  user-select: none;
 `;
 
 const Content = styled.div`

@@ -1,4 +1,5 @@
-import { observable } from 'mobx';
+import { observable, action } from 'mobx';
+import { logout } from '@libs';
 
 class UserStore {
   /**
@@ -22,6 +23,12 @@ class UserStore {
   // do we need this to be observable though?
   // userDetails.wsLoggedIn should be enough to determine the state
   socket = null;
+
+  @action
+  userLogout = () => {
+    this.userDetails.wsLoggedIn = false;
+    logout(this.socket);
+  };
 }
 
 const userStore = new UserStore();

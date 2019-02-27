@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styled from '@emotion/styled';
 import { observer } from 'mobx-react';
-import { toJS } from 'mobx';
+// import { toJS } from 'mobx';
 
 import { Logo, Column, Selector } from '@components';
 import { dataStore } from '@stores';
@@ -14,6 +14,7 @@ const Row = styled.div`
   display: flex;
   margin: 0 1rem;
   align-items: flex-start;
+  user-select: none;
 `;
 
 @observer

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { observer } from 'mobx-react';
-import { observable, action } from 'mobx';
+// import { observable, action } from 'mobx';
 import styled from '@emotion/styled';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
@@ -11,12 +11,12 @@ import Checkbox from '@material-ui/core/Checkbox';
 import TextField from '@material-ui/core/TextField';
 
 import { appStore } from '@stores';
-import { SCATTER_PLOT, LINE_CHART, NIVO_COLOR_SCHEMES } from '@libs';
-import { Selector } from '@components';
+import { SCATTER_PLOT, LINE_CHART } from '@libs';
+// import { Selector } from '@components';
 
 const Container = styled(Paper)`
   display: flex;
-  width: 43rem;
+  width: 32rem;
   height: 15rem;
   margin: 1rem 0.5rem 0;
 `;
@@ -103,13 +103,13 @@ class DiagramSpecBlock extends Component {
     switch (this.props.plotType) {
       case SCATTER_PLOT:
         controlOptions = [
-          { name: 'Color Scheme', key: 'colors', type: 'colors' },
+          // { name: 'Color Scheme', key: 'colors', type: 'colors' },
           { name: 'Symbol Size', key: 'symbolSize', type: 'input' },
         ];
         break;
       case LINE_CHART:
         controlOptions = [
-          { name: 'Color Scheme', key: 'colors', type: 'colors' },
+          // { name: 'Color Scheme', key: 'colors', type: 'colors' },
           { name: 'Line Width', key: 'lineWidth', type: 'input' },
           { name: 'Enable Area', key: 'enableArea', type: 'checkbox' },
           { name: 'Area Opacity', key: 'areaOpacity', type: 'input' },
@@ -147,7 +147,7 @@ class DiagramSpecBlock extends Component {
                 </StyledFormGroup>
               </StyledFormControl>
             )}
-            {controlOptions &&
+            {/* {controlOptions &&
               controlOptions
                 .filter(x => x.type === 'colors')
                 .map(x => (
@@ -158,7 +158,7 @@ class DiagramSpecBlock extends Component {
                     currentSelection={specConfig.colors}
                     key={x.name}
                   />
-                ))}
+                ))} */}
             <TextFieldsWrapper>
               {controlOptions &&
                 controlOptions
