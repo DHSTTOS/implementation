@@ -1,6 +1,6 @@
 import { observable, action } from 'mobx';
 import appStore from './app';
-import { getCollectionGroupData } from '@libs';
+import { getCollectionGroupData, getCollectionGroupEndpoints } from '@libs';
 import userStore from './user';
 
 class DataStore {
@@ -21,6 +21,7 @@ class DataStore {
     this.resetData();
     this.currentlySelectedSource = source;
     getCollectionGroupData(userStore.socket, source);
+    getCollectionGroupEndpoints(userStore.socket, source);
   };
 
   @observable.shallow
@@ -55,7 +56,10 @@ class DataStore {
    * @type{number[]}
    */
   @observable
-  totalEndpoints = []; // The start and end indices for the x-axis
+  totalEndpoints = []; // The start and end records for the x-axis
+
+  @observable
+  totalEndpointsIdx = []; // The start and end indices for the x-axis
 
   // Array of notification/alarm data sets:
   @observable
@@ -73,6 +77,8 @@ class DataStore {
     this.availableCollections = [];
     this.rawData = [];
     this.endpoints = [];
+    this.totalEndpoints = [];
+    this.totalEndpointsIdx = [];
     this.currentlySelectedRawData = [];
     this.currentlySelectedFlowrateData = [];
     this.currentlySelectedConnectionNumberData = [];

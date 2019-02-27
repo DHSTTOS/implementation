@@ -38,6 +38,15 @@ export default class Brush extends PureComponent {
 
     console.log('start brush : ' + dataStore.rawData.length);
     console.log(dataStore.endpoints);
+    console.log('YYYstart');
+    let tmp = {};
+    Object.assign(tmp, dataStore.totalEndpoints);
+    console.log(tmp);
+    tmp = {};
+    Object.assign(tmp, dataStore.totalEndpointsIdx);
+    console.log(tmp);
+    //console.log(dataStore.totalEndpoints);
+    //console.log(dataStore.totalEndpointsIdx);
     if (dataStore.endpoints.length === 0) {
       dataStore.endpoints = [0, dataStore.rawData.length];
     }
@@ -256,7 +265,13 @@ export default class Brush extends PureComponent {
       console.log(
         'brushing ended: ' + d3.event.selection[0] + ' ' + d3.event.selection[1]
       );
+      console.log('YYYbrushended1');
+      console.log(dataStore.totalEndpoints);
+      console.log(dataStore.totalEndpointsIdx);
       updateSectionRangeFromTotal(d3.event.selection);
+      console.log('YYYbrushended2');
+      console.log(dataStore.totalEndpoints);
+      console.log(dataStore.totalEndpointsIdx);
     }
 
     function brushedCur() {
@@ -288,6 +303,18 @@ export default class Brush extends PureComponent {
     this.disposeAutorun = autorun(() => {
       console.warn(
         `Now we have ${dataStore.rawData.length} entries in rawData!`
+      );
+      console.log('YYYautorun:');
+      console.log(dataStore.totalEndpoints);
+      console.log(dataStore.totalEndpointsIdx);
+      console.log('YYYautorun2:');
+      console.log(dataStore.totalEndpoints.length);
+      console.log(dataStore.totalEndpointsIdx.length);
+      console.log('YYYautorun3:');
+      console.log(dataStore.currentlySelectedSource);
+      console.log(dataStore.totalEndpoints[dataStore.currentlySelectedSource]);
+      console.log(
+        dataStore.totalEndpointsIdx[dataStore.currentlySelectedSource]
       );
 
       console.log(dataStore.endpoints);

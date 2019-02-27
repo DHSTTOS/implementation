@@ -179,13 +179,25 @@ const handleDataGroupEndpoints = msg => {
   const baseName = msg.name;
 
   let tmp = [];
-  for (coll in msg.par) {
+  let tmpIdx = [];
+  for (let coll of msg.par) {
     tmp[coll.name] = {
       start: JSON.parse(coll.start),
       end: JSON.parse(coll.end),
     };
-    dataStore.totalEndpoints = tmp;
+
+    let start = JSON.parse(coll.start)._id;
+    start = Number(start.$numberLong || start); // extract from subobject if necessary
+
+    let end = JSON.parse(coll.end)._id;
+    end = Number(end.$numberLong || end); // extract from subobject if necessary
+    tmpIdx[coll.name] = [start, end];
   }
+  console.log('yyyyyyyyyyyyyyygroup endpoints');
+  console.log(tmp);
+  console.log(tmpIdx);
+  dataStore.totalEndpoints = tmp;
+  dataStore.totalEndpointsIdx = tmpIdx;
 };
 
 const handleSession = async msg => {
