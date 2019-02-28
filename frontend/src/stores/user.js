@@ -18,7 +18,7 @@ class UserStore {
    * Use the address of our droplet cloud server as default.
    */
   @observable
-  wsEndpointURL = 'ws://159.89.213.72:8080/adininspector/adinhubsoc2';
+  wsEndpointURL = 'wss://adininspector.currno.de:8443/adininspector/adinhubsoc2';
 
   // do we need this to be observable though?
   // userDetails.wsLoggedIn should be enough to determine the state
