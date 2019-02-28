@@ -84,15 +84,34 @@
          Either JSSE or OpenSSL style configuration may be used regardless of
          the SSLImplementation selected. JSSE style configuration is used below.
     -->
-    <!--
+    
+  <!--
     <Connector port="8443" protocol="org.apache.coyote.http11.Http11NioProtocol"
-               maxThreads="150" SSLEnabled="true">
+	       maxThreads="150"
+	       SSLEnabled="true"
+	       scheme="https"
+	       secure="true"
+	       keystoreFile="/etc/letsencrypt/live/adininspector.currno.de/bundle.pfx"
+	       keystorePass="XXX_see_README-password_in_above_directory"
+               clientAuth="false" sslProtocol="TLS" keystoreType="PKCS12" >
+    </Connector>
+
+   -->
+    
+    <Connector port="8443" protocol="org.apache.coyote.http11.Http11NioProtocol"
+	       maxThreads="150"
+	       SSLEnabled="true"
+	>
         <SSLHostConfig>
-            <Certificate certificateKeystoreFile="conf/localhost-rsa.jks"
+		<Certificate certificateKeyFile="/etc/letsencrypt/live/adininspector.currno.de/privkey.pem"
+			     certificateFile="/etc/letsencrypt/live/adininspector.currno.de/cert.pem"
+			     certificateChainFile="/etc/letsencrypt/live/adininspector.currno.de/chain.pem"
                          type="RSA" />
         </SSLHostConfig>
+
     </Connector>
-    -->
+   
+   
     <!-- Define a SSL/TLS HTTP/1.1 Connector on port 8443 with HTTP/2
          This connector uses the APR/native implementation which always uses
          OpenSSL for TLS.
