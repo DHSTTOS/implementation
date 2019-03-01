@@ -73,27 +73,31 @@ export default class Brush extends PureComponent {
       dataStore.currentlySelectedRawData = cSRD;
       console.log('uCSD: dS.cSRD.length: ' + dataStore.currentlySelectedRawData.length + '============');
 
-      let tmp = dataStore.flowrateData.filter((x, i) => start <= i && i < end);
+      let tStart = dataStore.rawData[start].Timestamp.$date;
+      let tEnd = dataStore.rawData[end].Timestamp.$date;
+
+      let tmp = dataStore.flowrateData.filter((x, i) => tStart <= x.date.$date && x.date.$date < tEnd);
       dataStore.currentlySelectedFlowrateData = tmp;
 
       tmp = dataStore.connectionNumberData.filter(
-        (x, i) => start <= i && i < end
+        (x, i) => tStart <= x.date.$date && x.date.$date < tEnd
       );
       dataStore.currentlySelectedConnectionNumberData = tmp;
 
       // With the current data layout this will hilariously fail:
       //ws.getCollectionGroupData XXX
+      /*
       tmp = dataStore.addressesAndLinksData.filter(
         (x, i) => start <= i && i < end
       );
-      tmp = dataStore.addressesAndLinksData.filter(
-        (x, i) => true 
-      );
+      */
+      // XXX currently no brushing/zooming for node-link diagram
+      tmp = { ...dataStore.addressesAndLinksData};
       dataStore.currentlySelectedAddressAndLinksData = tmp;
     };
 
     let updateCurrentRange = range => {
-      //console.log('updateCR: ' + range[0] + ', ' + range[1]);
+      console.log('updateCR: ' + range[0] + ', ' + range[1]);
       curRange = range;
       updateCurrentlySelectedData(range);
       xCurrentScale.domain(range);
@@ -118,7 +122,7 @@ export default class Brush extends PureComponent {
     };
 
     let updateCurrentRangeFromTotal = range => {
-      //console.log('updateCRFT: ' + range[0] + ', ' + range[1]);
+      console.log('updateCRFT: ' + range[0] + ', ' + range[1]);
       updateCurrentRange([
         xTotalScale.invert(range[0]),
         xTotalScale.invert(range[1]),
