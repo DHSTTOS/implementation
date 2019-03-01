@@ -1,8 +1,8 @@
 export const DEFAULT_SOURCE_NAME = '__default_empty__';
 
 export const DEFAULT_GLOBAL_FILTERS = {
-  ether: false,
-  profinet: false,
+  ether: true,
+  profinet: true,
   ip: false,
   tcp: false,
   udp: false,
