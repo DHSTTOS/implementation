@@ -2,11 +2,14 @@ import React, { PureComponent } from 'react';
 import { autorun, toJS } from 'mobx';
 import { dataStore } from '@stores';
 import styled from '@emotion/styled';
-import { COLOR_PROFI } from '@libs';
-import { COLOR_ETHER } from '@libs';
-import { COLOR_IP } from '@libs';
-import { COLOR_UDP } from '@libs';
-import { COLOR_TCP } from '@libs';
+import {
+  COLOR_PROFI,
+  COLOR_ETHER,
+  COLOR_IP,
+  COLOR_UDP,
+  COLOR_TCP,
+  formatNodeLinkData,
+} from '@libs';
 
 const LegendContainer = styled.div`
   position: absolute;
