@@ -143,6 +143,11 @@ export default class Brush extends PureComponent {
       if (!dataStore.rawData.length) {
         return d;
       }
+
+      if (appStore.brushConfig.tickstyle) {
+          return '' + d;
+      }
+
       let date = new Date(dataStore.rawData[d].Timestamp.$date);
 
       let lh = ('' + date.getHours()).padStart(2, '0');
@@ -150,7 +155,7 @@ export default class Brush extends PureComponent {
       let ls = ('' + date.getSeconds()).padStart(2, '0');
       let lms = ('' + date.getMilliseconds()).padStart(3, '0');
 
-      let label = '' + d + '_' + lh + ':' + lm + ':' + ls + '.' + lms;
+      let label = lh + ':' + lm + ':' + ls + '.' + lms;
       return label;
     };
 

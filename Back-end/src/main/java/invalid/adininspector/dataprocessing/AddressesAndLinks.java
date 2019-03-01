@@ -247,7 +247,7 @@ public class AddressesAndLinks implements IAggregator {
 
 		});
 
-		System.out.println("conns: " + connectionsMapList.size());
+		//System.out.println("conns: " + connectionsMapList.size());
 
 		doc.put("nodes", connectionsMapList);
 		doc.put("links", linksMapList);

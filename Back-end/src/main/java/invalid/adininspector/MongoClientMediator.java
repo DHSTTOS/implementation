@@ -316,13 +316,13 @@ public class MongoClientMediator {
 			return new String[0];
 
 		//TODO: get type of field in mongo and cast start and end to this type
-		updateRTaggregation(collection);
+		updateRTaggregation(collection.split("_")[0]);
 
 		BasicDBObject query = new BasicDBObject();
 
 		if(key.equals("Timestamp"))
 		{
-			updateRTaggregation(collection, key, new Date(Long.valueOf((String)start)), new Date(Long.valueOf((String)end)));
+			updateAggregation(collection.split("_")[0], key, new Date(Long.valueOf((String)start)), new Date(Long.valueOf((String)end)));
 
 			query.put(key, new BasicDBObject("$gte", new Date(Long.valueOf((String)start))).append("$lt", new Date(Long.valueOf((String)end)) ));
 		}
@@ -352,7 +352,7 @@ public class MongoClientMediator {
 		//TODO: read the type from mongo and convert it to that
 		if(key.equals("Timestamp"))
 		{
-			updateRTaggregation(collection, key, new Date(Long.valueOf((String)equals)), new Date(Long.valueOf((String)equals)));
+			updateAggregation(collection.split("_")[0], key, new Date(Long.valueOf((String)equals)), new Date(Long.valueOf((String)equals)));
 			equals = new Date(Long.valueOf((String)equals));
 		}
 		else if(key.equals("_id"))
@@ -363,7 +363,52 @@ public class MongoClientMediator {
 		}
 		
         return mongoIteratorToStringArray(db.getCollection(collection).find(Filters.eq(key,equals)));
-    }
+	}
+
+	public String[] getRecordFix(String collection, String key, Object equals)
+    {		
+		if(collection.isEmpty())
+			return new String[0];
+
+		//updateRTaggregation(collection);
+
+		//TODO: read the type from mongo and convert it to that
+		if(key.equals("Timestamp"))
+		{
+			//updateAggregation(collection.split("_")[0], key, new Date(Long.valueOf((String)equals)), new Date(Long.valueOf((String)equals)));
+			equals = new Date(Long.valueOf((String)equals));
+		}
+		else if(key.equals("_id"))
+		{
+			//if it's not a long then make it one
+			if(!equals.getClass().equals(Long.class))
+				equals = Long.valueOf((String)equals);
+		}
+		
+        return mongoIteratorToStringArray(db.getCollection(collection).find(Filters.eq(key,equals)));
+	}
+	public String[] getRecordsInRangeFix(String collection, String key, Object start, Object end) {
+		if(collection.isEmpty())
+			return new String[0];
+
+		//TODO: get type of field in mongo and cast start and end to this type
+		//updateRTaggregation(collection.split("_")[0]);
+
+		BasicDBObject query = new BasicDBObject();
+
+		if(key.equals("Timestamp"))
+		{
+			//updateAggregation(collection.split("_")[0], key, new Date(Long.valueOf((String)start)), new Date(Long.valueOf((String)end)));
+
+			query.put(key, new BasicDBObject("$gte", new Date(Long.valueOf((String)start))).append("$lt", new Date(Long.valueOf((String)end)) ));
+		}
+		else if(key.equals("_id"))
+			query.put(key, new BasicDBObject("$gte", Long.valueOf((String)start)).append("$lt", Long.valueOf((String)end)));
+		else
+			query.put(key, new BasicDBObject("$gte", start).append("$lt", (end)));
+
+		return mongoIteratorToStringArray(db.getCollection(collection).find(query));
+	}
 	
 	/**
 	 * Returns the number of elements matching the range as long
@@ -528,7 +573,7 @@ public class MongoClientMediator {
 
 		Type collType = getCollectionType(collectionName);
 
-		String[] recordsToConvert = start.equals(end) ? getRecord(collectionName, key, start) : getRecordsInRange(collectionName,key,start,end);
+		String[] recordsToConvert = start.equals(end) ? getRecordFix(collectionName, key, start) : getRecordsInRangeFix(collectionName,key,start,end);
 
 		if (recordsToConvert.length == 0)
 			return new ArrayList<>();
@@ -552,6 +597,7 @@ public class MongoClientMediator {
 		//check if the user is trying to get a realTime aggregation and if it's up to date. if not then process it and return the new one
 		if(collection.contains("realTime_"))
 			if(!DataProcessor.isRealTimeUptoDate)
+		//if(!collection.contains("_"))
 				DataProcessor.processData("realTime", this);
 	}
 
@@ -563,12 +609,12 @@ public class MongoClientMediator {
 	 * @param start
 	 * @param end
 	 */
-	public void updateRTaggregation(String collection,String key, Object start, Object end)
+	public void updateAggregation(String collection,String key, Object start, Object end)
 	{
 		//check if the user is trying to get a realTime aggregation and if it's up to date. if not then process it and return the new one
-		if(collection.contains("realTime_"))
+		//if(collection.contains("_"))
 			if(!DataProcessor.isRealTimeUptoDate)
-				DataProcessor.processDataInRange("realTime", this,key,(Date)start,(Date)end);
+				DataProcessor.processDataInRange(collection, this,key,(Date)start,(Date)end);
 	}
 	
 	/**
