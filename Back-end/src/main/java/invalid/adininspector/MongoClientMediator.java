@@ -4,7 +4,6 @@
 package invalid.adininspector;
 
 import java.lang.reflect.Type;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -17,9 +16,6 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
-import com.google.gson.JsonPrimitive;
-import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonSerializer;
 import com.google.gson.reflect.TypeToken;
 import com.mongodb.BasicDBObject;
 import com.mongodb.Block;
@@ -31,12 +27,16 @@ import com.mongodb.ServerAddress;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.MongoIterable;
+import com.mongodb.client.model.Filters;
 
-import org.bson.BsonTimestamp;
 import org.bson.Document;
 
+import invalid.adininspector.dataprocessing.DataProcessor;
 import invalid.adininspector.exceptions.LoginFailureException;
-import invalid.adininspector.records.*;
+import invalid.adininspector.records.AlarmRecord;
+import invalid.adininspector.records.PacketRecordDesFromMongo;
+import invalid.adininspector.records.Record;
+
 
 /**
  * This class serves as a nexus between the users who want to get data out of the
@@ -88,17 +88,8 @@ public class MongoClientMediator {
 
 			// force the caller to handle the exception
 			throw new LoginFailureException(e.getMessage());
-		}
-
-		//    String[] a = getRecordInRange("motor", "Timestamp","1548428021051", "1648428021051");
-
-		//     System.out.println("got " + a.length + " records");
-
-		//    for (String var : a) {
-		//        p(var);
-		//    }
-
-
+        }
+        
 	}
 
 	/**
@@ -113,13 +104,33 @@ public class MongoClientMediator {
 	}
 
 	/**
-	 * Converts the record to a bson document and uses the mongoAPI to insert it
+	 * Converts the record to a bson document and uses t
+     * he mongoAPI to insert it
 	 * into the database.
 	 * 
 	 * @param record the record to add to the collection
 	 * @param collection the name of the collection it should be added to.
 	 */
 	public void addRecordToCollection(Record record, String collection) {
+
+		if(collection.equals("realTime"))
+		{
+			//check how many records are in the collection
+
+			//TODO: bad practice magic var but whatevs
+			int maxNumRecords = 60000;
+			if(CollectionSize(collection) >= maxNumRecords)
+			{
+				Document filter = new Document("_id", db.getCollection(collection).find().first().get("_id"));
+
+				//delete the first document a new one will be added at the end. 
+				db.getCollection(collection).deleteOne(filter);
+
+				//aggregation not longer up to date
+			}
+
+			DataProcessor.isRealTimeUptoDate = false;
+		}
 
 		try {
 			// p(record.getAsDocument());
@@ -135,6 +146,17 @@ public class MongoClientMediator {
 		}
 	}
 
+	
+	/**
+	 * Destroys a collection by name
+	 * @param collection
+	 */
+	public void dropCollection(String collection)
+	{
+		//System.out.println("Droped " + collection);
+		db.getCollection(collection).drop();
+	}
+
 	/**
 	 * Takes a bson Document containing a record and uses the mongoAPI to insert
 	 * it into the database.
@@ -143,6 +165,10 @@ public class MongoClientMediator {
 	 * @param collection name of the collection it should be added to.
 	 */
 	public void addRecordToCollection(Document record, String collection) {
+
+		if(collection.equals("realTime"))
+			DataProcessor.isRealTimeUptoDate = false;
+
 		try {
 			// p(record.getAsDocument());
 			db.getCollection(collection).insertOne(record);
@@ -202,6 +228,12 @@ public class MongoClientMediator {
 	 * @return array of all record of the specified collection as strings
 	 */
 	public String[] getCollection(String collection) {
+
+		if(collection.isEmpty())
+			return new String[0];
+
+		//check if the user is trying to get a realTime aggregation and if it's up to date. if not then process it and return the updated version
+		updateRTaggregation(collection);
 		return mongoIteratorToStringArray(db.getCollection(collection).find());
 	}
 
@@ -215,6 +247,11 @@ public class MongoClientMediator {
 		// find returns a cursor to the first object so we simple return that one
 		//TODO: check if collection is null
 
+		if(collection.isEmpty())
+			return "";
+
+		updateRTaggregation(collection);
+
 		MongoCollection<Document> coll = db.getCollection(collection);
 
 		return db.getCollection(collection).find().first().toJson();
@@ -227,6 +264,11 @@ public class MongoClientMediator {
 	 * @return the last record of the collection
 	 */
 	public String getEndRecord(String collection) {
+
+		if(collection.isEmpty())
+			return "";
+
+		updateRTaggregation(collection);
 		// we sort descending by id and then get the first (last object)
 		return db.getCollection(collection).find().sort(new Document("_id", -1)).first().toJson();
 	}
@@ -238,8 +280,12 @@ public class MongoClientMediator {
 	 * @return the number of entries in the collection
 	 */
 	public long CollectionSize(String collection) {
-		// count is deprecated, there's an estimation which should work fine but it's
-		// not gonna be accurate
+
+		if(collection.isEmpty())
+			return (long) 0.0;
+
+		updateRTaggregation(collection);
+
 		return db.getCollection(collection).countDocuments();
 	}
 
@@ -266,22 +312,58 @@ public class MongoClientMediator {
 	 * @return String array containing all entries of the collection within that range
 	 */
 	public String[] getRecordsInRange(String collection, String key, Object start, Object end) {
+		if(collection.isEmpty())
+			return new String[0];
+
 		//TODO: get type of field in mongo and cast start and end to this type
+		updateRTaggregation(collection);
 
 		BasicDBObject query = new BasicDBObject();
 
 		if(key.equals("Timestamp"))
 		{
-			System.out.println("OMG TIMESTAMP!");
-			query.put(key, new BasicDBObject("$gte", new Date(Long.valueOf((String)start))).append("$lt", new Date(Long.valueOf((String)end)) ));
+			updateRTaggregation(collection, key, new Date(Long.valueOf((String)start)), new Date(Long.valueOf((String)end)));
 
+			query.put(key, new BasicDBObject("$gte", new Date(Long.valueOf((String)start))).append("$lt", new Date(Long.valueOf((String)end)) ));
 		}
+		else if(key.equals("_id"))
+			query.put(key, new BasicDBObject("$gte", Long.valueOf((String)start)).append("$lt", Long.valueOf((String)end)));
 		else
 			query.put(key, new BasicDBObject("$gte", start).append("$lt", (end)));
 
 		return mongoIteratorToStringArray(db.getCollection(collection).find(query));
 	}
 
+
+    /**
+     * Matches records of a collection to a value
+     * @param collection
+     * @param key
+     * @param equals
+     * @return an array containing all collection entry where key = equals
+     */
+    public String[] getRecord(String collection, String key, Object equals)
+    {		
+		if(collection.isEmpty())
+			return new String[0];
+
+		updateRTaggregation(collection);
+
+		//TODO: read the type from mongo and convert it to that
+		if(key.equals("Timestamp"))
+		{
+			updateRTaggregation(collection, key, new Date(Long.valueOf((String)equals)), new Date(Long.valueOf((String)equals)));
+			equals = new Date(Long.valueOf((String)equals));
+		}
+		else if(key.equals("_id"))
+		{
+			//if it's not a long then make it one
+			if(!equals.getClass().equals(Long.class))
+				equals = Long.valueOf((String)equals);
+		}
+		
+        return mongoIteratorToStringArray(db.getCollection(collection).find(Filters.eq(key,equals)));
+    }
 	
 	/**
 	 * Returns the number of elements matching the range as long
@@ -292,12 +374,9 @@ public class MongoClientMediator {
 	 * @param end the end value of the range
 	 * @return the number of elements matching the range as int
 	 */
-	public long getRecordsInRangeSize(String collection, String key, String start, String end) {
-		BasicDBObject query = new BasicDBObject();
-		query.put(key, new BasicDBObject("$gte", start).append("$lt", (end)));
-
-		return db.getCollection(collection).countDocuments(query);
-	}
+	// public long getRecordsInRangeSize(String collection, String key, String start, String end) {
+	// 	return getRecordsInRange(collection, key, start, end).length; //db.getCollection(collection).countDocuments(query);
+	// }
 
 	
 	/**
@@ -310,11 +389,12 @@ public class MongoClientMediator {
 	 * @return the number of elements matching the range as int
 	 */
 	public long getRecordsInRangeSize(String collection, String key, Object start, Object end) {
-		BasicDBObject query = new BasicDBObject();
-		query.put(key, new BasicDBObject("$gte", start).append("$lt", (end)));
+		
+		if(collection.isEmpty())
+			return (long) 0.0;
 
-		return db.getCollection(collection).countDocuments(query);
-	}
+        return getRecordsInRange(collection, key, start, end).length; 
+    }
 
 
 	/**
@@ -334,8 +414,22 @@ public class MongoClientMediator {
 		return colls.toArray(new String[colls.size()]); //mongoIteratorToStringArray(db.listCollectionNames());
 	}
 
+
+	/**
+	 * creates an empty collection in the database
+	 * @param collection
+	 */
+	public void createEmptyCollection(String collection)
+	{
+		db.createCollection(collection);
+	}
 	
 	// HELPER FUNCTIONS
+	/**
+	 * converts a mongoIterator to a string array
+	 * @param iterable
+	 * @return the iterator as an array
+	 */
 	private String[] mongoIteratorToStringArray(MongoIterable iterable) {
 		List<String> colls = new ArrayList<>();
 
@@ -345,18 +439,14 @@ public class MongoClientMediator {
 	}
 
 	// TODO: figure out a way to make this less wasteful
+	/**
+	 * gets a collection and returns it as an ArrayList
+	 * @param collectionName
+	 * @return the collection as ArrayList
+	 */
 	public ArrayList<Record> getCollectionAsRecordsArrayList(String collectionName) {
 
-
-		JsonSerializer<Date> ser = new JsonSerializer<Date>() {
-			@Override
-			public JsonElement serialize(Date src, Type typeOfSrc, JsonSerializationContext 
-					context) {
-				return src == null ? null : new JsonPrimitive(src.getTime());
-			}
-		};
-
-		JsonDeserializer<Date> deser = new JsonDeserializer<Date>() {
+		JsonDeserializer<Date> dateDeser = new JsonDeserializer<Date>() {
 			@Override
 			public Date deserialize(JsonElement json, Type typeOfT,
 					JsonDeserializationContext context) throws JsonParseException {
@@ -366,20 +456,19 @@ public class MongoClientMediator {
 			}
 		};
 
+		JsonDeserializer<Long> longDeser = new JsonDeserializer<Long>() {
+
+			@Override
+			public Long deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+					throws JsonParseException {
+				return  json.getAsJsonObject().getAsJsonPrimitive("$numberLong").getAsLong();
+			}
+		
+		};
+
 		Gson gson = new GsonBuilder()
-				.registerTypeAdapter(Date.class, ser)
-				.registerTypeAdapter(Date.class, deser).create();
-
-
-		// GsonBuilder builder = new GsonBuilder(); 
-
-		// builder.registerTypeAdapter(Date.class, new JsonDeserializer<Date>() { 
-		//     public Date deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-		//        return new Date(json.getAsJsonPrimitive().getAsLong()); 
-		//     } 
-		//  });
-
-		// Gson gson = builder.create();
+				.registerTypeAdapter(Date.class, dateDeser)
+				.registerTypeAdapter(long.class, longDeser).create();
 
 		ArrayList<Record> records = new ArrayList<>();
 
@@ -400,7 +489,93 @@ public class MongoClientMediator {
 		return records;
 	}
 
-	// Might be useful for the upper layers
+	/**
+	 * get's the collection and truncates it in between a range
+	 * @param collectionName
+	 * @param key
+	 * @param start
+	 * @param end
+	 * @return the collection truncated in between a range
+	 */
+	public ArrayList<Record> getCollectionAsRecordsArrayList(String collectionName, String key, Object start, Object end)
+	{
+		JsonDeserializer<Date> dateDeser = new JsonDeserializer<Date>() {
+			@Override
+			public Date deserialize(JsonElement json, Type typeOfT,
+					JsonDeserializationContext context) throws JsonParseException {
+				long time = json.getAsJsonObject().getAsJsonPrimitive("$date").getAsLong();
+				Date d = new Date(time);
+				return d;
+			}
+		};
+		JsonDeserializer<Long> longDeser = new JsonDeserializer<Long>() {
+
+			@Override
+			public Long deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+					throws JsonParseException {
+				return  json.getAsJsonObject().getAsJsonPrimitive("$numberLong").getAsLong();
+			}
+		
+		};
+
+		Gson gson = new GsonBuilder()
+				.registerTypeAdapter(Date.class, dateDeser)
+				.registerTypeAdapter(long.class, longDeser).create();
+
+
+
+		ArrayList<Record> records = new ArrayList<>();
+
+		Type collType = getCollectionType(collectionName);
+
+		String[] recordsToConvert = start.equals(end) ? getRecord(collectionName, key, start) : getRecordsInRange(collectionName,key,start,end);
+
+		if (recordsToConvert.length == 0)
+			return new ArrayList<>();
+
+		for (int i = 0; i < recordsToConvert.length; i++) {
+			records.add(gson.fromJson(recordsToConvert[i], collType));
+		}
+
+		return records;
+
+		
+	}
+
+
+	/**
+	 * the Data processor to update the realTime aggregation 
+	 * @param collection
+	 */
+	public void updateRTaggregation(String collection)
+	{
+		//check if the user is trying to get a realTime aggregation and if it's up to date. if not then process it and return the new one
+		if(collection.contains("realTime_"))
+			if(!DataProcessor.isRealTimeUptoDate)
+				DataProcessor.processData("realTime", this);
+	}
+
+	
+	/**
+	 * Calls the Data processor to update the realTime aggregation in between a date range
+	 * @param collection
+	 * @param key
+	 * @param start
+	 * @param end
+	 */
+	public void updateRTaggregation(String collection,String key, Object start, Object end)
+	{
+		//check if the user is trying to get a realTime aggregation and if it's up to date. if not then process it and return the new one
+		if(collection.contains("realTime_"))
+			if(!DataProcessor.isRealTimeUptoDate)
+				DataProcessor.processDataInRange("realTime", this,key,(Date)start,(Date)end);
+	}
+	
+	/**
+	 * Associates the name of a collection to it's Java type
+	 * @param collectionName
+	 * @return the java type associated to the collection
+	 */
 	public Type getCollectionType(String collectionName) {
 		Type type = null;
 
@@ -412,11 +587,6 @@ public class MongoClientMediator {
 		}.getType();
 
 		return type;
-	}
-
-	// TODO: implement me
-	private Record[] mongoIteratorToRecordArray(MongoIterable it) {
-		return null;
 	}
 
 	public void p(Object line) {

@@ -20,7 +20,7 @@ class PlotTypeBar extends Component {
   availablePlotTypes = [SCATTER_PLOT, LINE_CHART, NODE_LINK];
 
   render() {
-    const availableKeys = dataStore.availableKeys;
+    const availableKeys = [...dataStore.availableKeys];
     const diagramConfig = appStore.configModal.diagramConfig;
     return (
       <Container>
@@ -31,54 +31,19 @@ class PlotTypeBar extends Component {
           currentSelection={diagramConfig.plotType}
         />
 
-        {diagramConfig.plotType == SCATTER_PLOT ? (
-          
+        {diagramConfig.plotType === SCATTER_PLOT ? (
           <>
             <Selector
               name="X-Axis"
-              //we have the option .slice(start,end)
-              options={availableKeys.slice(3,10)}
+              options={availableKeys}
               onSelect={appStore.setXAxis}
               currentSelection={diagramConfig.x}
             />
             <Selector
               name="Y-Axis"
-              options={availableKeys.slice(3,10)}
+              options={availableKeys}
               onSelect={appStore.setYAxis}
               currentSelection={diagramConfig.y}
-            />
-            <Selector
-              name="Group by"
-              options={availableKeys.slice(3,10)}
-              onSelect={appStore.setGroupBy}
-              currentSelection={diagramConfig.groupName}
-            />
-          </>
-        ) : (
-          <></>
-        )}
-
-{diagramConfig.plotType == LINE_CHART? (
-          
-          <>
-            <Selector
-              name="X-Axis"
-              //we have the option .slice(start,end)
-              options={availableKeys.slice(1,4)}
-              onSelect={appStore.setXAxis}
-              currentSelection={diagramConfig.x}
-            />
-            <Selector
-              name="Y-Axis"
-              options={availableKeys.slice(1,4)}
-              onSelect={appStore.setYAxis}
-              currentSelection={diagramConfig.y}
-            />
-            <Selector
-              name="Group by"
-              options={availableKeys.slice(1,4)}
-              onSelect={appStore.setGroupBy}
-              currentSelection={diagramConfig.groupName}
             />
           </>
         ) : (

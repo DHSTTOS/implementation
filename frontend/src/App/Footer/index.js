@@ -8,6 +8,7 @@ import uniqid from 'uniqid';
 
 import { appStore } from '@stores';
 import Brush from './Brush';
+import BrushConfig from './BrushConfig';
 
 const Container = styled.div`
   position: fixed;
@@ -15,6 +16,8 @@ const Container = styled.div`
   display: flex;
   height: 6rem;
   width: 100%;
+  background-color: rgba(255, 255, 255, 0.75);
+  user-select: none;
 `;
 
 const Content = styled.div`
@@ -29,6 +32,10 @@ const Content = styled.div`
 
 const StyledAddBoxIcon = styled(AddBoxIcon)`
   margin-right: 0.5rem;
+`;
+
+const Row = styled.div`
+  display: flex;
 `;
 
 @observer
@@ -46,7 +53,10 @@ class Footer extends Component {
               {'© 2018 DHSTTOS Frontend Contributors'}
             </Typography>
           </div>
-          <Brush />
+          <Row>
+            <BrushConfig />
+            <Brush />
+          </Row>
           <div>
             <Button
               onClick={this.handleAddDiagram}

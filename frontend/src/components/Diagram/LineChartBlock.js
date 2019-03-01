@@ -7,8 +7,6 @@ import { Line } from '@nivo/line';
  * @prop {number} width
  * @prop {number} height
  * @prop {object[]} data
- * @prop {string} x
- * @prop {string} y
  * @prop {string} colors
  * @prop {boolean} enableArea
  * @prop {number} lineWidth
@@ -23,8 +21,6 @@ class LineChartBlock extends Component {
       width,
       height,
       data,
-      x,
-      y,
       colors,
       enableArea,
       lineWidth,
@@ -38,16 +34,18 @@ class LineChartBlock extends Component {
         data={data}
         margin={{
           top: 35,
-          right: 140,
+          right: 135,
           bottom: 70,
-          left: 140,
+          left: 70,
         }}
         colors={colors}
         enableArea={enableArea}
         lineWidth={lineWidth}
         areaOpacity={areaOpacity}
         xScale={{
-          type: 'point',
+          type: 'time',
+          format: '%Q',
+          precision: 'millisecond',
         }}
         yScale={{
           type: 'linear',
@@ -60,18 +58,19 @@ class LineChartBlock extends Component {
           tickSize: 5,
           tickPadding: 5,
           tickRotation: 0,
-          legend: x,
+          legend: 'Time',
           legendPosition: 'middle',
           legendOffset: 46,
+          format: '%H:%M:%S.%L',
         }}
         axisLeft={{
           orient: 'left',
           tickSize: 5,
           tickPadding: 5,
           tickRotation: 0,
-          legend: y,
+          legend: 'Connections',
           legendPosition: 'middle',
-          legendOffset: -120,
+          legendOffset: -50,
         }}
         animate={false}
         legends={[

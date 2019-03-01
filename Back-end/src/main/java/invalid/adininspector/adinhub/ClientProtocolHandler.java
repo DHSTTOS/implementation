@@ -1,6 +1,7 @@
 package invalid.adininspector.adinhub;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.websocket.Session;
@@ -8,6 +9,8 @@ import javax.websocket.Session;
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonSyntaxException;
+
+import invalid.adininspector.exceptions.LoginFailureException;
 
 /**
  * This class handles client requests by parsing them, executing the requested
@@ -28,7 +31,17 @@ public class ClientProtocolHandler {
 				Map<String, Object> m = new HashMap<String, Object>();
 				String username = (String)msgParsed.get("user");
 				String password = (String)msgParsed.get("pwd");
-				String res = hub.login(session, username, password);
+				String res = null;
+				try {
+					res = hub.login(session, username, password);
+				} catch (LoginFailureException e) {
+					e.printStackTrace();
+					m.put("cmd", "SESSION");
+					m.put("par", "LOGIN");
+					m.put("status", "FAIL");
+					m.put("token", "");
+					m.put("msg", e.getMessage());
+				}
 
 				m.put("cmd", "SESSION");
 				m.put("par", "LOGIN");
@@ -68,6 +81,37 @@ public class ClientProtocolHandler {
 				String[] collections = hub.getAvailableCollections(session);
 				msgParsed.put("cmd", "LIST_COLL");
 				msgParsed.put("par", collections);
+				return msgParsed;
+			}
+		},
+
+		GET_COLL_GROUPS("GET_COLL_GROUPS") {
+			public Map<String, Object> execute(Hub hub, Session session, Map<String,Object> msgParsed) {
+				List<List<String>> collectionGroups = hub.getCollectionGroups(session);
+				msgParsed.put("cmd", "LIST_COLL_GROUPS");
+				msgParsed.put("par", collectionGroups);
+				return msgParsed;
+			}
+		},
+
+		GET_COLL_GROUP_DATA("GET_COLL_GROUP_DATA") {
+			public Map<String, Object> execute(Hub hub, Session session, Map<String,Object> msgParsed) {
+				String collectionName = (String)msgParsed.get("par");
+				List<HashMap<String, Object>> collectionGroup = hub.getCollectionGroupData(session, collectionName);
+				msgParsed.put("cmd", "DATAGROUP");
+				msgParsed.put("name", collectionName);
+				msgParsed.put("par", collectionGroup);
+				return msgParsed;
+			}
+		},
+
+		GET_COLL_GROUP_ENDPOINTS("GET_COLL_GROUP_ENDPOINTS") {
+			public Map<String, Object> execute(Hub hub, Session session, Map<String,Object> msgParsed) {
+				String collectionName = (String)msgParsed.get("par");
+				List<HashMap<String, Object>> collectionGroupEndpoints = hub.getCollectionGroupEndpoints(session, collectionName);
+				msgParsed.put("cmd", "DATAGROUP_ENDPOINTS");
+				msgParsed.put("name", collectionName);
+				msgParsed.put("par", collectionGroupEndpoints);
 				return msgParsed;
 			}
 		},
@@ -134,6 +178,21 @@ public class ClientProtocolHandler {
 				m.put("key", "");
 				m.put("par", size);
 				return m;
+			}
+		},
+
+		GET_RECORD("GET_RECORD") {
+			public Map<String, Object> execute(Hub hub, Session session, Map<String,Object> msgParsed) {
+				String collectionName = (String)msgParsed.get("par");
+				String key = (String)msgParsed.get("key");
+				String value = (String)msgParsed.get("value");
+				String[] data = hub.getRecord(session, collectionName, key, value);
+				//send augmented request back:
+				msgParsed.put("cmd", "DATASINGLE");
+				msgParsed.put("name", collectionName);
+				msgParsed.put("data", data);
+				msgParsed.remove("par");
+				return msgParsed;
 			}
 		},
 
@@ -204,11 +263,9 @@ public class ClientProtocolHandler {
 	 * @param message the client request to handle
 	 */
 	String handleRequest(Hub hub, Session session, String message) {
-		Gson gson = new Gson();
 		Map<String,Object> msgParsed = null;
 		try {
 			msgParsed = new Gson().fromJson(message, Map.class);
-
 		} catch (JsonSyntaxException e) {
 			System.err.println("handleRequest() got non-JSON message: " + cleanString(message));
 			return "";

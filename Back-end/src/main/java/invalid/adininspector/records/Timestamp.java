@@ -21,7 +21,7 @@ public class Timestamp {
 
 	}
 
-	//TODO: fix for stupid broken variable in test data
+	//TODO: fix broken variable in test data
 	public Date getDate() {
 		return    date ; 
 
