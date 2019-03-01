@@ -2,7 +2,8 @@ import React, { PureComponent } from 'react';
 import { autorun, toJS } from 'mobx';
 import { dataStore } from '@stores';
 import styled from '@emotion/styled';
-import { COLOR_MAC } from '@libs';
+import { COLOR_PROFI } from '@libs';
+import { COLOR_ETHER } from '@libs';
 import { COLOR_IP } from '@libs';
 import { COLOR_UDP} from '@libs';
 import { COLOR_TCP } from '@libs';
@@ -60,16 +61,19 @@ class NodeLinkBlock extends PureComponent {
         <div ref={this.nodeLinkGram} />
         <LegendContainer>
           <Row>
-            <LegendBox color={COLOR_MAC} /> MAC Address
+            <LegendBox color={COLOR_ETHER} /> Ethernet
           </Row>
           <Row>
-            <LegendBox color="rgb(12, 67, 199)" /> IP Address
+            <LegendBox color={COLOR_PROFI} /> Profinet
           </Row>
           <Row>
-            <LegendBox color="rgb(255, 24, 166)" /> UDP
+            <LegendBox color={COLOR_IP} /> IP 
           </Row>
           <Row>
-            <LegendBox color="rgb(24, 255, 177)" /> TCP
+            <LegendBox color={COLOR_UDP} /> UDP
+          </Row>
+          <Row>
+            <LegendBox color={COLOR_TCP} /> TCP
           </Row>
         </LegendContainer>
       </div>
