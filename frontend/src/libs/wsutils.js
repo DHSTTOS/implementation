@@ -1,4 +1,5 @@
 import { userStore, dataStore } from '@stores';
+import { toJS } from 'mobx';
 
 let msgIdCounter = 0;
 let msgRegister = [];
@@ -158,6 +159,7 @@ const handleDataGroup = msg => {
     .find(x => x.name === baseName + '_AddressesAndLinks')
     .data.map(x => JSON.parse(x));
 
+  console.warn(toJS(dataStore.addressesAndLinksData));
   dataStore.flowrateData = msg.par
     .find(x => x.name === baseName + '_FlowRatePerSecond')
     .data.map(x => JSON.parse(x));

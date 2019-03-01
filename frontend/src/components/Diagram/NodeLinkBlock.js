@@ -44,7 +44,11 @@ class NodeLinkBlock extends PureComponent {
     this.disposeAutorun = autorun(_ => {
       network.updateData(
         JSON.parse(
-          JSON.stringify(toJS(dataStore.currentlySelectedAddressAndLinksData))
+          JSON.stringify(
+            toJS(
+              formatNodeLinkData(dataStore.currentlySelectedAddressAndLinksData)
+            )
+          )
         )
       );
     });
