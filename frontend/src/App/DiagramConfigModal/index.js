@@ -11,7 +11,7 @@ import { appStore } from '@stores';
 
 import PlotTypeBar from './PlotTypeBar';
 import DiagramSpecBlock from './DiagramSpecBlock';
-import DiagramFiltersBlock from './DiagramFiltersBlock';
+// import DiagramFiltersBlock from './DiagramFiltersBlock';
 
 const Container = styled(Paper)`
   position: absolute;
@@ -20,8 +20,8 @@ const Container = styled(Paper)`
   justify-content: space-between;
   top: 50%;
   left: 50%;
-  width: 45rem;
-  height: 40rem;
+  width: 35rem;
+  height: 28rem;
   transform: translate(-50%, -50%);
 `;
 
@@ -92,7 +92,7 @@ class DiagramConfigModal extends Component {
             <DiagramSpecBlock
               plotType={appStore.configModal.diagramConfig.plotType}
             />
-            <DiagramFiltersBlock />
+            {/* <DiagramFiltersBlock /> */}
           </Content>
           <Center>
             <ButtonsContainer>

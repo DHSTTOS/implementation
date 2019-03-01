@@ -13,6 +13,7 @@ import org.bson.Document;
 import invalid.adininspector.records.PacketRecordDesFromMongo;
 import invalid.adininspector.records.Record;
 
+//TODO: we need to change this to be per second not for the whole data set
 /**
  * AddressesAndLinks implements IAggregator. This aggregator produces a document
  * containing a list of network nodes that show up in a collection and a list of
@@ -41,6 +42,9 @@ public class AddressesAndLinks implements IAggregator {
 
 	private ArrayList<Map<String, Object>> linksMapList;
 
+	//private Date currentTstmp;
+
+
 	/**
 	 * Builds a document list containing a collection of nodes and a collection
 	 * of connections from the given list of network packet records.
@@ -54,15 +58,21 @@ public class AddressesAndLinks implements IAggregator {
 		if (records.size() == 0)
 			return new ArrayList<>();
 
-		int id = 0;
+		long id = 0;
 
 		ArrayList<Document> processedRecords = new ArrayList<>();
 
 		Document doc = getNewAggregatorDocument(null);
-
+			//TODO
+		doc.append("startTime",((PacketRecordDesFromMongo)records.get(0)).getTimestamp() );
+		doc.append("endTime", ((PacketRecordDesFromMongo)records.get(records.size() -1 )).getTimestamp() );
 
 		connectionsMapList = new ArrayList<>();
 		linksMapList = new ArrayList<>();
+
+
+		//currentTstmp = ((PacketRecordDesFromMongo) records.get(0)).getTimestamp();
+
 
 		records.forEach(record -> {
 
@@ -243,8 +253,6 @@ public class AddressesAndLinks implements IAggregator {
 		doc.put("links", linksMapList);
 
 		processedRecords.add(doc);
-
-
 		return processedRecords;
 	}
 
@@ -259,11 +267,17 @@ public class AddressesAndLinks implements IAggregator {
 		Document d = new Document();
 
 		// one collection with 1 object
-		d.append("_id", 0);
+		d.append("_id", (long)0);
 
 		return d;
 	}
 
+	/**
+	 * creates a new linkMap template
+	 * @param src
+	 * @param dest
+	 * @return new map template for the links
+	 */
 	private Map<String,Object> linkMap(String src,String dest)
 	{
 
@@ -274,6 +288,13 @@ public class AddressesAndLinks implements IAggregator {
 
 	}
 
+	/**
+	 * Creates new nodeMap template
+	 * @param id
+	 * @param type
+	 * @param protocol
+	 * @return new nodeMap template
+	 */
 	private Map<String,Object> nodeMap(String id,String type,String protocol)
 	{
 		return new HashMap<String,Object>() {{

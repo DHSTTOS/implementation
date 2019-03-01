@@ -2,11 +2,11 @@ import React, { PureComponent } from 'react';
 import { autorun, toJS } from 'mobx';
 import { dataStore } from '@stores';
 import styled from '@emotion/styled';
-import { COLOR_MAC } from '@libs';
+import { COLOR_PROFI } from '@libs';
+import { COLOR_ETHER } from '@libs';
 import { COLOR_IP } from '@libs';
-import { COLOR_UDP} from '@libs';
+import { COLOR_UDP } from '@libs';
 import { COLOR_TCP } from '@libs';
-
 
 const LegendContainer = styled.div`
   position: absolute;
@@ -43,7 +43,9 @@ class NodeLinkBlock extends PureComponent {
 
     this.disposeAutorun = autorun(_ => {
       network.updateData(
-        JSON.parse(JSON.stringify(toJS(dataStore.currentNodeLinkData)))
+        JSON.parse(
+          JSON.stringify(toJS(dataStore.currentlySelectedAddressAndLinksData))
+        )
       );
     });
   };
@@ -53,30 +55,32 @@ class NodeLinkBlock extends PureComponent {
     this.nodeLinkGram.current.remove();
     document.getElementById('vis-tooltip').remove();
   };
- 
+
   render() {
     return (
       <div>
         <div ref={this.nodeLinkGram} />
         <LegendContainer>
           <Row>
-            <LegendBox color={COLOR_MAC} /> MAC Address
+            <LegendBox color={COLOR_ETHER} /> Ethernet
           </Row>
           <Row>
-            <LegendBox color="rgb(12, 67, 199)" /> IP Address
+            <LegendBox color={COLOR_PROFI} /> Profinet
           </Row>
           <Row>
-            <LegendBox color="rgb(255, 24, 166)" /> UDP
+            <LegendBox color={COLOR_IP} /> IP
           </Row>
           <Row>
-            <LegendBox color="rgb(24, 255, 177)" /> TCP
+            <LegendBox color={COLOR_UDP} /> UDP
+          </Row>
+          <Row>
+            <LegendBox color={COLOR_TCP} /> TCP
           </Row>
         </LegendContainer>
       </div>
     );
   }
 }
-
 
 //
 // ** WARNING **
@@ -99,8 +103,8 @@ class NodeLinkBlock extends PureComponent {
 
 function RadialPlacement() {
   // stores the key -> location values
-  var colorMac = d3.rgb(12, 67, 199);
- var colorIp = d3.rgb(255, 224, 25);
+  // var colorMac = d3.rgb(12, 67, 199);
+  //var colorIp = d3.rgb(255, 224, 25);
   let values = d3.map();
   // how much to separate each location by
   let increment = 5;
@@ -137,7 +141,7 @@ function RadialPlacement() {
 
   // Gets a new location for input key
   var place = function(key) {
-    const value = radialLocation(center, current, radiusA,radiusB);
+    const value = radialLocation(center, current, radiusA, radiusB);
     values.set(key, value);
     current += increment;
     return value;
@@ -474,7 +478,9 @@ function Network() {
         if (d.Protocol == 'IP') {
           return d3.rgb(12, 67, 199);
         } else if (d.Protocol == 'Ether') {
-          return d3.rgb(239, 149, 23);
+          return d3.rgb(214, 208, 27);
+        } else if (d.Protocol == 'Profinet') {
+          return d3.rgb(120, 171, 165);
         } else if (d.Protocol == 'UDP') {
           return d3.rgb(177, 16, 111);
         } else {
@@ -489,17 +495,22 @@ function Network() {
         showDetails(d, i);
       })
       .on('mouseout', hideDetails)
-      .on("click",function(d){
-        alert("The id of the clicked node is : " +" "+ d.id  +
-        "\nIts Type is: " +" " +d.type +  
-        "\nIts Protocol is : " +" "+d.Protocol);});
-     
+      .on('click', function(d) {
+        alert(
+          'The id of the clicked node is : ' +
+            ' ' +
+            d.id +
+            '\nIts Type is: ' +
+            ' ' +
+            d.type +
+            '\nIts Protocol is : ' +
+            ' ' +
+            d.Protocol
+        );
+      });
 
     return node.exit().remove();
   };
-
-  
-
 
   // enter/exit display for links
   var updateLinks = function() {
@@ -642,24 +653,18 @@ function Network() {
     <p>
     </p>
     <p class="main">Protocol of the target:  ${d.target.Protocol}</span></p>`;
-    <p>
-    </p>
+    <p />;
     tooltip.showTooltip(content, d3.event);
 
-   d3
-    .select(this)
-    .style('stroke', 'blue')
-    .style('stroke-width', 3.0);
+    d3.select(this)
+      .style('stroke', 'blue')
+      .style('stroke-width', 3.0);
   };
 
   var hideLinkDetails = function(d, i) {
-    
-    
- 
-    d3
-    .select(this)
-    .style('stroke','#ddd')
-    .style('stroke-width',0);
+    d3.select(this)
+      .style('stroke', '#ddd')
+      .style('stroke-width', 0);
     tooltip.hideTooltip();
   };
   // Mouseout function

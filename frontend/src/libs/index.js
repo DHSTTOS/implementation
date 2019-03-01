@@ -5,10 +5,13 @@ import {
   LINE_CHART,
   NODE_LINK,
   NIVO_COLOR_SCHEMES,
-  COLOR_MAC,
+  COLOR_ETHER,
+  COLOR_PROFI,
   COLOR_IP,
   COLOR_UDP,
   COLOR_TCP,
+  COLOR_WHITE,
+  DEFAULT_BRUSH_CONFIG,
 } from './consts';
 
 import {
@@ -17,9 +20,13 @@ import {
   auth,
   logout,
   getAvailableCollections,
+  getCollectionGroups,
+  getCollectionGroupData,
+  getCollectionGroupEndpoints,
   getCollection,
   getCollectionSize,
   getEndpoints,
+  getRecord,
   getRecordsInRange,
   getRecordsInRangeSize,
   getLocalCollection,
@@ -35,6 +42,11 @@ import {
   removeUDP,
 } from './dataFilters';
 
+import { formatRawData, formatFlowrateData } from './dataMappers';
+
+import { requestAvailableCollections } from './getCollections';
+import { dataStore } from '@stores';
+
 /**
  * Formats raw data to nivo's format.
  *
@@ -42,15 +54,17 @@ import {
  * @param {string} p.groupName
  * @param {string} p.x
  * @param {string} p.y
- * @param {Object[]} p.rawData
+ * @param {Object[]} p.unformattedData
  *
  * @return {Object[]}
+ * @deprecated
  */
-const formatData = ({ groupName, x, y, rawData = [] }) => {
+const formatData = ({ groupName, x, y, unformattedData: rawData = [] }) => {
   // normalize the timestamp
   const normalizedRawData = rawData.map(x => ({
     ...x,
-    Timestamp: x['Timestamp']['$date'],
+    Timestamp: String(new Date(x['Timestamp']['$date']).getTime()),
+    id: Number(x['_id']['$numberLong']),
   }));
 
   // get all the names of groups of data by groupID
@@ -62,10 +76,19 @@ const formatData = ({ groupName, x, y, rawData = [] }) => {
   normalizedRawData.map(e => {
     dataArr
       .filter(o => o.id === e[groupName])
-      .map(o => o.data.push({ x: e[x], y: e[y] }));
+      .map(o => o.data.push({ x: e[x], y: e[y], id: e['id'] }));
   });
 
   return dataArr;
+};
+
+/**
+ * @param {number} id
+ *
+ * @return {Object[]}
+ */
+const selectOriginalRawDatum = id => {
+  return dataStore.rawData.filter(x => x['_id']['$numberLong'] == id)[0];
 };
 
 export {
@@ -75,27 +98,38 @@ export {
   LINE_CHART,
   NODE_LINK,
   NIVO_COLOR_SCHEMES,
-  COLOR_MAC,
   COLOR_IP,
   COLOR_UDP,
   COLOR_TCP,
+  COLOR_PROFI,
+  COLOR_ETHER,
+  COLOR_WHITE,
+  DEFAULT_BRUSH_CONFIG,
   createConnection,
   login,
   auth,
   logout,
   getAvailableCollections,
+  getCollectionGroups,
+  getCollectionGroupData,
+  getCollectionGroupEndpoints,
   getCollection,
   getCollectionSize,
   getEndpoints,
+  getRecord,
   getRecordsInRange,
   getRecordsInRangeSize,
   getLocalCollection,
   getLocalCollectionData,
-  formatData,
   removeL2,
   removeL3,
   removeL4,
   removeEther,
   removeProfinet,
   removeUDP,
+  requestAvailableCollections,
+  formatData,
+  selectOriginalRawDatum,
+  formatRawData,
+  formatFlowrateData,
 };

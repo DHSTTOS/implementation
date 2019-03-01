@@ -1,5 +1,7 @@
 package invalid.adininspector.adinhub;
 
+import com.mongodb.MongoSocketOpenException;
+
 import invalid.adininspector.MongoClientMediator;
 import invalid.adininspector.exceptions.LoginFailureException;
 
@@ -33,17 +35,23 @@ public class MongoDBUserSession implements IUserSession {
 	 * @param username the username to login with
 	 * @param password the password to login with
 	 * @return the new IUserSession object with a logged-in database connection, or null
+	 * @throws LoginFailureException if connecting to or logging into the MongoDB failed  
 	 */
-	public static IUserSession createUserSession(String username, String password) {
+	public static IUserSession createUserSession(String username, String password) throws LoginFailureException {
 		MongoDBUserSession m = new MongoDBUserSession();
 		try {
 			m.setMongoClientMediator(new MongoClientMediator(username, password));
 			m.getAvailableCollections(); // check if login succeeded
 			return m;
 		} catch (LoginFailureException e) {
-			System.err.println("createUserSession: login failed; u: " + username + "pw: " + password);
+			System.err.println("MongoDBUserSession.createUserSession: login failed; username: " + username);
 			m = null;
-			return null;
+			throw e;
+		} catch (MongoSocketOpenException e) {
+			System.err.println("MongoDBUserSession.createUserSession failed:");
+			e.printStackTrace();
+			m = null;
+			throw new LoginFailureException(e.toString());
 		}
 	}
 
@@ -64,8 +72,7 @@ public class MongoDBUserSession implements IUserSession {
 	 * @return an array of strings of the records of the specified collection in json format
 	 */
 	public String[] getCollection(String collection) {
-		//return mongoClientMediator.getCollection(collection);
-		throw new NoSuchMethodError("abort in MongoDBUsersession.getCollection() because it's not implemented in MongoClientMediator");
+		return mongoClientMediator.getCollection(collection);
 	}
 
 	/**
@@ -100,12 +107,32 @@ public class MongoDBUserSession implements IUserSession {
 		return mongoClientMediator.CollectionSize(collection);
 	}
 
+
+	/**
+	 * Returns an array containing all records of the collection for which the
+	 * specified key has the specified value.
+	 * The records will be in the same order as they are in the collection and
+	 * are strings in json format.
+	 *
+	 * @param collection the collection to query
+	 * @param key the record key by which the records are filtered
+	 * @param value the value to match with
+	 * @return an array of records matching the value
+	 */
+	public String[] getRecord(String collection, String key, String value) {
+		System.out.println("MongoDBUserSession.gR1: key: " + key + " value: " + value);
+		String[] tmp = mongoClientMediator.getRecord(collection, key, value);
+		System.out.println("MongoDBUserSession.gR2: size: " + tmp.length + " " + ((tmp.length > 0) ? tmp[0] : ""));
+		return tmp;
+	}
+
+
 	/**
 	 * Returns an array containing all records of the collection for which the
 	 * value of the specified key is in the range [start, end). The records will
 	 * be in the same order as they are in the collection and are strings in json
 	 * format.
-	 * 
+	 *
 	 * @param collection the collection to query
 	 * @param key the record key by which the records are filtered
 	 * @param start the start of the range of key values
@@ -113,7 +140,10 @@ public class MongoDBUserSession implements IUserSession {
 	 * @return an array of records matching the filter range
 	 */
 	public String[] getRecordsInRange(String collection, String key, String start, String end) {
-		return mongoClientMediator.getRecordsInRange(collection, key, start, end);
+		System.out.println("MongoDBUserSession.gRIR1: key: " + key + " start: " + start + " end: " + end);
+		String[] tmp = mongoClientMediator.getRecordsInRange(collection, key, start, end);
+		System.out.println("MongoDBUserSession.gRIR2: size: " + tmp.length + " " + ((tmp.length > 0) ? tmp[0] : ""));
+		return tmp;
 	}
 
 	/**
@@ -127,6 +157,9 @@ public class MongoDBUserSession implements IUserSession {
 	 * @return the number of records matching the filter range
 	 */
 	public long getRecordsInRangeSize(String collection, String key, String start, String end) {
-		return mongoClientMediator.getRecordsInRangeSize(collection, key, start, end);
+		System.out.println("MongoDBUserSession.gRIRS1: key: " + key + " start: " + start + "end: " + end);
+		long tmp = mongoClientMediator.getRecordsInRangeSize(collection, key, start, end);
+		System.out.println("MongoDBUserSession.gRIRS2: size: " + tmp);
+		return tmp;
 	}
 }

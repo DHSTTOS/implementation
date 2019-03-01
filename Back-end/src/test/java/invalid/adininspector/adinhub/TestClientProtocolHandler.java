@@ -9,20 +9,30 @@ import javax.websocket.Session;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.Test;
+import static org.mockito.Mockito.*;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonSyntaxException;
+
+import invalid.adininspector.exceptions.LoginFailureException;
 
 /**
  * NOTE: these tests require Hub to access MockMongoDBUserSession().
  */
 public class TestClientProtocolHandler {
 	private static ClientProtocolHandler cph;
-	private static Hub hub = null;
-	private static Session session = null;
+	@Mock
+	private static Hub hub;
 
+	@Mock Session session;
+	
+	@Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
 	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -30,7 +40,7 @@ public class TestClientProtocolHandler {
 
 	@Before
 	public void setUp() throws Exception {
-		hub = new Hub();
+		//hub = new Hub();
 		cph = new ClientProtocolHandler();
 	}
 
@@ -38,8 +48,14 @@ public class TestClientProtocolHandler {
 	public void tearDown() throws Exception {
 	}
 
-	//@Test   // needs to use a mock object for the database
+	@Test   // needs to use a mock object for the database
 	public void testLogin() {
+		try {
+			when(hub.login(session, "admin", "admin")).thenReturn("{\"cmd\": \"SESSION\", \"status\": \"OK\"}");
+		} catch (LoginFailureException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		String response = cph.handleRequest(hub, session,
 				"{\"cmd\": \"LOGIN\", \"user\": \"admin\", \"pwd\": \"admin\", \"id\": \"12\"}");
 		Map<String,Object> msgParsed = null;

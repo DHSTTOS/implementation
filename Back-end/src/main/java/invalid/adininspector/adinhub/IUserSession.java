@@ -56,12 +56,25 @@ public interface IUserSession {
 
 	/**
 	 * Returns the number of records in the specified collection.
-	 * 
+	 *
 	 * @param collection the collection to query
 	 * @return the number of records
 	 */
 	public long getCollectionSize(String collection);
 
+
+	/**
+	 * Returns an array containing all records of the collection for which the
+	 * specified key has the specified value.
+	 * The records will be in the same order as they are in the collection and
+	 * are strings in json format.
+	 *
+	 * @param collection the collection to query
+	 * @param key the record key by which the records are filtered
+	 * @param value the value to match with
+	 * @return an array of records matching the value
+	 */
+	public String[] getRecord(String collection, String key, String value);
 
 	/**
 	 * Returns an array containing all records of the collection for which the

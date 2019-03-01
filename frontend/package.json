@@ -35,6 +35,7 @@
     "babel-preset-react": "6.24.1",
     "jest": "24.0.0",
     "parcel-bundler": "^1.10.3",
+    "parcel-plugin-static-files-copy": "2.0.0",
     "prettier": "1.16.3"
   },
   "license": "BSD-4-Clause",
@@ -48,16 +49,14 @@
     "@libs": "./src/libs",
     "@components": "./src/components",
     "@stores": "./src/stores",
-    "@assets": "./src/assets",
-    "@mockdata": "./mockdata"
+    "@assets": "./src/assets"
   },
   "jest": {
     "moduleNameMapper": {
       "@libs": "<rootDir>/src/libs",
       "@components": "<rootDir>/src/components",
       "@stores": "<rootDir>/src/stores",
-      "@assets": "<rootDir>/src/assets",
-      "@mockdata": "<rootDir>/mockdata"
+      "@assets": "<rootDir>/src/assets"
     }
   },
   "repository": {
