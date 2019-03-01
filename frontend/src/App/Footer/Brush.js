@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import * as d3 from 'd3';
 import { appStore, dataStore } from '@stores';
 import { autorun } from 'mobx';
+import { getLocalCollectionData, getCollectionGroups} from './../../libs/wsutils';
 
 const Container = styled.div`
   bottom: 0;
@@ -60,9 +61,17 @@ export default class Brush extends PureComponent {
     let updateCurrentlySelectedData = range => {
       let start = range[0]; // TODO: instead of filtering, can we use slice()?
       let end = range[1];
-      //console.log('updateCSD: ' + start + ', ' + end);
+      console.log('uCSD: start, end:' + start + ', ' + end);
+      console.log(dataStore.rawData);
+      console.log('rawData.length: ' + dataStore.rawData.length);
+      console.log(dataStore.rawData[start]);
+      if ((dataStore.rawData == undefined) || (dataStore.rawData.length == 0)) {
+        return;
+      }
+
       cSRD = dataStore.rawData.filter((x, i) => start <= i && i < end); // TODO: or <= end?
       dataStore.currentlySelectedRawData = cSRD;
+      console.log('uCSD: dS.cSRD.length: ' + dataStore.currentlySelectedRawData.length + '============');
 
       let tmp = dataStore.flowrateData.filter((x, i) => start <= i && i < end);
       dataStore.currentlySelectedFlowrateData = tmp;
@@ -73,8 +82,12 @@ export default class Brush extends PureComponent {
       dataStore.currentlySelectedConnectionNumberData = tmp;
 
       // With the current data layout this will hilariously fail:
+      //ws.getCollectionGroupData XXX
       tmp = dataStore.addressesAndLinksData.filter(
         (x, i) => start <= i && i < end
+      );
+      tmp = dataStore.addressesAndLinksData.filter(
+        (x, i) => true 
       );
       dataStore.currentlySelectedAddressAndLinksData = tmp;
     };
