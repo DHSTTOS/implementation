@@ -44,13 +44,7 @@ class Diagram extends Component {
     if (this.props.config.plotType === NODE_LINK) {
       return (
         <PlotContainer>
-          {!this.props.isFullscreen ? (
-            <CenteredTypography variant="subtitle1" color="error">
-              Please toggle full screen mode to see the node link diagram
-            </CenteredTypography>
-          ) : (
-            <NodeLinkBlock />
-          )}
+          {!this.props.isFullscreen ? <NodeLinkBlock /> : <NodeLinkBlock />}
         </PlotContainer>
       );
     }
@@ -78,7 +72,12 @@ class Diagram extends Component {
           unformattedData,
         });
         console.log('Diagram.formatRawData ==============');
-        console.log('unformattedData, data.length: ' + unformattedData.length + ', ' + data.length);
+        console.log(
+          'unformattedData, data.length: ' +
+            unformattedData.length +
+            ', ' +
+            data.length
+        );
         console.log(data);
         break;
       case LINE_CHART:

@@ -116,15 +116,21 @@ const handleDataEndpoints = msg => {
 };
 
 const handleData = msg => {
-  console.log('Received data message: ' + msg.data.length + ' ' + msg.data[0]);
+  console.log('Received data message: ' + msg.name + ', ' + msg.data.length + '; ' + msg.data[0]);
+  if (msg.name.include('_AddressesAndLinks')) {
+    dataStore.currentlySelectedAddressAndLinksData = msg.data;
+    return;
+  }
   if (!msgRegister[msg.id]) {
     console.log(
       'Protocol: bug: received unrequested message, dropping it: ' + msg
     );
     return;
   }
+  /*
   let context = msgRegister[msg.id]; // the request that triggered this msg
   let collName = context.par;
+  */
   if (collName.indexOf('_') > -1) {
     dataStore.alarms[collName].data = {
       name: collName,
@@ -331,6 +337,7 @@ const getRecordsInRange = (socket, name, key, startValue, endValue) => {
     start: startValue,
     end: endValue,
   };
+  console.log('getRIR -----++++++++++');
   sendRequest(socket, message);
 };
 

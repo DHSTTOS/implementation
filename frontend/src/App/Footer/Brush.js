@@ -1,9 +1,9 @@
 import React, { PureComponent } from 'react';
 import styled from '@emotion/styled';
 import * as d3 from 'd3';
-import { appStore, dataStore } from '@stores';
+import { appStore, dataStore, userStore } from '@stores';
 import { autorun } from 'mobx';
-import { getLocalCollectionData, getCollectionGroups} from './../../libs/wsutils';
+import { getRecordsInRange } from './../../libs/wsutils';
 
 const Container = styled.div`
   bottom: 0;
@@ -65,18 +65,24 @@ export default class Brush extends PureComponent {
       console.log(dataStore.rawData);
       console.log('rawData.length: ' + dataStore.rawData.length);
       console.log(dataStore.rawData[start]);
-      if ((dataStore.rawData == undefined) || (dataStore.rawData.length == 0)) {
+      if (dataStore.rawData == undefined || dataStore.rawData.length == 0) {
         return;
       }
 
       cSRD = dataStore.rawData.filter((x, i) => start <= i && i < end); // TODO: or <= end?
       dataStore.currentlySelectedRawData = cSRD;
-      console.log('uCSD: dS.cSRD.length: ' + dataStore.currentlySelectedRawData.length + '============');
+      console.log(
+        'uCSD: dS.cSRD.length: ' +
+          dataStore.currentlySelectedRawData.length +
+          '============'
+      );
 
       let tStart = dataStore.rawData[start].Timestamp.$date;
       let tEnd = dataStore.rawData[end].Timestamp.$date;
 
-      let tmp = dataStore.flowrateData.filter((x, i) => tStart <= x.date.$date && x.date.$date < tEnd);
+      let tmp = dataStore.flowrateData.filter(
+        (x, i) => tStart <= x.date.$date && x.date.$date < tEnd
+      );
       dataStore.currentlySelectedFlowrateData = tmp;
 
       tmp = dataStore.connectionNumberData.filter(
@@ -92,8 +98,17 @@ export default class Brush extends PureComponent {
       );
       */
       // XXX currently no brushing/zooming for node-link diagram
-      tmp = { ...dataStore.addressesAndLinksData};
-      dataStore.currentlySelectedAddressAndLinksData = tmp;
+      //tmp = { ...dataStore.addressesAndLinksData };
+      //dataStore.currentlySelectedAddressAndLinksData = tmp;
+      console.log('calling1 getRecordsInRage +++++++++++');
+      getRecordsInRange(
+        userStore.socket,
+        (dataStore.currentlySelectedSource)+'_AddressesAndLinks',
+        'Timestamp',
+        ''+tStart,
+        ''+tEnd
+      );
+      console.log('calling2 getRecordsInRage +++++++++++');
     };
 
     let updateCurrentRange = range => {
