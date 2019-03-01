@@ -71,7 +71,7 @@ public class DataProcessor {
 			Date start, Date end) {
 		for (IAggregator agg : rangeAggregators) {
 			//drop old collections
-			clientMediator.dropCollection(collectionName + "_" + collectionName);
+			clientMediator.dropCollection(collectionName + "_" + agg.getClass().getSimpleName());
 
 			clientMediator.addRecordsToCollection(
 					agg.processData(clientMediator.getCollectionAsRecordsArrayList(collectionName, key, start, end)),

@@ -316,13 +316,13 @@ public class MongoClientMediator {
 			return new String[0];
 
 		//TODO: get type of field in mongo and cast start and end to this type
-		updateRTaggregation(collection);
+		updateRTaggregation(collection.split("_")[0]);
 
 		BasicDBObject query = new BasicDBObject();
 
 		if(key.equals("Timestamp"))
 		{
-			updateRTaggregation(collection, key, new Date(Long.valueOf((String)start)), new Date(Long.valueOf((String)end)));
+			updateAggregation(collection.split("_")[0], key, new Date(Long.valueOf((String)start)), new Date(Long.valueOf((String)end)));
 
 			query.put(key, new BasicDBObject("$gte", new Date(Long.valueOf((String)start))).append("$lt", new Date(Long.valueOf((String)end)) ));
 		}
@@ -352,7 +352,7 @@ public class MongoClientMediator {
 		//TODO: read the type from mongo and convert it to that
 		if(key.equals("Timestamp"))
 		{
-			updateRTaggregation(collection, key, new Date(Long.valueOf((String)equals)), new Date(Long.valueOf((String)equals)));
+			updateAggregation(collection.split("_")[0], key, new Date(Long.valueOf((String)equals)), new Date(Long.valueOf((String)equals)));
 			equals = new Date(Long.valueOf((String)equals));
 		}
 		else if(key.equals("_id"))
@@ -550,8 +550,9 @@ public class MongoClientMediator {
 	public void updateRTaggregation(String collection)
 	{
 		//check if the user is trying to get a realTime aggregation and if it's up to date. if not then process it and return the new one
-		if(collection.contains("realTime_"))
-			if(!DataProcessor.isRealTimeUptoDate)
+		//if(collection.contains("realTime_"))
+		//	if(!DataProcessor.isRealTimeUptoDate)
+		if(!collection.contains("_"))
 				DataProcessor.processData("realTime", this);
 	}
 
@@ -563,12 +564,12 @@ public class MongoClientMediator {
 	 * @param start
 	 * @param end
 	 */
-	public void updateRTaggregation(String collection,String key, Object start, Object end)
+	public void updateAggregation(String collection,String key, Object start, Object end)
 	{
 		//check if the user is trying to get a realTime aggregation and if it's up to date. if not then process it and return the new one
-		if(collection.contains("realTime_"))
-			if(!DataProcessor.isRealTimeUptoDate)
-				DataProcessor.processDataInRange("realTime", this,key,(Date)start,(Date)end);
+		if(!collection.contains("_"))
+		//	if(!DataProcessor.isRealTimeUptoDate)
+				DataProcessor.processDataInRange(collection, this,key,(Date)start,(Date)end);
 	}
 	
 	/**
