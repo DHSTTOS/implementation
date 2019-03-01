@@ -9,6 +9,10 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import invalid.adininspector.exceptions.LoginFailureException;
+
+import static org.mockito.Mockito.*;
+
 /**
  * Test those methods of Hub that are not simply pass-through.
  * NOTE: these tests require Hub to access MockMongoDBUserSession().
@@ -18,7 +22,7 @@ public class TestHub {
 	private static Hub hub = null;
 	private static Session session = null;
 	
-	//@BeforeClass
+	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		hub = new Hub();
 	}
@@ -32,31 +36,55 @@ public class TestHub {
 	public void tearDown() throws Exception {
 	}
 
-	//@Test
+	@Test
 	public void testLogin() {
-		String token = hub.login(session, "foo", "bar");
+		String token = null;
+		try {
+			token = hub.login(session, "admin", "admin");
+		} catch (LoginFailureException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		assertNotNull(token);
 	}
 
-	//@Test
+	@Test
 	public void testLoginTokenSuccess() {
-		String token = hub.login(session, "foo", "bar");
+		String token = null;
+		try {
+			token = hub.login(session, "admin", "admin");
+		} catch (LoginFailureException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		assertNotNull(token);
 		boolean loggedIn = hub.authenticate(session, token);
 		assertTrue(loggedIn);
 	}
 	
-	//@Test
+	@Test
 	public void testLoginTokenFail() {
-		String token = hub.login(session, "foo", "bar");
-		assertNotNull(token);
+		String token = null;
+		try {
+			token = hub.login(session, "foo", "bar");
+		} catch (LoginFailureException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		assertNull(token);
 		boolean loggedIn = hub.authenticate(session, "invalid_token");
 		assertFalse(loggedIn);
 	}
 
-	//@Test
+	@Test
 	public void testLogout() {
-		String token = hub.login(session, "foo", "bar");
+		String token = null;
+		try {
+			token = hub.login(session, "admin", "admin");
+		} catch (LoginFailureException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		assertNotNull(token);
 		String[] res;
 		//res = hub.getAvailableCollections(session);

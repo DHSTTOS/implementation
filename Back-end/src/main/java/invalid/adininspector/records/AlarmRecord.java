@@ -3,10 +3,12 @@
  */
 package invalid.adininspector.records;
 
+import java.util.Date;
+
 /**
- * The attributes of this class correspond to the data format for the
- * ADIN framework's alarm/notification data.
- * The values of an alarm/notification record are stored strings in JSON format.
+ * The attributes of this class correspond to the data format for the ADIN
+ * framework's alarm/notification data. The values of an alarm/notification
+ * record are stored strings in JSON format.
  * 
  * This class has a setter and getter method for every attribute.
  */
@@ -14,7 +16,7 @@ public class AlarmRecord extends Record{
 
 	private String AlarmID;
 	private String AlarmType;
-	private Timestamp AlarmOccurrenceTime;
+	private Date AlarmOccurrenceTime;
 	private String AlarmCategory;
 	private String AlarmScore;
 	private String AlarmDescription;
@@ -86,14 +88,14 @@ public class AlarmRecord extends Record{
 	/**
 	 * @return the alarmOccurrenceTime
 	 */
-	public String getAlarmOccurrenceTime() {
-		return AlarmOccurrenceTime.toString();
+	public Date getAlarmOccurrenceTime() {
+		return AlarmOccurrenceTime;
 	}
 
 	/**
 	 * @param alarmOccurrenceTime the alarmOccurrenceTime to set
 	 */
-	public void setAlarmOccurrenceTime(Timestamp alarmOccurrenceTime) {
+	public void setAlarmOccurrenceTime(Date alarmOccurrenceTime) {
 		this.AlarmOccurrenceTime = alarmOccurrenceTime;
 	}
 

@@ -93,22 +93,12 @@ class GlobalFilters extends Component {
                   <StyledFormControlLabel
                     control={
                       <Checkbox
-                        checked={appStore.globalFilters.l2other}
-                        onChange={this.handleChange('l2other')}
-                        value="l2other"
+                        checked={appStore.globalFilters.ip}
+                        onChange={this.handleChange('ip')}
+                        value="ip"
                       />
                     }
-                    label="Other L2"
-                  />
-                  <StyledFormControlLabel
-                    control={
-                      <Checkbox
-                        checked={appStore.globalFilters.l3}
-                        onChange={this.handleChange('l3')}
-                        value="l3"
-                      />
-                    }
-                    label="L3"
+                    label="IP"
                   />
                   <StyledFormControlLabel
                     control={
@@ -129,16 +119,6 @@ class GlobalFilters extends Component {
                       />
                     }
                     label="UDP"
-                  />
-                  <StyledFormControlLabel
-                    control={
-                      <Checkbox
-                        checked={appStore.globalFilters.l4other}
-                        onChange={this.handleChange('l4other')}
-                        value="l4other"
-                      />
-                    }
-                    label="Other L4"
                   />
                 </StyledFormGroup>
               </StyledFormControl>

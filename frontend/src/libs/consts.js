@@ -1,13 +1,11 @@
 export const DEFAULT_SOURCE_NAME = '__default_empty__';
 
 export const DEFAULT_GLOBAL_FILTERS = {
-  ether: false,
-  profinet: false,
-  l2other: false,
-  l3: false,
+  ether: true,
+  profinet: true,
+  ip: false,
   tcp: false,
   udp: false,
-  l4other: false,
 };
 
 export const SCATTER_PLOT = 'Scatter Plot';
@@ -20,6 +18,7 @@ export const COLOR_IP = `rgb(12, 67, 199)`;
 export const COLOR_TCP = `rgb(24, 255, 177)`;
 export const COLOR_UDP = `rgb(255, 24, 166)`;
 
+export const COLOR_WHITE = `#fff`;
 
 export const NIVO_COLOR_SCHEMES = [
   'nivo',
@@ -29,3 +28,8 @@ export const NIVO_COLOR_SCHEMES = [
   'set2',
   'set3',
 ];
+
+export const DEFAULT_BRUSH_CONFIG = {
+  tickstyle: false,
+  smoothScroll: false,
+};

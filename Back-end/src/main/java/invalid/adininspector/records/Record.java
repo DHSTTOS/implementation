@@ -26,7 +26,7 @@ import java.util.Map;
 public abstract class Record {
 
 	// every record has to have an id. if none is provided then mongo takes the Java object ID
-	protected String _id;
+	protected long _id;
 
 	// serialize all variables (in order ) of a Record into a Bson document for
 	// mongoDB
@@ -45,12 +45,17 @@ public abstract class Record {
 		for (Field var : this.getClass().getDeclaredFields()) {
 			try {
 				Method m = this.getClass().getDeclaredMethod("get" + var.getName());
-				if (var.getType() == String.class) //if we get a string, cast the getter. EASY
+				if (var.getType() == String.class || var.getType() == Date.class) //if we get a string, cast the getter. EASY
 					doc.append(var.getName(), m.invoke(this));
+				else if(var.getType() == Date.class)
+				{
+					
+				}
 				else if(var.getType() == Timestamp.class) //STUPID HACK FOR ANKUSH'S IDIOTIC TIMESTAMP HANDLING
 				{
 					//TODO: Fix this
 					Map<String, Date> rightHereMap = new HashMap<String, Date>();
+					System.out.println( (String)m.invoke(this));
 					rightHereMap.put("date", (Date)m.invoke(this));
 
 
@@ -81,7 +86,7 @@ public abstract class Record {
 	 * Setter for _id
 	 * @param _id the new value for atribute _id
 	 */
-	public void set_id(String _id) {
+	public void set_id(long _id) {
 		this._id = _id;
 	}
 
@@ -89,7 +94,7 @@ public abstract class Record {
 	 * Getter for _id
 	 * @return the value of attribute _id
 	 */
-	public String get_id() {
+	public long get_id() {
 		return _id;
 	}
 
