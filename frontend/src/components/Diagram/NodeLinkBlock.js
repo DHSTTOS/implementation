@@ -2,11 +2,14 @@ import React, { PureComponent } from 'react';
 import { autorun, toJS } from 'mobx';
 import { dataStore } from '@stores';
 import styled from '@emotion/styled';
-import { COLOR_PROFI } from '@libs';
-import { COLOR_ETHER } from '@libs';
-import { COLOR_IP } from '@libs';
-import { COLOR_UDP } from '@libs';
-import { COLOR_TCP } from '@libs';
+import {
+  COLOR_PROFI,
+  COLOR_ETHER,
+  COLOR_IP,
+  COLOR_UDP,
+  COLOR_TCP,
+  formatNodeLinkData,
+} from '@libs';
 
 const LegendContainer = styled.div`
   position: absolute;
@@ -44,7 +47,11 @@ class NodeLinkBlock extends PureComponent {
     this.disposeAutorun = autorun(_ => {
       network.updateData(
         JSON.parse(
-          JSON.stringify(toJS(dataStore.currentlySelectedAddressAndLinksData))
+          JSON.stringify(
+            toJS(
+              formatNodeLinkData(dataStore.currentlySelectedAddressAndLinksData)
+            )
+          )
         )
       );
     });
@@ -103,8 +110,8 @@ class NodeLinkBlock extends PureComponent {
 
 function RadialPlacement() {
   // stores the key -> location values
-  // var colorMac = d3.rgb(12, 67, 199);
-  //var colorIp = d3.rgb(255, 224, 25);
+  var colorMac = d3.rgb(12, 67, 199);
+  var colorIp = d3.rgb(255, 224, 25);
   let values = d3.map();
   // how much to separate each location by
   let increment = 5;
@@ -482,7 +489,7 @@ function Network() {
         } else if (d.Protocol == 'Profinet') {
           return d3.rgb(120, 171, 165);
         } else if (d.Protocol == 'UDP') {
-          return d3.rgb(177, 16, 111);
+          return d3.rgb(255, 24, 166);
         } else {
           return d3.rgb(24, 255, 177);
         }

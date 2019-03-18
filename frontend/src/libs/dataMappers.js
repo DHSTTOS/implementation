@@ -173,4 +173,9 @@ const formatFlowrateData = (flowrateData = []) => {
   }));
 };
 
-export { formatRawData, formatFlowrateData };
+const formatNodeLinkData = (nodeLinkData = {}) => {
+  const { nodes, links } = nodeLinkData;
+  return { nodes, links };
+};
+
+export { formatRawData, formatFlowrateData, formatNodeLinkData };
