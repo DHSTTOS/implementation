@@ -10,7 +10,7 @@ import {
   COLOR_IP,
   COLOR_UDP,
   COLOR_TCP,
-  COLOR_WHITE,
+  COLOR_TRANSPARENT,
   DEFAULT_BRUSH_CONFIG,
 } from './consts';
 
@@ -107,7 +107,7 @@ export {
   COLOR_TCP,
   COLOR_PROFI,
   COLOR_ETHER,
-  COLOR_WHITE,
+  COLOR_TRANSPARENT,
   DEFAULT_BRUSH_CONFIG,
   createConnection,
   login,

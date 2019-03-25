@@ -8,7 +8,7 @@ import {
   COLOR_TCP,
   COLOR_PROFI,
   COLOR_ETHER,
-  COLOR_WHITE,
+  COLOR_TRANSPARENT,
 } from '@libs';
 import styled from '@emotion/styled';
 import { Typography } from '@material-ui/core';
@@ -26,6 +26,22 @@ const Row = styled.div`
 const KeyContainer = styled.div`
   margin-right: 0.5rem;
 `;
+
+const colorOf = d => {
+  const group = d.serie.id;
+  switch (group) {
+    case 'Ether':
+      return appStore.globalFilters.ether ? COLOR_ETHER : COLOR_TRANSPARENT;
+    case 'Profi':
+      return appStore.globalFilters.profinet ? COLOR_PROFI : COLOR_TRANSPARENT;
+    case 'TCP':
+      return appStore.globalFilters.tcp ? COLOR_TCP : COLOR_TRANSPARENT;
+    case 'IP':
+      return appStore.globalFilters.ip ? COLOR_IP : COLOR_TRANSPARENT;
+    case 'UDP':
+      return appStore.globalFilters.udp ? COLOR_UDP : COLOR_TRANSPARENT;
+  }
+};
 
 /**
  * @typedef {object} Props
@@ -45,6 +61,8 @@ class ScatterPlotBlock extends Component {
     return (
       <ScatterPlot
         tooltip={d => {
+          if (colorOf(d) === COLOR_TRANSPARENT) return;
+
           const idInSerie = d.id.split('.')[1];
           const realID = d.serie.data[idInSerie].data.id;
           const { Timestamp, _id, ...rawDatum } = selectOriginalRawDatum(
@@ -81,26 +99,8 @@ class ScatterPlotBlock extends Component {
           bottom: 70,
           left: 130,
         }}
-        colorBy={d => {
-          const group = d.serie.id;
-
-          // would be better to use unified var names but no time to refactor
-          switch (group) {
-            case 'Ether':
-              return appStore.globalFilters.ether ? COLOR_ETHER : COLOR_WHITE;
-            case 'Profi':
-              return appStore.globalFilters.profinet
-                ? COLOR_PROFI
-                : COLOR_WHITE;
-            case 'TCP':
-              return appStore.globalFilters.tcp ? COLOR_TCP : COLOR_WHITE;
-            case 'IP':
-              return appStore.globalFilters.ip ? COLOR_IP : COLOR_WHITE;
-            case 'UDP':
-              return appStore.globalFilters.udp ? COLOR_UDP : COLOR_WHITE;
-          }
-        }}
-        symbolSize={symbolSize}
+        colorBy={colorOf}
+        symbolSize={d => (colorOf(d) === COLOR_TRANSPARENT ? 0 : symbolSize)}
         xScale={
           x === 'Timestamp'
             ? {
