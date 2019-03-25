@@ -37,7 +37,7 @@ const initHandlers = socket => {
   };
 
   socket.onclose = message => {
-    console.groupCollapsed('WebSocket onclose fired');
+    console.warn('WebSocket onclose fired');
     console.dir(message);
     let echoText = 'Disconnect: ' + message;
     echoText += ', ' + message.code;
@@ -46,17 +46,15 @@ const initHandlers = socket => {
     echoText += ', ' + message.isTrusted;
     echoText += '\n';
     console.log(echoText);
-    console.groupEnd();
 
     // TODO XXX: if logout was called (intentional) then do nothing (stay logged out),
     // else try to open the connection again and login again, with token
   };
 
   socket.onmessage = message => {
-    console.group('WebSocket onmessage fired');
+    console.warn('WebSocket onmessage fired');
     console.dir(message);
     handleMessage(JSON.parse(message.data));
-    console.groupEnd();
   };
 };
 
@@ -64,10 +62,10 @@ const initHandlers = socket => {
  * Take the JSON-formatted message and handle it according to the protocol.
  */
 const handleMessage = msg => {
-  console.groupCollapsed(`Handling ${msg.cmd} response ID ${msg.id}`);
+  console.warn(`Handling ${msg.cmd} response ID ${msg.id}`);
   console.table(msg.par);
   if (!msgRegister[msg.id]) {
-    console.warn('Protocol: bug: this message was unrequested');
+    console.error('Protocol: bug: this message was unrequested');
   }
 
   switch (msg.cmd) {
@@ -100,7 +98,6 @@ const handleMessage = msg => {
       console.error('error: unknown request from server: ' + msg.cmd);
       break;
   }
-  console.groupEnd();
 
   // Now that msg has been handled, delete its request:
   delete msgRegister[msg.id];

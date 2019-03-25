@@ -50,7 +50,6 @@
  * @param {Object} p
  * @param {string} p.x
  * @param {string} p.y
- * @param {string} p.highestLayer
  * @param {Object} p.globalFilters
  * @param {RawDatum[]} p.unformattedData
  *
@@ -59,7 +58,6 @@
 const formatRawData = ({
   x,
   y,
-  highestLayer,
   globalFilters,
   unformattedData: rawData = [],
 }) => {
@@ -75,58 +73,35 @@ const formatRawData = ({
   let formatted = [];
   const groups = new Set();
 
-  switch (highestLayer) {
-    case 'L4Protocol':
-      normalized.forEach(x => {
-        if (x['L4Protocol']) {
-          const datum = { ...x, group: x['L4Protocol'] };
-          groups.add(datum.group);
-          formatted = [...formatted, datum];
-          return;
-        }
-        if (x['L3Protocol']) {
-          const datum = { ...x, group: x['L3Protocol'] };
-          groups.add(datum.group);
-          formatted = [...formatted, datum];
-          return;
-        }
-        if (x['L2Protocol']) {
-          const datum = { ...x, group: x['L2Protocol'] };
-          groups.add(datum.group);
-          formatted = [...formatted, datum];
-          return;
-        }
-      });
-      break;
-    case 'L3Protocol':
-      normalized.forEach(x => {
-        if (x['L3Protocol']) {
-          const datum = { ...x, group: x['L3Protocol'] };
-          groups.add(datum.group);
-          formatted = [...formatted, datum];
-          return;
-        }
-        if (x['L2Protocol']) {
-          const datum = { ...x, group: x['L2Protocol'] };
-          groups.add(datum.group);
-          formatted = [...formatted, datum];
-          return;
-        }
-      });
-      break;
-    case 'L2Protocol':
-      normalized.forEach(x => {
-        if (x['L2Protocol']) {
-          const datum = { ...x, group: x['L2Protocol'] };
-          groups.add(datum.group);
-          formatted = [...formatted, datum];
-          return;
-        }
-      });
-      break;
-    default:
-      return [];
-  }
+  const filtered = normalized.filter(
+    x =>
+      (globalFilters.tcp && x['L4Protocol'] === 'TCP') ||
+      (globalFilters.udp && x['L4Protocol'] === 'UDP') ||
+      (globalFilters.ip && x['L3Protocol'] === 'IP') ||
+      (globalFilters.ether && x['L2Protocol'] === 'Ether') ||
+      (globalFilters.profinet && x['L2Protocol'] === 'Profinet')
+  );
+
+  filtered.forEach(x => {
+    if (x['L4Protocol']) {
+      const datum = { ...x, group: x['L4Protocol'] };
+      groups.add(datum.group);
+      formatted = [...formatted, datum];
+      return;
+    }
+    if (x['L3Protocol']) {
+      const datum = { ...x, group: x['L3Protocol'] };
+      groups.add(datum.group);
+      formatted = [...formatted, datum];
+      return;
+    }
+    if (x['L2Protocol']) {
+      const datum = { ...x, group: x['L2Protocol'] };
+      groups.add(datum.group);
+      formatted = [...formatted, datum];
+      return;
+    }
+  });
 
   let grouped = Array.from(groups).map(key => ({ id: key, data: [] }));
 

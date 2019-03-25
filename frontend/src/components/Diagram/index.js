@@ -70,8 +70,6 @@ class Diagram extends Component {
         unformattedData = dataStore.currentlySelectedRawData;
 
         data = formatRawData({
-          highestLayer: appStore.highestLayer,
-          // lazy workaround to reformat data when filters have changed
           globalFilters: appStore.globalFilters,
           x,
           y,
