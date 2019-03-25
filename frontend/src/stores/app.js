@@ -205,20 +205,6 @@ class AppStore {
     this.configModal.diagramConfig.y = y;
   };
 
-  @computed
-  get highestLayer() {
-    const { ether, profinet, ip, tcp, udp } = this.globalFilters;
-    if (tcp || udp) {
-      return 'L4Protocol';
-    }
-    if (ip) {
-      return 'L3Protocol';
-    }
-    if (ether || profinet) {
-      return 'L2Protocol';
-    }
-  }
-
   @observable
   globalFilters = DEFAULT_GLOBAL_FILTERS;
 
