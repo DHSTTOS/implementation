@@ -150,7 +150,7 @@ export default class Brush extends PureComponent {
       }
 
       if (appStore.brushConfig.tickstyle) {
-          return '' + d;
+        return '' + d;
       }
 
       let date = new Date(dataStore.rawData[d].Timestamp.$date);
