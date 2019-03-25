@@ -64,9 +64,12 @@ export default class Brush extends PureComponent {
       let start = range[0]; // TODO: instead of filtering, can we use slice()?
       let end = range[1];
       console.log('uCSD: start, end:' + start + ', ' + end);
-      console.log(dataStore.rawData);
-      console.log('rawData.length: ' + dataStore.rawData.length);
-      console.log(dataStore.rawData[start]);
+      console.log('%ccurrentlySelectedRawData', 'color: red; font-weight: bold;')
+      console.log([...dataStore.currentlySelectedRawData]);
+      console.log('%ccurrentlySelectedFlowrateData', 'color: red; font-weight: bold;')
+      console.log([...dataStore.currentlySelectedFlowrateData]);
+      // console.log('rawData.length: ' + dataStore.rawData.length);
+      // console.log(dataStore.rawData[start]);
       if (dataStore.rawData == undefined || dataStore.rawData.length == 0) {
         return;
       }
@@ -153,7 +156,7 @@ export default class Brush extends PureComponent {
       }
 
       if (appStore.brushConfig.tickstyle) {
-          return '' + d;
+        return '' + d;
       }
 
       let date = new Date(dataStore.rawData[d].Timestamp.$date);
