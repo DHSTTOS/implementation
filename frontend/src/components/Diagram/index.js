@@ -76,7 +76,12 @@ class Diagram extends Component {
           unformattedData,
         });
         console.log('Diagram.formatRawData ==============');
-        console.log('unformattedData, data.length: ' + unformattedData.length + ', ' + data.length);
+        console.log(
+          'unformattedData, data.length: ' +
+            unformattedData.length +
+            ', ' +
+            data.length
+        );
         console.log(data);
         break;
       case LINE_CHART:

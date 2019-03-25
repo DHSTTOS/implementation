@@ -14,7 +14,6 @@ const Container = styled.div`
 `;
 
 const StyledFormControl = styled(FormControl)`
-  /* width: 8rem; */
   width: ${props => props.width || '8rem'};
   margin: 1rem;
 `;

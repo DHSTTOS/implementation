@@ -3,10 +3,6 @@ import styled from '@emotion/styled';
 import * as d3 from 'd3';
 import { appStore, dataStore } from '@stores';
 import { autorun } from 'mobx';
-import {
-  getLocalCollectionData,
-  getCollectionGroups,
-} from './../../libs/wsutils';
 
 const Container = styled.div`
   bottom: 0;
@@ -154,7 +150,7 @@ export default class Brush extends PureComponent {
       }
 
       if (appStore.brushConfig.tickstyle) {
-          return '' + d;
+        return '' + d;
       }
 
       let date = new Date(dataStore.rawData[d].Timestamp.$date);

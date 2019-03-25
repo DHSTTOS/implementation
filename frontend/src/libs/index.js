@@ -34,15 +34,6 @@ import {
 } from './wsutils';
 
 import {
-  removeL2,
-  removeL3,
-  removeL4,
-  removeEther,
-  removeProfinet,
-  removeUDP,
-} from './dataFilters';
-
-import {
   formatRawData,
   formatFlowrateData,
   formatNodeLinkData,
@@ -125,12 +116,6 @@ export {
   getRecordsInRangeSize,
   getLocalCollection,
   getLocalCollectionData,
-  removeL2,
-  removeL3,
-  removeL4,
-  removeEther,
-  removeProfinet,
-  removeUDP,
   requestAvailableCollections,
   formatData,
   selectOriginalRawDatum,

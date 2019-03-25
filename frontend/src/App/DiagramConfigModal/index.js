@@ -11,7 +11,6 @@ import { appStore } from '@stores';
 
 import PlotTypeBar from './PlotTypeBar';
 import DiagramSpecBlock from './DiagramSpecBlock';
-// import DiagramFiltersBlock from './DiagramFiltersBlock';
 
 const Container = styled(Paper)`
   position: absolute;
@@ -45,12 +44,10 @@ const Content = styled.div`
   flex-direction: column;
   margin: 0.5rem;
   align-items: center;
-  /* background-color: pink; */
 `;
 
 const ModalHeader = styled.div`
   margin: 0.5rem;
-  /* background-color: red; */
 `;
 
 @observer
