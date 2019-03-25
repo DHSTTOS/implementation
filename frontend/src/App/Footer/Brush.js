@@ -34,13 +34,14 @@ export default class Brush extends PureComponent {
     let maxDisplayable = 2000;
     let margin = [10, 0, 10, 0]; // Margin around brush and axes
 
-    // console.log('start brush : ' + dataStore.rawData.length);
-    // console.log(dataStore.endpoints);
+    console.log('start brush : ' + dataStore.rawData.length);
+    console.log(dataStore.endpoints);
     if (dataStore.endpoints.length === 0) {
       dataStore.endpoints = [0, dataStore.rawData.length];
     }
+    console.log('');
     let dataEndpoints = dataStore.endpoints; // the range of the whole datastream
-    // console.log(dataEndpoints);
+    console.log(dataEndpoints);
 
     let curRangeWidth = dataEndpoints[1] - dataEndpoints[0];
     if (curRangeWidth > maxDisplayable) {
@@ -64,23 +65,20 @@ export default class Brush extends PureComponent {
       let start = range[0]; // TODO: instead of filtering, can we use slice()?
       let end = range[1];
       console.log('uCSD: start, end:' + start + ', ' + end);
-      console.log('%ccurrentlySelectedRawData:', 'color: blue; font-weight: bold;')
-      console.log([...dataStore.currentlySelectedRawData]);
-      console.log('%ccurrentlySelectedFlowrateData:', 'color: blue; font-weight: bold;')
-      console.log([...dataStore.currentlySelectedFlowrateData]);
-      // console.log('rawData.length: ' + dataStore.rawData.length);
-      // console.log(dataStore.rawData[start]);
+      console.log(dataStore.rawData);
+      console.log('rawData.length: ' + dataStore.rawData.length);
+      console.log(dataStore.rawData[start]);
       if (dataStore.rawData == undefined || dataStore.rawData.length == 0) {
         return;
       }
 
       cSRD = dataStore.rawData.filter((x, i) => start <= i && i < end); // TODO: or <= end?
       dataStore.currentlySelectedRawData = cSRD;
-      // console.log(
-      //   'uCSD: dS.cSRD.length: ' +
-      //     dataStore.currentlySelectedRawData.length +
-      //     '============'
-      // );
+      console.log(
+        'uCSD: dS.cSRD.length: ' +
+          dataStore.currentlySelectedRawData.length +
+          '============'
+      );
 
       let tStart = dataStore.rawData[start].Timestamp.$date;
       let tEnd = dataStore.rawData[end].Timestamp.$date;
@@ -108,7 +106,7 @@ export default class Brush extends PureComponent {
     };
 
     let updateCurrentRange = range => {
-      // console.log('updateCR: ' + range[0] + ', ' + range[1]);
+      console.log('updateCR: ' + range[0] + ', ' + range[1]);
       curRange = range;
       updateCurrentlySelectedData(range);
       xCurrentScale.domain(range);
@@ -133,17 +131,17 @@ export default class Brush extends PureComponent {
     };
 
     let updateCurrentRangeFromTotal = range => {
-      // console.log('updateCRFT: ' + range[0] + ', ' + range[1]);
+      console.log('updateCRFT: ' + range[0] + ', ' + range[1]);
       updateCurrentRange([
         xTotalScale.invert(range[0]),
         xTotalScale.invert(range[1]),
       ]);
     };
 
-    // console.log('curRange: ' + curRange[0] + ' ' + curRange[1]);
+    console.log('curRange: ' + curRange[0] + ' ' + curRange[1]);
     updateCurrentlySelectedData(curRange);
-    // console.log('csd length' + cSRD.length);
-    // console.log('rawData length' + dataStore.rawData.length);
+    console.log('csd length' + cSRD.length);
+    console.log('rawData length' + dataStore.rawData.length);
 
     let tickFormatTimeStamp = d => {
       return '0';
@@ -156,7 +154,7 @@ export default class Brush extends PureComponent {
       }
 
       if (appStore.brushConfig.tickstyle) {
-        return '' + d;
+          return '' + d;
       }
 
       let date = new Date(dataStore.rawData[d].Timestamp.$date);
@@ -258,13 +256,13 @@ export default class Brush extends PureComponent {
         `Now we have ${dataStore.rawData.length} entries in rawData!`
       );
 
-      // console.log(dataStore.endpoints);
+      console.log(dataStore.endpoints);
       if (dataStore.endpoints.length === 0) {
         dataStore.endpoints = [0, dataStore.rawData.length];
       }
-      // console.log('');
+      console.log('');
       let dataEndpoints = dataStore.endpoints; // the range of the whole datastream
-      // console.log(dataEndpoints);
+      console.log(dataEndpoints);
 
       updateCurrentlySelectedData(curRange);
 
