@@ -3,9 +3,9 @@ export const DEFAULT_SOURCE_NAME = '__default_empty__';
 export const DEFAULT_GLOBAL_FILTERS = {
   ether: true,
   profinet: true,
-  ip: false,
-  tcp: false,
-  udp: false,
+  ip: true,
+  tcp: true,
+  udp: true,
 };
 
 export const SCATTER_PLOT = 'Scatter Plot';
