@@ -3,6 +3,8 @@ import appStore from './app';
 import { getCollectionGroupData } from '@libs';
 import userStore from './user';
 
+import mockAddressAndLinks from '../../mockdata/lmf_AddressesAndLinks.json';
+
 class DataStore {
   // TODO: when ws binding is done, we'll make this flexible
   // TODO: we need to create separate vars for all plot types, since they are gonna use different data sources
@@ -40,7 +42,7 @@ class DataStore {
   @observable.shallow
   currentlySelectedConnectionNumberData = [];
   @observable.shallow
-  currentlySelectedAddressAndLinksData = {};
+  currentlySelectedAddressAndLinksData = mockAddressAndLinks;
 
   @observable
   endpoints = []; // The start and end indices for the x-axis
