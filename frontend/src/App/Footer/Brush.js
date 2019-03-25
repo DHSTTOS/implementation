@@ -64,9 +64,9 @@ export default class Brush extends PureComponent {
       let start = range[0]; // TODO: instead of filtering, can we use slice()?
       let end = range[1];
       console.log('uCSD: start, end:' + start + ', ' + end);
-      console.log('%ccurrentlySelectedRawData', 'color: red; font-weight: bold;')
+      console.log('%ccurrentlySelectedRawData:', 'color: blue; font-weight: bold;')
       console.log([...dataStore.currentlySelectedRawData]);
-      console.log('%ccurrentlySelectedFlowrateData', 'color: red; font-weight: bold;')
+      console.log('%ccurrentlySelectedFlowrateData:', 'color: blue; font-weight: bold;')
       console.log([...dataStore.currentlySelectedFlowrateData]);
       // console.log('rawData.length: ' + dataStore.rawData.length);
       // console.log(dataStore.rawData[start]);
