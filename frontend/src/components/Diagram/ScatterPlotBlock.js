@@ -43,6 +43,8 @@ const colorOf = d => {
   }
 };
 
+const shouldIgnore = d => colorOf(d) === COLOR_TRANSPARENT;
+
 /**
  * @typedef {object} Props
  * @prop {number} width
@@ -61,7 +63,7 @@ class ScatterPlotBlock extends Component {
     return (
       <ScatterPlot
         tooltip={d => {
-          if (colorOf(d) === COLOR_TRANSPARENT) return;
+          if (shouldIgnore(d)) return;
 
           const idInSerie = d.id.split('.')[1];
           const realID = d.serie.data[idInSerie].data.id;
@@ -100,7 +102,7 @@ class ScatterPlotBlock extends Component {
           left: 130,
         }}
         colorBy={colorOf}
-        symbolSize={d => (colorOf(d) === COLOR_TRANSPARENT ? 0 : symbolSize)}
+        symbolSize={d => (shouldIgnore(d) ? 0 : symbolSize)}
         xScale={
           x === 'Timestamp'
             ? {
