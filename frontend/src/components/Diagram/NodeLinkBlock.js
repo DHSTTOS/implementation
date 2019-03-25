@@ -110,8 +110,6 @@ class NodeLinkBlock extends PureComponent {
 
 function RadialPlacement() {
   // stores the key -> location values
-  var colorMac = d3.rgb(12, 67, 199);
-  var colorIp = d3.rgb(255, 224, 25);
   let values = d3.map();
   // how much to separate each location by
   let increment = 5;
@@ -273,7 +271,6 @@ function Network() {
   const network = function(selection, data) {
     // format our data
     allData = setupData(data);
-    //network.setOptions(options);
     // create our svg and groups
     const vis = d3
       .select(selection)
@@ -287,8 +284,6 @@ function Network() {
     force.size([width, height]);
 
     force.on('tick', radialTick);
-    // .charge(charge);
-    // setFilter('all');
 
     // perform rendering and start force layout
     update();
@@ -454,7 +449,6 @@ function Network() {
     groupCenters = RadialPlacement()
       .center({ x: width / 2, y: height / 2 - 100 })
       .radius(300)
-      //.increment(18)
       .keys(id);
   };
 
@@ -480,7 +474,6 @@ function Network() {
       .attr('cy', d => d.y)
       .attr('rx', d => d.radius)
       .attr('ry', d => d.radius)
-      // .style('fill', d => nodeColors(d.id))
       .style('fill', function(d) {
         if (d.Protocol == 'IP') {
           return d3.rgb(12, 67, 199);
