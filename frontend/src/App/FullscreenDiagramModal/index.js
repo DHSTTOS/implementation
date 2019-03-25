@@ -34,7 +34,6 @@ const Content = styled.div`
   flex-direction: column;
   margin: 0.5rem;
   align-items: center;
-  /* background-color: pink; */
 `;
 
 @observer

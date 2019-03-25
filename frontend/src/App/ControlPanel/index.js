@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import styled from '@emotion/styled';
 import { observer } from 'mobx-react';
-// import { toJS } from 'mobx';
 
 import { Logo, Column, Selector } from '@components';
 import { dataStore } from '@stores';

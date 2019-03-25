@@ -8,7 +8,6 @@ import { appStore } from '@stores';
 const Container = styled.div`
   display: flex;
   width: 100%;
-  /* background-color: pink; */
 `;
 
 const ControlWrapper = styled.div`

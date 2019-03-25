@@ -12,7 +12,6 @@ import TextField from '@material-ui/core/TextField';
 
 import { appStore } from '@stores';
 import { SCATTER_PLOT, LINE_CHART } from '@libs';
-// import { Selector } from '@components';
 
 const Container = styled(Paper)`
   display: flex;
@@ -26,13 +25,10 @@ const Content = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* justify-content: center; */
   margin: 0.5rem;
-  /* background-color: pink; */
 `;
 
 const StyledFormControl = styled(FormControl)`
-  /* flex: 1; */
   align-self: auto;
 `;
 
@@ -51,7 +47,6 @@ const StyledFormControlLabel = styled(FormControlLabel)`
 
 const StyledTextField = styled(TextField)`
   width: 6rem;
-  /* margin: 1rem; */
 `;
 
 const TextFieldsWrapper = styled.div`
@@ -103,13 +98,11 @@ class DiagramSpecBlock extends Component {
     switch (this.props.plotType) {
       case SCATTER_PLOT:
         controlOptions = [
-          // { name: 'Color Scheme', key: 'colors', type: 'colors' },
           { name: 'Symbol Size', key: 'symbolSize', type: 'input' },
         ];
         break;
       case LINE_CHART:
         controlOptions = [
-          // { name: 'Color Scheme', key: 'colors', type: 'colors' },
           { name: 'Line Width', key: 'lineWidth', type: 'input' },
           { name: 'Enable Area', key: 'enableArea', type: 'checkbox' },
           { name: 'Area Opacity', key: 'areaOpacity', type: 'input' },
@@ -147,18 +140,6 @@ class DiagramSpecBlock extends Component {
                 </StyledFormGroup>
               </StyledFormControl>
             )}
-            {/* {controlOptions &&
-              controlOptions
-                .filter(x => x.type === 'colors')
-                .map(x => (
-                  <Selector
-                    name={x.name}
-                    options={NIVO_COLOR_SCHEMES}
-                    onSelect={this.selectColors}
-                    currentSelection={specConfig.colors}
-                    key={x.name}
-                  />
-                ))} */}
             <TextFieldsWrapper>
               {controlOptions &&
                 controlOptions

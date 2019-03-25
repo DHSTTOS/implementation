@@ -3,10 +3,6 @@ import styled from '@emotion/styled';
 import * as d3 from 'd3';
 import { appStore, dataStore } from '@stores';
 import { autorun } from 'mobx';
-import {
-  getLocalCollectionData,
-  getCollectionGroups,
-} from './../../libs/wsutils';
 
 const Container = styled.div`
   bottom: 0;
