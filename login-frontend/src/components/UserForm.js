@@ -110,7 +110,7 @@ class UserForm extends React.Component {
           name="endpoint"
           floatingLabelText="Endpoint"
           hintText="Endpoint"
-          placeholder="wss://adininspector.currno.de:8443/adininspector/adinhubsoc2"
+          placeholder="wss://adininspector.currno.de/adininspector/adinhubsoc2"
           value={this.state.endpoint}
           onChange={e => this.change(e)}
           floatingLabelFixed={true}
