@@ -160,7 +160,7 @@ class AppStore {
     wsLoggedIn: false,
   };
 
-  webSocketUrl = "wss://adininspector.currno.de:8443/adininspector/adinhubsoc2";
+  webSocketUrl = "wss://adininspector.currno.de/adininspector/adinhubsoc2";
 
   /**
    * Data source

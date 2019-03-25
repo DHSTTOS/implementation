@@ -19,7 +19,7 @@ class UserStore {
    */
   @observable
   wsEndpointURL =
-    'wss://adininspector.currno.de:8443/adininspector/adinhubsoc2';
+    'wss://adininspector.currno.de/adininspector/adinhubsoc2';
 
   // do we need this to be observable though?
   // userDetails.wsLoggedIn should be enough to determine the state
