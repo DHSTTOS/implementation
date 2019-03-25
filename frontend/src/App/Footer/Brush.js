@@ -97,8 +97,8 @@ export default class Brush extends PureComponent {
       );
       */
       // XXX currently no brushing/zooming for node-link diagram
-      tmp = [...dataStore.addressesAndLinksData];
-      dataStore.currentlySelectedAddressAndLinksData = tmp;
+      // tmp = [...dataStore.addressesAndLinksData];
+      // dataStore.currentlySelectedAddressAndLinksData = tmp;
     };
 
     let updateCurrentRange = range => {
