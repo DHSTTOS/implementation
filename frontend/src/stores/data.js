@@ -30,7 +30,7 @@ class DataStore {
   @observable.shallow
   connectionNumberData = [];
   @observable.shallow
-  addressesAndLinksData = [];
+  addressesAndLinksData = {};
 
   // The slice of data that is currently selected by the slider
   @observable.shallow
@@ -40,7 +40,7 @@ class DataStore {
   @observable.shallow
   currentlySelectedConnectionNumberData = [];
   @observable.shallow
-  currentlySelectedAddressAndLinksData = [];
+  currentlySelectedAddressAndLinksData = {};
 
   @observable
   endpoints = []; // The start and end indices for the x-axis
@@ -76,7 +76,7 @@ class DataStore {
     this.currentlySelectedRawData = [];
     this.currentlySelectedFlowrateData = [];
     this.currentlySelectedConnectionNumberData = [];
-    this.currentlySelectedAddressAndLinksData = [];
+    // this.currentlySelectedAddressAndLinksData = {};
     this.alarms = [];
   };
 }
