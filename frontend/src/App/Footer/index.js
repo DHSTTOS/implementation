@@ -50,7 +50,7 @@ class Footer extends Component {
         <Content>
           <div>
             <Typography variant="body1" color="textSecondary">
-              {'© 2018 DHSTTOS Frontend Contributors'}
+              {'© 2018-2019 DHSTTOS Frontend Contributors'}
             </Typography>
           </div>
           <Row>
