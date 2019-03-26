@@ -13,23 +13,27 @@ import {
 
 const LegendContainer = styled.div`
   position: absolute;
-  z-index: 10000;
+  z-index: 10;
   list-style: none;
-  top: 6rem;
+  top: 10rem;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: stretch;
+  height:200px;
+  
+  font-size:large;
 `;
 
 const Row = styled.div`
   display: flex;
+  height:200px;
 `;
 
 const LegendBox = styled.div`
   width: 2rem;
-  height: 1rem;
+  height: 2rem;
   background-color: ${props => props.color};
-  margin: 1px 5px;
+  margin: 4px 10px;
   border: 1px solid #ddd;
 `;
 
@@ -116,7 +120,7 @@ function RadialPlacement() {
   // how large to make the layout
   let radius = 100;
   //starting x-radius of the ellipse
-  let radiusA = 800;
+  let radiusA = 900;
   //starting y-radius of the ellipse
   let radiusB = 150;
   // where the center of the layout should be
@@ -172,13 +176,13 @@ function RadialPlacement() {
         place(k);
       } else if (k.includes('.')) {
         //set the radius for the second layer
-        radiusA = 800;
+        radiusA = 700;
         radiusB = 600;
         place(k);
       } else {
         //set the radius for the third layer
-        radiusA = 1100;
-        radiusB = 900;
+        radiusA = 1000;
+        radiusB = 800;
         place(k);
       }
     });
