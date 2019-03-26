@@ -13,27 +13,23 @@ import {
 
 const LegendContainer = styled.div`
   position: absolute;
-  z-index: 10;
+  z-index: 10000;
   list-style: none;
-  top: 10rem;
+  top: 6rem;
   display: flex;
   flex-direction: column;
-  align-items: stretch;
-  height: 200px;
-
-  font-size: large;
+  align-items: flex-start;
 `;
 
 const Row = styled.div`
   display: flex;
-  height: 200px;
 `;
 
 const LegendBox = styled.div`
   width: 2rem;
-  height: 2rem;
+  height: 1rem;
   background-color: ${props => props.color};
-  margin: 4px 10px;
+  margin: 1px 5px;
   border: 1px solid #ddd;
 `;
 
@@ -235,8 +231,8 @@ function RadialPlacement() {
 function Network() {
   // variables we want to access
   // in multiple places of Network
-  const width = 2000;
-  const height = 2000;
+  const width = 1300;
+  const height = 1000;
 
   // allData will store the unfiltered data
   let allData = [];
