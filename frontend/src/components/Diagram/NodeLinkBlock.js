@@ -171,18 +171,18 @@ function RadialPlacement() {
     keys.forEach(k => {
       if (k.includes(':')) {
         //set the radius for the first layer
-        radiusA = 500;
-        radiusB = 300;
+        radiusA = 200;
+        radiusB = 100;
         place(k);
       } else if (k.includes('.')) {
         //set the radius for the second layer
-        radiusA = 700;
-        radiusB = 600;
+        radiusA = 500;
+        radiusB = 400;
         place(k);
       } else {
         //set the radius for the third layer
-        radiusA = 1000;
-        radiusB = 800;
+        radiusA = 700;
+        radiusB = 600;
         place(k);
       }
     });
