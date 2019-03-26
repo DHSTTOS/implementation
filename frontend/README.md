@@ -1,4 +1,14 @@
-# Frontend Of DHSTTOS
+<p align="center">
+  <a href="https://adin-inspector.netlify.com">
+    <img alt="Logo" src="https://adin-inspector.netlify.com/logo.svg" width="80" />
+  </a>
+</p>
+
+<h1 align="center">
+  Drawing How Stuff Talk To Other Stuff
+</h1>
+
+# Frontend
 
 This project is the main page of the frontend application, the login page is not (yet) integrated. For the login page only, see [`../login-frontend`](https://github.com/DHSTTOS/implementation/tree/master/login-frontend).
 
@@ -6,7 +16,7 @@ This project is the main page of the frontend application, the login page is not
 
 0. `cd` into this sub directory
 1. Install dependencies with `npm i` (please don't use `yarn`)
-2. Run `npm run build` to create an optimized production build
+1. Run `npm run build` to create an optimized production build
 
 Because we allow the user to enter their own WebSocket endpoint of DHSTTOS backend, this web application can be hosted anywhere. One thing to notice is that for most browsers, if the user loads this app from a server which enforces HTTPS (eg. vanilla Netlify), they won't be able to connect to an unencrypted WebSocket endpoint via `ws://` protocol, so `wss://` is required.
 
@@ -14,8 +24,8 @@ Because we allow the user to enter their own WebSocket endpoint of DHSTTOS backe
 
 0. `cd` into this sub directory
 1. Install dependencies with `npm i` (please don't use `yarn`)
-2. Run `npm start` to spin up a local dev server
-3. Go to the URL printed in the console
+1. Run `npm start` to spin up a local dev server
+1. Go to the URL printed in the console
 
 `http://localhost` allows you to connect to an unencrypted WebSocket endpoint.
 
@@ -34,7 +44,7 @@ All the diagram components are placed inside [`/src/components/Diagram`](src/com
 
 Before creating a PR, please run `npm run format` to do an autoformat, so that we can keep the code style consistent throughout the project.
 
-The [`/src/libs`](src/libs) should contain *ONLY* static helper functions or classes. Do *not* invoke any methods or functions on the root level of any files there, as it might create a dependency loop/deadlock situation. (Due to the scripting nature of JS, you can imagine everything is wrapped inside an invisible `main()` function. The engine executes every single line when it runs through the source code.)
+The [`/src/libs`](src/libs) should contain _ONLY_ static helper functions or classes. Do _not_ invoke any methods or functions on the root level of any files there, as it might create a dependency loop/deadlock situation. (Due to the scripting nature of JS, you can imagine everything is wrapped inside an invisible `main()` function. The engine executes every single line when it runs through the source code.)
 
 State management is handled with MobX in a observer/reactive manner. Access and mutate the state anywhere inside the project via simply referencing the corresponding class attributes inside [`/stores`](src/stores) or reassigning values to them.
 
@@ -50,8 +60,8 @@ For other modules of the DHSTTOS platform (eg. the backend server code), please 
 
 ## Credits
 
-Klevia Ulqinaku - Login Page UI, Data Visualization
+[Klevia Ulqinaku](https://github.com/klevia) - Login Page UI, Data Visualization
 
-Philipp Mergenthaler - Client-Server Communication, Data Visualization
+[Philipp Mergenthaler](https://github.com/pm8008) - Client-Server Communication, Data Visualization
 
-Xiaoru Li - Original UI design, Main Page UI, Data Visualization, Client-Server Communication
+[Xiaoru Li](https://github.com/hexrcs) - Original UI design, Main Page UI, Data Visualization, Client-Server Communication, Project Logo Design
