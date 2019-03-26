@@ -118,11 +118,11 @@ function RadialPlacement() {
   // how much to separate each location by
   let increment = 5;
   // how large to make the layout
-  let radius = 100;
+  let radius = 10;
   //starting x-radius of the ellipse
-  let radiusA = 900;
+  let radiusA = 50;
   //starting y-radius of the ellipse
-  let radiusB = 150;
+  let radiusB = 50;
   // where the center of the layout should be
   let center = { x: 0, y: 0 };
   // what angle to start at
@@ -172,17 +172,17 @@ function RadialPlacement() {
       if (k.includes(':')) {
         //set the radius for the first layer
         radiusA = 200;
-        radiusB = 100;
+        radiusB = 10;
         place(k);
       } else if (k.includes('.')) {
         //set the radius for the second layer
         radiusA = 500;
-        radiusB = 400;
+        radiusB = 100;
         place(k);
       } else {
         //set the radius for the third layer
         radiusA = 700;
-        radiusB = 600;
+        radiusB = 200;
         place(k);
       }
     });
