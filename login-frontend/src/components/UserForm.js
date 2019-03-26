@@ -1,6 +1,5 @@
 import React from 'react';
 import TextField from '@material-ui/core/TextField';
-import * as ws from './wsutils.js';
 // import Button from "@material-ui/core/Button";
 import styled from '@emotion/styled';
 
@@ -23,18 +22,6 @@ function mouseOver() {
 function mouseOut() {
   tag.style.background = 'white';
 }
-
-// const MegaField = styled(TextField)`
-
-//   /* font-family: "Roboto",sans-serif;
-//     outline:1
-//     width: 100%;
-//     border: 0;
-//     margin: 0;
-//     padding: 15px;
-//     box-sizing: border-box;
-//     font-size: 14px; */
-// `;
 
 const MyButton = styled(RaisedButton)`
   background-color: transparent;
@@ -73,10 +60,7 @@ class UserForm extends React.Component {
   login2 = async _ => {
     var fieldValue = document.getElementById('endpoint').value;
     await localStorage.setItem('text', fieldValue);
-    let username = this.state.username;
-    let password = this.state.password;
-    console.log('logging in; username: ' + this.state.username);
-    ws.login(username, password);
+    // ws.login(username, password); // Bypass auth for now
     window.location.href = 'main';
   };
 
