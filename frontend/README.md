@@ -1,6 +1,6 @@
 <p align="center">
-  <a href="https://adin-inspector.netlify.com">
-    <img alt="Logo" src="https://adin-inspector.netlify.com/logo.svg" width="80" />
+  <a href="https://adin-frontend.netlify.com">
+    <img alt="Logo" src="https://adin-frontend.netlify.com/logo.svg" width="80" />
   </a>
 </p>
 
