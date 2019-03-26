@@ -19,14 +19,14 @@ const LegendContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  height:200px;
-  
-  font-size:large;
+  height: 200px;
+
+  font-size: large;
 `;
 
 const Row = styled.div`
   display: flex;
-  height:200px;
+  height: 200px;
 `;
 
 const LegendBox = styled.div`
