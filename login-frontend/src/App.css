@@ -1,14 +1,12 @@
 .App {
   text-align: center;
 }
-.UserForm{
+.UserForm {
   text-align: center;
 }
 
-
-
 .App-header {
-  background-color:transparent;
+  background-color: transparent;
   font-family: 'Titillium Web', sans-serif;
   min-height: 70px;
   display: flex;
@@ -16,16 +14,13 @@
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: rgba(253, 197, 44, 0.836);
 }
 
 .App-link {
   color: #2c6d80;
 }
-body{
-  background-image: url(1.jpg);
+body {
   height: 5vh;
-  background-size: cover;
-  background-position: center;
-}
 
+  background-color: rgba(255, 212, 94, 0.815);
+}
