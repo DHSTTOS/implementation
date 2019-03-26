@@ -6,9 +6,9 @@
 
 <h1 align="center">
   Drawing How Stuff Talk To Other Stuff
+  <br />
+  Frontend
 </h1>
-
-# Frontend
 
 This project is the main page of the frontend application, the login page is not (yet) integrated. For the login page only, see [`../login-frontend`](https://github.com/DHSTTOS/implementation/tree/master/login-frontend).
 
