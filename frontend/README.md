@@ -1,4 +1,14 @@
-# Frontend Of DHSTTOS
+<p align="center">
+  <a href="https://adin-inspector.netlify.com">
+    <img alt="Logo" src="https://adin-inspector.netlify.com/logo.svg" width="80" />
+  </a>
+</p>
+
+<h1 align="center">
+  Drawing How Stuff Talk To Other Stuff
+</h1>
+
+# Frontend
 
 This project is the main page of the frontend application, the login page is not (yet) integrated. For the login page only, see [`../login-frontend`](https://github.com/DHSTTOS/implementation/tree/master/login-frontend).
 
