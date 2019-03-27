@@ -24,7 +24,8 @@ This should produce the file target/adininspector-backend-0.0.1-SNAPSHOT-jar-wit
 > For more details please refer to the [documents](https://github.com/DHSTTOS/documents) repository.
 
 ## Credits
-[Mario Gonzalez] - Database Management storage, provision and communication with Kafka
-[Philipp Mergenthaler] - Client-Server Communication, Data Visualization
+[Mario Gonzalez](https://github.com/mgonzalez01) - Database Management storage, provision and communication with Kafka
+
+[Philipp Mergenthaler](https://github.com/pm8008) - Client-Server Communication, Data Visualization
 
 
