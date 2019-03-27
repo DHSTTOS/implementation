@@ -664,7 +664,7 @@ function Network() {
   var hideLinkDetails = function(d, i) {
     d3.select(this)
       .style('stroke', '#ddd')
-      .style('stroke-width', 0);
+      .style('stroke-width', 1);
     tooltip.hideTooltip();
   };
   // Mouseout function
