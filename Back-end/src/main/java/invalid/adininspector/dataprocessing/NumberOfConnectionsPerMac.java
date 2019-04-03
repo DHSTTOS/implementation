@@ -34,14 +34,13 @@ import invalid.adininspector.records.Record;
  *     information for a specific node.
  *
  */
-public class NumberOfConnectionsPerNode implements IAggregator {
+public class NumberOfConnectionsPerMac implements IAggregator {
 
 	private Date currentTstmp;
     private ArrayList<Map<String, Object>> connectionsMapList;
     private Document currentDocument;
     private long second = 1000;
     private long id;
-    
 
     /**
      * Calculate the outgoing and incoming connections.
@@ -80,17 +79,14 @@ public class NumberOfConnectionsPerNode implements IAggregator {
             //check if the current timestamp is smaller than it +1 second.
             int retval = Long.valueOf(r.getTimestamp().getTime()).compareTo(currentTstmp.getTime() + second);
 
-            //get which layer the packet belongs to
-            String layer = r.getL4Protocol().isEmpty() ? r.getL3Protocol().isEmpty() ?  r.getL2Protocol().isEmpty() ? "?":"L2" :"L3" :"L4";
-
-            if (retval > 0) {  
-
+            if (retval > 0) {
                 List<BasicBSONObject> connectionsHolder = new ArrayList<>();
 
                 // convert each map into an object and add it to connectionsHolder
                 for (Map<String, Object> map : connectionsMapList)
+                {
                     connectionsHolder.add(new BasicBSONObject(map));
-
+                }
                 currentDocument.append("connections", connectionsHolder);
 
                 // add it to our processed records
@@ -105,32 +101,59 @@ public class NumberOfConnectionsPerNode implements IAggregator {
                 currentDocument = getNewAggregatorDocument(currentTstmp);
             }
 
-            //within the same second
             if (retval <= 0) {
-                Boolean layerInMap = false;
+                Boolean destInMap = false;
+                Boolean srcInMap = false;
 
-                //check if communication in this layer has been observed this second
+                // check if existing maps have the dst and src and increment the ocunt if that's the case
                 for (Map<String, Object> map : connectionsMapList) {
-                    
-                    if(map.get("Layer").equals(layer))
-                    {
-                        layerInMap = !layerInMap;
+                
 
-                        int count = Integer.parseInt((String) map.get("count")) + 1;
-                        map.replace("count", Integer.toString(count));
-                    }
+                  
+                        // is the mac already part of the map?
+                        if (map.get("MAC").equals(r.getDestinationMACAddress())) {
+                            destInMap = !destInMap;
+                            // get the current count, add 1 and put it back into the map
+                            int count = Integer.parseInt((String) map.get("count")) + 1;
+                            
+                            map.replace("count", Integer.toString(count));                        
+                        }
+
+                        // is the mac already part of the map?
+                        if (map.get("MAC").equals(r.getSourceMACAddress())) {
+                            srcInMap = !srcInMap;
+
+                            int count = Integer.parseInt((String) map.get("count")) + 1;
+                            map.replace("count", Integer.toString(count));
+                        }
+                
+
+
                 }
 
-                if(!layerInMap)
-                {
+                // we have not seen this dest before this second
+                if (!destInMap) {
                     Map<String, Object> map = new HashMap<String, Object>();
 
-                    map.put("Layer",layer);
-                    map.put("count", "1"); 
+                    // add it to the map
+                    map.put("MAC", r.getDestinationMACAddress());
+                    map.put("count", "1");
 
                     connectionsMapList.add(map);
                 }
-            }
+
+                // we have not seen this src before this second
+                if (!srcInMap) {
+                    Map<String, Object> map = new HashMap<String, Object>();
+
+                    // add it to the map
+                    map.put("MAC", r.getSourceMACAddress());
+                    map.put("count", "1");
+
+                    connectionsMapList.add(map);
+                }
+
+            } 
 
         });
 
