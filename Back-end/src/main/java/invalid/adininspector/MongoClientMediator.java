@@ -613,7 +613,7 @@ public class MongoClientMediator {
 	{
 		//check if the user is trying to get a realTime aggregation and if it's up to date. if not then process it and return the new one
 		//if(collection.contains("_"))
-			if(!DataProcessor.isRealTimeUptoDate)
+			//if(!DataProcessor.isRealTimeUptoDate)
 				DataProcessor.processDataInRange(collection, this,key,(Date)start,(Date)end);
 	}
 	
