@@ -149,7 +149,8 @@ const formatConnectionratePerLayerData = (cpsLayerData = []) => {
   console.log(groups['L4']);
   console.log('XXXXXXXXXXXXXXX');
 
-  const macs = Object.keys(groups);
+  // Sort the layers so that the diagram legend will be sorted.
+  const macs = Object.keys(groups).sort().reverse();
   return macs.map(x => ({
     id: x,
     data: groups[x].data,
