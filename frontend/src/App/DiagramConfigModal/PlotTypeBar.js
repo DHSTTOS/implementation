@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 
 import { Selector } from '@components';
 import { dataStore, appStore } from '@stores';
-import { SCATTER_PLOT, LINE_CHART, NODE_LINK } from '@libs';
+import { SCATTER_PLOT, LINE_CHART, LINE_CHART_LAYER, NODE_LINK } from '@libs';
 
 const Container = styled.div`
   display: flex;
@@ -16,7 +16,7 @@ const Container = styled.div`
 
 @observer
 class PlotTypeBar extends Component {
-  availablePlotTypes = [SCATTER_PLOT, LINE_CHART, NODE_LINK];
+  availablePlotTypes = [SCATTER_PLOT, LINE_CHART, LINE_CHART_LAYER, NODE_LINK];
 
   render() {
     const availableKeys = [...dataStore.availableKeys];

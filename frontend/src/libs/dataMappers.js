@@ -115,6 +115,51 @@ const formatRawData = ({
 };
 
 /**
+ * Formats connections per second per layer data to nivo's format.
+ *
+ * @param {ConnectionsPerSecondPerLayerDatum[]} cpsLayerData
+ *
+ * @return {Object[]}
+ */
+const formatConnectionratePerLayerData = (cpsLayerData = []) => {
+  // normalize the timestamp
+  const normalized = cpsLayerData.map(x => ({
+    ...x,
+    date: String(new Date(x['date']['$date']).getTime()),
+    id: Number(x['_id']['$numberLong']),
+  }));
+
+  const groups = {};
+
+  normalized.forEach(d => {
+    // Use default records with y=null so nivo won't draw spurious lines
+    let record = {};
+    record['L2'] = { x: d.date, y: null };
+    record['L3'] = { x: d.date, y: null };
+    record['L4'] = { x: d.date, y: null };
+    d.connections.forEach(e => {
+      record[e.Layer] = { x: d.date, y: e.count };
+    });
+    for (let layer in record) {
+      if (!(layer in groups)) {
+        groups[layer] = { data: [record[layer]] };
+      } else {
+        groups[layer].data = [...groups[layer].data, record[layer]];
+      }
+    }
+  });
+
+  // Sort the layers so that the diagram legend will be sorted.
+  const macs = Object.keys(groups)
+    .sort()
+    .reverse();
+  return macs.map(x => ({
+    id: x,
+    data: groups[x].data,
+  }));
+};
+
+/**
  * Formats flowrate data to nivo's format.
  *
  * @param {FlowRatePerSecondDatum[]} flowrateData
@@ -153,4 +198,9 @@ const formatNodeLinkData = (nodeLinkData = {}) => {
   return { nodes, links };
 };
 
-export { formatRawData, formatFlowrateData, formatNodeLinkData };
+export {
+  formatRawData,
+  formatConnectionratePerLayerData,
+  formatFlowrateData,
+  formatNodeLinkData,
+};

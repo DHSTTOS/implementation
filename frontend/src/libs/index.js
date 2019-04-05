@@ -3,6 +3,7 @@ import {
   DEFAULT_GLOBAL_FILTERS,
   SCATTER_PLOT,
   LINE_CHART,
+  LINE_CHART_LAYER,
   NODE_LINK,
   NIVO_COLOR_SCHEMES,
   COLOR_ETHER,
@@ -35,6 +36,7 @@ import {
 
 import {
   formatRawData,
+  formatConnectionratePerLayerData,
   formatFlowrateData,
   formatNodeLinkData,
 } from './dataMappers';
@@ -91,6 +93,7 @@ export {
   DEFAULT_GLOBAL_FILTERS,
   SCATTER_PLOT,
   LINE_CHART,
+  LINE_CHART_LAYER,
   NODE_LINK,
   NIVO_COLOR_SCHEMES,
   COLOR_IP,
@@ -120,6 +123,7 @@ export {
   formatData,
   selectOriginalRawDatum,
   formatRawData,
+  formatConnectionratePerLayerData,
   formatFlowrateData,
   formatNodeLinkData,
 };

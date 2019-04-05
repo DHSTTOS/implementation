@@ -49,7 +49,7 @@ class LineChartBlock extends Component {
         }}
         yScale={{
           type: 'linear',
-          stacked: true,
+          stacked: false,
           min: 'auto',
           max: 'auto',
         }}
@@ -68,7 +68,7 @@ class LineChartBlock extends Component {
           tickSize: 5,
           tickPadding: 5,
           tickRotation: 0,
-          legend: 'Connections',
+          legend: 'Connections/s',
           legendPosition: 'middle',
           legendOffset: -50,
         }}
