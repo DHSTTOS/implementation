@@ -132,22 +132,22 @@ const formatConnectionratePerLayerData = (cpsLayerData = []) => {
   const groups = {};
 
   normalized.forEach(d => {
+    // Use default records with y=null so nivo won't draw spurious lines
+    let record = {};
+    record['L2'] = { x: d.date, y: null };
+    record['L3'] = { x: d.date, y: null };
+    record['L4'] = { x: d.date, y: null };
     d.connections.forEach(e => {
-      if (!(e.Layer in groups)) {
-        groups[e.Layer] = { data: [{ x: d.date, y: e.count }] };
-      } else {
-        groups[e.Layer].data = [
-          ...groups[e.Layer].data,
-          { x: d.date, y: e.count },
-        ];
-      }
+      record[e.Layer] = { x: d.date, y: e.count };
     });
+    for (let layer in record) {
+      if (!(layer in groups)) {
+        groups[layer] = { data: [record[layer]] };
+      } else {
+        groups[layer].data = [...groups[layer].data, record[layer]];
+      }
+    }
   });
-  console.log('XXXXXXXXXXXXXXX');
-  console.log(groups['L2']);
-  console.log('XXXXXXXXXXXXXXX');
-  console.log(groups['L4']);
-  console.log('XXXXXXXXXXXXXXX');
 
   // Sort the layers so that the diagram legend will be sorted.
   const macs = Object.keys(groups)
