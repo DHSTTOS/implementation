@@ -10,6 +10,7 @@ export const DEFAULT_GLOBAL_FILTERS = {
 
 export const SCATTER_PLOT = 'Scatter Plot';
 export const LINE_CHART = 'Line Chart';
+export const LINE_CHART_LAYER = 'Line Chart, Connections/s per Layer';
 export const NODE_LINK = 'Node Link';
 
 export const COLOR_PROFI = `#78aba5`;

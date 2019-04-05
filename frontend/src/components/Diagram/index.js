@@ -6,9 +6,11 @@ import Typography from '@material-ui/core/Typography';
 import {
   SCATTER_PLOT,
   LINE_CHART,
+  LINE_CHART_LAYER,
   NODE_LINK,
   formatRawData,
   formatFlowrateData,
+  formatConnectionratePerLayerData,
 } from '@libs';
 import { appStore, dataStore } from '@stores';
 
@@ -88,6 +90,10 @@ class Diagram extends Component {
         unformattedData = dataStore.currentlySelectedFlowrateData;
         data = formatFlowrateData(unformattedData);
         break;
+      case LINE_CHART_LAYER:
+        unformattedData = dataStore.currentlySelectedConnectionNumberData;
+        data = formatConnectionratePerLayerData(unformattedData);
+        break;
     }
 
     // console.warn(data);
@@ -122,6 +128,18 @@ class Diagram extends Component {
         );
         break;
       case LINE_CHART:
+        plot = (
+          <LineChartBlock
+            data={data}
+            width={width}
+            height={height}
+            enableArea={enableArea}
+            lineWidth={lineWidth}
+            areaOpacity={areaOpacity}
+          />
+        );
+        break;
+      case LINE_CHART_LAYER:
         plot = (
           <LineChartBlock
             data={data}

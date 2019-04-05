@@ -3,6 +3,7 @@ import {
   DEFAULT_GLOBAL_FILTERS,
   SCATTER_PLOT,
   LINE_CHART,
+  LINE_CHART_LAYER,
   NIVO_COLOR_SCHEMES,
   DEFAULT_BRUSH_CONFIG,
 } from '@libs';
@@ -186,6 +187,14 @@ class AppStore {
         };
         break;
       case LINE_CHART:
+        specConfig = {
+          colors: NIVO_COLOR_SCHEMES[0],
+          lineWidth: 2,
+          enableArea: false,
+          areaOpacity: 0.2,
+        };
+        break;
+      case LINE_CHART_LAYER:
         specConfig = {
           colors: NIVO_COLOR_SCHEMES[0],
           lineWidth: 2,

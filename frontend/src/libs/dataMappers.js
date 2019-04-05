@@ -115,6 +115,48 @@ const formatRawData = ({
 };
 
 /**
+ * Formats connections per second per layer data to nivo's format.
+ *
+ * @param {ConnectionsPerSecondPerLayerDatum[]} cpsLayerData
+ *
+ * @return {Object[]}
+ */
+const formatConnectionratePerLayerData = (cpsLayerData = []) => {
+  // normalize the timestamp
+  const normalized = cpsLayerData.map(x => ({
+    ...x,
+    date: String(new Date(x['date']['$date']).getTime()),
+    id: Number(x['_id']['$numberLong']),
+  }));
+
+  const groups = {};
+
+  normalized.forEach(d => {
+    d.connections.forEach(e => {
+      if (!(e.Layer in groups)) {
+        groups[e.Layer] = { data: [{ x: d.date, y: e.count }] };
+      } else {
+        groups[e.Layer].data = [
+          ...groups[e.Layer].data,
+          { x: d.date, y: e.count },
+        ];
+      }
+    });
+  });
+  console.log('XXXXXXXXXXXXXXX');
+  console.log(groups['L2']);
+  console.log('XXXXXXXXXXXXXXX');
+  console.log(groups['L4']);
+  console.log('XXXXXXXXXXXXXXX');
+
+  const macs = Object.keys(groups);
+  return macs.map(x => ({
+    id: x,
+    data: groups[x].data,
+  }));
+};
+
+/**
  * Formats flowrate data to nivo's format.
  *
  * @param {FlowRatePerSecondDatum[]} flowrateData
@@ -153,4 +195,9 @@ const formatNodeLinkData = (nodeLinkData = {}) => {
   return { nodes, links };
 };
 
-export { formatRawData, formatFlowrateData, formatNodeLinkData };
+export {
+  formatRawData,
+  formatConnectionratePerLayerData,
+  formatFlowrateData,
+  formatNodeLinkData,
+};
