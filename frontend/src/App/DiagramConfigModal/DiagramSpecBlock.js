@@ -11,7 +11,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import TextField from '@material-ui/core/TextField';
 
 import { appStore } from '@stores';
-import { SCATTER_PLOT, LINE_CHART } from '@libs';
+import { SCATTER_PLOT, LINE_CHART, LINE_CHART_LAYER } from '@libs';
 
 const Container = styled(Paper)`
   display: flex;
@@ -102,6 +102,7 @@ class DiagramSpecBlock extends Component {
         ];
         break;
       case LINE_CHART:
+      case LINE_CHART_LAYER:
         controlOptions = [
           { name: 'Line Width', key: 'lineWidth', type: 'input' },
           { name: 'Enable Area', key: 'enableArea', type: 'checkbox' },
