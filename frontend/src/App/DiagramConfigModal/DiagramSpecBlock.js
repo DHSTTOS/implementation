@@ -107,6 +107,11 @@ class DiagramSpecBlock extends Component {
           { name: 'Line Width', key: 'lineWidth', type: 'input' },
           { name: 'Enable Area', key: 'enableArea', type: 'checkbox' },
           { name: 'Area Opacity', key: 'areaOpacity', type: 'input' },
+          {
+            name: 'Enable Dynamic Scaling',
+            key: 'enableDynamicScaling',
+            type: 'checkbox',
+          },
         ];
         break;
     }

@@ -41,6 +41,7 @@ import {
   formatNodeLinkData,
 } from './dataMappers';
 
+import { findConnectionMax } from './summaryStatistics';
 import { requestAvailableCollections } from './getCollections';
 import { dataStore } from '@stores';
 
@@ -126,4 +127,5 @@ export {
   formatConnectionratePerLayerData,
   formatFlowrateData,
   formatNodeLinkData,
+  findConnectionMax,
 };

@@ -59,6 +59,11 @@ class DataStore {
   @observable
   totalEndpoints = []; // The start and end indices for the x-axis
 
+  /*
+   * The maximum connection value over all records and layers:
+   */
+  connectionNumberDataMax = 0;
+
   // Array of notification/alarm data sets:
   @observable
   alarms = [

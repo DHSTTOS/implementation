@@ -34,6 +34,7 @@ import { dataStore } from '.';
  * @property {number} lineWidth
  * @property {boolean} enableArea
  * @property {number} areaOpacity
+ * @property {boolean} enableDynamicScaling
  */
 
 /**
@@ -184,6 +185,7 @@ class AppStore {
         specConfig = {
           colors: NIVO_COLOR_SCHEMES[0],
           symbolSize: 6,
+          enableDynamicScaling: true,
         };
         break;
       case LINE_CHART:
@@ -192,6 +194,7 @@ class AppStore {
           lineWidth: 2,
           enableArea: false,
           areaOpacity: 0.2,
+          enableDynamicScaling: true,
         };
         break;
       case LINE_CHART_LAYER:
@@ -200,6 +203,7 @@ class AppStore {
           lineWidth: 2,
           enableArea: false,
           areaOpacity: 0.2,
+          enableDynamicScaling: true,
         };
         break;
     }
