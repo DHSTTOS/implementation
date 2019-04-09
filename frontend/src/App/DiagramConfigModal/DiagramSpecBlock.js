@@ -108,7 +108,7 @@ class DiagramSpecBlock extends Component {
           { name: 'Enable Area', key: 'enableArea', type: 'checkbox' },
           { name: 'Area Opacity', key: 'areaOpacity', type: 'input' },
           {
-            name: 'Enable Dynamic Scaling',
+            name: 'Dynamic Scaling of y-Axis',
             key: 'enableDynamicScaling',
             type: 'checkbox',
           },
