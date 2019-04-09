@@ -11,6 +11,7 @@ import {
   formatRawData,
   formatFlowrateData,
   formatConnectionratePerLayerData,
+  findConnectionMax,
 } from '@libs';
 import { appStore, dataStore } from '@stores';
 
@@ -63,10 +64,13 @@ class Diagram extends Component {
       lineWidth,
       areaOpacity,
       symbolSize,
+      enableDynamicScaling,
     } = this.props.config.specConfig;
 
     let data;
     let unformattedData;
+    let yScaleMin = 'auto';
+    let yScaleMax = 'auto';
     switch (this.props.config.plotType) {
       case SCATTER_PLOT:
         unformattedData = dataStore.currentlySelectedRawData;
@@ -93,6 +97,16 @@ class Diagram extends Component {
       case LINE_CHART_LAYER:
         unformattedData = dataStore.currentlySelectedConnectionNumberData;
         data = formatConnectionratePerLayerData(unformattedData);
+        if (!enableDynamicScaling) {
+          yScaleMin = 0;
+          // XXX the following function call to findConnectionMax()
+          // should be done as e.g. autorun and run as a reaction to a
+          // change in dataStore.connectionNumberData :
+          dataStore.connectionNumberDataMax = findConnectionMax(
+            dataStore.connectionNumberData
+          );
+          yScaleMax = dataStore.connectionNumberDataMax;
+        }
         break;
     }
 
@@ -136,6 +150,8 @@ class Diagram extends Component {
             enableArea={enableArea}
             lineWidth={lineWidth}
             areaOpacity={areaOpacity}
+            yScaleMin={yScaleMin}
+            yScaleMax={yScaleMax}
           />
         );
         break;
@@ -148,6 +164,8 @@ class Diagram extends Component {
             enableArea={enableArea}
             lineWidth={lineWidth}
             areaOpacity={areaOpacity}
+            yScaleMin={yScaleMin}
+            yScaleMax={yScaleMax}
           />
         );
         break;

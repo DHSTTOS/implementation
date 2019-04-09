@@ -11,6 +11,8 @@ import { Line } from '@nivo/line';
  * @prop {boolean} enableArea
  * @prop {number} lineWidth
  * @prop {number} areaOpacity
+ * @prop {string} yScaleMin
+ * @prop {string} yScaleMax
  *
  * @extends {Component<Props>}
  */
@@ -25,6 +27,8 @@ class LineChartBlock extends Component {
       enableArea,
       lineWidth,
       areaOpacity,
+      yScaleMin,
+      yScaleMax,
     } = this.props;
 
     return (
@@ -50,8 +54,8 @@ class LineChartBlock extends Component {
         yScale={{
           type: 'linear',
           stacked: false,
-          min: 'auto',
-          max: 'auto',
+          min: yScaleMin,
+          max: yScaleMax,
         }}
         axisBottom={{
           orient: 'bottom',
