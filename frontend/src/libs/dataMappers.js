@@ -190,7 +190,9 @@ const formatFlowrateData = (flowrateData = []) => {
     });
   });
 
-  const macs = Object.keys(groups);
+  const macs = Object.keys(groups)
+    .sort()
+    .reverse();
   return macs.map(x => ({
     id: x,
     data: groups[x].data,
