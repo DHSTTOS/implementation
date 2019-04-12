@@ -132,11 +132,15 @@ const formatConnectionratePerLayerData = (cpsLayerData = []) => {
   const groups = {};
 
   normalized.forEach(d => {
-    // Use default records with y=null so nivo won't draw spurious lines
+    // Use default records with y=0 to fill in records where one or more
+    // layer were not present (because there was no network traffic on
+    // those layer in that time range).
+    // This filling in of default values could also be done in the
+    // aggregator on the back end instead of here.
     let record = {};
-    record['L2'] = { x: d.date, y: null };
-    record['L3'] = { x: d.date, y: null };
-    record['L4'] = { x: d.date, y: null };
+    record['L2'] = { x: d.date, y: 0 };
+    record['L3'] = { x: d.date, y: 0 };
+    record['L4'] = { x: d.date, y: 0 };
     d.connections.forEach(e => {
       record[e.Layer] = { x: d.date, y: e.count };
     });
