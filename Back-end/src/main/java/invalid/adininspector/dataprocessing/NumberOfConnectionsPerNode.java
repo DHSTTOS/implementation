@@ -103,6 +103,20 @@ public class NumberOfConnectionsPerNode implements IAggregator {
                 // create new objects for processing
                 connectionsMapList = new ArrayList<>();
                 currentDocument = getNewAggregatorDocument(currentTstmp);
+
+                
+                Map<String, Object> map = new HashMap<String, Object>();
+
+                map.put("count","0");
+                
+                map.put("Layer","L2");
+                connectionsMapList.add(map);
+                
+                map.replace("Layer","L3");
+                connectionsMapList.add(map);
+
+                map.replace("Layer","L4");
+                connectionsMapList.add(map);
             }
 
             //within the same second
