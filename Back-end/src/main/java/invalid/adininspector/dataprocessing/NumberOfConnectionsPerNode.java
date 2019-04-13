@@ -73,6 +73,25 @@ public class NumberOfConnectionsPerNode implements IAggregator {
 
         connectionsMapList = new ArrayList<>();
 
+ 
+        Map<String, Object> layerMap = new HashMap<String, Object>();
+
+        layerMap.put("count","0");
+        layerMap.put("Layer","L2");
+        connectionsMapList.add(layerMap);
+        
+        layerMap = new HashMap<String, Object>();
+
+        layerMap.put("count","0");
+        layerMap.put("Layer","L3");
+        connectionsMapList.add(layerMap);
+
+        layerMap = new HashMap<String, Object>();
+
+        layerMap.put("count","0");
+        layerMap.put("Layer","L4");
+        connectionsMapList.add(layerMap);
+
         records.forEach(record -> {
 
             PacketRecordDesFromMongo r = (PacketRecordDesFromMongo) record;
@@ -108,14 +127,19 @@ public class NumberOfConnectionsPerNode implements IAggregator {
                 Map<String, Object> map = new HashMap<String, Object>();
 
                 map.put("count","0");
-                
                 map.put("Layer","L2");
                 connectionsMapList.add(map);
                 
-                map.replace("Layer","L3");
+                map = new HashMap<String, Object>();
+
+                map.put("count","0");
+                map.put("Layer","L3");
                 connectionsMapList.add(map);
 
-                map.replace("Layer","L4");
+                map = new HashMap<String, Object>();
+
+                map.put("count","0");
+                map.put("Layer","L4");
                 connectionsMapList.add(map);
             }
 

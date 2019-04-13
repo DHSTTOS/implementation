@@ -25,6 +25,7 @@ public class DataProcessor {
 			add(new FlowRatePerSecond());
 			add(new NumberOfConnectionsPerNode());
 			add(new AddressesAndLinks());
+			add(new NumberOfConnectionsPerMac());
 		}
 	};
 
