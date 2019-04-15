@@ -18,6 +18,7 @@ import { appStore, dataStore } from '@stores';
 import LineChartBlock from './LineChartBlock';
 import ScatterPlotBlock from './ScatterPlotBlock';
 import NodeLinkBlock from './NodeLinkBlock';
+import NodeLinkBlockFullscreen from './NodeLinkBlockFullscreen';
 
 const CenteredTypography = styled(Typography)`
   align-self: center;
@@ -48,11 +49,9 @@ class Diagram extends Component {
       return (
         <PlotContainer>
           {!this.props.isFullscreen ? (
-            <CenteredTypography variant="subtitle1" color="error">
-              Please toggle full screen mode to see the node link diagram
-            </CenteredTypography>
-          ) : (
             <NodeLinkBlock />
+          ) : (
+            <NodeLinkBlockFullscreen />
           )}
         </PlotContainer>
       );

@@ -12,7 +12,8 @@ import {
 } from '@libs';
 
 const LegendContainer = styled.div`
-  position: relative;
+  position: absolute;
+  z-index: 10000;
   list-style: none;
   top: 6rem;
   display: flex;
@@ -64,7 +65,8 @@ class NodeLinkBlock extends PureComponent {
 
   render() {
     return (
-      <>
+      <div>
+        <div ref={this.nodeLinkGram} />
         <LegendContainer>
           <Row>
             <LegendBox color={COLOR_ETHER} /> Ethernet
@@ -82,8 +84,7 @@ class NodeLinkBlock extends PureComponent {
             <LegendBox color={COLOR_TCP} /> TCP
           </Row>
         </LegendContainer>
-        <div ref={this.nodeLinkGram} />
-      </>
+      </div>
     );
   }
 }
@@ -167,17 +168,17 @@ function RadialPlacement() {
       if (k.includes(':')) {
         //set the radius for the first layer
         radiusA = 200;
-        radiusB = 10;
+        radiusB = 120;
         place(k);
       } else if (k.includes('.')) {
         //set the radius for the second layer
         radiusA = 500;
-        radiusB = 100;
+        radiusB = 300;
         place(k);
       } else {
         //set the radius for the third layer
         radiusA = 700;
-        radiusB = 200;
+        radiusB = 500;
         place(k);
       }
     });
@@ -230,8 +231,8 @@ function RadialPlacement() {
 function Network() {
   // variables we want to access
   // in multiple places of Network
-  const width = 1000;
-  const height = 550;
+  const width = 1300;
+  const height = 1000;
 
   // allData will store the unfiltered data
   let allData = [];
