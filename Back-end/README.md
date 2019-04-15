@@ -23,6 +23,16 @@ This should produce the file target/adininspector-backend-0.0.1-SNAPSHOT-jar-wit
 
 > For more details please refer to the [documents](https://github.com/DHSTTOS/documents) repository.
 
+
+3. Tomcat
+
+Templates for tomcat configuration files are in tomcat-conf.
+See tomcat-conf/README.md
+
+For the complete setup instructions, please see
+https://github.com/DHSTTOS/documents/blob/master/implementation/deployment.md
+
+
 ## Credits
 [Mario Gonzalez](https://github.com/mgonzalez01) - Database Management storage, provision and communication with Kafka
 
