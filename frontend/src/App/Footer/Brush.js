@@ -55,7 +55,7 @@ export default class Brush extends PureComponent {
       .domain([dataEndpoints[0], dataEndpoints[1]])
       .range([0, width - margin[0] - margin[2]]);
 
-    let cSRD = [0, 0];
+    let cSRD = null;
 
     let updateCurrentlySelectedData = range => {
       let start = range[0]; // TODO: instead of filtering, can we use slice()?
@@ -63,10 +63,10 @@ export default class Brush extends PureComponent {
       console.log('uCSD: start, end:' + start + ', ' + end);
       console.log(dataStore.rawData);
       console.log('rawData.length: ' + dataStore.rawData.length);
-      console.log(dataStore.rawData[start]);
       if (dataStore.rawData == undefined || dataStore.rawData.length == 0) {
         return;
       }
+      console.log(dataStore.rawData[start]);
 
       cSRD = dataStore.rawData.filter((x, i) => start <= i && i < end); // TODO: or <= end?
       dataStore.currentlySelectedRawData = cSRD;
@@ -136,7 +136,7 @@ export default class Brush extends PureComponent {
 
     console.log('curRange: ' + curRange[0] + ' ' + curRange[1]);
     updateCurrentlySelectedData(curRange);
-    console.log('csd length' + cSRD.length);
+    console.log('cSRD, cSRD length:' + cSRD + ", " + ((cSRD != null) ? cSRD.length : -1));
     console.log('rawData length' + dataStore.rawData.length);
 
     let tickFormatTimeStamp = d => {
@@ -270,6 +270,9 @@ export default class Brush extends PureComponent {
         if (appStore.brushConfig.tickstyle) {
           return '' + d;
         }
+
+        if (cSRD == null)
+          return '';
 
         let offset = Math.floor(d - curRange[0]);
         //console.log('cSRD.length: ' + cSRD.length + ' ' + curRange[0]);
