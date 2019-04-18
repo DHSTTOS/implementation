@@ -117,7 +117,7 @@ const handleData = msg => {
   console.log('Received data message: ' + msg.data.length + ' ' + msg.data[0]);
 
   /*
-   * A foo__AddressesAndLinks data set here will usually be a 
+   * A foo__AddressesAndLinks data set here will usually be a
    * response to a request from the brush. Handle it as a unique
    * case and not as a generic data response to be stored in alarms[].
    */
