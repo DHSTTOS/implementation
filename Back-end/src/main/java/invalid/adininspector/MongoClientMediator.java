@@ -403,7 +403,7 @@ public class MongoClientMediator {
 			if (!start.getClass().equals(Date.class)) start = new Date(Long.valueOf((String)start));
 			if (!end.getClass().equals(Date.class))	end = new Date(Long.valueOf((String)end));
 
-			query.put(key, new BasicDBObject("$gte", new Date(Long.valueOf((String)start))).append("$lt", new Date(Long.valueOf((String)end)) ));
+			query.put(key, new BasicDBObject("$gte", start).append("$lt", end) );
 		}
 		else if(key.equals("_id"))
 			query.put(key, new BasicDBObject("$gte", Long.valueOf((String)start)).append("$lt", Long.valueOf((String)end)));
