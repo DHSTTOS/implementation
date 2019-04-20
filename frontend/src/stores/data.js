@@ -79,11 +79,17 @@ class DataStore {
   resetData = () => {
     this.availableCollections = [];
     this.rawData = [];
+    this.flowrateData = [];
+    this.connectionNumberData = [];
+    this.addressesAndLinksData = {};
+    this.currentlySelectedFlowrateData = [];
+    this.currentlySelectedConnectionNumberData = [];
     this.endpoints = [];
+    this.connectionNumberDataMax = 0;
     this.currentlySelectedRawData = [];
     this.currentlySelectedFlowrateData = [];
     this.currentlySelectedConnectionNumberData = [];
-    // this.currentlySelectedAddressAndLinksData = {};
+    this.currentlySelectedAddressAndLinksData = {};
     this.alarms = [];
   };
 }
