@@ -376,7 +376,7 @@ public class MongoClientMediator {
 		if(key.equals("Timestamp"))
 		{
 			//updateAggregation(collection.split("_")[0], key, new Date(Long.valueOf((String)equals)), new Date(Long.valueOf((String)equals)));
-			equals = new Date(Long.valueOf((String)equals));
+			if (!equals.getClass().equals(Date.class)) equals = new Date(Long.valueOf((String)equals));
 		}
 		else if(key.equals("_id"))
 		{
@@ -399,6 +399,9 @@ public class MongoClientMediator {
 		if(key.equals("Timestamp"))
 		{
 			//updateAggregation(collection.split("_")[0], key, new Date(Long.valueOf((String)start)), new Date(Long.valueOf((String)end)));
+
+			if (!start.getClass().equals(Date.class)) start = new Date(Long.valueOf((String)start));
+			if (!end.getClass().equals(Date.class))	end = new Date(Long.valueOf((String)end));
 
 			query.put(key, new BasicDBObject("$gte", new Date(Long.valueOf((String)start))).append("$lt", new Date(Long.valueOf((String)end)) ));
 		}
