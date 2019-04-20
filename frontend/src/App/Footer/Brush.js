@@ -1,8 +1,9 @@
 import React, { PureComponent } from 'react';
 import styled from '@emotion/styled';
 import * as d3 from 'd3';
-import { appStore, dataStore } from '@stores';
+import { appStore, dataStore, userStore } from '@stores';
 import { autorun } from 'mobx';
+import { getRecordsInRange } from '@libs';
 
 const Container = styled.div`
   bottom: 0;
@@ -88,8 +89,19 @@ export default class Brush extends PureComponent {
       );
       dataStore.currentlySelectedConnectionNumberData = tmp;
 
-      // With the current data layout this will hilariously fail:
-      //ws.getCollectionGroupData XXX
+      // Updating the data for the node-link diagram:
+      // The dataset for the nodelink diagram is created on the
+      // back-end; here we only send a request to the back-end
+      // for the dataset for the current range:
+      console.log('getRIR:');
+      getRecordsInRange(
+        userStore.socket,
+        dataStore.currentlySelectedSource + '_AddressesAndLinks',
+        'Timestamp',
+        '' + tStart,
+        '' + tEnd
+      );
+
       /*
       tmp = dataStore.addressesAndLinksData.filter(
         (x, i) => start <= i && i < end

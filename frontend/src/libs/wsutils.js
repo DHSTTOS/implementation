@@ -115,12 +115,24 @@ const handleDataEndpoints = msg => {
 
 const handleData = msg => {
   console.log('Received data message: ' + msg.data.length + ' ' + msg.data[0]);
+
+  /*
+   * A foo__AddressesAndLinks data set here will usually be a
+   * response to a request from the brush. Handle it as a unique
+   * case and not as a generic data response to be stored in alarms[].
+   */
+  if (msg.name.indexOf('_AddressesAndLinks') > -1) {
+    dataStore.currentlySelectedAddressAndLinksData = msg.data;
+    return;
+  }
+
   if (!msgRegister[msg.id]) {
     console.log(
       'Protocol: bug: received unrequested message, dropping it: ' + msg
     );
     return;
   }
+
   let context = msgRegister[msg.id]; // the request that triggered this msg
   let collName = context.par;
   if (collName.indexOf('_') > -1) {
