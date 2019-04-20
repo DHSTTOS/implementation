@@ -42,7 +42,7 @@ tomcat 8
 nodejs 10.15.0
 ```
   
-### Alternative software environment
+#### Alternative software environment
 
 (With frontend and back-end on the same server)  
 
@@ -61,7 +61,7 @@ The following setup uses one webserver for both the frontend (the website that t
 
 #### Backend dependencies
 
-##### 1. `MongoDB  <= 4.0.6`
+##### 1. `MongoDB  >= 4.0.6`
 
 The Mongo service needs to be running and a user account with read/write for all collections and databases as well as a AdinInspector Database and an authentication database under an 'admin' database.
 
