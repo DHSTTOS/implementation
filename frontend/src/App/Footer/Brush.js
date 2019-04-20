@@ -71,8 +71,7 @@ export default class Brush extends PureComponent {
       cSRD = dataStore.rawData.filter((x, i) => start <= i && i < end); // TODO: or <= end?
       dataStore.currentlySelectedRawData = cSRD;
       console.log(
-        'uCSD: dS.cSRD.length: ' +
-          dataStore.currentlySelectedRawData.length +
+        'uCSD: cSRD.length: ' + cSRD.length +
           '============'
       );
 
