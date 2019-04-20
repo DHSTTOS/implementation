@@ -136,7 +136,9 @@ export default class Brush extends PureComponent {
 
     console.log('curRange: ' + curRange[0] + ' ' + curRange[1]);
     updateCurrentlySelectedData(curRange);
-    console.log('cSRD, cSRD length:' + cSRD + ", " + ((cSRD != null) ? cSRD.length : -1));
+    console.log(
+      'cSRD, cSRD length:' + cSRD + ', ' + (cSRD != null ? cSRD.length : -1)
+    );
     console.log('rawData length' + dataStore.rawData.length);
 
     let tickFormatTimeStamp = d => {
@@ -271,8 +273,7 @@ export default class Brush extends PureComponent {
           return '' + d;
         }
 
-        if (cSRD == null)
-          return '';
+        if (cSRD == null) return '';
 
         let offset = Math.floor(d - curRange[0]);
         //console.log('cSRD.length: ' + cSRD.length + ' ' + curRange[0]);

@@ -152,18 +152,40 @@ const handleDataGroup = msg => {
   dataStore.endpoints = [0, rawDataPayload.size];
 
   // XXX This hardcoded handling of the processed data should be made more flexible:
-  dataStore.addressesAndLinksData = msg.par
-    .find(x => x.name === baseName + '_AddressesAndLinks')
-    .data.map(x => JSON.parse(x));
-
+  let tmp;
+  tmp = msg.par.find(x => x.name === baseName + '_AddressesAndLinks');
+  if (tmp == undefined) {
+    console.warn(
+      'handleDataGroup: data group ' +
+        baseName +
+        ' is missing the _AddressesAndLinks collection'
+    );
+  } else {
+    dataStore.addressesAndLinksData = tmp.data.map(x => JSON.parse(x));
+  }
   console.warn(toJS(dataStore.addressesAndLinksData));
-  dataStore.flowrateData = msg.par
-    .find(x => x.name === baseName + '_FlowRatePerSecond')
-    .data.map(x => JSON.parse(x));
 
-  dataStore.connectionNumberData = msg.par
-    .find(x => x.name === baseName + '_NumberOfConnectionsPerNode')
-    .data.map(x => JSON.parse(x));
+  tmp = msg.par.find(x => x.name === baseName + '_FlowRatePerSecond');
+  if (tmp == undefined) {
+    console.warn(
+      'handleDataGroup: data group ' +
+        baseName +
+        ' is missing the _FlowRatePerSecond collection'
+    );
+  } else {
+    dataStore.flowrateData = tmp.data.map(x => JSON.parse(x));
+  }
+
+  tmp = msg.par.find(x => x.name === baseName + '_NumberOfConnectionsPerNode');
+  if (tmp == undefined) {
+    console.warn(
+      'handleDataGroup: data group ' +
+        baseName +
+        ' is missing the _NumberOfConnectionsPerNode collection'
+    );
+  } else {
+    dataStore.connectionNumberData = tmp.data.map(x => JSON.parse(x));
+  }
 };
 
 /**
