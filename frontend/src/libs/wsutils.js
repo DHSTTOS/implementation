@@ -122,7 +122,7 @@ const handleData = msg => {
    * case and not as a generic data response to be stored in alarms[].
    */
   if (msg.name.indexOf('_AddressesAndLinks') > -1) {
-    dataStore.currentlySelectedAddressAndLinksData = msg.data;
+    dataStore.currentlySelectedAddressAndLinksData = JSON.parse(msg.data);
     return;
   }
 
