@@ -135,13 +135,13 @@ public class AddressesAndLinks implements IAggregator {
 			} 
 
 			if(!r.getL3Protocol().isEmpty() && !r.getL4Protocol().isEmpty()){
-				// srcConMap.put("id", r.getSourceMACAddress());
-				// srcConMap.put("type", "L2");
-				// srcConMap.put("Protocol", r.getL2Protocol());
+				 srcConMap.put("id", r.getSourceMACAddress());
+				 srcConMap.put("type", "L2");
+				 srcConMap.put("Protocol", r.getL2Protocol());
 
-				// destConMap.put("id", r.getDestinationMACAddress());
-				// destConMap.put("type", "L2");
-				// destConMap.put("Protocol", r.getL2Protocol());
+				 destConMap.put("id", r.getDestinationMACAddress());
+				 destConMap.put("type", "L2");
+				 destConMap.put("Protocol", r.getL2Protocol());
 
 				//172.16.10.49
 				//conneciton mac to mac
