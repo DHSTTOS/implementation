@@ -552,8 +552,7 @@ function Network() {
 
     node.attr('cx', d => d.x).attr('cy', d => d.y);
 
-    //if (e.alpha < 0.03) {
-    if (e.alpha < 0.93) {
+    if (e.alpha < 0.03) {
       updateLinks();
       force.stop();
     }
@@ -563,10 +562,7 @@ function Network() {
   // push them towards appropriate location.
   // Uses alpha to dampen effect over time.
   var moveToRadialLayout = function(alpha) {
-    // Force k=1.0 to jump directly to final position.
-    // PMXXX remove delay
-    //const k = alpha * 0.1;
-    const k = 1.0;
+    const k = alpha * 0.1;
     return function(d) {
       const centerNode = groupCenters(d.id);
       d.x += (centerNode.x - d.x) * k;
