@@ -71,10 +71,7 @@ export default class Brush extends PureComponent {
 
       cSRD = dataStore.rawData.filter((x, i) => start <= i && i < end); // TODO: or <= end?
       dataStore.currentlySelectedRawData = cSRD;
-      console.log(
-        'uCSD: cSRD.length: ' + cSRD.length +
-          '============'
-      );
+      console.log('uCSD: cSRD.length: ' + cSRD.length + '============');
 
       let tStart = dataStore.rawData[start].Timestamp.$date;
       let tEnd = dataStore.rawData[end].Timestamp.$date;
@@ -93,6 +90,8 @@ export default class Brush extends PureComponent {
       // The dataset for the nodelink diagram is created on the
       // back-end; here we only send a request to the back-end
       // for the dataset for the current range:
+      // TODO: maybe we should do this only in brushended, not for
+      // every update while moving the brush (b/c of lag):
       console.log('getRIR:');
       getRecordsInRange(
         userStore.socket,
@@ -101,15 +100,6 @@ export default class Brush extends PureComponent {
         '' + tStart,
         '' + tEnd
       );
-
-      /*
-      tmp = dataStore.addressesAndLinksData.filter(
-        (x, i) => start <= i && i < end
-      );
-      */
-      // XXX currently no brushing/zooming for node-link diagram
-      // tmp = [...dataStore.addressesAndLinksData];
-      // dataStore.currentlySelectedAddressAndLinksData = tmp;
     };
 
     let updateCurrentRange = range => {
@@ -127,7 +117,6 @@ export default class Brush extends PureComponent {
     };
 
     let updateTotalRange = range => {
-      //console.log('updateCR: ' + range[0] + ', ' + range[1]);
       xTotalScale.domain(range);
       xAxisTotal.scale(xTotalScale).tickFormat(tickFormatTimeStampTotal);
       let t = d3.transition().duration(50); // XXX remove completely?
@@ -153,11 +142,32 @@ export default class Brush extends PureComponent {
     console.log('rawData length' + dataStore.rawData.length);
 
     let tickFormatTimeStamp = d => {
-      return '0';
+      if (appStore.brushConfig.tickstyle) {
+        return '' + d;
+      }
+
+      if (!dataStore.rawData.length) {
+        return d;
+      }
+      if (cSRD == null) return '';
+
+      let offset = Math.floor(d - curRange[0]);
+      let tmpOffset = Math.min(offset, cSRD.length - 1);
+      if (tmpOffset == -1) {
+        return 'n/a';
+      }
+      let date = new Date(cSRD[tmpOffset].Timestamp.$date);
+
+      let lh = ('' + date.getHours()).padStart(2, '0');
+      let lm = ('' + date.getMinutes()).padStart(2, '0');
+      let ls = ('' + date.getSeconds()).padStart(2, '0');
+      let lms = ('' + date.getMilliseconds()).padStart(3, '0');
+
+      let label = lh + ':' + lm + ':' + ls + '.' + lms;
+      return label;
     };
 
     let tickFormatTimeStampTotal = d => {
-      //console.log('tFTST: ' + d + ' ' + dataStore.rawData.length);
       if (!dataStore.rawData.length) {
         return d;
       }
@@ -274,38 +284,6 @@ export default class Brush extends PureComponent {
       console.log(dataEndpoints);
 
       updateCurrentlySelectedData(curRange);
-
-      tickFormatTimeStamp = d => {
-        //console.log('tickFormatTimeStamp called, d:' + d + ' cr0 ' + curRange[0
-        //console.log("tickF: " + d + ": " + cSRD[d]);
-
-        //console.log('autorun.tickFormatTimeStamp:');
-        if (appStore.brushConfig.tickstyle) {
-          return '' + d;
-        }
-
-        if (cSRD == null) return '';
-
-        let offset = Math.floor(d - curRange[0]);
-        //console.log('cSRD.length: ' + cSRD.length + ' ' + curRange[0]);
-        //console.log(curRange);
-        //return d + '_' + (d-curRange[0]);
-        //console.log('offset: ' + offset);
-        // XXX workaround, if offset is too big:
-        let tmpOffset = Math.min(offset, cSRD.length - 1);
-        if (tmpOffset == -1) {
-          return 'n/a';
-        }
-        let date = new Date(cSRD[tmpOffset].Timestamp.$date);
-
-        let lh = ('' + date.getHours()).padStart(2, '0');
-        let lm = ('' + date.getMinutes()).padStart(2, '0');
-        let ls = ('' + date.getSeconds()).padStart(2, '0');
-        let lms = ('' + date.getMilliseconds()).padStart(3, '0');
-
-        let label = lh + ':' + lm + ':' + ls + '.' + lms;
-        return label;
-      };
 
       updateTotalRange(dataEndpoints);
 

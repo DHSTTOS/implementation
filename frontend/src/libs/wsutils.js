@@ -53,7 +53,6 @@ const initHandlers = socket => {
 
   socket.onmessage = message => {
     console.warn('WebSocket onmessage fired');
-    console.dir(message);
     handleMessage(JSON.parse(message.data));
   };
 };
@@ -114,17 +113,19 @@ const handleDataEndpoints = msg => {
 };
 
 const handleData = msg => {
-  console.log('Received data message: ' + msg.data.length + ' ' + msg.data[0]);
-
   /*
    * A foo__AddressesAndLinks data set here will usually be a
    * response to a request from the brush. Handle it as a unique
    * case and not as a generic data response to be stored in alarms[].
    */
   if (msg.name.indexOf('_AddressesAndLinks') > -1) {
+    console.log('handleData, AAL, received data message: ' + msg.data.length);
     dataStore.currentlySelectedAddressAndLinksData = JSON.parse(msg.data);
     return;
   }
+  console.log(
+    'handleData, received data message: ' + msg.data.length + ' ' + msg.data[0]
+  );
 
   if (!msgRegister[msg.id]) {
     console.log(
