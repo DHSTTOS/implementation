@@ -14,13 +14,11 @@
     "@nivo/line": "^0.52.0",
     "@nivo/scatterplot": "^0.52.0",
     "@nivo/stream": "^0.52.0",
-    "axios": "0.18.0",
     "d3": "^5.8.0",
     "mobx": "5.7.0",
     "mobx-react": "5.4.2",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
-    "socket.io-client": "^2.2.0",
     "uniqid": "^5.0.3"
   },
   "devDependencies": {
@@ -34,7 +32,7 @@
     "babel-preset-env": "1.7.0",
     "babel-preset-react": "6.24.1",
     "jest": "24.0.0",
-    "parcel-bundler": "^1.10.3",
+    "parcel-bundler": "^1.12.3",
     "parcel-plugin-static-files-copy": "^2.0.0",
     "prettier": "1.16.3"
   },
