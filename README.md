@@ -16,7 +16,7 @@ A walkthrough screencast of the frontend can be found [here](https://youtu.be/Vt
 
 ## Deployment/Installation
 
-**Thanks to the fully modular structure of this project, the frontend client app can be deployed independently from the backend. Only a websocket endpoint address is needed (see [this step](#step-4)).**
+**Thanks to the fully modular structure of this project, the frontend client app can be deployed independently from the backend. Only a websocket endpoint address is needed (see [this step](#step-3)).**
 
 ### Tested software environment
 
