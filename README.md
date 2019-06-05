@@ -14,6 +14,14 @@ DHSTTOS project uses a monorepo structure, which mainly consists of 2 sub-projec
 
 A walkthrough screencast of the frontend can be found [here](https://youtu.be/Vt3kImBWPbI).
 
+---
+
+> ### Important
+> 
+> **This project is no longer actively maintained. If you have forked this project, please remember to regularly run `npm audit fix` to update potentially vulnerable npm dependencies.**
+
+---
+
 ## Deployment/Installation
 
 **Thanks to the fully modular structure of this project, the frontend client app can be deployed independently from the backend. Only a websocket endpoint address is needed (see [this step](#step-3)).**
